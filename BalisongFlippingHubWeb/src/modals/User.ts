@@ -1,7 +1,7 @@
 export interface Profile {
     email: string,  
     token: string,
-    role: ROLE
+    role: ROLE 
 }
 
 export enum ROLE {

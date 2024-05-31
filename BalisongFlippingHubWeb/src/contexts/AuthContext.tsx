@@ -1,4 +1,4 @@
-import { createContext, useContext, useEffect, useState } from "react";
+import { createContext, useEffect, useState } from "react";
 import { MakerProfile, AdminProfile, UserProfile, ROLE } from "../modals/User";
 
 export type AuthContextType = {
@@ -21,14 +21,14 @@ export const AuthContextProvider: React.FC<{children: React.ReactNode}> = ({ chi
 
     useEffect(() => {
         // check for user already logged in
-        console.log("setting user")
-        console.log("Does user exist?: " + !!user)
-        setUser({
-            email: "test@gmail.com",
-            token: "test",
-            role: ROLE.USER,
-            displayName: "displayName"
-        })
+        // console.log("setting user")
+        // console.log("Does user exist?: " + !!user)
+        // setUser({
+        //     email: "test@gmail.com",
+        //     token: "test",
+        //     role: ROLE.USER,
+        //     displayName: "displayName"
+        // })
         setIsReady(true);
     }, [])
     
@@ -61,5 +61,3 @@ export const AuthContextProvider: React.FC<{children: React.ReactNode}> = ({ chi
         </AuthContext.Provider>
     )
 }
-
-export const useAuthContext = () => useContext(AuthContext);

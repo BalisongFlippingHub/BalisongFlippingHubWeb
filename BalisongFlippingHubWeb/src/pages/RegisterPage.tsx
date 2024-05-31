@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react"
-import { useAuthContext } from "../contexts/useAuthContext"
+import { useAuthContext } from "../contexts/AuthContext"
 
 export const RegisterPage = () => {
     const [accountType, changeType] = useState("User")
