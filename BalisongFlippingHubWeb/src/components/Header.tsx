@@ -9,8 +9,8 @@ const Navbar = () => {
     const location = useLocation()
 
     return (
-        <header className="fixed flex flex-col items-center w-full p-3 z-30 bg-teal-950 border border-black">
-            <div className="flex justify-between w-full">
+        <header className="fixed flex flex-col items-center w-full p-2 z-30 bg-teal-950 border border-black">
+            <div className="flex justify-between pl-7 pr-7 w-full">
                 <HeaderNavbar />
                 <div>
                 {

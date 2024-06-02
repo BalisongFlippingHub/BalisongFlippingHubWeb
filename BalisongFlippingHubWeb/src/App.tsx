@@ -1,13 +1,14 @@
 import { Route, Routes } from 'react-router-dom'
 import MainLayout from './layouts/MainLayout'
 import { LoginPage } from './pages/LoginPage'
-import { RegisterPage } from './pages/RegisterPage'
+
 import { ProfilePage } from './pages/ProfilePage'
 import { HomePage } from './pages/HomePage'
 import ProtectedRoutes from './routes/ProtectedRoutes'
 import { ROLE } from './modals/User'
 import TutorialCenterPage from './pages/TutorialCenterPage'
 import ProductWorldPage from './pages/ProductWorldPage'
+import RegisterPage from './pages/RegisterPage'
 
 const App = () => {
 
