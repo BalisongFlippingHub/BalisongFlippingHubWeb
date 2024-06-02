@@ -21,13 +21,13 @@ export const AuthContextProvider: React.FC<{children: React.ReactNode}> = ({ chi
 
     useEffect(() => {
         // check for user already logged in
-        // console.log("setting user")
+        console.log("setting user")
         // console.log("Does user exist?: " + !!user)
         // setUser({
         //     email: "test@gmail.com",
         //     token: "test",
         //     role: ROLE.USER,
-        //     displayName: "displayName"
+        //     displayName: "Display Name"
         // })
         setIsReady(true);
     }, [])

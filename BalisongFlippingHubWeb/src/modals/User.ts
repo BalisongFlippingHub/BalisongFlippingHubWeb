@@ -1,5 +1,6 @@
 export interface Profile {
     email: string,  
+    displayName: string,
     token: string,
     role: ROLE 
 }

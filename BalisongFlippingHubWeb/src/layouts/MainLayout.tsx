@@ -1,11 +1,11 @@
 import { Outlet } from "react-router-dom";
-import Navbar from "../components/Navbar";
+import Header from "../components/Header";
 
 const MainLayout = () => {
     return (
         <>
-            <Navbar />
-            <main className="p-20">
+            <Header />
+            <main className="p-20 flex justify-center h-screen bg-teal-950">
                 <Outlet />
             </main>
         </>

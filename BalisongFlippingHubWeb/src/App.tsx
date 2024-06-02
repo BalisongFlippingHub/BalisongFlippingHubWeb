@@ -6,6 +6,8 @@ import { ProfilePage } from './pages/ProfilePage'
 import { HomePage } from './pages/HomePage'
 import ProtectedRoutes from './routes/ProtectedRoutes'
 import { ROLE } from './modals/User'
+import TutorialCenterPage from './pages/TutorialCenterPage'
+import ProductWorldPage from './pages/ProductWorldPage'
 
 const App = () => {
 
@@ -16,6 +18,8 @@ const App = () => {
         <Route path="/" element={<HomePage />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/register" element={<RegisterPage />} />
+        <Route path="tutorial-center" element={<TutorialCenterPage />} />
+        <Route path="product-world" element={<ProductWorldPage />} />
         <Route path="/unauthorized" element={<h2>Unaothorized</h2>} />
 
         {/*Protected Routes*/}
