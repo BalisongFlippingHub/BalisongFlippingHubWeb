@@ -1,6 +1,5 @@
 export interface Profile {
     email: string,  
-    displayName: string,
     token: string,
     role: ROLE 
 }
@@ -12,7 +11,7 @@ export enum ROLE {
 }
 
 export interface MakerProfile extends Profile {
-    compnayName: string
+    companyName: string
 }
 
 export interface AdminProfile extends Profile {

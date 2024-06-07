@@ -16,7 +16,7 @@ const Navbar = () => {
                 {
                     isLoggedIn()
                     ?
-                        <h3 onClick={() => navigate("/me")} className="hover:cursor-pointer">{user?.displayName}</h3>
+                        <h3 onClick={() => navigate("/me")} className="hover:cursor-pointer">{user?.companyName}</h3>
                     :
                     <h3 onClick={() => navigate("/login")} className="hover:cursor-pointer">Login</h3>
                 }

@@ -1,7 +1,9 @@
 import { useRef, useState } from "react"
+import axios from "../api/axios"
+import useAuth from "../hooks/useAuth"
+import { useNavigate } from "react-router-dom"
 
 const MakerRegistrationForm = () => {
-
     const emailRef = useRef<HTMLInputElement>(null)
     const companyNameRef = useRef<HTMLInputElement>(null)
     const passwordRef = useRef<HTMLInputElement>(null)
@@ -11,12 +13,73 @@ const MakerRegistrationForm = () => {
     const [companyName, setCompnayName] = useState("")
     const [password, setPassword] = useState("")
     const [confirmedPassword, setConfirmedPassword] = useState("")
+    const [loadingRequest, setLoadingRequest] = useState(false)
+    const [isError, setIsError] = useState(false)
+
+    const { setToken, setUser } = useAuth()
+    const navigate = useNavigate()
     
     const handleSubmit = (e: any) => {
         e.preventDefault()
-        if (confirmedPassword !== password) {
-            return;
+
+        console.log("handling submit to create maker account")
+        confirmedPassword.trim()
+        email.trim()
+        password.trim()
+        companyName.trim()
+
+        if (confirmedPassword === "" || email === "" || password === "" || companyName === "") {
+            console.log("not all fields filled in.")
+            return; 
         }
+
+        if (confirmedPassword !== password) {
+            console.log("Password mismatch")
+            return; 
+        }
+
+        setLoadingRequest(true)
+        axios.request({
+            url: "/auth/register",
+            method: 'post',
+            data: {
+                email: email,
+                accountName: companyName,
+                password: password,
+                role: 'MAKER'
+            }
+        })
+        .then((res) => {
+            console.log("Creating Account Res: ", res)
+            if (res?.status === 200) {
+                axios.request({
+                    url: "/auth/login",
+                    method: "post",
+                    data: {
+                        email: email,
+                        password: password
+                    }
+                })
+                .then((res) => {
+                    console.log("Logging user in response:", res)
+                    if (res.status === 200) {
+                        setToken(res.data.token)
+                        setUser(res.data.account)
+                        navigate("/")
+                    }
+                })
+                .catch((err) => {
+                    console.log("Loggin user in error: ", err)
+                    navigate("/login")
+                })
+            }
+        })
+        .catch((err) => {
+            console.log("Creating account error: ", err)
+        })
+        .finally(() => {
+            setLoadingRequest(false)
+        })
     }
 
     return (
