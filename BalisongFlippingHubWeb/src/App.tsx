@@ -3,12 +3,11 @@ import MainLayout from './layouts/MainLayout'
 import { LoginPage } from './pages/LoginPage'
 
 import { ProfilePage } from './pages/ProfilePage'
-import { HomePage } from './pages/HomePage'
 import ProtectedRoutes from './routes/ProtectedRoutes'
-import { ROLE } from './modals/User'
 import TutorialCenterPage from './pages/TutorialCenterPage'
 import ProductWorldPage from './pages/ProductWorldPage'
 import RegisterPage from './pages/RegisterPage'
+import HomePage from './pages/HomePage'
 
 const App = () => {
 
@@ -24,7 +23,7 @@ const App = () => {
         <Route path="/unauthorized" element={<h2>Unaothorized</h2>} />
 
         {/*Protected Routes*/}
-        <Route element={<ProtectedRoutes allowedRoles={[ROLE.ADMIN, ROLE.MAKER, ROLE.USER]} />}>
+        <Route element={<ProtectedRoutes allowedRoles={["MAKER", "USER", "ADMIN"]} />}>
           <Route path="/me" element={<ProfilePage />} />
         </Route>
 

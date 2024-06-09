@@ -5,7 +5,7 @@ const MainLayout = () => {
     return (
         <>
             <Header />
-            <main className="p-20 flex justify-center h-screen bg-teal-950">
+            <main className="p-20 flex justify-center h-screen ml-10">
                 <Outlet />
             </main>
         </>

@@ -1,5 +1,8 @@
+
 import { useState, useRef, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import useAuth from "../hooks/useAuth";
+import axios from "../api/axios";
 
 const LoginForm = () => {
     const emailRef = useRef<HTMLInputElement>(null);
@@ -9,8 +12,10 @@ const LoginForm = () => {
     const [password, setPassword] = useState("")
     const [error, setError] = useState(false)
     const [errMsg, setErrMsg] = useState("")
+    const [isLoading, setIsLoading] = useState(false)
 
     const navigate = useNavigate()
+    const { setUser, setToken } = useAuth()
 
     useEffect(() => {
         emailRef.current?.focus()
@@ -18,22 +23,46 @@ const LoginForm = () => {
 
     const handleSubmit = async (e: { preventDefault: () => void; }) => {
         e.preventDefault()
-        setErrMsg("*Email or Password was invalid")
-        setError(true)
+
+        const obj = {
+            email: email,
+            password: password
+        }
+
+        setIsLoading(true)
+        axios.request({
+            url: "/auth/login",
+            method: "post",
+            data: obj
+        })
+        .then((res) => {
+            console.log("Logging user in response:", res)
+            if (res.status === 200) {
+                setToken(res.data.token)
+                setUser(res.data.account)
+                navigate("/")
+            }
+        })
+        .catch((err) => {
+            console.log("Loggin user in error: ", err)
+        })
+        .finally(() => {
+            setIsLoading(false)
+        })
     }
 
     return (
         <form className="m-auto p-6 flex flex-col bg-teal-700 rounded" onSubmit={handleSubmit}>
-            <h2 className="text-black m-auto mb-2">Login</h2>
+            <h2 className="text-black m-auto text-lg bg-inherit">Login</h2>
             {
                 error
                 ?
                 <p className="text-red-400">{errMsg}</p>
                 :
-                <p className="text-teal-700">Fill</p>
+                <p className="text-teal-700 bg-inherit">Fill</p>
             }
-            <div className="flex flex-col">
-                <label htmlFor="emailInput" className="text-black">Email</label>
+            <div className="flex flex-col mb-2">
+                <label htmlFor="emailInput" className="text-black mb-1 bg-inherit">Email</label>
                 <input
                     type="email"
                     id="emailInput"
@@ -43,11 +72,11 @@ const LoginForm = () => {
                     placeholder="example@email.com"
                     value={email}
                     required
-                    className="text-black p-1 rounded"
+                    className="text-black p-2 rounded"
                 />
             </div>
             <div className="flex flex-col">
-                <label htmlFor="passwordInput" className="text-black">Password</label>
+                <label htmlFor="passwordInput" className="text-black mb-1">Password</label>
                 <input
                     type="password"
                     id="passwordInput"
@@ -55,10 +84,10 @@ const LoginForm = () => {
                     onChange={(e) => setPassword(e.target.value)}
                     value={password}
                     required
-                    className="text-black p-1 rounded"
+                    className="text-black p-2 rounded"
                 />
             </div>
-            <div>
+            <div className="mt-2">
                 <input type="checkbox" id="rememberMe" className="mr-2"/>
                 <label htmlFor="rememberMe" className="text-black">Remember Me</label>
             </div>

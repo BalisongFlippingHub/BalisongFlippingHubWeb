@@ -1,5 +1,15 @@
+import MakerProfilePage from "../components/MakerProfilePage"
+import UserProfilePage from "../components/UserProfilePage"
+import useAuth from "../hooks/useAuth"
+
 export const ProfilePage = () => {
+    const { user } = useAuth()
+
     return (
-        <h1>Profile Page</h1>
+        user?.role === "MAKER"
+        ?
+        <MakerProfilePage />
+        :
+        <UserProfilePage />
     )
 }

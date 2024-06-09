@@ -1,17 +1,20 @@
 export interface Profile {
-    email: string,  
-    token: string,
-    role: ROLE 
-}
-
-export enum ROLE {
-    MAKER,
-    USER,
-    ADMIN
+    uuid: string | null,
+    email: string | null,  
+    role: String | null, 
+    posts: Array<null>,
 }
 
 export interface MakerProfile extends Profile {
-    companyName: string
+    companyName: string | null,
+    companyDuration: DoubleRange,
+    products: Array<null>,
+    services: Array<null>,
+    facebookLink: string,
+    instagramLink: string,
+    twitterLink: string,
+    personalEmailLink: string,
+    personalWebsiteLink: string
 }
 
 export interface AdminProfile extends Profile {
@@ -19,5 +22,11 @@ export interface AdminProfile extends Profile {
 }
 
 export interface UserProfile extends Profile {
-    displayName: string
+    displayName: string,
+    ownedKnives: Array<null>,
+    facebookLink: string,
+    instagramLink: string,
+    twitterLink: string,
+    personalEmailLink: string,
+    personalWebsiteLink: string
 }

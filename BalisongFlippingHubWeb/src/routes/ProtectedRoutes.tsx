@@ -1,9 +1,8 @@
 import { Outlet, Navigate, useLocation } from "react-router-dom";
 import useAuth from "../hooks/useAuth";
-import { ROLE } from "../modals/User";
 
 type Props = {
-    allowedRoles: ROLE[]
+    allowedRoles: String[]
 }
 
 const ProtectedRoutes = ({ allowedRoles }: Props) => {
