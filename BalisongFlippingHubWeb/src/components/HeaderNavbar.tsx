@@ -1,20 +1,35 @@
 import { NavLink } from "react-router-dom";
+import useAuth from "../hooks/useAuth";
 
 const HeaderNavbar = () => {
+    const { isLoggedIn } = useAuth()
 
     const navlinkStyles = ({ isActive }: any) => {
 
         return ({
             fontWeight: isActive ? 'bold' : 'normal', 
-            textDecoration: isActive ? 'underline' : 'none'
+            backgroundColor: isActive ? 'teal' : 'inherit'
         })
     }
     
     return (
-        <nav className="fixed flex flex-col pt-20 pl-4 pr-4 border border-black h-full">
-            <NavLink to="/" style={navlinkStyles} className="mb-3"><h1>Home</h1></NavLink>  {/*Change with logo later*/}
-            <NavLink to="/tutorial-center" style={navlinkStyles} className="mb-3">Tutorial Center</NavLink>
-            <NavLink to="/product-world" style={navlinkStyles} className="mb-3">Product World</NavLink>
+        <nav className="fixed flex flex-col justify-between pt-16 border border-black h-full">
+            <div className="flex flex-col">
+                <NavLink to="/" style={navlinkStyles} className="p-2 pl-4 w-full"><h1 className="bg-inherit">Home</h1></NavLink>
+                <NavLink to="/tutorial-center" style={navlinkStyles} className="p-2 pl-4 w-full bg-inherit">Tutorial Center</NavLink>
+                <NavLink to="/product-world" style={navlinkStyles} className="p-2 pl-4 w-full bg-inherit">Product World</NavLink>
+                <span className="w-full border border-black"></span>
+                {
+                    isLoggedIn()
+                    ??
+                    <>
+                        <NavLink to="/me" style={navlinkStyles} className="p-2 pl-4 w-full"><h1>Me</h1></NavLink>
+                    </>
+                }
+            </div>
+            <div>
+                <h3 className="p-2">All rights reserved.</h3>
+            </div>
         </nav>
     )
 }

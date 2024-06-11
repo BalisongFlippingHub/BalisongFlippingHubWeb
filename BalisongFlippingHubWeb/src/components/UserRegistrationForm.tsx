@@ -1,8 +1,11 @@
+import axios from "axios";
 import { useRef, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import useAuth from "../hooks/useAuth";
 
 const UserRegistrationForm = () => {
     const emailRef = useRef<HTMLInputElement>(null)
-    const displayNameRef = useRef<HTMLInputElement>(null)
+    const companyNameRef = useRef<HTMLInputElement>(null)
     const passwordRef = useRef<HTMLInputElement>(null)
     const confirmPasswordRef = useRef<HTMLInputElement>(null)
 
@@ -10,64 +13,160 @@ const UserRegistrationForm = () => {
     const [displayName, setDisplayName] = useState("")
     const [password, setPassword] = useState("")
     const [confirmedPassword, setConfirmedPassword] = useState("")
+    const [isLoading, setIsLoading] = useState(false)
+    const [errMsg, setErrMsg] = useState("")
+    const [isError, setIsError] = useState(false)
+    const [buttonDisabled, setButtonDisabled] = useState(false)
+
+    const { setToken, setUser } = useAuth()
+    const navigate = useNavigate()
     
-    const handleSubmit = (e: any) => {
-        e.preventDefault()
-        if (confirmedPassword !== password) {
-            return;
+    const handlePasswordChange = (e: any) => {
+        setPassword(e.target.value)
+
+        if (buttonDisabled) {
+            setButtonDisabled(false)
         }
     }
 
-    return (
-        <form className="flex flex-col" onSubmit={handleSubmit}>
-            <h1 className="m-auto">User</h1>
+    const handleConfirmedPasswordChange = (e: any) => {
+        setConfirmedPassword(e.target.value)
 
-            <div className="flex flex-col">
-                <label>Email</label>
+        if (buttonDisabled) {
+            setButtonDisabled(false)
+        }
+    }
+
+    const handleSubmit = (e: any) => {
+        e.preventDefault()
+
+        console.log("handling submit to create maker account")
+        confirmedPassword.trim()
+        email.trim()
+        password.trim()
+        displayName.trim()
+
+        if (confirmedPassword !== password) {
+            setErrMsg("*Passwords do not match.")
+            setIsError(true)
+            passwordRef.current?.focus();
+            setButtonDisabled(true)
+            return; 
+        }
+
+        setIsLoading(true)
+        axios.request({
+            url: "/auth/register",
+            method: 'post',
+            data: {
+                email: email,
+                accountName: displayName,
+                password: password,
+                role: 'USER'
+            }
+        })
+        .then((res) => {
+            console.log("Creating Account Res: ", res)
+            if (res?.status === 200) {
+                axios.request({
+                    url: "/auth/login",
+                    method: "post",
+                    data: {
+                        email: email,
+                        password: password
+                    }
+                })
+                .then((res) => {
+                    console.log("Logging user in response:", res)
+                    if (res.status === 200) {
+                        setToken(res.data.token)
+                        setUser(res.data.account)
+                        navigate("/")
+                    }
+                })
+                .catch((err) => {
+                    console.log("Loggin user in error: ", err)
+                    navigate("/login")
+                })
+            }
+        })
+        .catch((err) => {
+            console.log(err)
+            setErrMsg("*Error in creating user.")
+            setIsError(true)
+            emailRef.current?.focus()
+        })
+        .finally(() => {
+            setIsLoading(false)
+        })
+    }
+
+    return (
+        <form className="flex flex-col bg-inherit text-lg w-full" onSubmit={handleSubmit}>
+            <h1 className="m-auto bg-inherit text-xl font-bold text-black">User</h1>
+            {
+                isError
+                ?
+                <h3>{errMsg}</h3>
+                :
+                <h3></h3>
+            }
+            <div className="flex flex-col bg-inherit">
+                <label className="bg-teal-700 text-black font-semibold">Email</label>
                 <input 
                     type="email"
                     required
                     ref={emailRef}
                     onChange={(e) => setEmail(e.target.value)}
                     value={email}
-                    className="text-black"
+                    className="text-black bg-teal-700 border border-black rounded p-2 mt-2"
                 />
             </div>
-            <div className="flex flex-col">
-                <label>Display Name</label>
+            <div className="flex flex-col bg-inherit">
+                <label className="bg-inherit text-black font-semibold">Display Name</label>
                 <input 
                     type="text"
                     required
-                    ref={displayNameRef}
+                    ref={companyNameRef}
                     onChange={(e) => setDisplayName(e.target.value)}
                     value={displayName}
-                    className="text-black"
+                    className="text-black border border-black rounded bg-inherit mt-2 p-2"
                 />
             </div>
-            <div className="flex flex-col">
-                <label>Password</label>
+            <div className="flex flex-col bg-inherit">
+                <label className="bg-inherit text-black font-semibold">Password</label>
                 <input 
                     type="password"
                     required
                     ref={passwordRef}
-                    onChange={(e) => setPassword(e.target.value)}
+                    onChange={(e) => handlePasswordChange(e)}
                     value={password}
-                    className="text-black"
+                    className="text-black border rounded border-black bg-inherit mt-2 p-2"
                 />
             </div>
-            <div className="flex flex-col">
-                <label>Confirm Password</label>
+            <div className="flex flex-col bg-inherit">
+                <label className="bg-inherit text-black font-semibold">Confirm Password</label>
                 <input 
                     type="password"
                     required
                     ref={confirmPasswordRef}
-                    onChange={(e) => setConfirmedPassword(e.target.value)}
+                    onChange={(e) => handleConfirmedPasswordChange(e)}
                     value={confirmedPassword}
-                    className="text-black"
+                    className="text-black border rounded border-black bg-inherit mt-2 p-2"
                 />
             </div>
 
-            <button type="submit" className="">Create Account</button>
+            {
+                isLoading
+                ?
+                <button disabled className="p-2 bg-slate-500 mt-4 rounded">Loading...</button>
+                :
+                    buttonDisabled
+                    ?
+                    <button type="submit" disabled className="p-2 bg-slate-500 mt-4 rounded">Create Account</button>
+                    :
+                    <button type="submit" className="p-2 bg-slate-500 mt-4 rounded hover:bg-slate-200">Create Account</button>
+            }
         </form>
     )
 }

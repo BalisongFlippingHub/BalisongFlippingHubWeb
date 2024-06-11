@@ -10,15 +10,15 @@ const Navbar = () => {
 
     return (
         <>
-        <header className="fixed flex justify-between w-full p-4 z-20 bg-teal-950 border border-black">
-            <h1 onClick={() => navigate("/")} className="hover:cursor-pointer">Balisong Flipping Hub</h1>
+        <header className="fixed flex justify-between w-full p-3 z-20 bg-teal-950 border border-black">
+            <h1 onClick={() => navigate("/")} className="hover:cursor-pointer pt-2">Balisong Flipping Hub</h1>
             <SearchBar />
             {
                 isLoggedIn()
                 ?
                 <h3>{user?.companyName}</h3>
                 :
-                <h3 onClick={() => navigate("/login")} className="hover:cursor-pointer">Login</h3>
+                <h3 onClick={() => navigate("/login")} className="hover:cursor-pointer pt-2">Login</h3>
             }
         </header>
         <HeaderNavbar />

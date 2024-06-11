@@ -13,6 +13,7 @@ const LoginForm = () => {
     const [error, setError] = useState(false)
     const [errMsg, setErrMsg] = useState("")
     const [isLoading, setIsLoading] = useState(false)
+    const [buttonDisabled, setButtonDisabled] = useState(false)
 
     const navigate = useNavigate()
     const { setUser, setToken } = useAuth()
@@ -20,6 +21,20 @@ const LoginForm = () => {
     useEffect(() => {
         emailRef.current?.focus()
     }, [])
+
+    const handleOnChangeEmail = (e: any) => {
+        setEmail(e.target?.value)
+        if (buttonDisabled) {
+            setButtonDisabled(false)
+        }
+    } 
+
+    const handleOnChangePassword = (e: any) => {
+        setPassword(e.target?.value)
+        if (buttonDisabled) {
+            setButtonDisabled(false)
+        }
+    }
 
     const handleSubmit = async (e: { preventDefault: () => void; }) => {
         e.preventDefault()
@@ -45,6 +60,10 @@ const LoginForm = () => {
         })
         .catch((err) => {
             console.log("Loggin user in error: ", err)
+            setErrMsg("* Error logging in with current credientials.")
+            setError(true)
+            emailRef.current?.focus()
+            setButtonDisabled(true)
         })
         .finally(() => {
             setIsLoading(false)
@@ -52,8 +71,8 @@ const LoginForm = () => {
     }
 
     return (
-        <form className="m-auto p-6 flex flex-col bg-teal-700 rounded" onSubmit={handleSubmit}>
-            <h2 className="text-black m-auto text-lg bg-inherit">Login</h2>
+        <form className="m-auto p-6 flex flex-col bg-teal-700 rounded w-2/6 text-xl" onSubmit={handleSubmit}>
+            <h2 className="text-black m-auto text-3xl font-bold bg-inherit">Login</h2>
             {
                 error
                 ?
@@ -61,38 +80,48 @@ const LoginForm = () => {
                 :
                 <p className="text-teal-700 bg-inherit">Fill</p>
             }
-            <div className="flex flex-col mb-2">
-                <label htmlFor="emailInput" className="text-black mb-1 bg-inherit">Email</label>
+            <div className="flex flex-col mb-2 bg-teal-700">
+                <label htmlFor="emailInput" className="text-black mb-2 bg-teal-700 font-semibold">Email</label>
                 <input
                     type="email"
                     id="emailInput"
                     ref={emailRef}
                     autoComplete="off"
-                    onChange={(e) => setEmail(e.target.value)}
+                    onChange={(e) => handleOnChangeEmail(e)}
                     placeholder="example@email.com"
                     value={email}
                     required
-                    className="text-black p-2 rounded"
+                    className="text-black p-2 rounded border border-black bg-teal-700"
                 />
             </div>
-            <div className="flex flex-col">
-                <label htmlFor="passwordInput" className="text-black mb-1">Password</label>
+            <div className="flex flex-col bg-inherit">
+                <label htmlFor="passwordInput" className="text-black mb-1 bg-teal-700 font-semibold">Password</label>
                 <input
                     type="password"
                     id="passwordInput"
                     ref={passwordRef}
-                    onChange={(e) => setPassword(e.target.value)}
+                    onChange={(e) => handleOnChangePassword(e)}
                     value={password}
                     required
-                    className="text-black p-2 rounded"
+                    className="text-black p-2 rounded border border-black bg-teal-700"
                 />
             </div>
-            <div className="mt-2">
+            <div className="mt-2 bg-inherit">
                 <input type="checkbox" id="rememberMe" className="mr-2"/>
-                <label htmlFor="rememberMe" className="text-black">Remember Me</label>
+                <label htmlFor="rememberMe" className="text-black bg-teal-700">Remember Me</label>
             </div>
-            <button type="submit" className="hover:cursor-pointer p-2 bg-slate-500 rounded hover:bg-slate-300 mt-3">Login</button>
-            <h3 className="text-blue-500 hover:cursor-pointer mt-2" onClick={() => navigate("/register")}>Register Here</h3>
+            {
+                isLoading
+                ?
+                <button disabled className="p-2 bg-slate-500 rounded mt-3">Loading...</button>
+                :
+                    buttonDisabled
+                    ?
+                    <button type="submit" disabled className="p-2 bg-slate-500 rounded mt-3">Login</button>
+                    :
+                    <button type="submit" className="hover:cursor-pointer p-2 bg-slate-500 rounded hover:bg-slate-300 mt-3">Login</button>
+            }
+            <h3 className="text-blue-300 hover:text-blue-200 hover:cursor-pointer mt-2 bg-inherit" onClick={() => navigate("/register")}>Register Here</h3>
         </form>
     )
 }
