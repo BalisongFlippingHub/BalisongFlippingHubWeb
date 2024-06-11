@@ -6,7 +6,7 @@ const UserProfilePage = () => {
      
     return (
         <div>
-            <h1>Makers Profile Page</h1>
+            <h1>{user?.role}: Profile Page</h1>
             <h1>Compnay Name: {user?.displayName}</h1>
         </div>
     )

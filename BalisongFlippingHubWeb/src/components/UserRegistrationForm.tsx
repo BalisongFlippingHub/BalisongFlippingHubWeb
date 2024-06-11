@@ -1,11 +1,11 @@
-import axios from "axios";
 import { useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import useAuth from "../hooks/useAuth";
+import axios from "../api/axios";
 
 const UserRegistrationForm = () => {
     const emailRef = useRef<HTMLInputElement>(null)
-    const companyNameRef = useRef<HTMLInputElement>(null)
+    const displayNameRef = useRef<HTMLInputElement>(null)
     const passwordRef = useRef<HTMLInputElement>(null)
     const confirmPasswordRef = useRef<HTMLInputElement>(null)
 
@@ -127,7 +127,7 @@ const UserRegistrationForm = () => {
                 <input 
                     type="text"
                     required
-                    ref={companyNameRef}
+                    ref={displayNameRef}
                     onChange={(e) => setDisplayName(e.target.value)}
                     value={displayName}
                     className="text-black border border-black rounded bg-inherit mt-2 p-2"

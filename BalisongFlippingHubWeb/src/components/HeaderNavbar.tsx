@@ -18,13 +18,15 @@ const HeaderNavbar = () => {
                 <NavLink to="/" style={navlinkStyles} className="p-2 pl-4 w-full"><h1 className="bg-inherit">Home</h1></NavLink>
                 <NavLink to="/tutorial-center" style={navlinkStyles} className="p-2 pl-4 w-full bg-inherit">Tutorial Center</NavLink>
                 <NavLink to="/product-world" style={navlinkStyles} className="p-2 pl-4 w-full bg-inherit">Product World</NavLink>
-                <span className="w-full border border-black"></span>
+                <span className="w-full h-2 bg-black"></span>
                 {
                     isLoggedIn()
-                    ??
+                    ?
                     <>
-                        <NavLink to="/me" style={navlinkStyles} className="p-2 pl-4 w-full"><h1>Me</h1></NavLink>
+                        <NavLink to="/me" style={navlinkStyles} className="p-2 pl-4 w-full"><h1 className="bg-inherit">Profile</h1></NavLink>
                     </>
+                    :
+                    <></>
                 }
             </div>
             <div>
