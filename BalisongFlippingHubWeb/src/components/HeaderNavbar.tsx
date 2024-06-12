@@ -15,7 +15,7 @@ const HeaderNavbar = () => {
     return (
         <nav className="fixed flex flex-col justify-between pt-16 border border-black h-full">
             <div className="flex flex-col">
-                <NavLink to="/" style={navlinkStyles} className="p-2 pl-4 w-full"><h1 className="bg-inherit">Home</h1></NavLink>
+                <NavLink to="/community" style={navlinkStyles} className="p-2 pl-4 w-full"><h1 className="bg-inherit">Community</h1></NavLink>
                 <NavLink to="/tutorial-center" style={navlinkStyles} className="p-2 pl-4 w-full bg-inherit">Tutorial Center</NavLink>
                 <NavLink to="/product-world" style={navlinkStyles} className="p-2 pl-4 w-full bg-inherit">Product World</NavLink>
                 <span className="w-full h-2 bg-black"></span>

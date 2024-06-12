@@ -55,7 +55,7 @@ const LoginForm = () => {
             if (res.status === 200) {
                 setToken(res.data.token)
                 setUser(res.data.account)
-                navigate("/")
+                navigate("/home")
             }
         })
         .catch((err) => {

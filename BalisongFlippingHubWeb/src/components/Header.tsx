@@ -1,12 +1,12 @@
-import { useLocation, useNavigate,  } from "react-router-dom";
+import { useNavigate  } from "react-router-dom";
 import useAuth from "../hooks/useAuth";
 import SearchBar from "./SearchBar";
 import HeaderNavbar from "./HeaderNavbar";
+import HeaderProfileDisplay from "./HeaderProfileDisplay";
 
 const Navbar = () => {
-    const { isLoggedIn, user } = useAuth()
+    const { isLoggedIn } = useAuth()
     const navigate = useNavigate()
-    const location = useLocation()
 
     return (
         <>
@@ -16,9 +16,12 @@ const Navbar = () => {
             {
                 isLoggedIn()
                 ?
-                <h3>{user?.companyName}</h3>
+                <HeaderProfileDisplay />
                 :
-                <h3 onClick={() => navigate("/login")} className="hover:cursor-pointer pt-2">Login</h3>
+                <div className="flex">
+                    <button onClick={() => navigate("/login")} className="p-2 hover:text-teal-200">Login</button>
+                    <button onClick={() => navigate("/register")} className="p-2 border rounded bg-teal-700 hover:bg-inherit">Register Now</button>
+                </div>
             }
         </header>
         <HeaderNavbar />

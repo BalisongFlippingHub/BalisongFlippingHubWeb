@@ -8,6 +8,7 @@ import TutorialCenterPage from './pages/TutorialCenterPage'
 import ProductWorldPage from './pages/ProductWorldPage'
 import RegisterPage from './pages/RegisterPage'
 import HomePage from './pages/HomePage'
+import CommunityPage from './pages/CommunityPage'
 
 const App = () => {
 
@@ -16,6 +17,7 @@ const App = () => {
       <Route path="/" element={<MainLayout />}>
         {/*Public Routes*/}
         <Route path="/" element={<HomePage />} />
+        <Route path="/community" element={<CommunityPage />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/register" element={<RegisterPage />} />
         <Route path="tutorial-center" element={<TutorialCenterPage />} />
