@@ -11,7 +11,10 @@ const Navbar = () => {
     return (
         <>
         <header className="fixed flex justify-between w-full p-3 z-20 bg-teal-950 border border-black">
-            <h1 onClick={() => navigate("/")} className="hover:cursor-pointer pt-2">Balisong Flipping Hub</h1>
+            <div className="flex hover:cursor-pointer" onClick={() => navigate("/")} >
+                <span className="border rounded-full w-10 mr-2"></span>
+                <h1 className="pt-2">Balisong Flipping Hub</h1>
+            </div>
             <SearchBar />
             {
                 isLoggedIn()

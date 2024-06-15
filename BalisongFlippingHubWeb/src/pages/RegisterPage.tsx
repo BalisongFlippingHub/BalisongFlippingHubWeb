@@ -6,9 +6,10 @@ const RegisterPage = () => {
     const [isMakerAccount, setIsMakerAccount] = useState(false)
 
     return (
-        <div className="m-auto bg-teal-700 flex flex-col items-center p-6 rounded w-2/6">
-            <div className="flex items-center flex-col bg-inherit">
-                <h2 className="bg-inherit text-black text-2xl">Account Type</h2>
+        <section className="flex h-screen">
+            <div className="m-auto bg-teal-700 flex flex-col items-center p-6 rounded w-2/6">
+                <div className="flex items-center flex-col bg-inherit">
+                    <h2 className="bg-inherit text-black text-2xl">Account Type</h2>
                 <div className="flex">
                     <h2 onClick={() => setIsMakerAccount(false)} className={
                         !isMakerAccount
@@ -27,15 +28,16 @@ const RegisterPage = () => {
                     } >Maker</h2>
                 </div>
                 <span className="h-1/2 border border-black w-80"></span>
-            </div>
-            {
+                </div>
+                {
                 !isMakerAccount
                 ?
                 <UserRegistrationForm />
                 :
                 <MakerRegistrationForm />
-            }
-        </div>
+                }
+            </div>
+        </section>
     )
 }
 

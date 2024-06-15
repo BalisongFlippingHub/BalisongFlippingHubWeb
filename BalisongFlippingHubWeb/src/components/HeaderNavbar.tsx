@@ -13,17 +13,19 @@ const HeaderNavbar = () => {
     }
     
     return (
-        <nav className="fixed flex flex-col justify-between pt-16 border border-black h-full">
+        <nav className="fixed flex flex-col justify-between pt-16 border border-black h-full text-lg">
             <div className="flex flex-col">
-                <NavLink to="/community" style={navlinkStyles} className="p-2 pl-4 w-full"><h1 className="bg-inherit">Community</h1></NavLink>
-                <NavLink to="/tutorial-center" style={navlinkStyles} className="p-2 pl-4 w-full bg-inherit">Tutorial Center</NavLink>
-                <NavLink to="/product-world" style={navlinkStyles} className="p-2 pl-4 w-full bg-inherit">Product World</NavLink>
-                <span className="w-full h-2 bg-black"></span>
+                <NavLink to="/community" style={navlinkStyles} className="p-3 pl-4 w-full border-b border-black"><h1 className="bg-inherit">Community</h1></NavLink>
+                <NavLink to="/tutorial-center" style={navlinkStyles} className="p-3 pl-4 w-full border-b border-black">Tutorial Center</NavLink>
+                <NavLink to="/product-world" style={navlinkStyles} className="p-2 pl-4 w-full border-b border-black">Product World</NavLink>
                 {
                     isLoggedIn()
                     ?
-                    <>
-                        <NavLink to="/me" style={navlinkStyles} className="p-2 pl-4 w-full"><h1 className="bg-inherit">Profile</h1></NavLink>
+                    <>  
+                        <span className="bg-black w-full h-10"></span>
+                        <NavLink to="/me" style={navlinkStyles} className="p-2 pl-4 w-full border-b border-black"><h1 className="bg-inherit">Profile</h1></NavLink>
+                        <NavLink to="/me" style={navlinkStyles} className="p-2 pl-4 w-full border-b border-black"><h1 className="bg-inherit">Collection</h1></NavLink>
+                        <NavLink to="/me" style={navlinkStyles} className="p-2 pl-4 w-full border-b border-black"><h1 className="bg-inherit">Create Post</h1></NavLink>
                     </>
                     :
                     <></>

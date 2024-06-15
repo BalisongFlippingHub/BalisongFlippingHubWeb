@@ -2,9 +2,9 @@ import NewPostForm from "../components/NewPostForm";
 
 const CommunityPage = () => {
     return (
-        <div className="w-full ml-8 flex flex-col items-center">
+        <section className="h-screen flex flex-col items-center pt-28">
             <NewPostForm />
-        </div>
+        </section>
     )
 }
 

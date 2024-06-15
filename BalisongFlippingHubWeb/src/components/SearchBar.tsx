@@ -2,7 +2,7 @@
 const SearchBar = () => {
 
     return (
-        <div>
+        <div className="justify-center">
             <input placeholder="Search..." className="rounded p-2 w-80 bg-teal-700" disabled />
         </div>
     )
