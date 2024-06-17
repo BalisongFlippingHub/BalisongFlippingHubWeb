@@ -71,7 +71,7 @@ const LoginForm = () => {
     }
 
     return (
-        <section className="flex h-screen">
+        <section className="flex w-full h-full">
             <form className="m-auto p-6 flex flex-col bg-teal-700 rounded w-2/6 text-xl" onSubmit={handleSubmit}>
                 <h2 className="text-black m-auto text-3xl font-bold bg-inherit">Login</h2>
                 {

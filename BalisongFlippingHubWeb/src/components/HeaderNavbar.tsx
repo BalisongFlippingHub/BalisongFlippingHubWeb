@@ -13,7 +13,7 @@ const HeaderNavbar = () => {
     }
     
     return (
-        <nav className="fixed flex flex-col justify-between pt-16 border border-black h-full text-lg">
+        <nav className="fixed h-[calc(100%_-_64px)] w-40 translate-y-[64px] border-r border-black flex flex-col justify-between">
             <div className="flex flex-col">
                 <NavLink to="/community" style={navlinkStyles} className="p-3 pl-4 w-full border-b border-black"><h1 className="bg-inherit">Community</h1></NavLink>
                 <NavLink to="/tutorial-center" style={navlinkStyles} className="p-3 pl-4 w-full border-b border-black">Tutorial Center</NavLink>
@@ -31,7 +31,7 @@ const HeaderNavbar = () => {
                     <></>
                 }
             </div>
-            <div>
+            <div className="">
                 <h3 className="p-2">All rights reserved.</h3>
             </div>
         </nav>

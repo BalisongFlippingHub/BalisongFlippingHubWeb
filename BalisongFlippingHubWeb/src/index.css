@@ -9,3 +9,7 @@
     color: white; 
     background-color: rgb(4 47 46);
 }
+
+#root {
+    height: 100vh;
+}

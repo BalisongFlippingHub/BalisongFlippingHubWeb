@@ -10,7 +10,7 @@ const Navbar = () => {
 
     return (
         <>
-        <header className="fixed flex justify-between w-full p-3 z-20 bg-teal-950 border border-black">
+        <header className="flex fixed justify-between h-16 w-full p-3 bg-teal-950 border border-black">
             <div className="flex hover:cursor-pointer" onClick={() => navigate("/")} >
                 <span className="border rounded-full w-10 mr-2"></span>
                 <h1 className="pt-2">Balisong Flipping Hub</h1>
@@ -27,7 +27,6 @@ const Navbar = () => {
                 </div>
             }
         </header>
-        <HeaderNavbar />
         </>
     )
 }

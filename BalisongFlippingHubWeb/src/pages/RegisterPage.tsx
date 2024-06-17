@@ -6,7 +6,7 @@ const RegisterPage = () => {
     const [isMakerAccount, setIsMakerAccount] = useState(false)
 
     return (
-        <section className="flex h-screen">
+        <section className="flex w-full h-full">
             <div className="m-auto bg-teal-700 flex flex-col items-center p-6 rounded w-2/6">
                 <div className="flex items-center flex-col bg-inherit">
                     <h2 className="bg-inherit text-black text-2xl">Account Type</h2>
