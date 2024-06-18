@@ -2,7 +2,7 @@
 const HomePageDataDisplay = () => {
 
     return (
-        <div className="w-full flex bg-slate-500 justify-between p-2 rounded">
+        <div className="w-full flex bg-slate-500 justify-between p-2 rounded-t">
             <h3 className="bg-inherit">Flippers Online: 0</h3>
             <h3 className="bg-inherit">Active Users: 0</h3>
             <h3 className="bg-inherit">New Posts: 0</h3>

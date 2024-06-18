@@ -1,11 +1,15 @@
-import { useRef, useState } from "react";
+import { ChangeEvent, useRef, useState } from "react";
+import PostDisplay from "./PostDisplay";
 
 const NewPostForm = () => {
     const captionRef = useRef<HTMLTextAreaElement>(null)
+    const fileRef = useRef<HTMLInputElement>(null)
 
     const [identifier, setIdentifier] = useState<string>("")
-    const [identifierToggle, setIdentifierToggle] = useState(false)
     const [caption, setCaption] = useState("")
+    const [selectedFiles, setSelectedFiles] = useState<Array<File>>([])
+    const [currentFiles, setCurrentFiles] = useState("")
+
     const [toggleImageDisplay, setToggleImageDisplay] = useState(false)
     const [toggleCustomizationDisplay, setToggleCustomizationDisplay] = useState(false)
     const [togglePostPreview, setTogglePostPreview] = useState(false)
@@ -25,22 +29,31 @@ const NewPostForm = () => {
             return
         }
         setIdentifier(e.target.value)
-        setIdentifierToggle((prev) => !prev)
+        
     }
 
     const handleAddImageClick = () => {
-        if (toggleCustomizationDisplay) {
-            setToggleCustomizationDisplay((prev) => !prev)
-        }
-
-        setToggleImageDisplay(true)
+        fileRef.current?.click()
     }
 
     const handleCustomizePostClick = () => {
-        if (toggleImageDisplay) {
-            setToggleImageDisplay((prev) => !prev)
+        setToggleCustomizationDisplay((prev) => !prev)
+    }
+
+    const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
+        const files = e.target.files; 
+
+        if (!files) {
+            return; 
         }
-        setToggleCustomizationDisplay(true)
+
+        setToggleImageDisplay(true)
+        setSelectedFiles((prev) => [...prev, ...files])
+        setCurrentFiles("")
+    }
+
+    const postObj = {
+
     }
 
     return (
@@ -50,7 +63,7 @@ const NewPostForm = () => {
                     identifier === "" 
                     ?
                     <>
-                        <input type="text" placeholder="Set Post Identifier" list="tag-list" className="bg-inherit border border-black rounded text-black p-1" onChange={(e) => handleChangeTag(e)} />
+                        <input type="text" placeholder="Add Tag +" list="tag-list" className="w-32 bg-inherit border border-black rounded text-black p-2" onChange={(e) => handleChangeTag(e)} />
                         <datalist id="tag-list">
                             {
                                 identifierList.map((identifier, i) => <option key={i}>{identifier}</option>)
@@ -63,16 +76,21 @@ const NewPostForm = () => {
                         <button className="text-sm hover:text-lg" type="button" onClick={() => setIdentifier("")}>x</button>
                     </div>
                 }
+                <input type="file" ref={fileRef} className="collapse" accept=".png,.jpg" value={currentFiles} onChange={(e) => handleFileChange(e)}/>
                 <p className="border rounded-full p-2">Your Image</p>
             </div>
-            <textarea className="h-20 w-full bg-inherit text-black p-2 border-b border-black" placeholder="Add a caption..." ref={captionRef} value={caption} onChange={(e) => setCaption(e.target.value)}/>
             {
                 toggleImageDisplay
                 ?
-                <input type="file" />
+                <div className="w-full h-96 bg-inherit flex overflow-scroll">
+                    {
+                        selectedFiles.map((file, i) => <img src={URL.createObjectURL(file)} key={i} className="object-cover h-full w-full bg-inherit" />)
+                    }
+                </div>
                 :
                 <></>
             }
+            <textarea className="h-20 w-full bg-inherit text-black p-2 border-b border-black" placeholder="Add a caption..." ref={captionRef} value={caption} onChange={(e) => setCaption(e.target.value)}/>
             {
                 toggleCustomizationDisplay
                 ?
@@ -90,8 +108,8 @@ const NewPostForm = () => {
             {
                 togglePostPreview
                 ?
-                <div className="absolute top-0 right-0 left-0 bottom-0 z-30 bg-black/70 flex justify-center items-center">
-                    <h1>Post Preview</h1>
+                <div className="absolute top-0 right-0 left-0 bottom-0 z-30 bg-black/90 flex justify-center items-center ">
+                    <PostDisplay postObj={postObj} />
                 </div>
                 :
                 <></>
