@@ -4,7 +4,7 @@ const HeaderProfileDisplay = () => {
     const { user } = useAuth()
 
     return (
-        <h1>{user?.email!}</h1>
+        <h1 className="mt-1">{user?.email!}</h1>
     )
 }
 

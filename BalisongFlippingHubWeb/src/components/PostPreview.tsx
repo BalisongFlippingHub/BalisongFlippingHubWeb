@@ -4,7 +4,7 @@ interface params {
     postObj: Post
 }
 
-const PostDisplay = ({ postObj }: params) => {
+const PostPreview = ({ postObj }: params) => {
 
     return (
         <div className="w-2/3">
@@ -13,4 +13,4 @@ const PostDisplay = ({ postObj }: params) => {
     )
 }
 
-export default PostDisplay; 
+export default PostPreview; 

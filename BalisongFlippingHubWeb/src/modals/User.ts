@@ -1,32 +1,23 @@
+import { Post } from "./Post"
+
 export interface Profile {
     uuid: string | null,
     email: string | null,  
     role: String | null, 
-    posts: Array<null>,
-}
+    posts: Array<Post>,
+    profileImg: File | null,
+    bannerImg: File | null,
 
-export interface MakerProfile extends Profile {
-    companyName: string | null,
-    companyDuration: DoubleRange,
-    products: Array<null>,
-    services: Array<null>,
-    facebookLink: string,
-    instagramLink: string,
-    twitterLink: string,
-    personalEmailLink: string,
-    personalWebsiteLink: string
-}
+    compnayName?: string | null,
+    companyDuration?: DoubleRange | null,
+    products?: Array<null>,
+    services?: Array<null>,
+    facebookLink?: string | null,
+    instagramLink?: string | null,
+    twitterLink?: string | null,
+    personalEmailLink?: string | null,
+    personalWebsiteLink?: string | null,
 
-export interface AdminProfile extends Profile {
-    displayName: string
-}
-
-export interface UserProfile extends Profile {
-    displayName: string,
-    ownedKnives: Array<null>,
-    facebookLink: string,
-    instagramLink: string,
-    twitterLink: string,
-    personalEmailLink: string,
-    personalWebsiteLink: string
+    displayName?: string | null
+    ownedKnives?: Array<null> | null
 }

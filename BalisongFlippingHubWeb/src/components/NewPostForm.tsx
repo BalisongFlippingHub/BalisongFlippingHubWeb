@@ -1,5 +1,7 @@
 import { ChangeEvent, useRef, useState } from "react";
-import PostDisplay from "./PostDisplay";
+import useAuth from "../hooks/useAuth";
+import { Post } from "../modals/Post";
+import PostPreview from "./PostPreview";
 
 const NewPostForm = () => {
     const captionRef = useRef<HTMLTextAreaElement>(null)
@@ -13,6 +15,8 @@ const NewPostForm = () => {
     const [toggleImageDisplay, setToggleImageDisplay] = useState(false)
     const [toggleCustomizationDisplay, setToggleCustomizationDisplay] = useState(false)
     const [togglePostPreview, setTogglePostPreview] = useState(false)
+
+    const { user } = useAuth()
 
     const identifierList = [
         "Sell",
@@ -52,8 +56,48 @@ const NewPostForm = () => {
         setCurrentFiles("")
     }
 
-    const postObj = {
-
+    const createPostObj = () => {
+        if (user?.role === "MAKER") {
+            return {
+                creationDate: Date(),
+                creatorId: user?.uuid,
+                creatorName: user?.compnayName,
+                caption: caption,
+                captionTop: false,
+                creatorProfileImg: user?.profileImg,
+                files: selectedFiles,
+                comments: [],
+                likes: 0,
+                tag: identifier
+            } as Post
+        }
+        else if (user?.role === "USER") {
+            return {
+                creationDate: Date(),
+                creatorId: user?.uuid,
+                creatorName: user?.displayName,
+                caption: caption,
+                captionTop: false,
+                creatorProfileImg: user?.profileImg,
+                files: selectedFiles,
+                comments: [],
+                likes: 0,
+                tag: identifier
+            } as Post
+        }
+        else {
+            return {
+                creationDate: Date(),
+                creatorId: user?.uuid,
+                creatorName: "ADMIN",
+                caption: caption,
+                captionTop: false,
+                files: selectedFiles,
+                comments: [],
+                likes: 0,
+                tag: identifier
+            } as Post
+        }
     }
 
     return (
@@ -109,7 +153,7 @@ const NewPostForm = () => {
                 togglePostPreview
                 ?
                 <div className="absolute top-0 right-0 left-0 bottom-0 z-30 bg-black/90 flex justify-center items-center ">
-                    <PostDisplay postObj={postObj} />
+                    <PostPreview postObj={(createPostObj())} />
                 </div>
                 :
                 <></>
