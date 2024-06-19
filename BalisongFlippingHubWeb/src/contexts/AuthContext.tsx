@@ -19,20 +19,20 @@ export const AuthContextProvider: React.FC<{children: React.ReactNode}> = ({ chi
 
     useEffect(() => {
         // check for user already logged in
-        setToken("Fill")
-        setUser({
-            uuid: "1",
-            email: "tzenisekj@gmail.com",
-            role: "USER",
-            posts: [],
-            profileImg: null,
-            bannerImg: null,
-            displayName: "QSwKLegacy",
-            ownedKnives: [],
-            facebookLink: "",
-            instagramLink: "",
-            twitterLink: "",
-        })
+        // setToken("Fill")
+        // setUser({
+        //     uuid: "1",
+        //     email: "tzenisekj@gmail.com",
+        //     role: "USER",
+        //     posts: [],
+        //     profileImg: null,
+        //     bannerImg: null,
+        //     displayName: "QSwKLegacy",
+        //     ownedKnives: [],
+        //     facebookLink: "",
+        //     instagramLink: "",
+        //     twitterLink: "",
+        // })
         setIsReady(true);
     }, [])
 

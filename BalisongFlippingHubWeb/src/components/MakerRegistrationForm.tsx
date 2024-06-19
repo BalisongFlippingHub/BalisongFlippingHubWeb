@@ -81,7 +81,7 @@ const MakerRegistrationForm = () => {
                     if (res.status === 200) {
                         setToken(res.data.token)
                         setUser(res.data.account)
-                        navigate("/home")
+                        navigate("community")
                     }
                 })
                 .catch((err) => {
