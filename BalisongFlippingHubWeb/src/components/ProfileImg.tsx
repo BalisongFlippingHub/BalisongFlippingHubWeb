@@ -20,7 +20,7 @@ const ProfileImg = () => {
 
         // save new img on db
         const formData = new FormData();
-        formData.append("accountId", JSON.stringify(user?.uuid))
+        formData.append("accountId", JSON.stringify(user?.id))
         formData.append("file", files[0])
 
         setUser({

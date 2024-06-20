@@ -1,7 +1,7 @@
 import { Post } from "./Post"
 
 export interface Profile {
-    uuid: string | null,
+    id: string | null,
     email: string | null,  
     role: String | null, 
     posts: Array<Post>,
