@@ -24,8 +24,7 @@ const HeaderNavbar = () => {
                     <>  
                         <span className="bg-black w-full h-10"></span>
                         <NavLink to="/me" style={navlinkStyles} className="p-2 pl-4 w-full border-b border-black"><h1 className="bg-inherit">Profile</h1></NavLink>
-                        <NavLink to="/me" style={navlinkStyles} className="p-2 pl-4 w-full border-b border-black"><h1 className="bg-inherit">Collection</h1></NavLink>
-                        <NavLink to="/me" style={navlinkStyles} className="p-2 pl-4 w-full border-b border-black"><h1 className="bg-inherit">Create Post</h1></NavLink>
+                        <NavLink to="/me/collection" style={navlinkStyles} className="p-2 pl-4 w-full border-b border-black"><h1 className="bg-inherit">Collection</h1></NavLink>
                     </>
                     :
                     <></>

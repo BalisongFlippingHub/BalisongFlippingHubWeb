@@ -5,8 +5,8 @@ export interface Profile {
     email: string | null,  
     role: String | null, 
     posts: Array<Post>,
-    profileImg: File | null,
-    bannerImg: File | null,
+    profileImg: string | null,
+    bannerImg: string | null,
 
     compnayName?: string | null,
     companyDuration?: DoubleRange | null,

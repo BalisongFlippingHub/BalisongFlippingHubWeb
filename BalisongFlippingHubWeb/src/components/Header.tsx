@@ -1,7 +1,6 @@
 import { useNavigate  } from "react-router-dom";
 import useAuth from "../hooks/useAuth";
 import SearchBar from "./SearchBar";
-import HeaderNavbar from "./HeaderNavbar";
 import HeaderProfileDisplay from "./HeaderProfileDisplay";
 
 const Navbar = () => {

@@ -1,15 +1,16 @@
 import { ChangeEvent, useRef, useState } from "react";
 import useAuth from "../hooks/useAuth";
 import { Profile } from "../modals/User";
+import axios from "../api/axios";
 
 const ProfileBanner = () => {
     const bannerRef = useRef<HTMLInputElement>(null)
     
     const [selectedImg, setSelectedImg] = useState("")
 
-    const { user, setUser } = useAuth()
+    const { user, setUser, token } = useAuth()
 
-    const handleBannerImgChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const handleBannerImgChange = async (e: ChangeEvent<HTMLInputElement>) => {
         const files = e.target.files; 
 
         if (!files) {
@@ -17,19 +18,43 @@ const ProfileBanner = () => {
         }
 
         // save new img on db
+        const formData = new FormData();
+        formData.append("accountId", JSON.stringify(user?.id))
+        formData.append("file", files[0])
 
-        // upon success update user in auth 
-        setUser({
-            ...user,
-            bannerImg: files[0]
-        } as Profile)
-
-        // clear out img input
-        setSelectedImg("")
+        await axios.request({
+            url: "/accounts/me/update-banner-img",
+            method: 'post',
+            data: formData, 
+            headers: {
+                'Authorization': 'Bearer ' + token,
+                'Accept': 'application/json',
+                'Content-Type': 'multipart/form-data', 
+              }
+        })
+        .then((res) => {
+            console.log("update profile img response: ", res)
+            // upon success update user in auth 
+            setUser({
+                ...user,
+                profileImg: res.data
+            } as Profile)
+        })
+        .catch((err) => {
+            console.log("Update profile img error: ", err)
+            setUser({
+                ...user,
+                profileImg: null
+            } as Profile) 
+        })
+        .finally(() => {
+            // clear out img input
+            setSelectedImg("")
+        })
     }
 
     return (
-        <div className="w-full flex justify-center items-center bg-teal-500 h-52 text-3xl font-bold">
+        <div className="w-full h-full flex justify-center items-center bg-teal-500 text-3xl font-bold">
             <input type="file" ref={bannerRef} accept=".png,.jpg" className="invisible absolute" value={selectedImg} onChange={handleBannerImgChange}/>
         {
             !user?.bannerImg

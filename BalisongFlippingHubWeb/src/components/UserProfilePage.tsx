@@ -9,25 +9,22 @@ const UserProfilePage = () => {
      
     return (
         <>
-            <section className="text-lg font-semibold border-b">
+            <section className="text-lg font-semibold border-b h-2/5 flex flex-col justify-between">
                 {/*Account Info*/}
-                <ProfileBanner />
-                <div className="p-4 flex justify-between">
-                    <div className="flex">   
-                        <ProfileImg />
-                        <ProfileData />
-                    </div>
-                    <div className="place-self-end">
-                        <button type="button" className="bg-teal-700 p-2 rounded hover:cursor-pointer hover:bg-teal-600" >Configure Profile</button>
-                    </div>
+                <div className="w-full h-2/3 flex flex-col items-center">
+                    <ProfileBanner />
+                    <ProfileImg />
                 </div>
+                <ProfileData />
             </section>
 
-            <section className="flex">
-                <div>
-                    
+            <section className="flex flex-col justify-center pt-10">
+                <div className="flex w-full justify-center">
+                    {/*Profile Navigation*/}
+
                 </div>
                 <div className="">
+                    {/*Display of Posts*/}
                     {
                         user?.posts.map((post) => {
                             return <ProfilePost postObj={post} key={post.uuid} />
@@ -41,5 +38,5 @@ const UserProfilePage = () => {
 
 export default UserProfilePage;
 
-// Comed Account #- 7687640017
+// Comed Account #- 7687640017     7687640017
 

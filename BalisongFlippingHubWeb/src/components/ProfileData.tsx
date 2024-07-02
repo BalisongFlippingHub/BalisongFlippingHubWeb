@@ -4,7 +4,7 @@ const ProfileData = () => {
     const { user, setUser } = useAuth()
 
     return (
-        <div className="place-self-end flex ml-2">
+        <div className="">
             <div>
                 {
                     user?.role === "USER"
@@ -15,7 +15,7 @@ const ProfileData = () => {
                 }
                 <h4>Role: {user?.role}</h4>
             </div>
-            <div className="flex place-self-end ml-3">
+            <div className="">
                 {
                     !user?.facebookLink || user?.facebookLink === ""
                     ?
