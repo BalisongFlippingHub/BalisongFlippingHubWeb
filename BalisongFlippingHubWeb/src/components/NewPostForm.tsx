@@ -1,7 +1,8 @@
 import { ChangeEvent, useRef, useState } from "react";
 import useAuth from "../hooks/useAuth";
-import { Post } from "../modals/Post";
-import PostPreview from "./PostPreview";
+import PostPreviewComponent from "./PostPreview";
+import { PostPreview } from "../modals/Post";
+import NewPostImageDisplay from "./NewPostImageDisplay";
 
 const NewPostForm = () => {
     const captionRef = useRef<HTMLTextAreaElement>(null)
@@ -45,64 +46,93 @@ const NewPostForm = () => {
     }
 
     const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
-        const files = e.target.files; 
+        const files: FileList | null = e.target.files; 
 
-        if (!files) {
+        if (!files || selectedFiles.length > 12) {
             return; 
         }
+        
+        const addFiles: File[] = []
+        var duplicateFound: boolean
 
-        setToggleImageDisplay(true)
-        setSelectedFiles((prev) => [...prev, ...files])
+        for (var i = 0; i < files.length; i++) {
+            duplicateFound = false
+            for (var j = 0; j < selectedFiles.length; j++) {
+                if (selectedFiles[j].name === files[i].name && selectedFiles[j].size === files[i].size && selectedFiles[j].type === files[i].type) {
+                    duplicateFound = true
+                    break
+                }
+            }
+
+            if (!duplicateFound && selectedFiles.length + addFiles.length + 1 != 12) {
+                addFiles.push(files[i])
+            }
+        }
+
+        setSelectedFiles((prev) => [...prev, ...addFiles])
+
+        if (!toggleImageDisplay) {
+            if (selectedFiles.length > 0) setToggleImageDisplay(true)
+        }
+
         setCurrentFiles("")
     }
 
+    const deleteSelectedFile = (index: number) => {
+        setSelectedFiles((prev) => prev.filter((_file, i) => {
+            return index !== i
+        }))
+    }
+
     const createPostObj = () => {
-        if (user?.role === "MAKER") {
+        if (user?.role === "USER") {
             return {
-                creationDate: Date(),
-                creatorId: user?.uuid,
-                creatorName: user?.compnayName,
+                id: "1",
                 caption: caption,
-                captionTop: false,
-                creatorProfileImg: user?.profileImg,
-                files: selectedFiles,
-                comments: [],
-                likes: 0,
-                tag: identifier
-            } as Post
-        }
-        else if (user?.role === "USER") {
-            return {
-                creationDate: Date(),
-                creatorId: user?.uuid,
+                creatorId: user?.id,
                 creatorName: user?.displayName,
-                caption: caption,
-                captionTop: false,
                 creatorProfileImg: user?.profileImg,
+                creationDate: "now",
                 files: selectedFiles,
-                comments: [],
+                comments: null,
                 likes: 0,
-                tag: identifier
-            } as Post
+                identifer: identifier
+            } as PostPreview
+        }
+        else if (user?.role === "MAKER") {
+            return {
+                id: "1",
+                caption: caption,
+                creatorId: user?.id,
+                creatorName: user?.compnayName,
+                creatorProfileImg: user?.profileImg,
+                creationDate: "now",
+                files: selectedFiles,
+                comments: null,
+                likes: 0,
+                identifer: identifier
+            } as PostPreview
         }
         else {
             return {
-                creationDate: Date(),
-                creatorId: user?.uuid,
-                creatorName: "ADMIN",
+                id: "1",
                 caption: caption,
-                captionTop: false,
+                creatorId: user?.id,
+                creatorName: "ADMIND",
+                creatorProfileImg: null,
+                creationDate: "now",
                 files: selectedFiles,
-                comments: [],
+                comments: null,
                 likes: 0,
-                tag: identifier
-            } as Post
+                identifer: identifier
+            } as PostPreview
         }
     }
 
     return (
-        <form className="border w-2/3 bg-slate-300 rounded flex flex-col items-center">
+        <form className="border w-2/3 bg-slate-300 rounded flex flex-col items-center mt-36">
             <div className="w-full border-b border-black bg-inherit p-1 flex justify-between">
+                {/*Identifier Tag*/}
                 {
                     identifier === "" 
                     ?
@@ -120,21 +150,29 @@ const NewPostForm = () => {
                         <button className="text-sm hover:text-lg" type="button" onClick={() => setIdentifier("")}>x</button>
                     </div>
                 }
+                {/*File Input field*/}
                 <input type="file" ref={fileRef} className="collapse" accept=".png,.jpg" value={currentFiles} onChange={(e) => handleFileChange(e)}/>
+                
+                {/*Profile Img Display*/}
                 <p className="border rounded-full p-2">Your Image</p>
             </div>
+
+            {/*Text Area for post caption*/}
+            <textarea className="h-20 w-full bg-inherit text-black p-2 border-b border-black" placeholder="Add a caption..." ref={captionRef} value={caption} onChange={(e) => setCaption(e.target.value)}/>
+
+            {/*Display of selected files*/}
             {
-                toggleImageDisplay
+                <NewPostImageDisplay files={selectedFiles} deleteSelectedFile={deleteSelectedFile} />
+            }
+
+            {
+                selectedFiles.length > 0
                 ?
-                <div className="w-full h-96 bg-inherit flex overflow-scroll">
-                    {
-                        selectedFiles.map((file, i) => <img src={URL.createObjectURL(file)} key={i} className="object-cover h-full w-full bg-inherit" />)
-                    }
-                </div>
+                <textarea className="h-20 w-full bg-inherit text-black p-2 border-b border-black" placeholder="Add a description..."/>
                 :
                 <></>
             }
-            <textarea className="h-20 w-full bg-inherit text-black p-2 border-b border-black" placeholder="Add a caption..." ref={captionRef} value={caption} onChange={(e) => setCaption(e.target.value)}/>
+            
             {
                 toggleCustomizationDisplay
                 ?
@@ -153,7 +191,8 @@ const NewPostForm = () => {
                 togglePostPreview
                 ?
                 <div className="absolute top-0 right-0 left-0 bottom-0 z-30 bg-black/90 flex justify-center items-center ">
-                    <PostPreview postObj={(createPostObj())} />
+                    <h2 className="absolute text-2xl top-4 right-4 bg-inherit hover:cursor-pointer" onClick={() => setTogglePostPreview((prev) => !prev)}>X</h2>
+                    <PostPreviewComponent postObj={(createPostObj())} />
                 </div>
                 :
                 <></>

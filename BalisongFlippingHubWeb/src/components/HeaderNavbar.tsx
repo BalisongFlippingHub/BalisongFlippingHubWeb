@@ -11,6 +11,14 @@ const HeaderNavbar = () => {
             backgroundColor: isActive ? 'teal' : 'inherit'
         })
     }
+
+    const profileNavLinkStyles = ({ isActive }: any) => {
+
+        return ({
+            fontWeight: isActive ? 'bold' : 'normal', 
+            backgroundColor: isActive ? 'teal' : 'inherit'
+        })
+    }
     
     return (
         <nav className="fixed h-[calc(100%_-_64px)] w-40 translate-y-[64px] border-r border-black flex flex-col justify-between">
@@ -24,7 +32,8 @@ const HeaderNavbar = () => {
                     <>  
                         <span className="bg-black w-full h-10"></span>
                         <NavLink to="/me" style={navlinkStyles} className="p-2 pl-4 w-full border-b border-black"><h1 className="bg-inherit">Profile</h1></NavLink>
-                        <NavLink to="/me/collection" style={navlinkStyles} className="p-2 pl-4 w-full border-b border-black"><h1 className="bg-inherit">Collection</h1></NavLink>
+                        <NavLink to="/me/collection" style={profileNavLinkStyles} className="p-2 pl-4 w-full border-b border-black"><h1 className="bg-inherit">Collection</h1></NavLink>
+                        <NavLink to="/me/create-post" style={profileNavLinkStyles} className="p-2 pl-4 w-full border-b border-black"><h1 className="bg-inherit">Create Post</h1></NavLink>
                     </>
                     :
                     <></>

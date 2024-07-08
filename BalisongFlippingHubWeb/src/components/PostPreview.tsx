@@ -1,16 +1,19 @@
-import { Post } from "../modals/Post";
+import { PostPreview } from "../modals/Post";
 
-interface params {
-    postObj: Post
+type params = {
+    postObj: PostPreview
 }
 
-const PostPreview = ({ postObj }: params) => {
+const PostPreviewComponent = ({ postObj }: params) => {
 
     return (
         <div className="w-2/3">
-            <h1>Fill</h1>
+            <div className="flex justify-between">
+                <h3>{postObj.identifer}</h3>
+                <h3>Profile</h3>
+            </div>
         </div>
     )
 }
 
-export default PostPreview; 
+export default PostPreviewComponent; 

@@ -1,56 +1,31 @@
 import useAuth from "../hooks/useAuth";
 
 const ProfileData = () => {
-    const { user, setUser } = useAuth()
+
+    const { user } = useAuth()
 
     return (
-        <div className="">
+        <div className="flex justify-between pl-5 pr-5 pb-2">
             <div>
+                {/*Displays Profile Basic Data*/}
                 {
                     user?.role === "USER"
                     ?
-                    <h4>{user?.displayName}</h4>
+                    <div>
+                        <h3>{user.displayName}</h3>
+                        <h4 className="text-sm">ID: {user.id}</h4>
+                        <h4 className="text-sm">Age: 3 Months</h4>
+                    </div>
                     :
-                    <h4>{user?.compnayName}</h4>
+                    <div>
+                        <h3>{user?.compnayName}</h3>
+                    </div>
                 }
-                <h4>Role: {user?.role}</h4>
+                {/*Displays Links*/}
             </div>
+            
             <div className="">
-                {
-                    !user?.facebookLink || user?.facebookLink === ""
-                    ?
-                    <></>
-                    :
-                    <h4>Facebook</h4>
-                }
-                {
-                    !user?.instagramLink || user?.instagramLink === ""
-                    ?
-                    <></>
-                    :
-                    <h4>Insagram</h4>
-                }
-                {
-                    !user?.twitterLink || user?.twitterLink === ""
-                    ?
-                    <></>
-                    :
-                    <h4>Twitter</h4>
-                }
-                {
-                    !user?.personalEmailLink || user?.personalEmailLink === ""
-                    ?
-                    <></>
-                    :
-                    <h4>Email</h4>
-                }
-                {
-                    !user?.personalWebsiteLink || user?.personalWebsiteLink === ""
-                    ?
-                    <></>
-                    :
-                    <h4>Website</h4>
-                }
+               <button type="button" className="p-2 rounded bg-teal-700">Configure Profile</button>
             </div>
         </div>
     )

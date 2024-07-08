@@ -7,9 +7,21 @@ export interface Post {
     creatorName: string,
     creatorProfileImg?: File | null,
     creationDate: string,
-    captionTop: boolean,
-    files: Array<File>,
+    files: Array<string>,
     comments: Array<Comment>,
     likes: number,
     tag: string | null,
+}
+
+export interface PostPreview {
+    id: string, 
+    caption: string,
+    creatorId: string,
+    creatorName: string,
+    creatorProfileImg?: string | null,
+    creationDate: string,
+    files: Array<File>,
+    comments: Array<Comment> | null,
+    likes: number, 
+    identifer: string | null
 }

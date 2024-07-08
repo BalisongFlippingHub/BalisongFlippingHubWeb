@@ -1,11 +1,9 @@
 import ProfileBanner from "./ProfileBanner";
 import ProfileImg from "./ProfileImg";
 import ProfileData from "./ProfileData";
-import useAuth from "../hooks/useAuth";
-import ProfilePost from "./ProfilePost";
+import UserProfilePostComponent from "./UserProfilePostComponent";
 
 const UserProfilePage = () => {
-    const { user } = useAuth();
      
     return (
         <>
@@ -18,19 +16,8 @@ const UserProfilePage = () => {
                 <ProfileData />
             </section>
 
-            <section className="flex flex-col justify-center pt-10">
-                <div className="flex w-full justify-center">
-                    {/*Profile Navigation*/}
-
-                </div>
-                <div className="">
-                    {/*Display of Posts*/}
-                    {
-                        user?.posts.map((post) => {
-                            return <ProfilePost postObj={post} key={post.uuid} />
-                        })
-                    }
-                </div>
+            <section className="flex justify-center">
+                <UserProfilePostComponent />
             </section>
         </>
     )

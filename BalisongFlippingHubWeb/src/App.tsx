@@ -9,6 +9,8 @@ import ProductWorldPage from './pages/ProductWorldPage'
 import RegisterPage from './pages/RegisterPage'
 import HomePage from './pages/HomePage'
 import CommunityPage from './pages/CommunityPage'
+import CreatePostPage from './pages/CreatePostPage'
+import UserCollectionPage from './pages/UserCollectionPage'
 
 const App = () => {
 
@@ -27,6 +29,14 @@ const App = () => {
         {/*Protected Routes*/}
         <Route element={<ProtectedRoutes allowedRoles={["MAKER", "USER", "ADMIN"]} />}>
           <Route path="/me" element={<ProfilePage />} />
+        </Route>
+
+        <Route element={<ProtectedRoutes allowedRoles={["MAKER", "USER", "ADMIN"]} />}>
+          <Route path="/me/collection" element={<UserCollectionPage />} />
+        </Route>
+
+        <Route element={<ProtectedRoutes allowedRoles={["MAKER", "USER", "ADMIN"]} />}>
+          <Route path="/me/create-post" element={<CreatePostPage />} />
         </Route>
 
         {/*Catch all 404*/} 
