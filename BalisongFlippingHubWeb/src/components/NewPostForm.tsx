@@ -6,10 +6,14 @@ import NewPostImageDisplay from "./NewPostImageDisplay";
 
 interface params  {
     initiateCreatingLinkedPost?: Function,
+    createPostObj?: Function,
+    createLinkedPostObj?: Function,
+    togglePostObjSet?: Function,
+    toggleLinkedPostObjSet?: Function
     allowTimerSet: boolean
 }
 
-const NewPostForm = ({ initiateCreatingLinkedPost, allowTimerSet }: params) => {
+const NewPostForm = ({ initiateCreatingLinkedPost, allowTimerSet, toggleLinkedPostObjSet, togglePostObjSet }: params) => {
     const captionRef = useRef<HTMLTextAreaElement>(null)
     const fileRef = useRef<HTMLInputElement>(null)
 
@@ -69,6 +73,7 @@ const NewPostForm = ({ initiateCreatingLinkedPost, allowTimerSet }: params) => {
         const files: FileList | null = e.target.files; 
 
         if (!files || selectedFiles.length > 12) {
+            setCurrentFiles("")
             return; 
         }
         
@@ -84,7 +89,13 @@ const NewPostForm = ({ initiateCreatingLinkedPost, allowTimerSet }: params) => {
                 }
             }
 
-            if (!duplicateFound && selectedFiles.length + addFiles.length + 1 != 12) {
+            if (!duplicateFound && selectedFiles.length + addFiles.length + 1 != 13) {
+                if (timerSet) {
+                    if (addFiles.length === 1) {
+                        setAlert("A post with a set timer can only have 1 image or video selected.")
+                        return
+                    }
+                }
                 addFiles.push(files[i])
             }
         }
@@ -115,6 +126,13 @@ const NewPostForm = ({ initiateCreatingLinkedPost, allowTimerSet }: params) => {
             }
         }
 
+        if (allowTimerSet) {
+            if (togglePostObjSet) togglePostObjSet()
+        }
+        else {
+            if (toggleLinkedPostObjSet) toggleLinkedPostObjSet()
+        }
+
         setTogglePostPreview((prev) => !prev)
     }
 
@@ -126,6 +144,11 @@ const NewPostForm = ({ initiateCreatingLinkedPost, allowTimerSet }: params) => {
         else {
             setTimerValue("24")
             setTimerSet((prev) => !prev)
+
+            if (selectedFiles.length > 1) {
+                setSelectedFiles([])
+                setAlert("Post set with timer can only have 1 image or video.")
+            }
         }
 
         if (initiateCreatingLinkedPost) {
@@ -193,12 +216,14 @@ const NewPostForm = ({ initiateCreatingLinkedPost, allowTimerSet }: params) => {
         }
     }
 
-
     if (togglePostPreview) {
         return (
             <div className="flex flex-col">
-                <button type="button" className="p-2 rounded bg-teal-500 ml-5 mt-5 w-24" onClick={() => setTogglePostPreview((prev) => !prev)}>{`<- Go Back`}</button>
                 <PostPreviewComponent postObj={createPostObj()}/>
+                <div className="m-auto mt-10 text-lg">
+                    <button className="rounded border p-2" type="button" onClick={togglePreview}>Edit Post</button>
+                </div>
+                <span className="h-2 w-5/6 rounded bg-black m-auto mt-10"></span>
             </div>
         )
     }
@@ -243,7 +268,7 @@ const NewPostForm = ({ initiateCreatingLinkedPost, allowTimerSet }: params) => {
                     }
                     
                     {/*File Input field*/}
-                    <input type="file" ref={fileRef} className="collapse" accept=".png,.jpg" value={currentFiles} onChange={(e) => handleFileChange(e)}/>
+                    <input type="file" ref={fileRef} multiple className="collapse" accept=".png,.jpg" value={currentFiles} onChange={(e) => handleFileChange(e)}/>
                     
                     {/*Profile Img Display*/}
                     <p className="border rounded-full p-2">Your Image</p>
@@ -267,12 +292,13 @@ const NewPostForm = ({ initiateCreatingLinkedPost, allowTimerSet }: params) => {
                 
                 <div className="w-full justify-around flex bg-inherit p-2 items-center">
                     <button className="w-30 bg-black rounded p-2" type="button" onClick={handleAddImageClick}>Add Image/Video</button>
-                    <button className="w-30 bg-black rounded p-2" type="button" onClick={togglePreview}>Preview Post</button>
+                    <button className="w-30 bg-black rounded p-2" type="button" onClick={togglePreview}>Add Post</button>
                     <div className="flex flex-col bg-inherit text-lg p-1">
                         <div className="bg-inherit">
                             <input type="checkbox" className="" />
                             <label className="bg-inherit text-black font-bold ml-2">Private Post</label>
                         </div>
+                        
                         {
                             allowTimerSet
                             ?
@@ -311,16 +337,6 @@ const NewPostForm = ({ initiateCreatingLinkedPost, allowTimerSet }: params) => {
                         }
                     </div>
                 </div>
-                {
-                    togglePostPreview
-                    ?
-                    <div className="absolute top-0 right-0 left-0 bottom-0 z-30 bg-black/90 flex justify-center items-center ">
-                        <h2 className="absolute text-2xl top-4 right-4 bg-inherit hover:cursor-pointer" onClick={() => setTogglePostPreview((prev) => !prev)}>X</h2>
-                        <PostPreviewComponent postObj={(createPostObj())} />
-                    </div>
-                    :
-                    <></>
-                }
             </form>
         )
     }

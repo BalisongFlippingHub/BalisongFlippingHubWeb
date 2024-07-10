@@ -26,3 +26,31 @@ export interface PostPreview {
     likes: number, 
     identifer: string | null
 }
+
+export interface PostCreationObject {
+    id: string, 
+    caption: string,
+    description: string,
+    creatorId: string,
+    creatorName: string,
+    creatorProfileImg?: string | null,
+    creationDate: string,
+    files: Array<File>,
+    comments: Array<Comment> | null,
+    likes: number, 
+    identifer: string | null
+}
+
+export interface PostCreationObjectLinkedPost {
+    id: string, 
+    caption: string,
+    description: string,
+    creatorId: string,
+    creatorName: string,
+    creatorProfileImg?: string | null,
+    creationDate: string,
+    files: Array<File>,
+    comments: Array<Comment> | null,
+    likes: number, 
+    identifer: string | null
+}

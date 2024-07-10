@@ -7,7 +7,7 @@ type params = {
 const PostPreviewComponent = ({ postObj }: params) => {
 
     return (
-        <div className="w-2/3 flex flex-col mt-10 m-auto">
+        <div className="w-2/3 flex flex-col m-auto">
             <div className="bg-slate-300 rounded border">
                 <div className="w-full border-b border-black bg-inherit p-1 flex justify-between bg-slate-300">
                     {/*Identifier and profile img*/}
@@ -57,10 +57,10 @@ const PostPreviewComponent = ({ postObj }: params) => {
                 <div className="border">
                     {/*Comments*/}
                 </div>
-            </div>
 
-            <div className="mt-10 flex justify-center">
-                <button type="button" className="bg-teal-500 text-black p-2 rounded">Add Post</button>
+                <div>
+                    <button>Edit Post</button>
+                </div>
             </div>
         </div>
     )
