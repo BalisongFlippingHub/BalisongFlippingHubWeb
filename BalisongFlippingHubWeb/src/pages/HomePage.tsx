@@ -10,7 +10,7 @@ const HomePage = () => {
     return (
         <section className="h-full text-lg font-semibold">
             <div className="h-1/6 flex justify-center items-center bg-teal-700 text-3xl font-bold">
-                <h2 className="bg-inherit">Balisong Flipping Hub</h2>
+                <h2 className="bg-inherit">Balisong Flipping Center</h2>
             </div>
             <div className="h-5/6 flex items-center">
                 <div className="w-1/2 flex flex-col justify-center p-8 text-center h-full">

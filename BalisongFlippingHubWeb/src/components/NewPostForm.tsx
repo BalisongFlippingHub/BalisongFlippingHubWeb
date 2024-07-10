@@ -4,17 +4,26 @@ import PostPreviewComponent from "./PostPreview";
 import { PostPreview } from "../modals/Post";
 import NewPostImageDisplay from "./NewPostImageDisplay";
 
-const NewPostForm = () => {
+interface params  {
+    initiateCreatingLinkedPost?: Function,
+    allowTimerSet: boolean
+}
+
+const NewPostForm = ({ initiateCreatingLinkedPost, allowTimerSet }: params) => {
     const captionRef = useRef<HTMLTextAreaElement>(null)
     const fileRef = useRef<HTMLInputElement>(null)
 
     const [identifier, setIdentifier] = useState<string>("")
     const [caption, setCaption] = useState("")
+    const [description, setDescription] = useState("")
     const [selectedFiles, setSelectedFiles] = useState<Array<File>>([])
     const [currentFiles, setCurrentFiles] = useState("")
+    const [timerSet, setTimerSet] = useState(false)
+    const [timerValue, setTimerValue] = useState("Not Set")
+
+    const [alert, setAlert] = useState("")
 
     const [toggleImageDisplay, setToggleImageDisplay] = useState(false)
-    const [toggleCustomizationDisplay, setToggleCustomizationDisplay] = useState(false)
     const [togglePostPreview, setTogglePostPreview] = useState(false)
 
     const { user } = useAuth()
@@ -26,23 +35,34 @@ const NewPostForm = () => {
         "Flipping", 
         "Collection", 
         "Show-Off",
-        "Mod-Work"
+        "Mod-Work",
+        "Inquiry"
     ]
 
-    const handleChangeTag = (e: any) => {
-        if (!identifierList.includes(e.target.value)) {
-            return
+    const captionOnlyIdentifierList = [
+        "Inquiry",
+        "GibbleGobble"
+    ]
+
+    const handleChangeTag = (e: string) => {
+        if (selectedFiles.length === 0) {
+            if (!captionOnlyIdentifierList.includes(e)) {
+                return
+            }
+
+            setIdentifier(e)
         }
-        setIdentifier(e.target.value)
-        
+        else {
+            if (!identifierList.includes(e)) {
+                return
+            }
+    
+            setIdentifier(e)
+        }
     }
 
     const handleAddImageClick = () => {
         fileRef.current?.click()
-    }
-
-    const handleCustomizePostClick = () => {
-        setToggleCustomizationDisplay((prev) => !prev)
     }
 
     const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -75,6 +95,8 @@ const NewPostForm = () => {
             if (selectedFiles.length > 0) setToggleImageDisplay(true)
         }
 
+        if (alert !== "") setAlert("")
+
         setCurrentFiles("")
     }
 
@@ -84,11 +106,51 @@ const NewPostForm = () => {
         }))
     }
 
+    const togglePreview = () => {
+        if (selectedFiles.length === 0) {
+            if (caption.trim() === "") {
+                setAlert("*Post must have a caption if no images/videos selected")
+                captionRef.current?.focus()
+                return
+            }
+        }
+
+        setTogglePostPreview((prev) => !prev)
+    }
+
+    const handleSetTimerClick = () => {
+        if (timerSet) {
+            setTimerValue("Not Set")
+            setTimerSet((prev) => !prev)
+        }
+        else {
+            setTimerValue("24")
+            setTimerSet((prev) => !prev)
+        }
+
+        if (initiateCreatingLinkedPost) {
+            initiateCreatingLinkedPost()
+        }
+    }
+
+    const setCaptionOnChange = (e: string) => {
+        if (alert !== "") {
+            setAlert("")
+        }
+
+        if (e.length > 255) {
+            return
+        }
+
+        setCaption(e)
+    }
+
     const createPostObj = () => {
         if (user?.role === "USER") {
             return {
                 id: "1",
                 caption: caption,
+                description: description,
                 creatorId: user?.id,
                 creatorName: user?.displayName,
                 creatorProfileImg: user?.profileImg,
@@ -103,6 +165,7 @@ const NewPostForm = () => {
             return {
                 id: "1",
                 caption: caption,
+                description: description,
                 creatorId: user?.id,
                 creatorName: user?.compnayName,
                 creatorProfileImg: user?.profileImg,
@@ -117,6 +180,7 @@ const NewPostForm = () => {
             return {
                 id: "1",
                 caption: caption,
+                description: description,
                 creatorId: user?.id,
                 creatorName: "ADMIND",
                 creatorProfileImg: null,
@@ -129,76 +193,137 @@ const NewPostForm = () => {
         }
     }
 
-    return (
-        <form className="border w-2/3 bg-slate-300 rounded flex flex-col items-center mt-36">
-            <div className="w-full border-b border-black bg-inherit p-1 flex justify-between">
-                {/*Identifier Tag*/}
-                {
-                    identifier === "" 
-                    ?
-                    <>
-                        <input type="text" placeholder="Add Tag +" list="tag-list" className="w-32 bg-inherit border border-black rounded text-black p-2" onChange={(e) => handleChangeTag(e)} />
-                        <datalist id="tag-list">
+
+    if (togglePostPreview) {
+        return (
+            <div className="flex flex-col">
+                <button type="button" className="p-2 rounded bg-teal-500 ml-5 mt-5 w-24" onClick={() => setTogglePostPreview((prev) => !prev)}>{`<- Go Back`}</button>
+                <PostPreviewComponent postObj={createPostObj()}/>
+            </div>
+        )
+    }
+    else {
+        return (
+            <form className="border w-2/3 bg-slate-300 rounded flex flex-col items-center m-auto">
+                <div className="w-full border-b border-black bg-inherit p-1 flex justify-between">
+                    {/*Identifier Tag*/}
+                    {
+                        identifier === "" 
+                        ?
+                        <>
+                            <input type="text" placeholder="Add Tag +" list="tag-list" className="w-32 bg-inherit border border-black rounded text-black p-2" onChange={(e) => handleChangeTag(e.target.value)}  />
                             {
-                                identifierList.map((identifier, i) => <option key={i}>{identifier}</option>)
+                                selectedFiles.length !== 0
+                                ?
+                                <datalist id="tag-list">
+                                {
+                                    identifierList.map((identifier, i) => <option key={i}>{identifier}</option>)
+                                }
+                                </datalist>
+                                :
+                                <datalist id="tag-list">
+                                {
+                                    captionOnlyIdentifierList.map((identifer, i) => <option key={i}>{identifer}</option>)
+                                }
+                                </datalist>
                             }
-                        </datalist>
-                    </>
-                    :
-                    <div className="flex p-2 rounded-full">
-                        <p className="pr-2 text-lg font-bold">{identifier}</p>
-                        <button className="text-sm hover:text-lg" type="button" onClick={() => setIdentifier("")}>x</button>
-                    </div>
+                            {
+                                alert === ""
+                                ?
+                                <></>
+                                :
+                                <h4 className="bg-inherit text-red-400 text-lg p-2">{alert}</h4>
+                            }
+                        </>
+                        :
+                        <div className="flex p-2 rounded-full">
+                            <p className="pr-2 text-lg font-bold">{identifier}</p>
+                            <button className="text-sm hover:text-lg" type="button" onClick={() => setIdentifier("")}>x</button>
+                        </div>
+                    }
+                    
+                    {/*File Input field*/}
+                    <input type="file" ref={fileRef} className="collapse" accept=".png,.jpg" value={currentFiles} onChange={(e) => handleFileChange(e)}/>
+                    
+                    {/*Profile Img Display*/}
+                    <p className="border rounded-full p-2">Your Image</p>
+                </div>
+
+                {/*Text Area for post caption*/}
+                <textarea className="h-20 w-full bg-inherit text-black p-2 border-b border-black text-xl" placeholder="Add a caption..." ref={captionRef} value={caption} onChange={(e) => setCaptionOnChange(e.target.value)}/>
+
+                {/*Display of selected files*/}
+                {
+                    <NewPostImageDisplay files={selectedFiles} deleteSelectedFile={deleteSelectedFile} />
                 }
-                {/*File Input field*/}
-                <input type="file" ref={fileRef} className="collapse" accept=".png,.jpg" value={currentFiles} onChange={(e) => handleFileChange(e)}/>
+
+                {
+                    selectedFiles.length > 0
+                    ?
+                    <textarea className="h-20 w-full bg-inherit text-black p-2 border-b border-t border-black" placeholder="Add a description..." value={description} onChange={(e) => setDescription(e.target.value)} />
+                    :
+                    <></>
+                }
                 
-                {/*Profile Img Display*/}
-                <p className="border rounded-full p-2">Your Image</p>
-            </div>
-
-            {/*Text Area for post caption*/}
-            <textarea className="h-20 w-full bg-inherit text-black p-2 border-b border-black" placeholder="Add a caption..." ref={captionRef} value={caption} onChange={(e) => setCaption(e.target.value)}/>
-
-            {/*Display of selected files*/}
-            {
-                <NewPostImageDisplay files={selectedFiles} deleteSelectedFile={deleteSelectedFile} />
-            }
-
-            {
-                selectedFiles.length > 0
-                ?
-                <textarea className="h-20 w-full bg-inherit text-black p-2 border-b border-black" placeholder="Add a description..."/>
-                :
-                <></>
-            }
-            
-            {
-                toggleCustomizationDisplay
-                ?
-                <div>
-                    <h1>Customize Info</h1>
+                <div className="w-full justify-around flex bg-inherit p-2 items-center">
+                    <button className="w-30 bg-black rounded p-2" type="button" onClick={handleAddImageClick}>Add Image/Video</button>
+                    <button className="w-30 bg-black rounded p-2" type="button" onClick={togglePreview}>Preview Post</button>
+                    <div className="flex flex-col bg-inherit text-lg p-1">
+                        <div className="bg-inherit">
+                            <input type="checkbox" className="" />
+                            <label className="bg-inherit text-black font-bold ml-2">Private Post</label>
+                        </div>
+                        {
+                            allowTimerSet
+                            ?
+                            <>
+                                <div className="bg-inherit">
+                                <input type="checkbox" onClick={handleSetTimerClick}/>
+                                <label className="bg-inherit text-black font-bold ml-2">Set Timer</label>
+                                </div>
+                                {
+                                    !timerSet
+                                    ?
+                                    <div className="bg-inherit">
+                                        <input type="range" disabled min="0" max="72" value={timerValue} onChange={(e) => setTimerValue(e.target.value)} />
+                                        <label className="bg-inherit text-black font-bold ml-2">Hours: {timerValue}</label>
+                                    </div>
+                                    :
+                                    <div className="bg-inherit">
+                                        <input type="range" min="0" max="72" value={timerValue} onChange={(e) => setTimerValue(e.target.value)} />
+                                        <label className="bg-inherit text-black font-bold ml-2">Hours: {timerValue}</label>
+                                    </div>
+                                }
+                            </>
+                            :
+                            <></>
+                        }
+        
+                        {
+                            user?.role === "USER"
+                            ?
+                            <></>
+                            :
+                            <div className="bg-inherit">
+                                <input type="checkbox" className="" />
+                                <label className="bg-inherit text-black font-bold ml-2">Set As annoucement</label>
+                            </div>
+                        }
+                    </div>
                 </div>
-                :
-                <></>
-            }
-            <div className="w-full justify-around flex bg-inherit p-2">
-                <button className="w-30 bg-black rounded p-2" type="button" onClick={handleAddImageClick}>Add Image/Video</button>
-                <button className="w-30 bg-black rounded p-2" type="button" onClick={() => setTogglePostPreview((prev) => !prev)}>Add Post</button>
-                <button className="w-30 bg-black rounded p-2" type="button" onClick={handleCustomizePostClick}>Customize Post</button>
-            </div>
-            {
-                togglePostPreview
-                ?
-                <div className="absolute top-0 right-0 left-0 bottom-0 z-30 bg-black/90 flex justify-center items-center ">
-                    <h2 className="absolute text-2xl top-4 right-4 bg-inherit hover:cursor-pointer" onClick={() => setTogglePostPreview((prev) => !prev)}>X</h2>
-                    <PostPreviewComponent postObj={(createPostObj())} />
-                </div>
-                :
-                <></>
-            }
-        </form>
-    )
+                {
+                    togglePostPreview
+                    ?
+                    <div className="absolute top-0 right-0 left-0 bottom-0 z-30 bg-black/90 flex justify-center items-center ">
+                        <h2 className="absolute text-2xl top-4 right-4 bg-inherit hover:cursor-pointer" onClick={() => setTogglePostPreview((prev) => !prev)}>X</h2>
+                        <PostPreviewComponent postObj={(createPostObj())} />
+                    </div>
+                    :
+                    <></>
+                }
+            </form>
+        )
+    }
 }
 
 export default NewPostForm;

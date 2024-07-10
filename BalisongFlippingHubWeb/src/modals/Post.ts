@@ -16,6 +16,7 @@ export interface Post {
 export interface PostPreview {
     id: string, 
     caption: string,
+    description: string,
     creatorId: string,
     creatorName: string,
     creatorProfileImg?: string | null,
