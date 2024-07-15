@@ -1,19 +1,21 @@
 import { ChangeEvent, useRef, useState } from "react";
 import useAuth from "../hooks/useAuth";
 import PostPreviewComponent from "./PostPreview";
-import { PostPreview } from "../modals/Post";
+import { CreationPostDTO, PostPreview } from "../modals/Post";
 import NewPostImageDisplay from "./NewPostImageDisplay";
 
 interface params  {
     initiateCreatingLinkedPost?: Function,
-    createPostObj?: Function,
-    createLinkedPostObj?: Function,
+    createPostObjDto?: Function,
+    getPostObjFiles?: Function,
+    createLinkedPostObjDto?: Function,
+    getLinkedPostObjFiles?: Function,
     togglePostObjSet?: Function,
     toggleLinkedPostObjSet?: Function
     allowTimerSet: boolean
 }
 
-const NewPostForm = ({ initiateCreatingLinkedPost, allowTimerSet, toggleLinkedPostObjSet, togglePostObjSet }: params) => {
+const NewPostForm = ({ initiateCreatingLinkedPost, allowTimerSet, toggleLinkedPostObjSet, togglePostObjSet, createPostObjDto, createLinkedPostObjDto, getPostObjFiles, getLinkedPostObjFiles }: params) => {
     const captionRef = useRef<HTMLTextAreaElement>(null)
     const fileRef = useRef<HTMLInputElement>(null)
 
@@ -22,6 +24,8 @@ const NewPostForm = ({ initiateCreatingLinkedPost, allowTimerSet, toggleLinkedPo
     const [description, setDescription] = useState("")
     const [selectedFiles, setSelectedFiles] = useState<Array<File>>([])
     const [currentFiles, setCurrentFiles] = useState("")
+    const [isAnnouncement, setIsAnnouncement] = useState(false)
+    const [isPrivatePost, setIsPrivatePost] = useState(false) 
     const [timerSet, setTimerSet] = useState(false)
     const [timerValue, setTimerValue] = useState("Not Set")
 
@@ -127,10 +131,34 @@ const NewPostForm = ({ initiateCreatingLinkedPost, allowTimerSet, toggleLinkedPo
         }
 
         if (allowTimerSet) {
-            if (togglePostObjSet) togglePostObjSet()
+            if (togglePostObjSet) {
+                togglePostObjSet()
+                if (createPostObjDto) {
+                    if (togglePostPreview) {
+                        createPostObjDto(null)
+                        if (getPostObjFiles) getPostObjFiles(null)
+                    }
+                    else {
+                        createPostObjDto(createPostDto)
+                        if (getPostObjFiles) getPostObjFiles(selectedFiles) 
+                    }
+                }
+            }
         }
         else {
-            if (toggleLinkedPostObjSet) toggleLinkedPostObjSet()
+            if (toggleLinkedPostObjSet) {
+                toggleLinkedPostObjSet()
+                if (createLinkedPostObjDto) {
+                    if (togglePostPreview) {
+                        createLinkedPostObjDto(null)
+                        if (getLinkedPostObjFiles) getLinkedPostObjFiles(null)
+                    }
+                    else {
+                        createLinkedPostObjDto(createPostDto)
+                        if (getLinkedPostObjFiles) getLinkedPostObjFiles(selectedFiles)
+                    }
+                }
+            }
         }
 
         setTogglePostPreview((prev) => !prev)
@@ -167,51 +195,70 @@ const NewPostForm = ({ initiateCreatingLinkedPost, allowTimerSet, toggleLinkedPo
 
         setCaption(e)
     }
+    
+    const createPostDto = () => {
+        return {
+            caption: caption,
+            description: description,
+            creatorId: user?.id,
+            identifier: identifier,
+            isPrivatePost: isPrivatePost,
+            isAnnouncement: isAnnouncement,
+            hasTimer: timerSet,
+            timerInHours: timerValue
+        } as CreationPostDTO
+    }
 
-    const createPostObj = () => {
+    const createPostPreview = () => {
         if (user?.role === "USER") {
             return {
-                id: "1",
+                id: "1", 
                 caption: caption,
                 description: description,
-                creatorId: user?.id,
                 creatorName: user?.displayName,
                 creatorProfileImg: user?.profileImg,
-                creationDate: "now",
+                creationDate: "Now",
                 files: selectedFiles,
-                comments: null,
                 likes: 0,
-                identifer: identifier
+                identifer: identifier,
+                isAnnouncement: isAnnouncement,
+                isPrivatePost: isPrivatePost,
+                hasTimer: timerSet,
+                timeInHours: timerValue
             } as PostPreview
         }
         else if (user?.role === "MAKER") {
             return {
-                id: "1",
+                id: "1", 
                 caption: caption,
                 description: description,
-                creatorId: user?.id,
                 creatorName: user?.compnayName,
                 creatorProfileImg: user?.profileImg,
-                creationDate: "now",
+                creationDate: "Now",
                 files: selectedFiles,
-                comments: null,
                 likes: 0,
-                identifer: identifier
+                identifer: identifier,
+                isAnnouncement: isAnnouncement,
+                isPrivatePost: isPrivatePost,
+                hasTimer: timerSet,
+                timeInHours: timerValue
             } as PostPreview
         }
         else {
             return {
-                id: "1",
+                id: "1", 
                 caption: caption,
                 description: description,
-                creatorId: user?.id,
-                creatorName: "ADMIND",
+                creatorName: "ADMIN",
                 creatorProfileImg: null,
-                creationDate: "now",
+                creationDate: "Now",
                 files: selectedFiles,
-                comments: null,
                 likes: 0,
-                identifer: identifier
+                identifer: identifier,
+                isAnnouncement: isAnnouncement,
+                isPrivatePost: isPrivatePost,
+                hasTimer: timerSet,
+                timeInHours: timerValue
             } as PostPreview
         }
     }
@@ -219,7 +266,7 @@ const NewPostForm = ({ initiateCreatingLinkedPost, allowTimerSet, toggleLinkedPo
     if (togglePostPreview) {
         return (
             <div className="flex flex-col">
-                <PostPreviewComponent postObj={createPostObj()}/>
+                <PostPreviewComponent postObj={createPostPreview()}/>
                 <div className="m-auto mt-10 text-lg">
                     <button className="rounded border p-2" type="button" onClick={togglePreview}>Edit Post</button>
                 </div>
@@ -295,7 +342,7 @@ const NewPostForm = ({ initiateCreatingLinkedPost, allowTimerSet, toggleLinkedPo
                     <button className="w-30 bg-black rounded p-2" type="button" onClick={togglePreview}>Add Post</button>
                     <div className="flex flex-col bg-inherit text-lg p-1">
                         <div className="bg-inherit">
-                            <input type="checkbox" className="" />
+                            <input type="checkbox" className="" onChange={() => setIsPrivatePost((prev) => !prev)}/>
                             <label className="bg-inherit text-black font-bold ml-2">Private Post</label>
                         </div>
                         
@@ -310,13 +357,10 @@ const NewPostForm = ({ initiateCreatingLinkedPost, allowTimerSet, toggleLinkedPo
                                 {
                                     !timerSet
                                     ?
-                                    <div className="bg-inherit">
-                                        <input type="range" disabled min="0" max="72" value={timerValue} onChange={(e) => setTimerValue(e.target.value)} />
-                                        <label className="bg-inherit text-black font-bold ml-2">Hours: {timerValue}</label>
-                                    </div>
+                                    <></>
                                     :
                                     <div className="bg-inherit">
-                                        <input type="range" min="0" max="72" value={timerValue} onChange={(e) => setTimerValue(e.target.value)} />
+                                        <input type="range" min="24" max="168" value={timerValue} onChange={(e) => setTimerValue(e.target.value)} />
                                         <label className="bg-inherit text-black font-bold ml-2">Hours: {timerValue}</label>
                                     </div>
                                 }
@@ -330,8 +374,8 @@ const NewPostForm = ({ initiateCreatingLinkedPost, allowTimerSet, toggleLinkedPo
                             ?
                             <></>
                             :
-                            <div className="bg-inherit">
-                                <input type="checkbox" className="" />
+                            <div className="bg-inherit"> 
+                                <input type="checkbox" className="" onChange={() => setIsAnnouncement((prev) => !prev)}/>
                                 <label className="bg-inherit text-black font-bold ml-2">Set As annoucement</label>
                             </div>
                         }

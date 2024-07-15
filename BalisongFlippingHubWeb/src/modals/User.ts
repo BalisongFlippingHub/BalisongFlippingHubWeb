@@ -1,10 +1,9 @@
-import { Post } from "./Post"
 
 export interface Profile {
     id: string | null,
     email: string | null,  
     role: String | null, 
-    posts: Array<Post>,
+    posts: Array<string>,
     profileImg: string | null,
     bannerImg: string | null,
 

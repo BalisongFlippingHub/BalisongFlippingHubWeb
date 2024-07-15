@@ -14,7 +14,7 @@ const ProfileImg = () => {
     const [isError, setIsError] = useState(false)
 
     const [imgData, setImgData] = useState<string>("")
-    const [imgType, setImgType] = useState<AxiosHeaderValue | undefined | null>(undefined)
+    const [imgType, setImgType] = useState<AxiosHeaderValue | null | undefined>(null)
 
     const { user, setUser, token } = useAuth()
 
@@ -27,7 +27,7 @@ const ProfileImg = () => {
 
         // save new img on db
         const formData = new FormData();
-        formData.append("accountId", JSON.stringify(user?.id))
+        formData.append("accountId", user?.id!)
         formData.append("file", files[0])
 
         setIsLoading(true)

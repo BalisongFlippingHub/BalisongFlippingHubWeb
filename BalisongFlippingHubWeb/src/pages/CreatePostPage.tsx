@@ -1,6 +1,10 @@
 import { useState } from "react";
 import NewPostForm from "../components/NewPostForm";
-import { PostCreationObject, PostCreationObjectLinkedPost } from "../modals/Post";
+import { CreationPostDTO } from "../modals/Post";
+import axios from "../api/axios";
+import useAuth from "../hooks/useAuth";
+import { Profile } from "../modals/User";
+import { useNavigate } from "react-router-dom";
 
 const CreatePostPage = () => {
     const [creatingLinkedPost, setCreatingLinkedPost] = useState(false)
@@ -8,19 +12,17 @@ const CreatePostPage = () => {
     const [postObjSet, setPostObjSet] = useState(false)
     const [linkedPostObjSet, setLinkedPostObjSet] = useState(false)
 
-    const [postObj, setPostObj] = useState<PostCreationObject | null>(null)
-    const [linkedPostObj, setLinkedPostObj] = useState<PostCreationObjectLinkedPost | null>(null)
+    const [postObj, setPostObj] = useState<CreationPostDTO | null>(null)
+    const [postObjFiles, setPostObjFiles] = useState<Array<File> | null>(null)
+
+    const [linkedPostObj, setLinkedPostObj] = useState<CreationPostDTO | null>(null)
+    const [linkedPostObjFiles, setLinkedPostObjFiles] = useState<Array<File> | null>(null)
+
+    const { token, setUser, user, setNewlyCreatedPost } = useAuth()
+    const navigate = useNavigate()
 
     const initiateCreatingLinkedPost = () => {
         setCreatingLinkedPost((prev) => !prev)
-    }
-
-    const createPostObj = (postObj: PostCreationObject) => {
-        setPostObj(postObj)
-    }
-
-    const createLinkedPostObj = (postObj: PostCreationObjectLinkedPost) => {
-        setLinkedPostObj(postObj)
     }
 
     const togglePostObjSet = () => {
@@ -29,6 +31,138 @@ const CreatePostPage = () => {
 
     const toggleLinkedPostObjSet = () => {
         setLinkedPostObjSet((prev) => !prev)
+    }
+
+    const createPostObjDto = (postObj: CreationPostDTO) => {
+        setPostObj(postObj)
+    }
+
+    const getPostObjFiles = (files: Array<File>) => {
+        setPostObjFiles(files)
+    }
+
+    const createLinkedPostObjDto = (postObj: CreationPostDTO) => {
+        setLinkedPostObj(postObj)
+    }
+
+    const getLinkedPostObjFiles = (files: Array<File>) => {
+        setLinkedPostObjFiles(files)
+    }
+
+    const sendLinkedPosts = async() => {
+        if (postObj && linkedPostObj) {
+            // create form data
+            const fd = new FormData()
+
+            // append data of first post with timer
+            fd.append("caption", postObj.caption)
+            fd.append("description", postObj.description)
+            fd.append("identifier", postObj.identifier)
+            fd.append("creatorId", postObj.creatorId)
+            fd.append("isPrivatePost", JSON.stringify(postObj.isPrivatePost))
+            fd.append("isAnnouncement", JSON.stringify(postObj.isAnnouncement))
+            fd.append("hasTimer", JSON.stringify(postObj.hasTimer))
+            fd.append("timerValue", postObj.timerInHours)
+
+            // append data of second post meant to replace first
+            fd.append("caption2", linkedPostObj.caption)
+            fd.append("description2", linkedPostObj.description)
+            fd.append("identifier2", linkedPostObj.identifier)
+            fd.append("creatorId2", linkedPostObj.creatorId)
+            fd.append("isPrivatePost2", JSON.stringify(linkedPostObj.isPrivatePost))
+            fd.append("isAnnouncement2", JSON.stringify(linkedPostObj.isAnnouncement))
+            fd.append("hasTimer2", JSON.stringify(false))
+
+            // append connected files for first post
+            postObjFiles?.forEach((file, _i) => {
+                fd.append("files", file)
+            })
+
+            // append connected files for second post
+            linkedPostObjFiles?.forEach((file, _i) => {
+                fd.append("files2", file)
+            })
+
+            // post to api
+            await axios.request({
+                url: "/posts/create-linked-post",
+                method: 'post',
+                data: fd, 
+                headers: {
+                    'Authorization': 'Bearer ' + token,
+                    'Accept': 'application/json',
+                    'Content-Type': 'multipart/form-data', 
+                }
+            })
+            .then((res) => {
+                // upon success
+                console.log(res)
+            })
+            .catch((err) => {
+                // failed to post new post to db
+                console.log(err)
+            })
+            .finally(() => {
+                
+            })
+        }
+    }
+
+    const sendPost = async () => {
+        if (postObj) {
+            // create and append form data for new post
+            const fd = new FormData()
+
+            fd.append("caption", postObj.caption)
+            fd.append("description", postObj.description)
+            fd.append("identifier", postObj.identifier)
+            fd.append("creatorId", postObj.creatorId)
+            fd.append("isPrivatePost", JSON.stringify(postObj.isPrivatePost))
+            fd.append("isAnnouncement", JSON.stringify(postObj.isAnnouncement))
+            fd.append("hasTimer", JSON.stringify(false))
+
+            // append files
+            postObjFiles?.forEach((file, _i) => {
+                fd.append("files", file)
+            })
+
+            // post to api
+            await axios.request({
+                url: "posts/me/create-post",
+                method: 'post',
+                data: fd, 
+                headers: {
+                    'Authorization': 'Bearer ' + token,
+                    'Accept': 'application/json',
+                    'Content-Type': 'multipart/form-data', 
+                }
+            })
+            .then((res) => {
+                // upon success
+                console.log(res)
+                
+                // update users post array with newly crated post
+                const arr: Array<string> = user?.posts || []
+                arr.push(res.data)
+                setUser({
+                    ...user,
+                    posts: arr
+                } as Profile)
+
+                // set state for newly created post
+                setNewlyCreatedPost(res.data)
+
+                // navigate to community page to view new post
+                navigate("/community")
+            })
+            .catch((err) => {
+                // failed to post new post to db
+                console.log(err)
+            })
+            .finally(() => {
+                
+            })
+        }
     }
 
     return (
@@ -49,7 +183,7 @@ const CreatePostPage = () => {
                     <h3 className="bg-inherit">Not Set</h3>
                 </div>
                 }
-                <NewPostForm initiateCreatingLinkedPost={initiateCreatingLinkedPost} allowTimerSet={true} createPostObj={createPostObj} togglePostObjSet={togglePostObjSet}/>
+                <NewPostForm initiateCreatingLinkedPost={initiateCreatingLinkedPost} allowTimerSet={true}  togglePostObjSet={togglePostObjSet} createPostObjDto={createPostObjDto} getPostObjFiles={getPostObjFiles} />
             </div>            
             {
                 creatingLinkedPost
@@ -74,7 +208,7 @@ const CreatePostPage = () => {
                         </div>
                     }
                    
-                    <NewPostForm allowTimerSet={false} createLinkedPostObj={createLinkedPostObj} toggleLinkedPostObjSet={toggleLinkedPostObjSet}/>
+                    <NewPostForm allowTimerSet={false}  toggleLinkedPostObjSet={toggleLinkedPostObjSet} createLinkedPostObjDto={createLinkedPostObjDto} getLinkedPostObjFiles={getLinkedPostObjFiles} />
                     <span className="h-1 bg-black w-5/6 mt-2 rounded-full m-auto"></span>
                 </div>
                 : 
@@ -82,15 +216,27 @@ const CreatePostPage = () => {
             }
 
             {
-                postObjSet && linkedPostObjSet
+                creatingLinkedPost
                 ?
-                <div className="m-auto mt-5">
-                    <button className="p-2 rounded bg-teal-500 text-xl" type="button">Create Post</button>
-                </div>
-                : 
-                <div className="m-auto mt-5">
-                    <button className="p-2 rounded bg-slate-300 text-xl text-black" type="button" disabled>Create Post</button>
-                </div>
+                    postObjSet && linkedPostObjSet
+                    ?
+                    <div className="m-auto mt-5">
+                        <button className="p-2 rounded bg-teal-500 text-xl" type="button" onClick={sendLinkedPosts}>Create Post</button>
+                    </div>
+                    : 
+                    <div className="m-auto mt-5">
+                        <button className="p-2 rounded bg-slate-300 text-xl text-black" type="button" disabled>Create Post</button>
+                    </div>
+                :
+                    postObjSet
+                    ?
+                    <div className="m-auto mt-5">
+                        <button className="p-2 rounded bg-teal-500 text-xl" type="button" onClick={sendPost}>Create Post</button>
+                    </div>
+                    : 
+                    <div className="m-auto mt-5">
+                        <button className="p-2 rounded bg-slate-300 text-xl text-black" type="button" disabled>Create Post</button>
+                    </div>
             }
         </section>
     )

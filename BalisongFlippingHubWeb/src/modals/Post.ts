@@ -1,56 +1,43 @@
-import { Comment } from "./Comment";
-
 export interface Post {
-    uuid?: string,
-    caption: string,
+    id?: string,
+    caption: string | null,
+    description: string | null,
     creatorId: string,
     creatorName: string,
-    creatorProfileImg?: File | null,
+    creatorProfileImg?: string | null,
     creationDate: string,
     files: Array<string>,
-    comments: Array<Comment>,
+    comments: Array<string>,
     likes: number,
-    tag: string | null,
+    identifier: string | null,
+    isPrivate: boolean,
+    hasTimer: boolean,
+    timerValue: number | null
 }
 
 export interface PostPreview {
     id: string, 
     caption: string,
     description: string,
-    creatorId: string,
     creatorName: string,
     creatorProfileImg?: string | null,
     creationDate: string,
     files: Array<File>,
-    comments: Array<Comment> | null,
     likes: number, 
-    identifer: string | null
+    identifer: string | null,
+    isAnnouncement: boolean,
+    isPrivatePost: boolean,
+    hasTimer: boolean,
+    timeInHours: string
 }
 
-export interface PostCreationObject {
-    id: string, 
+export interface CreationPostDTO {
     caption: string,
     description: string,
     creatorId: string,
-    creatorName: string,
-    creatorProfileImg?: string | null,
-    creationDate: string,
-    files: Array<File>,
-    comments: Array<Comment> | null,
-    likes: number, 
-    identifer: string | null
-}
-
-export interface PostCreationObjectLinkedPost {
-    id: string, 
-    caption: string,
-    description: string,
-    creatorId: string,
-    creatorName: string,
-    creatorProfileImg?: string | null,
-    creationDate: string,
-    files: Array<File>,
-    comments: Array<Comment> | null,
-    likes: number, 
-    identifer: string | null
+    identifier: string, 
+    isPrivatePost: boolean,
+    isAnnouncement: boolean,
+    hasTimer: boolean
+    timerInHours: string,
 }

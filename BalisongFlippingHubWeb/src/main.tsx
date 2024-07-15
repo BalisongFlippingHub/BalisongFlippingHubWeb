@@ -6,7 +6,7 @@ import { AuthContextProvider } from './contexts/AuthContext.tsx'
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
-  <React.StrictMode>
+  // <React.StrictMode>
     <BrowserRouter>
       <AuthContextProvider>
         <Routes>
@@ -14,5 +14,5 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
         </Routes>
       </AuthContextProvider>
     </BrowserRouter>
-  </React.StrictMode>,
+  // </React.StrictMode>,
 )

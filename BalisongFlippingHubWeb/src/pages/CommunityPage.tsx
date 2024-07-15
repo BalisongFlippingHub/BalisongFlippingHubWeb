@@ -1,10 +1,36 @@
-import NewPostForm from "../components/NewPostForm";
+import { useEffect } from "react";
+import useAuth from "../hooks/useAuth";
+import PostDisplay from "../components/PostDisplay";
 
 const CommunityPage = () => {
-    return (
-        <section className="flex flex-col items-center pt-6">
+
+    const { newlyCreatedPost, setNewlyCreatedPost } = useAuth()
+
+    useEffect(() => {
         
 
+        return (() => {
+            // setNewlyCreatedPost("")
+        })
+    },[]) 
+
+    return (
+        <section className="flex flex-col items-center">
+            {/*Display Newly Created Post if there is one*/}
+            {
+                newlyCreatedPost !== ""
+                ?
+                <div className="w-full bg-teal-500">
+                    <PostDisplay postId={newlyCreatedPost} isNewlyCreatedPost={true} />
+                </div>
+                :
+                <></>
+            }
+
+            {/*Display Latest Posts*/}
+            {
+
+            }
         </section>
     )
 }
