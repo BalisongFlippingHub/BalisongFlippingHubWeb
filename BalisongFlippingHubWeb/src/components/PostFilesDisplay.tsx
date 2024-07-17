@@ -54,7 +54,7 @@ const PostFilesDisplay = ({ files }: params) => {
     }
     else {
         return (
-            <div className="w-full h-96 relative">
+            <div className="w-full h-96 relative bg-black">
                 {
                     files.length === 1
                     ?

@@ -128,6 +128,10 @@ const NewPostForm = ({ initiateCreatingLinkedPost, allowTimerSet, toggleLinkedPo
             if (identifier !== "") {
                 setIdentifier("")
             }
+
+            if (description !== "") {
+                setDescription("")
+            }
         }
     }
 
@@ -285,14 +289,14 @@ const NewPostForm = ({ initiateCreatingLinkedPost, allowTimerSet, toggleLinkedPo
     }
     else {
         return (
-            <form className="w-2/3 bg-shadow-green-offset rounded-lg flex flex-col items-center m-auto">
-                <div className="w-full p-2 flex justify-between">
+            <form className="w-2/3 bg-shadow-green border-4 border-shadow-green-offset rounded-lg flex flex-col items-center m-auto">
+                <div className="w-full p-2 flex justify-between border-b-2 border-shadow-green-offset">
                     {/*Identifier Tag*/}
                     {
                         identifier === "" 
                         ?
                         <div className="flex items-center">
-                            <input type="text" placeholder="Add Tag +" list="tag-list" className="w-28 h-12 bg-inherit border border-white rounded-lg text-black p-2" onChange={(e) => handleChangeTag(e.target.value)}  />
+                            <input type="text" placeholder="Add Tag +" list="tag-list" className="w-28 h-12 bg-shadow-green-offset border border-white rounded-lg text-black p-2" onChange={(e) => handleChangeTag(e.target.value)}  />
                             {
                                 selectedFiles.length !== 0
                                 ?
@@ -317,7 +321,7 @@ const NewPostForm = ({ initiateCreatingLinkedPost, allowTimerSet, toggleLinkedPo
                             }
                         </div>
                         :
-                        <div className="flex p-2 rounded-full bg-shadow-green items-center">
+                        <div className="flex p-2 rounded-full bg-shadow-green-offset items-center">
                             <p className="mr-2 font-bold">{identifier}</p>
                             <button className="text-sm hover:text-lg" type="button" onClick={() => setIdentifier("")}>x</button>
                         </div>
@@ -333,7 +337,7 @@ const NewPostForm = ({ initiateCreatingLinkedPost, allowTimerSet, toggleLinkedPo
                 </div>
 
                 {/*Text Area for post caption*/}
-                <textarea className="h-20 w-full bg-shadow-green p-2 text-xl" placeholder="Add a caption..." ref={captionRef} value={caption} onChange={(e) => setCaptionOnChange(e.target.value)}/>
+                <textarea className="h-20 w-full bg-shadow-green-offset p-2 text-xl" placeholder="Add a caption..." ref={captionRef} value={caption} onChange={(e) => setCaptionOnChange(e.target.value)}/>
 
                 {/*Display of selected files*/}
                 {
@@ -343,7 +347,7 @@ const NewPostForm = ({ initiateCreatingLinkedPost, allowTimerSet, toggleLinkedPo
                 {
                     selectedFiles.length > 0
                     ?
-                    <textarea className="h-20 w-full bg-inherit text-black p-2 border-b border-t border-black" placeholder="Add a description..." value={description} onChange={(e) => setDescription(e.target.value)} />
+                    <textarea className="h-20 w-full bg-shadow-green-offset p-2 border-b border-t border-black" placeholder="Add a description..." value={description} onChange={(e) => setDescription(e.target.value)} />
                     :
                     <></>
                 }
@@ -357,12 +361,12 @@ const NewPostForm = ({ initiateCreatingLinkedPost, allowTimerSet, toggleLinkedPo
                             ?
                             <div className="">
                                 <input type="checkbox" className="" checked onChange={() => setIsPrivatePost((prev) => !prev)}/>
-                                <label className="bg-inherit text-black font-bold ml-2">Private Post</label>
+                                <label className="bg-inherit font-bold ml-2">Private Post</label>
                             </div>
                             :
                             <div className="">
                                 <input type="checkbox" className="" onChange={() => setIsPrivatePost((prev) => !prev)}/>
-                                <label className="bg-inherit text-black font-bold ml-2">Private Post</label>
+                                <label className="bg-inherit font-bold ml-2">Private Post</label>
                             </div>
                         }
                         
@@ -376,12 +380,12 @@ const NewPostForm = ({ initiateCreatingLinkedPost, allowTimerSet, toggleLinkedPo
                                     ?
                                     <div className="bg-inherit">
                                         <input type="checkbox" checked onClick={handleSetTimerClick}/>
-                                        <label className="bg-inherit text-black font-bold ml-2">Set Timer</label>
+                                        <label className="bg-inherit font-bold ml-2">Set Timer</label>
                                     </div>
                                     : 
                                     <div className="bg-inherit">
                                         <input type="checkbox" onClick={handleSetTimerClick}/>
-                                        <label className="bg-inherit text-black font-bold ml-2">Set Timer</label>
+                                        <label className="bg-inherit font-bold ml-2">Set Timer</label>
                                     </div>
                                 }
                                 
@@ -392,7 +396,7 @@ const NewPostForm = ({ initiateCreatingLinkedPost, allowTimerSet, toggleLinkedPo
                                     :
                                     <div className="bg-inherit">
                                         <input type="range" min="24" max="168" value={timerValue} onChange={(e) => setTimerValue(e.target.value)} />
-                                        <label className="bg-inherit text-black font-bold ml-2">Hours: {timerValue}</label>
+                                        <label className="bg-inherit font-bold ml-2">Hours: {timerValue}</label>
                                     </div>
                                 }
                             </>
@@ -407,7 +411,7 @@ const NewPostForm = ({ initiateCreatingLinkedPost, allowTimerSet, toggleLinkedPo
                             :
                             <div className="bg-inherit"> 
                                 <input type="checkbox" className="" onChange={() => setIsAnnouncement((prev) => !prev)}/>
-                                <label className="bg-inherit text-black font-bold ml-2">Set As annoucement</label>
+                                <label className="bg-inherit font-bold ml-2">Set As annoucement</label>
                             </div>
                         }
                     </div>

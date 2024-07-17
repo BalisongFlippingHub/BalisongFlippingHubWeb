@@ -1,3 +1,4 @@
+import { useState } from "react"
 
 interface props {
     files: File[],
@@ -5,22 +6,44 @@ interface props {
 }
 
 const NewPostImageDisplay = ({ files, deleteSelectedFile} : props) => {
-
+    const [currIndex, setCurrIndex] = useState(0)
+    
     if (files.length === 0) {
         return <></>
     }
 
     return (
-        <div className="w-full grid grid-cols-4 grid-rows-* bg-inherit">
+        <div className="w-full">
+            <div className="w-full h-96 relative">
+                <img src={URL.createObjectURL(files[currIndex])} className="w-full h-full object-contain" />
+                <button type="button" className="absolute p-2 top-5 left-5 bg-shadow-green-offset rounded-lg" onClick={() => deleteSelectedFile(currIndex)}>Delete File</button>
+            </div>
+
             {
-                files.map((file, i) => {
-                    return (
-                        <div key={i} className="flex flex-col h-64">
-                            <img src={URL.createObjectURL(file)} className="object-cover w-full h-full" />
-                            <button type="button" onClick={() => deleteSelectedFile(i)} className="absolute bg-white text-black translate-y-2 translate-x-2 p-1 m-auto rounded text-lg">Delete</button>
-                        </div>
-                    )
-                })
+                files.length > 1
+                ?
+                <div className="w-full flex justify-center">
+                {
+                    files.map((file, i) => {
+                        if (i === currIndex) {
+                           return (
+                            <div className="w-40 h-40">
+                                <img src={URL.createObjectURL(file)} key={i} className="object-cover w-full h-full border rounded" />
+                            </div>
+                           )
+                        }
+                        else {
+                            return (
+                                <div className="w-40 h-40">
+                                    <img src={URL.createObjectURL(file)} key={i} className="object-cover w-full h-full hover:cursor-pointer" onClick={() => setCurrIndex(i)}/>
+                                </div>
+                            )
+                        }
+                    })
+                }
+                </div>
+                :
+                <></>
             }
         </div>
     )
