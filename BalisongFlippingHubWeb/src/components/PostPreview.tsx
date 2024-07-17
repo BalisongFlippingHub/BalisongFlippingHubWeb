@@ -11,13 +11,13 @@ const PostPreviewComponent = ({ postObj }: params) => {
         <div className={
             postObj.isAnnouncement
             ?
-            "m-auto w-2/3 flex flex-col bg-shadow-green-offset rounded-lg mt-5 mb-5 border border-gold border-4"
+            "m-auto w-3/5 flex flex-col bg-shadow-green-offset rounded-lg mt-5 mb-5 border border-gold border-4"
             :
                 postObj.isPrivatePost
                 ?
-                "m-auto w-2/3 flex flex-col bg-shadow-green-offset rounded-lg mt-5 mb-5 border border-shadow border-4"
+                "m-auto w-3/5 flex flex-col bg-shadow-green-offset rounded-lg mt-5 mb-5 border border-shadow border-4"
                 :
-                "m-auto w-2/3 flex flex-col bg-shadow-green-offset rounded-lg mt-5 mb-5"
+                "m-auto w-3/5 flex flex-col bg-shadow-green-offset rounded-lg mt-5 mb-5"
         }>
                 <div className="flex justify-between p-2 border-b-4 border-shadow-green">
                     {/*Profile Data and post manipulation*/}
@@ -67,7 +67,7 @@ const PostPreviewComponent = ({ postObj }: params) => {
                 </div>
 
                 {/*Post Caption And Identifier Display*/}
-                <div className="flex flex-col p-2">
+                <div className="flex flex-col">
                     {
                         postObj.identifer === ""
                         ?

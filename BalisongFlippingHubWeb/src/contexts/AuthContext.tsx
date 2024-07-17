@@ -21,21 +21,21 @@ export const AuthContextProvider: React.FC<{children: React.ReactNode}> = ({ chi
     const [isReady, setIsReady] = useState(false)
 
     useEffect(() => {
-        //check for user already logged in
-        // setToken("Fill")
-        // setUser({
-        //     id: "1",
-        //     email: "tzenisekj@gmail.com",
-        //     role: "USER",
-        //     posts: [],
-        //     profileImg: null,
-        //     bannerImg: null,
-        //     displayName: "QSwKLegacy",
-        //     ownedKnives: [],
-        //     facebookLink: "",
-        //     instagramLink: "",
-        //     twitterLink: "",
-        // })
+        // check for user already logged in
+        setToken("Fill")
+        setUser({
+            id: "1",
+            email: "tzenisekj@gmail.com",
+            role: "USER",
+            posts: [],
+            profileImg: null,
+            bannerImg: null,
+            displayName: "QSwKLegacy",
+            ownedKnives: [],
+            facebookLink: "",
+            instagramLink: "",
+            twitterLink: "",
+        })
         setIsReady(true);
     }, [])
 
