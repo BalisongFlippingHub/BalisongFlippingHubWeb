@@ -20,7 +20,7 @@ const CommunityPage = () => {
             {
                 newlyCreatedPost !== ""
                 ?
-                <div className="w-full bg-teal-500">
+                <div className="w-full bg-shadow-offset">
                     <PostDisplay postId={newlyCreatedPost} isNewlyCreatedPost={true} />
                 </div>
                 :

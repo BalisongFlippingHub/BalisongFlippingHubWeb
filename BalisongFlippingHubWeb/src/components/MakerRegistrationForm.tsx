@@ -4,20 +4,31 @@ import useAuth from "../hooks/useAuth"
 import { useNavigate } from "react-router-dom"
 
 const MakerRegistrationForm = () => {
+    // form refs
     const emailRef = useRef<HTMLInputElement>(null)
     const companyNameRef = useRef<HTMLInputElement>(null)
+    const companyCreationDateRef = useRef<HTMLInputElement>(null)
     const passwordRef = useRef<HTMLInputElement>(null)
     const confirmPasswordRef = useRef<HTMLInputElement>(null)
 
+    // state for input field values
     const [email, setEmail] = useState("")
     const [companyName, setCompnayName] = useState("")
+    const [compnayCreationDate, setCompnayCreationDate] = useState("")
     const [password, setPassword] = useState("")
     const [confirmedPassword, setConfirmedPassword] = useState("")
+
+    // loading state
     const [isLoading, setIsLoading] = useState(false)
+
+    // error handling
     const [errMsg, setErrMsg] = useState("")
     const [isError, setIsError] = useState(false)
+
+    // button disabling and enabling
     const [buttonDisabled, setButtonDisabled] = useState(false)
 
+    // contexts
     const { setToken, setUser } = useAuth()
     const navigate = useNavigate()
     
@@ -102,8 +113,7 @@ const MakerRegistrationForm = () => {
     }
 
     return (
-        <form className="flex flex-col bg-inherit text-lg w-full" onSubmit={handleSubmit}>
-            <h1 className="m-auto bg-inherit text-xl font-bold text-black">Maker</h1>
+        <form className="flex flex-col text-lg w-full" onSubmit={handleSubmit}>
             {
                 isError
                 ?
@@ -111,62 +121,90 @@ const MakerRegistrationForm = () => {
                 :
                 <h3></h3>
             }
-            <div className="flex flex-col bg-inherit">
-                <label className="bg-teal-700 text-black font-semibold">Email</label>
+
+            {/*Email Input Field*/}
+            <div className="flex flex-col">
+                <label className="font-semibold">Email</label>
                 <input 
                     type="email"
                     required
                     ref={emailRef}
                     onChange={(e) => setEmail(e.target.value)}
                     value={email}
-                    className="text-black bg-teal-700 border border-black rounded p-2 mt-2"
+                    className="border border-black rounded-lg bg-inherit p-2 mt-2"
                 />
             </div>
-            <div className="flex flex-col bg-inherit">
-                <label className="bg-inherit text-black font-semibold">Company Name</label>
+
+            {/*Company Name Input Field*/}
+            <div className="flex flex-col">
+                <label className="font-semibold">Company Name</label>
                 <input 
                     type="text"
                     required
                     ref={companyNameRef}
                     onChange={(e) => setCompnayName(e.target.value)}
                     value={companyName}
-                    className="text-black border border-black rounded bg-inherit mt-2 p-2"
+                    className="border border-black rounded-lg bg-inherit mt-2 p-2"
                 />
             </div>
-            <div className="flex flex-col bg-inherit">
-                <label className="bg-inherit text-black font-semibold">Password</label>
+
+            {/*Company Age Input Field*/}
+            <div className="flex flex-col">
+                <label className="font-semibold">Company Creation Date</label>
+                <input 
+                    type="date"
+                    required
+                    ref={companyCreationDateRef}
+                    onChange={(e) => setCompnayCreationDate(e.target.value)}
+                    value={compnayCreationDate}
+                    className="border rounded-lg border-black bg-inherit mt-2 p-2"
+                />
+            </div>
+
+            {/*Password Input Field*/}
+            <div className="flex flex-col">
+                <label className="font-semibold">Password</label>
                 <input 
                     type="password"
                     required
                     ref={passwordRef}
                     onChange={(e) => handlePasswordChange(e)}
                     value={password}
-                    className="text-black border rounded border-black bg-inherit mt-2 p-2"
+                    className="border rounded-lg border-black bg-inherit mt-2 p-2"
                 />
             </div>
-            <div className="flex flex-col bg-inherit">
-                <label className="bg-inherit text-black font-semibold">Confirm Password</label>
+
+            {/*Confirm Password Input Field*/}
+            <div className="flex flex-col">
+                <label className="font-semibold">Confirm Password</label>
                 <input 
                     type="password"
                     required
                     ref={confirmPasswordRef}
                     onChange={(e) => handleConfirmedPasswordChange(e)}
                     value={confirmedPassword}
-                    className="text-black border rounded border-black bg-inherit mt-2 p-2"
+                    className="border rounded-lg border-black bg-inherit mt-2 p-2"
                 />
             </div>
 
+            {/*Create Account Button Submit*/}
             {
                 isLoading
                 ?
-                <button disabled className="p-2 bg-slate-500 mt-4 rounded">Loading...</button>
+                <button disabled className="p-2 bg-shadow-red mt-4 rounded">Loading...</button>
                 :
                     buttonDisabled
                     ?
-                    <button type="submit" disabled className="p-2 bg-slate-500 mt-4 rounded">Create Account</button>
+                    <button type="submit" disabled className="p-2 bg-shadow-red mt-4 rounded">Create Account</button>
                     :
-                    <button type="submit" className="p-2 bg-slate-500 mt-4 rounded hover:bg-slate-200">Create Account</button>
+                    <button type="submit" className="p-2 bg-shadow-red mt-4 rounded">Create Account</button>
             }
+
+            {/*Link to login*/}
+            <div className="flex mt-2">
+                <h4>Already have an account?</h4>
+                <button className="ml-2 text-blue hover:text-light-blue" onClick={() => navigate("/login")}>Login here</button>
+            </div>
         </form>
     )
 }

@@ -7,7 +7,7 @@ const MainLayout = () => {
         <>
             <Header />
             <HeaderNavbar />
-            <main className="h-screen ml-[calc(160px)] pt-[64px]">
+            <main className="h-screen ml-[calc(160px)] pt-[64px] bg-shadow-green">
                 <Outlet />
             </main>
         </>

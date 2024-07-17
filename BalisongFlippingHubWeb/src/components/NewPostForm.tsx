@@ -110,6 +110,10 @@ const NewPostForm = ({ initiateCreatingLinkedPost, allowTimerSet, toggleLinkedPo
             if (selectedFiles.length > 0) setToggleImageDisplay(true)
         }
 
+        if (identifier !== "") {
+            setIdentifier("")
+        }
+
         if (alert !== "") setAlert("")
 
         setCurrentFiles("")
@@ -119,6 +123,12 @@ const NewPostForm = ({ initiateCreatingLinkedPost, allowTimerSet, toggleLinkedPo
         setSelectedFiles((prev) => prev.filter((_file, i) => {
             return index !== i
         }))
+
+        if (selectedFiles.length === 1) {
+            if (identifier !== "") {
+                setIdentifier("")
+            }
+        }
     }
 
     const togglePreview = () => {
@@ -270,20 +280,19 @@ const NewPostForm = ({ initiateCreatingLinkedPost, allowTimerSet, toggleLinkedPo
                 <div className="m-auto mt-10 text-lg">
                     <button className="rounded border p-2" type="button" onClick={togglePreview}>Edit Post</button>
                 </div>
-                <span className="h-2 w-5/6 rounded bg-black m-auto mt-10"></span>
             </div>
         )
     }
     else {
         return (
-            <form className="border w-2/3 bg-slate-300 rounded flex flex-col items-center m-auto">
-                <div className="w-full border-b border-black bg-inherit p-1 flex justify-between">
+            <form className="w-2/3 bg-shadow-green-offset rounded-lg flex flex-col items-center m-auto">
+                <div className="w-full p-2 flex justify-between">
                     {/*Identifier Tag*/}
                     {
                         identifier === "" 
                         ?
-                        <>
-                            <input type="text" placeholder="Add Tag +" list="tag-list" className="w-32 bg-inherit border border-black rounded text-black p-2" onChange={(e) => handleChangeTag(e.target.value)}  />
+                        <div className="flex items-center">
+                            <input type="text" placeholder="Add Tag +" list="tag-list" className="w-28 h-12 bg-inherit border border-white rounded-lg text-black p-2" onChange={(e) => handleChangeTag(e.target.value)}  />
                             {
                                 selectedFiles.length !== 0
                                 ?
@@ -306,10 +315,10 @@ const NewPostForm = ({ initiateCreatingLinkedPost, allowTimerSet, toggleLinkedPo
                                 :
                                 <h4 className="bg-inherit text-red-400 text-lg p-2">{alert}</h4>
                             }
-                        </>
+                        </div>
                         :
-                        <div className="flex p-2 rounded-full">
-                            <p className="pr-2 text-lg font-bold">{identifier}</p>
+                        <div className="flex p-2 rounded-full bg-shadow-green items-center">
+                            <p className="mr-2 font-bold">{identifier}</p>
                             <button className="text-sm hover:text-lg" type="button" onClick={() => setIdentifier("")}>x</button>
                         </div>
                     }
@@ -318,11 +327,13 @@ const NewPostForm = ({ initiateCreatingLinkedPost, allowTimerSet, toggleLinkedPo
                     <input type="file" ref={fileRef} multiple className="collapse" accept=".png,.jpg" value={currentFiles} onChange={(e) => handleFileChange(e)}/>
                     
                     {/*Profile Img Display*/}
-                    <p className="border rounded-full p-2">Your Image</p>
+                    <div className="rounded-full border w-12 h-12">
+
+                    </div>
                 </div>
 
                 {/*Text Area for post caption*/}
-                <textarea className="h-20 w-full bg-inherit text-black p-2 border-b border-black text-xl" placeholder="Add a caption..." ref={captionRef} value={caption} onChange={(e) => setCaptionOnChange(e.target.value)}/>
+                <textarea className="h-20 w-full bg-shadow-green p-2 text-xl" placeholder="Add a caption..." ref={captionRef} value={caption} onChange={(e) => setCaptionOnChange(e.target.value)}/>
 
                 {/*Display of selected files*/}
                 {
@@ -337,23 +348,43 @@ const NewPostForm = ({ initiateCreatingLinkedPost, allowTimerSet, toggleLinkedPo
                     <></>
                 }
                 
-                <div className="w-full justify-around flex bg-inherit p-2 items-center">
+                <div className="w-full justify-around flex p-2 items-center">
                     <button className="w-30 bg-black rounded p-2" type="button" onClick={handleAddImageClick}>Add Image/Video</button>
                     <button className="w-30 bg-black rounded p-2" type="button" onClick={togglePreview}>Add Post</button>
-                    <div className="flex flex-col bg-inherit text-lg p-1">
-                        <div className="bg-inherit">
-                            <input type="checkbox" className="" onChange={() => setIsPrivatePost((prev) => !prev)}/>
-                            <label className="bg-inherit text-black font-bold ml-2">Private Post</label>
-                        </div>
+                    <div className="flex flex-col text-lg p-1">
+                        {
+                            isPrivatePost
+                            ?
+                            <div className="">
+                                <input type="checkbox" className="" checked onChange={() => setIsPrivatePost((prev) => !prev)}/>
+                                <label className="bg-inherit text-black font-bold ml-2">Private Post</label>
+                            </div>
+                            :
+                            <div className="">
+                                <input type="checkbox" className="" onChange={() => setIsPrivatePost((prev) => !prev)}/>
+                                <label className="bg-inherit text-black font-bold ml-2">Private Post</label>
+                            </div>
+                        }
+                        
                         
                         {
                             allowTimerSet
                             ?
                             <>
-                                <div className="bg-inherit">
-                                <input type="checkbox" onClick={handleSetTimerClick}/>
-                                <label className="bg-inherit text-black font-bold ml-2">Set Timer</label>
-                                </div>
+                                {
+                                    timerSet
+                                    ?
+                                    <div className="bg-inherit">
+                                        <input type="checkbox" checked onClick={handleSetTimerClick}/>
+                                        <label className="bg-inherit text-black font-bold ml-2">Set Timer</label>
+                                    </div>
+                                    : 
+                                    <div className="bg-inherit">
+                                        <input type="checkbox" onClick={handleSetTimerClick}/>
+                                        <label className="bg-inherit text-black font-bold ml-2">Set Timer</label>
+                                    </div>
+                                }
+                                
                                 {
                                     !timerSet
                                     ?

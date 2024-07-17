@@ -70,19 +70,33 @@ const LoginForm = () => {
         })
     }
 
+    /*
+    Function ran on component load
+    - Focuses the user to the email input field
+    - TODO- Autofills email and password fields with users credentials when user has selected the "Remember Me" checkbox
+    */
+    useEffect(() => {
+        emailRef.current?.focus()
+    },[])
+
+    /*HTML return for login form component*/
     return (
         <section className="flex w-full h-full">
-            <form className="m-auto p-6 flex flex-col bg-teal-700 rounded w-2/6 text-xl" onSubmit={handleSubmit}>
-                <h2 className="text-black m-auto text-3xl font-bold bg-inherit">Login</h2>
+            <form className="m-auto p-6 flex flex-col bg-shadow-green-offset rounded-lg w-2/6 text-xl" onSubmit={handleSubmit}>
+                <h2 className="m-auto text-3xl font-bold bg-shadow-green-offset">Login</h2>
+
+                {/*Display of errors or alerts during use of login form*/}
                 {
                     error
                     ?
-                    <p className="text-red-400">{errMsg}</p>
+                    <p className="text-red-400 bg-shadow-green-offset">{errMsg}</p>
                     :
-                    <p className="text-teal-700 bg-inherit">Fill</p>
+                    <p className="text-shadow-green-offset bg-shadow-green-offset">Fill</p>
                 }
-                <div className="flex flex-col mb-2 bg-teal-700">
-                    <label htmlFor="emailInput" className="text-black mb-2 bg-teal-700 font-semibold">Email</label>
+
+                {/*Email input field*/}
+                <div className="flex flex-col mb-2 bg-shadow-green-offset">
+                    <label htmlFor="emailInput" className="mb-2 bg-shadow-green-offset font-semibold">Email</label>
                     <input
                         type="email"
                         id="emailInput"
@@ -92,11 +106,13 @@ const LoginForm = () => {
                         placeholder="example@email.com"
                         value={email}
                         required
-                        className="text-black p-2 rounded border border-black bg-teal-700"
+                        className="text-white p-2 rounded-lg border border-black bg-shadow-green-offset"
                     />
                 </div>
-                <div className="flex flex-col bg-inherit">
-                    <label htmlFor="passwordInput" className="text-black mb-1 bg-teal-700 font-semibold">Password</label>
+
+                {/*Password input field*/}
+                <div className="flex flex-col bg-shadow-green-offset">
+                    <label htmlFor="passwordInput" className="mb-1 bg-shadow-green-offset font-semibold">Password</label>
                     <input
                         type="password"
                         id="passwordInput"
@@ -104,25 +120,37 @@ const LoginForm = () => {
                         onChange={(e) => handleOnChangePassword(e)}
                         value={password}
                         required
-                        className="text-black p-2 rounded border border-black bg-teal-700"
+                        className="p-2 rounded-lg border border-black bg-shadow-green-offset"
                     />
                 </div>
-                <div className="mt-2 bg-inherit">
+
+                {/*Check box for allowing the site to remember specific users*/}
+                {/*TODO- logic to enable saving and use of information*/}
+                <div className="mt-2 bg-shadow-green-offset">
                     <input type="checkbox" id="rememberMe" className="mr-2"/>
-                    <label htmlFor="rememberMe" className="text-black bg-teal-700">Remember Me</label>
+                    <label htmlFor="rememberMe" className="bg-shadow-green-offset">Remember Me</label>
                 </div>
+
+                {/*Submit button to login*/}
                 {
                     isLoading
                     ?
-                    <button disabled className="p-2 bg-slate-500 rounded mt-3">Loading...</button>
+                    <button disabled className="p-2 bg-shadow-green-offset rounded mt-3">Loading...</button>
                     :
                         buttonDisabled
                         ?
-                        <button type="submit" disabled className="p-2 bg-slate-500 rounded mt-3">Login</button>
+                        <button type="submit" disabled className="p-2 rounded mt-3 bg-shadow-green">Login</button>
                         :
-                        <button type="submit" className="hover:cursor-pointer p-2 bg-slate-500 rounded hover:bg-slate-300 mt-3">Login</button>
+                        <button type="submit" className="hover:cursor-pointer p-2 rounded bg-shadow-green mt-3">Login</button>
                 }
-                <h3 className="text-blue-300 hover:text-blue-200 hover:cursor-pointer mt-2 bg-inherit" onClick={() => navigate("/register")}>Register Here</h3>
+
+                {/*Redirect for users do not have an account.*/}
+                <div className="text-lg flex items-center bg-shadow-green-offset mt-2">
+                    <p className="bg-shadow-green-offset mr-2">Don't have an account?</p>
+                    <h3 className="text-blue hover:text-light-blue hover:cursor-pointer bg-shadow-green-offset" onClick={() => navigate("/register")}>Register Here</h3>
+                </div>
+
+                {/*TODO- Create div for oath loggins*/}
             </form>
         </section>
         

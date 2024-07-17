@@ -169,22 +169,29 @@ const CreatePostPage = () => {
         <section className="flex flex-col">
             <div className="m-auto text-xl mt-10 mb-10 flex flex-col w-full items-center">
                 <h2>Create New Post</h2> 
-                <span className="h-1 bg-black w-5/6 mt-2 rounded-full"></span>
+                <span className="h-2 bg-black w-5/6 mt-2 rounded-full"></span>
             </div>
-            <div>
+            <div className={
+                postObjSet
+                ?
+                "border border-green ml-10 mr-10 pt-10 pb-10"
+                :
+                "border border-none ml-10 mr-10 pt-10 pb-10"
+            }>
             {
                 postObjSet
                 ?
-                <div className="absolute p-2 rounded border ml-10 bg-green-500">
+                <div className="absolute p-2 rounded border ml-10 bg-green">
                     <h3 className="bg-inherit">Set</h3>
                 </div>
                 :
-                <div className="absolute p-2 rounded border ml-10 bg-red-700">
+                <div className="absolute p-2 rounded border ml-10 bg-red">
                     <h3 className="bg-inherit">Not Set</h3>
                 </div>
                 }
                 <NewPostForm initiateCreatingLinkedPost={initiateCreatingLinkedPost} allowTimerSet={true}  togglePostObjSet={togglePostObjSet} createPostObjDto={createPostObjDto} getPostObjFiles={getPostObjFiles} />
-            </div>            
+            </div> 
+
             {
                 creatingLinkedPost
                 ?
@@ -199,11 +206,11 @@ const CreatePostPage = () => {
                     {
                         linkedPostObjSet
                         ?
-                        <div className="absolute p-2 rounded border ml-10 bg-green-500">
+                        <div className="absolute p-2 rounded border ml-10 bg-green">
                             <h3 className="bg-inherit">Set</h3>
                         </div>
                         :
-                        <div className="absolute p-2 rounded border ml-10 bg-red-700">
+                        <div className="absolute p-2 rounded border ml-10 bg-red">
                             <h3 className="bg-inherit">Not Set</h3>
                         </div>
                     }
@@ -221,21 +228,21 @@ const CreatePostPage = () => {
                     postObjSet && linkedPostObjSet
                     ?
                     <div className="m-auto mt-5">
-                        <button className="p-2 rounded bg-teal-500 text-xl" type="button" onClick={sendLinkedPosts}>Create Post</button>
+                        <button className="p-2 rounded bg-shadow-green-offset text-xl" type="button" onClick={sendLinkedPosts}>Create Post</button>
                     </div>
                     : 
                     <div className="m-auto mt-5">
-                        <button className="p-2 rounded bg-slate-300 text-xl text-black" type="button" disabled>Create Post</button>
+                        <button className="p-2 rounded bg-black text-xl " type="button" disabled>Create Post</button>
                     </div>
                 :
                     postObjSet
                     ?
                     <div className="m-auto mt-5">
-                        <button className="p-2 rounded bg-teal-500 text-xl" type="button" onClick={sendPost}>Create Post</button>
+                        <button className="p-2 rounded bg-shadow-green-offset text-xl" type="button" onClick={sendPost}>Create Post</button>
                     </div>
                     : 
                     <div className="m-auto mt-5">
-                        <button className="p-2 rounded bg-slate-300 text-xl text-black" type="button" disabled>Create Post</button>
+                        <button className="p-2 rounded bg-black text-xl " type="button" disabled>Create Post</button>
                     </div>
             }
         </section>

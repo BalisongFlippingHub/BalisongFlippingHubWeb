@@ -25,7 +25,7 @@ const ProfileData = () => {
             </div>
             
             <div className="">
-               <button type="button" className="p-2 rounded bg-teal-700">Configure Profile</button>
+               <button type="button" className="p-2 rounded bg-shadow-offset">Configure Profile</button>
             </div>
         </div>
     )

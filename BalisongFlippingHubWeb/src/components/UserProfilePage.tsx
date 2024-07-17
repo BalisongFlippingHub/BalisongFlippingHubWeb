@@ -1,7 +1,7 @@
 import ProfileBanner from "./ProfileBanner";
 import ProfileImg from "./ProfileImg";
 import ProfileData from "./ProfileData";
-import UserProfilePostComponent from "./UserProfilePostComponent";
+import UserProfilePostsComponent from "./UserProfilePostsComponent";
 
 const UserProfilePage = () => {
      
@@ -17,13 +17,11 @@ const UserProfilePage = () => {
             </section>
 
             <section className="flex justify-center">
-                <UserProfilePostComponent />
+                <UserProfilePostsComponent />
             </section>
         </>
     )
 }
 
 export default UserProfilePage;
-
-// Comed Account #- 7687640017     7687640017
 

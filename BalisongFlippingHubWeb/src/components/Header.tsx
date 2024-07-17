@@ -9,7 +9,7 @@ const Navbar = () => {
 
     return (
         <>
-        <header className="flex fixed justify-between h-16 w-full p-3 bg-teal-950 border border-black">
+        <header className="flex fixed justify-between h-16 w-full p-3 border border-shadow-green-offset bg-shadow-green">
             <div className="flex hover:cursor-pointer" onClick={() => navigate("/")} >
                 <span className="border rounded-full w-10 mr-2"></span>
                 <h1 className="pt-2">Balisong Flipping Center</h1>
@@ -21,8 +21,8 @@ const Navbar = () => {
                 <HeaderProfileDisplay />
                 :
                 <div className="flex">
-                    <button onClick={() => navigate("/login")} className="p-2 hover:text-teal-200">Login</button>
-                    <button onClick={() => navigate("/register")} className="p-2 border rounded bg-teal-700 hover:bg-inherit">Register Now</button>
+                    <button onClick={() => navigate("/login")} className="p-2 hover:underline underline-offset-4">Login</button>
+                    <button onClick={() => navigate("/register")} className="p-1 border-2 border-shadow-green-offset rounded hover:bg-shadow-green-offset">Register Now</button>
                 </div>
             }
         </header>

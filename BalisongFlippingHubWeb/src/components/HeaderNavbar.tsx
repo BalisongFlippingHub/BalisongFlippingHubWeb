@@ -8,7 +8,8 @@ const HeaderNavbar = () => {
 
         return ({
             fontWeight: isActive ? 'bold' : 'normal', 
-            backgroundColor: isActive ? 'teal' : 'inherit'
+            backgroundColor: isActive ? '#003333' : 'inherit',
+    
         })
     }
 
@@ -21,19 +22,19 @@ const HeaderNavbar = () => {
     }
     
     return (
-        <nav className="fixed h-[calc(100%_-_64px)] w-40 translate-y-[64px] border-r border-black flex flex-col justify-between">
+        <nav className="fixed h-[calc(100%_-_64px)] w-40 translate-y-[64px] border-r border-shadow-green-offset flex flex-col justify-between bg-shadow-green">
             <div className="flex flex-col">
-                <NavLink to="/community" style={navlinkStyles} className="p-3 pl-4 w-full border-b border-black"><h1 className="bg-inherit">Community</h1></NavLink>
-                <NavLink to="/tutorial-center" style={navlinkStyles} className="p-3 pl-4 w-full border-b border-black">Tutorial Center</NavLink>
-                <NavLink to="/product-world" style={navlinkStyles} className="p-2 pl-4 w-full border-b border-black">Product World</NavLink>
+                <NavLink to="/community" style={navlinkStyles} className="p-3 pl-4 w-full border-b border-shadow-offset">Community</NavLink>
+                <NavLink to="/tutorial-center" style={navlinkStyles} className="p-3 pl-4 w-full border-b border-shadow-offset">Tutorial Center</NavLink>
+                <NavLink to="/product-world" style={navlinkStyles} className="p-2 pl-4 w-full border-b border-shadow-offset">Product World</NavLink>
                 {
                     isLoggedIn()
                     ?
                     <>  
                         <span className="bg-black w-full h-10"></span>
-                        <NavLink to="/me" style={navlinkStyles} className="p-2 pl-4 w-full border-b border-black"><h1 className="bg-inherit">Profile</h1></NavLink>
-                        <NavLink to="/me/collection" style={profileNavLinkStyles} className="p-2 pl-4 w-full border-b border-black"><h1 className="bg-inherit">Collection</h1></NavLink>
-                        <NavLink to="/me/create-post" style={profileNavLinkStyles} className="p-2 pl-4 w-full border-b border-black"><h1 className="bg-inherit">Create Post</h1></NavLink>
+                        <NavLink to="/me" style={navlinkStyles} className="p-2 pl-4 w-full border-b border-shadow-offset"><h1 className="bg-inherit">Profile</h1></NavLink>
+                        <NavLink to="/me/collection" style={profileNavLinkStyles} className="p-2 pl-4 w-full border-b border-shadow-offset"><h1 className="bg-inherit">Collection</h1></NavLink>
+                        <NavLink to="/me/create-post" style={profileNavLinkStyles} className="p-2 pl-4 w-full border-b border-shadow-offset"><h1 className="bg-inherit">Create Post</h1></NavLink>
                     </>
                     :
                     <></>

@@ -54,12 +54,12 @@ const ProfileBanner = () => {
     }
 
     return (
-        <div className="w-full h-full flex justify-center items-center bg-teal-500 text-3xl font-bold">
+        <div className="w-full h-full flex justify-center items-center bg-shadow-green-offset text-3xl font-bold">
             <input type="file" ref={bannerRef} accept=".png,.jpg" className="invisible absolute" value={selectedImg} onChange={handleBannerImgChange}/>
         {
             !user?.bannerImg
             ?
-            <div onClick={() => bannerRef.current?.click()} className="hover:cursor-pointer w-1/2 h-1/2 border border-dashed rounded flex justify-center items-center bg-inherit">
+            <div onClick={() => bannerRef.current?.click()} className="hover:cursor-pointer w-1/2 h-1/2 border border-dashed rounded flex justify-center items-center">
                 <h3 className="bg-inherit">Click to add Img</h3>
             </div>
             :
