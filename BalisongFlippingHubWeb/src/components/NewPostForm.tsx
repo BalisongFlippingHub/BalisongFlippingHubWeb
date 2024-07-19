@@ -17,6 +17,8 @@ interface params  {
 
 const NewPostForm = ({ initiateCreatingLinkedPost, allowTimerSet, toggleLinkedPostObjSet, togglePostObjSet, createPostObjDto, createLinkedPostObjDto, getPostObjFiles, getLinkedPostObjFiles }: params) => {
     const captionRef = useRef<HTMLTextAreaElement>(null)
+    const descriptionRef = useRef<HTMLTextAreaElement>(null)
+    const identifierRef = useRef<HTMLInputElement>(null)
     const fileRef = useRef<HTMLInputElement>(null)
 
     const [identifier, setIdentifier] = useState<string>("")
@@ -28,6 +30,8 @@ const NewPostForm = ({ initiateCreatingLinkedPost, allowTimerSet, toggleLinkedPo
     const [isPrivatePost, setIsPrivatePost] = useState(false) 
     const [timerSet, setTimerSet] = useState(false)
     const [timerValue, setTimerValue] = useState("Not Set")
+
+    const [filesAutoFocus, setFilesAutoFocus] = useState(true)
 
     const [alert, setAlert] = useState("")
 
@@ -120,10 +124,11 @@ const NewPostForm = ({ initiateCreatingLinkedPost, allowTimerSet, toggleLinkedPo
     }
 
     const deleteSelectedFile = (index: number) => {
+       
         setSelectedFiles((prev) => prev.filter((_file, i) => {
             return index !== i
         }))
-
+       
         if (selectedFiles.length === 1) {
             if (identifier !== "") {
                 setIdentifier("")
@@ -277,6 +282,46 @@ const NewPostForm = ({ initiateCreatingLinkedPost, allowTimerSet, toggleLinkedPo
         }
     }
 
+    const captionMouseLeave = () => {
+        if (document.activeElement !== captionRef.current) {
+            toggleFilesFocus()
+        }
+    }
+
+    const captionMouseEnter = () => {
+        if (document.activeElement !== captionRef.current) {
+            toggleFilesFocus()
+        }
+    }
+
+    const descriptionMouseLeave = () => {
+        if (document.activeElement !== descriptionRef.current) {
+            toggleFilesFocus()
+        }
+    }
+
+    const descriptionMouseEnter = () => {
+        toggleFilesFocus()
+    }
+ 
+    const identifierMouseLeave = () => {
+        if (document.activeElement !== identifierRef.current) {
+            toggleFilesFocus()
+        }
+    }
+
+    const identifierMouseEnter = () => {
+        if (document.activeElement !== captionRef.current) {
+            if (filesAutoFocus) {
+                toggleFilesFocus()
+            }
+        }
+    }
+
+    const toggleFilesFocus = () => {
+        setFilesAutoFocus((prev) => !prev)
+    }
+
     if (togglePostPreview) {
         return (
             <div className="flex flex-col">
@@ -296,7 +341,7 @@ const NewPostForm = ({ initiateCreatingLinkedPost, allowTimerSet, toggleLinkedPo
                         identifier === "" 
                         ?
                         <div className="flex items-center">
-                            <input type="text" placeholder="Add Tag +" list="tag-list" className="w-28 h-12 bg-shadow-green-offset border border-white rounded-lg text-black p-2" onChange={(e) => handleChangeTag(e.target.value)}  />
+                            <input type="text" placeholder="Add Tag +" list="tag-list" ref={identifierRef} className="w-28 h-12 bg-shadow-green-offset border border-white rounded-lg text-black p-2" onChange={(e) => handleChangeTag(e.target.value)} onMouseEnter={identifierMouseEnter} onMouseLeave={identifierMouseLeave} onBlur={toggleFilesFocus} />
                             {
                                 selectedFiles.length !== 0
                                 ?
@@ -337,17 +382,17 @@ const NewPostForm = ({ initiateCreatingLinkedPost, allowTimerSet, toggleLinkedPo
                 </div>
 
                 {/*Text Area for post caption*/}
-                <textarea className="h-20 w-full bg-shadow-green-offset p-2 text-xl" placeholder="Add a caption..." ref={captionRef} value={caption} onChange={(e) => setCaptionOnChange(e.target.value)}/>
+                <textarea className="h-20 w-full bg-shadow-green-offset p-2 text-xl" placeholder="Add a caption..." ref={captionRef} value={caption} onChange={(e) => setCaptionOnChange(e.target.value)} onMouseEnter={captionMouseEnter} onMouseLeave={captionMouseLeave} onBlur={toggleFilesFocus}/>
 
                 {/*Display of selected files*/}
                 {
-                    <NewPostImageDisplay files={selectedFiles} deleteSelectedFile={deleteSelectedFile} />
+                    <NewPostImageDisplay files={selectedFiles} deleteSelectedFile={deleteSelectedFile} filesAutoFocus={filesAutoFocus} />
                 }
 
                 {
                     selectedFiles.length > 0
                     ?
-                    <textarea className="h-20 w-full bg-shadow-green-offset p-2 border-b border-t border-black" placeholder="Add a description..." value={description} onChange={(e) => setDescription(e.target.value)} />
+                    <textarea className="h-20 w-full bg-shadow-green-offset p-2 border-b border-t border-black" placeholder="Add a description..." value={description} ref={descriptionRef} onChange={(e) => setDescription(e.target.value)} onMouseEnter={descriptionMouseEnter} onMouseLeave={descriptionMouseLeave} onBlur={toggleFilesFocus} />
                     :
                     <></>
                 }
