@@ -1,11 +1,15 @@
+import useAuth from "../hooks/useAuth";
 import { PostPreview } from "../modals/Post";
 import PostFilesDisplay from "./PostFilesDisplay";
+import ProfileImgDisplay from "./ProfileImgDisplay";
 
 type params = {
     postObj: PostPreview
 }
 
 const PostPreviewComponent = ({ postObj }: params) => {
+
+    const { user } = useAuth()
 
     return (
         <div className={
@@ -23,8 +27,8 @@ const PostPreviewComponent = ({ postObj }: params) => {
         <div className="flex justify-between p-2 border-b-2 border-shadow-green-offset">
             {/*Profile Data and post manipulation*/}
             <div className="flex">
-                <div className="rounded-full bg-white w-12 h-12">
-                    
+                <div className="rounded-full w-12 h-12 overflow-hidden">
+                    <ProfileImgDisplay imgStr={user?.profileImg}/>
                 </div>
                 <div className="ml-2">
                     <h3 className="text-2xl">{postObj.creatorName}</h3>
@@ -74,7 +78,7 @@ const PostPreviewComponent = ({ postObj }: params) => {
                 ?
                 <></>
                 :
-                <div className="flex mb-1 p-1">
+                <div className="flex mb-1 p-2">
                     <h3 className="bg-shadow-green-offset p-2 rounded-full">{postObj.identifer}</h3>
                 </div>
             }
@@ -131,7 +135,7 @@ const PostPreviewComponent = ({ postObj }: params) => {
                         postObj.description !== ""
                         ?
                         <>
-                            <p className="text-shadow">descrption...</p>
+                            <p className="text-shadow">description...</p>
                             <p className="text-shadow">{postObj.description}</p>
                         </>
                         :                        

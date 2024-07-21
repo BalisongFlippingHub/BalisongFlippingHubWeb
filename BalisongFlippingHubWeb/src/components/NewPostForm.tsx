@@ -3,6 +3,7 @@ import useAuth from "../hooks/useAuth";
 import PostPreviewComponent from "./PostPreview";
 import { CreationPostDTO, PostPreview } from "../modals/Post";
 import NewPostImageDisplay from "./NewPostImageDisplay";
+import ProfileImgDisplay from "./ProfileImgDisplay";
 
 interface params  {
     initiateCreatingLinkedPost?: Function,
@@ -63,6 +64,7 @@ const NewPostForm = ({ initiateCreatingLinkedPost, allowTimerSet, toggleLinkedPo
             }
 
             setIdentifier(e)
+            toggleFilesFocus()
         }
         else {
             if (!identifierList.includes(e)) {
@@ -70,6 +72,7 @@ const NewPostForm = ({ initiateCreatingLinkedPost, allowTimerSet, toggleLinkedPo
             }
     
             setIdentifier(e)
+            toggleFilesFocus()
         }
     }
 
@@ -376,8 +379,8 @@ const NewPostForm = ({ initiateCreatingLinkedPost, allowTimerSet, toggleLinkedPo
                     <input type="file" ref={fileRef} multiple className="collapse" accept=".png,.jpg" value={currentFiles} onChange={(e) => handleFileChange(e)}/>
                     
                     {/*Profile Img Display*/}
-                    <div className="rounded-full border w-12 h-12">
-
+                    <div className="rounded-full border w-12 h-12 overflow-hidden">
+                        <ProfileImgDisplay imgStr={user?.profileImg}/>
                     </div>
                 </div>
 
@@ -392,7 +395,7 @@ const NewPostForm = ({ initiateCreatingLinkedPost, allowTimerSet, toggleLinkedPo
                 {
                     selectedFiles.length > 0
                     ?
-                    <textarea className="h-20 w-full bg-shadow-green-offset p-2 border-b border-t border-black" placeholder="Add a description..." value={description} ref={descriptionRef} onChange={(e) => setDescription(e.target.value)} onMouseEnter={descriptionMouseEnter} onMouseLeave={descriptionMouseLeave} onBlur={toggleFilesFocus} />
+                    <textarea className="h-20 w-full text-shadow bg-shadow-green-offset p-2 border-b border-t border-black" placeholder="Add a description..." value={description} ref={descriptionRef} onChange={(e) => setDescription(e.target.value)} onMouseEnter={descriptionMouseEnter} onMouseLeave={descriptionMouseLeave} onBlur={toggleFilesFocus} />
                     :
                     <></>
                 }

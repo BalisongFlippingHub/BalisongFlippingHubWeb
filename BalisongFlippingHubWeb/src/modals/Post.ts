@@ -11,6 +11,7 @@ export interface Post {
     likes: number,
     identifier: string | null,
     isPrivate: boolean,
+    isAnnouncement: boolean,
     hasTimer: boolean,
     timerValue: number | null
 }

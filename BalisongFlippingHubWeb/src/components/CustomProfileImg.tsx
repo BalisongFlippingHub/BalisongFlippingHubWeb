@@ -5,7 +5,7 @@ import axios from "../api/axios";
 import { AxiosHeaderValue } from "axios";
 import { Buffer } from "buffer";
 
-const ProfileImg = () => {
+const CustomProfileImg = () => {
     const imgRef = useRef<HTMLInputElement>(null)
     
     const [selectedImg, setSelectedImg] = useState("")
@@ -122,4 +122,4 @@ const ProfileImg = () => {
     )
 }
 
-export default ProfileImg; 
+export default CustomProfileImg; 

@@ -1,5 +1,5 @@
 import ProfileBanner from "./ProfileBanner";
-import ProfileImg from "./ProfileImg";
+import CustomProfileImg from "./CustomProfileImg";
 import ProfileData from "./ProfileData";
 import UserProfilePostsComponent from "./UserProfilePostsComponent";
 
@@ -11,7 +11,7 @@ const UserProfilePage = () => {
                 {/*Account Info*/}
                 <div className="w-full h-2/3 flex flex-col items-center">
                     <ProfileBanner />
-                    <ProfileImg />
+                    <CustomProfileImg />
                 </div>
                 <ProfileData />
             </section>
