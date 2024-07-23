@@ -16,7 +16,7 @@ const UserProfilePage = () => {
                 <ProfileData />
             </section>
 
-            <section className="flex justify-center">
+            <section className="flex justify-center bg-shadow-green">
                 <UserProfilePostsComponent />
             </section>
         </>

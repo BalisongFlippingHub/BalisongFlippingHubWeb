@@ -8,7 +8,7 @@ interface params {
 
 const ProfileImgDisplay = ({ imgStr }: params) => {
     const [imgBinaryData, setImgBinaryData] = useState("")
-    const [imgType, setImgType] = useState("") 
+    const [imgType, setImgType] = useState<string | null>("") 
 
 
     useEffect(() => {

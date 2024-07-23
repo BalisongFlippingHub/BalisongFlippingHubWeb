@@ -16,6 +16,17 @@ export interface Post {
     timerValue: number | null
 }
 
+export interface PostCover {
+    id?: string,
+    caption: string | null,
+    coverFile: string | null,
+    comments: number,
+    likes: number,
+    identifier: string | null,
+    isPrivate: boolean,
+    isAnnouncement: boolean
+}
+
 export interface PostPreview {
     id: string, 
     caption: string,

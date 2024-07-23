@@ -1,34 +1,65 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { Post } from "../modals/Post";
+import axios from "../api/axios";
+import useAuth from "../hooks/useAuth";
+import ProfilePostsCoverDisplay from "./ProfilePostsCoverDisplay";
 
 const UserProfilePostsComponent = () => {
     const [activeNavItem, setActiveNavItem] = useState("All")
+    const [posts, setPosts] = useState<Array<Post>>([])
     
-    
+    const { user } = useAuth()
+
     const displayPosts = () => {
         switch(activeNavItem) {
             case "All":
-                break
+                return <ProfilePostsCoverDisplay posts={posts} />
             case "Sell/Trade":
-                break
+                return <ProfilePostsCoverDisplay posts={posts} />
             case "Flipping":
-                break
+                return <ProfilePostsCoverDisplay posts={posts} />
             case "Show Off":
-                break
+                return <ProfilePostsCoverDisplay posts={posts} />
             case "Collection":
-                break
+                return <ProfilePostsCoverDisplay posts={posts} />
             case "Misc.":
-                break
+                return <ProfilePostsCoverDisplay posts={posts} />
             default:
-                break
+                return (
+                    <div>
+                        Error Loading posts...
+                    </div>
+                )
         }
 
        return <div></div>
-    } 
+    }
+
+    useEffect(() => {
+        const getPosts = async() => {
+            await axios.request({
+                url: `/posts/any/${user?.id}/posts`,
+                method: 'get'
+            })
+            .then((res) => {
+                console.log(res)
+                setPosts(res.data)
+            })
+            .catch((err) => {
+               console.log(err)
+            })
+            .finally(() => {
+                
+            })
+        }
+
+        getPosts()
+    },[])
 
     return (
-        <div className="flex justify-center pt-7">
+        <div className="w-full flex flex-col mt-5 mb-5">
             {/*Posts Navigation*/}
-            <ul className="flex text-lg font-semibold">
+            <ul className="flex text-lg font-semibold m-auto">
                 {
                     activeNavItem === "All"
                     ?
@@ -74,12 +105,11 @@ const UserProfilePostsComponent = () => {
                 }
             </ul>
 
-            <div>
-                {/*Display Posts*/}
-                {
-                    displayPosts()
-                }
-            </div>
+            {/*Display Posts*/}
+            {
+                displayPosts()
+            }
+            
         </div>
     )
 }
