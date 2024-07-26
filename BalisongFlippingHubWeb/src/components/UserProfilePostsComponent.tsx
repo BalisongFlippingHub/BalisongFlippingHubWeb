@@ -1,39 +1,57 @@
 import { useEffect, useState } from "react";
-import { Post } from "../modals/Post";
+import { PostCover } from "../modals/Post";
 import axios from "../api/axios";
 import useAuth from "../hooks/useAuth";
-import ProfilePostsCoverDisplay from "./ProfilePostsCoverDisplay";
+import ProfilePostCover from "./ProfilePostCover";
 
 const UserProfilePostsComponent = () => {
     const [activeNavItem, setActiveNavItem] = useState("All")
-    const [posts, setPosts] = useState<Array<Post>>([])
-    
+    const [posts, setPosts] = useState<Array<PostCover>>([])
+    const [activePosts, setActivePosts] = useState<Array<PostCover>>([])
+
     const { user } = useAuth()
 
-    const displayPosts = () => {
+    const getPostsCovers = () => {
+        return activePosts.map((post) => {
+            return <ProfilePostCover post={post} key={post.id}/>
+        })
+    }
+
+    useEffect(() => {
         switch(activeNavItem) {
             case "All":
-                return <ProfilePostsCoverDisplay posts={posts} />
+                setActivePosts(posts)
+                break
             case "Sell/Trade":
-                return <ProfilePostsCoverDisplay posts={posts} />
+                setActivePosts(posts.filter((post) => {
+                    return post.identifier === "Sell/Trade"
+                }))
+                break
             case "Flipping":
-                return <ProfilePostsCoverDisplay posts={posts} />
-            case "Show Off":
-                return <ProfilePostsCoverDisplay posts={posts} />
+                setActivePosts(posts.filter((post) => {
+                    return post.identifier === "Flipping"
+                }))
+                break
+            case "Show-Off":
+                setActivePosts(posts.filter((post) => {
+                    return post.identifier === "Show-Off"
+                }))
+                break
             case "Collection":
-                return <ProfilePostsCoverDisplay posts={posts} />
-            case "Misc.":
-                return <ProfilePostsCoverDisplay posts={posts} />
+                setActivePosts(posts.filter((post) => {
+                    return post.identifier === "Collection"
+                }))
+                break
+            case "Mod-Work":
+                setActivePosts(posts.filter((post) => {
+                    return post.identifier === "Mod-Work"
+                }))
+                break
             default:
-                return (
-                    <div>
-                        Error Loading posts...
-                    </div>
-                )
+                setActivePosts([])
+                break
         }
-
-       return <div></div>
-    }
+    }, [activeNavItem])
 
     useEffect(() => {
         const getPosts = async() => {
@@ -44,6 +62,7 @@ const UserProfilePostsComponent = () => {
             .then((res) => {
                 console.log(res)
                 setPosts(res.data)
+                setActivePosts(res.data)
             })
             .catch((err) => {
                console.log(err)
@@ -57,7 +76,7 @@ const UserProfilePostsComponent = () => {
     },[])
 
     return (
-        <div className="w-full flex flex-col mt-5 mb-5">
+        <div className="w-full flex flex-col mt-5">
             {/*Posts Navigation*/}
             <ul className="flex text-lg font-semibold m-auto">
                 {
@@ -82,11 +101,11 @@ const UserProfilePostsComponent = () => {
                     <li className="p-2 border-r hover:cursor-pointer" onClick={() => setActiveNavItem("Flipping")}>Flipping</li>
                 }
                 {
-                    activeNavItem === "Show Off"
+                    activeNavItem === "Show-Off"
                     ?
-                    <li className="p-2 border-r hover:cursor-pointer bg-shadow-green-offset" onClick={() => setActiveNavItem("Show Off")}>Show Off</li>
+                    <li className="p-2 border-r hover:cursor-pointer bg-shadow-green-offset" onClick={() => setActiveNavItem("Show-Off")}>Show-Off</li>
                     :
-                    <li className="p-2 border-r hover:cursor-pointer" onClick={() => setActiveNavItem("Show Off")}>Show Off</li>
+                    <li className="p-2 border-r hover:cursor-pointer" onClick={() => setActiveNavItem("Show-Off")}>Show-Off</li>
                 }
                 {
                     activeNavItem === "Collection"
@@ -96,19 +115,21 @@ const UserProfilePostsComponent = () => {
                     <li className="p-2 border-r hover:cursor-pointer" onClick={() => setActiveNavItem("Collection")}>Collection</li>
                 }
                 {
-                    activeNavItem === "Misc."
+                    activeNavItem === "Mod-Work"
                     ?
-                    <li className="p-2 border-r hover:cursor-pointer bg-shadow-green-offset" onClick={() => setActiveNavItem("Misc.")}>Misc.</li>
+                    <li className="p-2 border-r hover:cursor-pointer bg-shadow-green-offset" onClick={() => setActiveNavItem("Mod-Work")}>Mod-Work</li>
                     :
-                    <li className="p-2 border-r hover:cursor-pointer" onClick={() => setActiveNavItem("Misc.")}>Misc.</li>
+                    <li className="p-2 border-r hover:cursor-pointer" onClick={() => setActiveNavItem("Mod-Work")}>Mod-Work</li>
 
                 }
             </ul>
 
             {/*Display Posts*/}
+            <div className="w-full flex flex-wrap mt-5">
             {
-                displayPosts()
+                getPostsCovers()
             }
+            </div>
             
         </div>
     )

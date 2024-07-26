@@ -42,14 +42,11 @@ const NewPostForm = ({ initiateCreatingLinkedPost, allowTimerSet, toggleLinkedPo
     const { user } = useAuth()
 
     const identifierList = [
-        "Sell",
-        "Trade",
         "Sell/Trade",
         "Flipping", 
         "Collection", 
         "Show-Off",
         "Mod-Work",
-        "Inquiry"
     ]
 
     const captionOnlyIdentifierList = [

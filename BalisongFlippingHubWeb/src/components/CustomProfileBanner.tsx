@@ -5,7 +5,7 @@ import axios from "../api/axios";
 import { AxiosHeaderValue } from "axios";
 import { Buffer } from "buffer";
 
-const CustomProfileImg = () => {
+const CustomProfileBanner = () => {
     const imgRef = useRef<HTMLInputElement>(null)
     
     const [selectedImg, setSelectedImg] = useState("")
@@ -35,7 +35,7 @@ const CustomProfileImg = () => {
         setIsLoading(true)
 
         await axios.request({
-            url: "/accounts/me/update-profile-img",
+            url: "/accounts/me/update-banner-img",
             method: 'post',
             data: formData, 
             headers: {
@@ -49,14 +49,14 @@ const CustomProfileImg = () => {
             // upon success update user in auth 
             setUser({
                 ...user,
-                profileImg: res.data
+                bannerImg: res.data
             } as Profile)
         })
         .catch((err) => {
             console.log("Update profile img error: ", err)
             setUser({
                 ...user,
-                profileImg: null
+                bannerImg: null
             } as Profile) 
         })
         .finally(() => {
@@ -68,12 +68,12 @@ const CustomProfileImg = () => {
 
     useEffect(() => {
         // check for img string
-        if (user?.profileImg === null || user?.profileImg === "") return;
+        if (user?.bannerImg === null || user?.bannerImg === "") return;
 
         const getImg = async () => {
             setIsLoading(true)
             await axios.request({
-                url: `/file/${user?.profileImg}`,
+                url: `/file/${user?.bannerImg}`,
                 method: 'get',
                 responseType: "arraybuffer"
             })
@@ -93,53 +93,29 @@ const CustomProfileImg = () => {
         getImg()
     }, [user])
 
-    if (fullScreen) {
-        return (
-            <div className="top-0 right-0 left-0 bottom-0 bg-black z-10 fixed hover:cursor-pointer flex justify-center" onClick={() => setFullScreen(false)}>
-                <div className="w-5/6 h-full">
+    return (
+        <div className="w-full h-full flex justify-center items-center bg-shadow-green-offset text-3xl font-bold">
+            <input type="file" ref={imgRef} accept=".png,.jpg" className="invisible absolute" value={selectedImg} onChange={handleImgChange}/>
+        {
+            !user?.bannerImg
+            ?
+            <div onClick={() => imgRef.current?.click()} className="hover:cursor-pointer w-1/2 h-1/2 border border-dashed rounded flex justify-center items-center">
+                <h3 className="bg-inherit">Click to add Img</h3>
+            </div>
+            :
+            <div className="w-full h-full relative">
                 {
                     imgType !== "image/png"
                     ?
-                    <img src={`data:image/png;base64,${imgData}`} className="w-full h-full object-contain" />
+                    <img src={`data:image/png;base64,${imgData}`} className="w-full h-full object-cover" />
                     :
-                    <img src={`data:image/jpeg;base64,${imgData}`} className="w-full h-full object-contain" />
+                    <img src={`data:image/jpeg;base64,${imgData}`} className="w-full h-full object-cover" />
                 }
-                </div>
                 
-                <input type="file" ref={imgRef} value={selectedImg} accept=".png,.jpg" className="invisible absolute" onChange={handleImgChange} />
             </div>
-        )
-    }
-    else {
-        return (
-            <div className="w-52 h-52 bg-white rounded-full flex justify-center items-center overflow-hidden absolute translate-y-52">
-                <input type="file" ref={imgRef} value={selectedImg} accept=".png,.jpg" className="invisible absolute" onChange={handleImgChange}/>
-                {
-                    !isLoading
-                    ?
-                        !user?.profileImg || user?.profileImg === ""
-                        ?
-                        <div className="bg-inherit hover:cursor-pointer" onClick={() => imgRef.current?.click()}>
-                            <h3 className="bg-inherit text-black text-center">Add Profile Img</h3>
-                        </div>
-                        :
-                        <div className="relative w-full h-full hover:cursor-pointer hover:blur" onClick={() => setFullScreen(true)}>
-                            {
-                                imgType !== "image/png"
-                                ?
-                                <img src={`data:image/png;base64,${imgData}`} className="w-full h-full object-cover" />
-                                :
-                                <img src={`data:image/jpeg;base64,${imgData}`} className="w-full h-full object-cover" />
-                            }
-                        </div>
-                    :
-                    <div>
-                        <h3>Loading...</h3>
-                    </div>
-                }
-            </div>
-        )
-    }
+        }
+        </div>
+    )
 }
 
-export default CustomProfileImg; 
+export default CustomProfileBanner;

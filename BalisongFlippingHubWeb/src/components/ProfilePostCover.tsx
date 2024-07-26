@@ -79,7 +79,7 @@ const ProfilePostCover = ({ post }: params) => {
 
             {/*Display identifier*/}
             <div className="absolute top-1 left-1">
-                <h4>{post.identifier}</h4>
+                <h4 className="text-blue font-bold">{post.identifier}</h4>
             </div>
         </div>
     )

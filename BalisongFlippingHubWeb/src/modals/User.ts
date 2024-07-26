@@ -19,4 +19,5 @@ export interface Profile {
 
     displayName?: string | null
     ownedKnives?: Array<null> | null
+    collectionBannerImg?: string | null
 }
