@@ -21,9 +21,10 @@ export default {
       "shadow": "#808080"
     },
     screens: {
-      'sm': '500px',
-      'md': '1000px',
-      'lg': '1500px'
+      'xsm': '100px',
+      'sm': '550px',
+      'md': '950px',
+      'lg': '1310px'
     },
     extend: {},
   },
