@@ -1,7 +1,11 @@
 import { NavLink } from "react-router-dom";
 import useAuth from "../hooks/useAuth";
 
-const HeaderNavbar = () => {
+interface params {
+    closeNavigation: Function
+}
+
+const HeaderNavbar = ({ closeNavigation }: params) => {
     const { isLoggedIn } = useAuth()
 
     const navlinkStyles = ({ isActive }: any) => {
@@ -22,26 +26,31 @@ const HeaderNavbar = () => {
     }
     
     return (
-        <nav className="fixed h-[calc(100%_-_64px)] w-40 translate-y-[64px] border-r border-shadow-green-offset flex flex-col justify-between bg-shadow-green">
+        <nav className="fixed lg:h-[calc(100%_-_64px)] lg:w-40 translate-y-[64px] border-r border-shadow-green-offset flex flex-col justify-between bg-shadow-green md:w-full md:h-full z-8 sm:w-full sm:h-full">
             <div className="flex flex-col">
-                <NavLink to="/community" style={navlinkStyles} className="p-3 pl-4 w-full border-b border-shadow-offset">Community</NavLink>
-                <NavLink to="/tutorial-center" style={navlinkStyles} className="p-3 pl-4 w-full border-b border-shadow-offset">Tutorial Center</NavLink>
-                <NavLink to="/product-world" style={navlinkStyles} className="p-2 pl-4 w-full border-b border-shadow-offset">Product World</NavLink>
+                <NavLink to="/community" style={navlinkStyles} className="p-3 pl-4 w-full border-b border-shadow-offset text-center">Community</NavLink>
+                <NavLink to="/tutorial-center" style={navlinkStyles} className="p-3 pl-4 w-full border-b border-shadow-offset text-center">Tutorial Center</NavLink>
+                <NavLink to="/product-world" style={navlinkStyles} className="p-2 pl-4 w-full border-b border-shadow-offset text-center">Product World</NavLink>
                 {
                     isLoggedIn()
                     ?
                     <>  
                         <span className="bg-black w-full h-10"></span>
-                        <NavLink to="/me" style={navlinkStyles} className="p-2 pl-4 w-full border-b border-shadow-offset"><h1 className="bg-inherit">Profile</h1></NavLink>
-                        <NavLink to="/me/collection" style={profileNavLinkStyles} className="p-2 pl-4 w-full border-b border-shadow-offset"><h1 className="bg-inherit">Collection</h1></NavLink>
-                        <NavLink to="/me/create-post" style={profileNavLinkStyles} className="p-2 pl-4 w-full border-b border-shadow-offset"><h1 className="bg-inherit">Create Post</h1></NavLink>
+                        <NavLink to="/me" style={navlinkStyles} className="p-2 pl-4 w-full border-b border-shadow-offset text-center"><h1 className="bg-inherit">Profile</h1></NavLink>
+                        <NavLink to="/me/collection" style={profileNavLinkStyles} className="p-2 pl-4 w-full border-b border-shadow-offset text-center"><h1 className="bg-inherit">Collection</h1></NavLink>
+                        <NavLink to="/me/create-post" style={profileNavLinkStyles} className="p-2 pl-4 w-full border-b border-shadow-offset text-center"><h1 className="bg-inherit">Create Post</h1></NavLink>
                     </>
                     :
                     <></>
                 }
+
+                
+                <button className="lg:collapse mt-5 text-xl" type="button" onClick={() => closeNavigation()}>X</button>
+                
             </div>
-            <div className="">
-                <h3 className="p-2">All rights reserved.</h3>
+
+            <div className="w-full flex mb-2 justify-center">
+                <h4>@ All rights reserved</h4>
             </div>
         </nav>
     )

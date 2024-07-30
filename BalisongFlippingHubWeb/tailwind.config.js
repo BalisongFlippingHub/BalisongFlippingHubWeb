@@ -20,6 +20,11 @@ export default {
       "shadow-red-offset": "#330000",
       "shadow": "#808080"
     },
+    screens: {
+      'sm': '500px',
+      'md': '1000px',
+      'lg': '1500px'
+    },
     extend: {},
   },
   plugins: [],

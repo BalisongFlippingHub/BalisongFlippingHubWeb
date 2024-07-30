@@ -1,5 +1,9 @@
 
-const SearchBar = () => {
+interface params {
+    toggleSearchBar: Function
+}
+
+const SearchBar = ({ toggleSearchBar }: params) => {
 
     return (
         <div className="">

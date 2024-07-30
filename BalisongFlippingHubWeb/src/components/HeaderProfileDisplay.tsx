@@ -1,10 +1,13 @@
-import useAuth from "../hooks/useAuth";
+
 
 const HeaderProfileDisplay = () => {
-    const { user } = useAuth()
-
     return (
-        <h1 className="mt-1">{user?.email!}</h1>
+        <div className="flex gap-2">
+            <button>N</button>
+            <div className="w-8 h-8 bg-white rounded-full">
+
+            </div>
+        </div>
     )
 }
 

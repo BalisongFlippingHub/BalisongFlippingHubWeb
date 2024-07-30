@@ -1,13 +1,11 @@
 import { Outlet } from "react-router-dom";
 import Header from "../components/Header";
-import HeaderNavbar from "../components/HeaderNavbar";
 
 const MainLayout = () => {
     return (
         <>
             <Header />
-            <HeaderNavbar />
-            <main className="h-screen ml-[calc(160px)] pt-[64px] bg-shadow-green">
+            <main className="h-screen lg:ml-[calc(160px)] lg:pt-[64px] bg-shadow-green">
                 <Outlet />
             </main>
         </>
