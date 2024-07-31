@@ -1,7 +1,9 @@
 import { useNavigate }  from "react-router-dom"
 import HomePageCaurosel from "../components/HomePageCaurosel";
 import HomePageDataDisplay from "../components/HomePageDataDisplay";
-
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
+import { faGlobe, faEarthAmericas } from "@fortawesome/free-solid-svg-icons"
+import { faHubspot } from "@fortawesome/free-brands-svg-icons";
 
 const HomePage = () => {
 
@@ -10,7 +12,7 @@ const HomePage = () => {
     return (
         <>
             <section className="h-full text-lg font-semibold">
-                <div className="h-1/6 flex justify-center items-center text-3xl font-bold border-b border-black xsm:collapse xsm:absolute md:visible md:static">
+                <div className="h-1/6 flex justify-center items-center bg-shadow-green-offset text-3xl font-bold xsm:collapse xsm:absolute md:visible md:static">
                     <h2 className="">Balisong Flipping Center</h2>
                 </div>
 
@@ -24,21 +26,33 @@ const HomePage = () => {
 
                             <h3 className="mt-6 font-semibold text-2xl">Check out the Community</h3>
 
-                            <button onClick={() => navigate("/community")} className="bg-black p-3 rounded mt-2 hover:bg-shadow-green-offset">Community</button>
+                            <button onClick={() => navigate("/community")} className="bg-black p-3 rounded mt-2 hover:bg-shadow-green-offset">
+                                Community
+                                <FontAwesomeIcon icon={faGlobe} className="ml-2" />
+                            </button>
                         </div>
 
                         <span className="bg-black h-1 w-full mt-5 mb-5"></span>
 
-                        <div className="flex text-xl">
+                        <div className="flex text-xl gap-4">
                             <div>
                                 <p className="text-center">Looking to start your flipping career or improve your skills with new tricks with tutorials and slo-mo's?</p>
                                 <h3 className="mt-6 font-semibold text-lg">Check out the Tutorial Center</h3>
-                                <button onClick={() => navigate("/tutorial-center")} className="bg-black p-3 rounded mt-2 hover:bg-shadow-green-offset">Tutorial Center</button>
+                                <button onClick={() => navigate("/tutorial-center")} className="bg-black p-3 rounded mt-2 hover:bg-shadow-green-offset">
+                                    Tutorial Center
+                                    <FontAwesomeIcon icon={faHubspot} className="ml-2" />
+                                </button>
                             </div>
+
+                            <span className="bg-black h-full w-3 rounded"></span>
+
                             <div>
                                 <p className="text-center">Want to check out the available prodcucts, biggest makers, or looking for info on a specific knife? </p>
                                 <h3 className="mt-6 font-semibold text-lg">Check out the Product World</h3>
-                                <button onClick={() => navigate("/product-world")} className="bg-black p-3 rounded mt-2 hover:bg-shadow-green-offset">Product World</button>
+                                <button onClick={() => navigate("/product-world")} className="bg-black p-3 rounded mt-2 hover:bg-shadow-green-offset">
+                                    Product World
+                                    <FontAwesomeIcon icon={faEarthAmericas} className="ml-2" />
+                                </button>
                             </div>
                         </div>
                     </div>

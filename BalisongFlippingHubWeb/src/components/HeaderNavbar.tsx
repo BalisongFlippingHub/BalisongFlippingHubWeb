@@ -1,11 +1,10 @@
 import { NavLink } from "react-router-dom";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
+import { faGlobe, faEarthAmericas } from "@fortawesome/free-solid-svg-icons"
+import { faHubspot } from "@fortawesome/free-brands-svg-icons";
 import useAuth from "../hooks/useAuth";
 
-interface params {
-    closeNavigation: Function
-}
-
-const HeaderNavbar = ({ closeNavigation }: params) => {
+const HeaderNavbar = () => {
     const { isLoggedIn } = useAuth()
 
     const navlinkStyles = ({ isActive }: any) => {
@@ -28,9 +27,20 @@ const HeaderNavbar = ({ closeNavigation }: params) => {
     return (
         <nav className="fixed lg:h-[calc(100%_-_64px)] lg:w-40 translate-y-[64px] border-r border-shadow-green-offset flex flex-col justify-between bg-shadow-green z-8 xsm:w-full xsm:h-full">
             <div className="flex flex-col">
-                <NavLink to="/community" style={navlinkStyles} className="p-3 pl-4 w-full border-b border-shadow-offset text-center">Community</NavLink>
-                <NavLink to="/tutorial-center" style={navlinkStyles} className="p-3 pl-4 w-full border-b border-shadow-offset text-center">Tutorial Center</NavLink>
-                <NavLink to="/product-world" style={navlinkStyles} className="p-2 pl-4 w-full border-b border-shadow-offset text-center">Product World</NavLink>
+                <NavLink to="/community" style={navlinkStyles} className="p-3 pl-4 w-full border-b border-shadow-offset text-center flex items-center justify-around">
+                    <h1>Communtiy</h1>
+                    <FontAwesomeIcon icon={faGlobe}/>
+                </NavLink>
+
+                <NavLink to="/tutorial-center" style={navlinkStyles} className="p-3 pl-4 w-full border-b border-shadow-offset text-center flex items-center justify-around">
+                    <h1>Tutorial Center</h1>
+                    <FontAwesomeIcon icon={faHubspot} />
+                </NavLink>
+
+                <NavLink to="/product-world" style={navlinkStyles} className="p-2 pl-4 w-full border-b border-shadow-offset text-center flex items-center justify-around">
+                    <h1>Product World</h1>
+                    <FontAwesomeIcon icon={faEarthAmericas}/>
+                </NavLink>
                 {
                     isLoggedIn()
                     ?
@@ -43,9 +53,6 @@ const HeaderNavbar = ({ closeNavigation }: params) => {
                     :
                     <></>
                 }
-
-                
-                <button className="lg:collapse mt-5 text-xl" type="button" onClick={() => closeNavigation()}>X</button>
             </div>
 
             <div className="w-full flex flex-col justify-center">
