@@ -112,7 +112,7 @@ const CustomProfileImg = () => {
     }
     else {
         return (
-            <div className="w-52 h-52 bg-white rounded-full flex justify-center items-center overflow-hidden absolute translate-y-52">
+            <div className="lg:w-52 lg:h-52 md:w-48 md:h-48 sm:w-40 sm:h-40 xsm:h-36 xsm:w-36 bg-white rounded-full flex justify-center items-center overflow-hidden absolute bottom-0 lg:translate-y-[102px] md:translate-y-[96px] sm:translate-y-[82px] xsm:translate-y-[72px]">
                 <input type="file" ref={imgRef} value={selectedImg} accept=".png,.jpg" className="invisible absolute" onChange={handleImgChange}/>
                 {
                     !isLoading

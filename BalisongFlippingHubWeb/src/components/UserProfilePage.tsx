@@ -8,9 +8,9 @@ const UserProfilePage = () => {
      
     return (
         <>
-            <section className="text-lg font-semibold border-b h-2/5 flex flex-col justify-between">
+            <section className="text-lg font-semibold border-b flex flex-col justify-between">
                 {/*Account Info*/}
-                <div className="w-full h-2/3 flex flex-col items-center">
+                <div className="w-full flex flex-col items-center lg:h-80 md:h-72 sm:h-64 xsm:h-52 relative">
                     <CustomProfileBanner />
                     <CustomProfileImg />
                 </div>

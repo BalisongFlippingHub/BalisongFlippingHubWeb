@@ -1,10 +1,12 @@
 import { SetStateAction, createContext, useEffect, useState } from "react";
 import { Profile } from "../modals/User";
+import { useNavigate } from "react-router-dom";
 
 export type AuthContextType = {
     user: Profile | null,
     token: string | null,
     newlyCreatedPost: string,
+    logout: () => void,
     isLoggedIn: () => boolean; 
     setUser: React.Dispatch<SetStateAction<Profile | null>>,
     setToken: React.Dispatch<SetStateAction<string | null>>,
@@ -19,6 +21,8 @@ export const AuthContextProvider: React.FC<{children: React.ReactNode}> = ({ chi
     const [newlyCreatedPost, setNewlyCreatedPost] = useState<string>("")
 
     const [isReady, setIsReady] = useState(false)
+
+    const navigate = useNavigate()
 
     useEffect(() => {
         // check for user already logged in
@@ -40,13 +44,17 @@ export const AuthContextProvider: React.FC<{children: React.ReactNode}> = ({ chi
     }, [])
 
     const isLoggedIn = () => {
-        console.log("checking log in status: " + !!user)
-
         return !!user; 
     }
 
+    const logout = () => {
+        setUser(null)
+        setToken(null)
+        navigate("/login")
+    }
+
     return (
-        <AuthContext.Provider value={{ user, token, newlyCreatedPost, isLoggedIn, setUser, setToken, setNewlyCreatedPost}}>
+        <AuthContext.Provider value={{ user, token, newlyCreatedPost, logout, isLoggedIn, setUser, setToken, setNewlyCreatedPost}}>
             {
                 isReady
                 ?

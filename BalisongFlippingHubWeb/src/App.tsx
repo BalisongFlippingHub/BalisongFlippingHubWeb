@@ -11,6 +11,9 @@ import HomePage from './pages/HomePage'
 import CommunityPage from './pages/CommunityPage'
 import CreatePostPage from './pages/CreatePostPage'
 import UserCollectionPage from './pages/UserCollectionPage'
+import ProfileConfigurePage from './pages/ProfileConfigurePage'
+import AboutPage from './pages/AboutPage'
+import ContactUsPage from './pages/ContactUsPage'
 
 const App = () => {
 
@@ -22,8 +25,10 @@ const App = () => {
         <Route path="/community" element={<CommunityPage />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/register" element={<RegisterPage />} />
-        <Route path="tutorial-center" element={<TutorialCenterPage />} />
-        <Route path="product-world" element={<ProductWorldPage />} />
+        <Route path="/tutorial-center" element={<TutorialCenterPage />} />
+        <Route path="/product-world" element={<ProductWorldPage />} />
+        <Route path="/about-page" element={<AboutPage />} />
+        <Route path="/contact-us" element={<ContactUsPage />} />
         <Route path="/unauthorized" element={<h2>Unaothorized</h2>} />
 
         {/*Protected Routes*/}
@@ -31,7 +36,11 @@ const App = () => {
           <Route path="/me" element={<ProfilePage />} />
         </Route>
 
-        <Route element={<ProtectedRoutes allowedRoles={["MAKER", "USER", "ADMIN"]} />}>
+        <Route element={<ProtectedRoutes allowedRoles={["MAKER", "USER"]} />}>
+          <Route path="/me/configure" element={<ProfileConfigurePage />} />
+        </Route>
+
+        <Route element={<ProtectedRoutes allowedRoles={["MAKER", "USER"]} />}>
           <Route path="/me/collection" element={<UserCollectionPage />} />
         </Route>
 

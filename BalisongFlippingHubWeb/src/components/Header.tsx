@@ -7,7 +7,12 @@ import SearchBar from "./SearchBar";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBarsStaggered, faMagnifyingGlass, faUserPlus, faCircleUser } from "@fortawesome/free-solid-svg-icons";
 
-const Navbar = () => {
+interface params {
+    lgScreenFullNavDisplay: boolean,
+    toggleLgScreenFullNavDisplay: Function
+}
+
+const Navbar = ({ toggleLgScreenFullNavDisplay, lgScreenFullNavDisplay }: params) => {
     const [navToggle, toggleNav] = useState(false)
     const [searchBarToggle, setSearchBarToggle] = useState(false)
     const [accountToggle, setAccountToggle] = useState(false)
@@ -44,7 +49,7 @@ const Navbar = () => {
 
     return (
         <>
-            <header className="flex xsm:flex-col md:flex-row fixed md:justify-between xsm:justify-center xsm:items-center h-16 w-full p-3 border border-shadow-green-offset bg-shadow-green">
+            <header className="flex xsm:flex-col md:flex-row fixed md:justify-between xsm:justify-center xsm:items-center h-16 w-full p-3 border border-shadow-green-offset bg-shadow-green z-10">
             {
                 searchBarToggle
                 ?
@@ -55,13 +60,19 @@ const Navbar = () => {
 
                     <div className="flex items-center gap-3 xsm:collapse xsm:absolute md:visible md:static">
                     
-                    {
-                        !navToggle
-                        ?
-                        <FontAwesomeIcon icon={faBarsStaggered} onClick={() => toggleNav((prev) => !prev)} className="hover:cursor-pointer" />
-                        :
-                        <button type="button" onClick={() => toggleNav((prev) => !prev)} >X</button>
-                    }
+                    <div className="lg:absolute lg:collapse md:visible md:static">
+                        {
+                            !navToggle
+                            ?
+                            <FontAwesomeIcon icon={faBarsStaggered} onClick={() => toggleNav((prev) => !prev)} className="hover:cursor-pointer" />
+                            :
+                            <button type="button" className="" onClick={() => toggleNav((prev) => !prev)}>X</button>
+                        }
+                    </div>
+
+                    <div className="xsm:collapse xsm:absolute lg:visible lg:static">
+                        <FontAwesomeIcon icon={faBarsStaggered} onClick={() => toggleLgScreenFullNavDisplay()} className="hover:cursor-pointer" />
+                    </div>
 
                     <h1 className="hover:cursor-pointer md:text-2xl sm:text-md" onClick={() => navigate("/")}>Balisong Flipping Center</h1>
                     </div>
@@ -78,13 +89,19 @@ const Navbar = () => {
                 :
                 <>
                     <div className="flex items-center gap-3 xsm:w-full xsm:justify-between md:w-auto">
+                        <div className="lg:absolute lg:collapse md:visible md:static">
                         {
                             !navToggle
                             ?
                             <FontAwesomeIcon icon={faBarsStaggered} onClick={() => toggleNav((prev) => !prev)} className="hover:cursor-pointer" />
                             :
-                            <button type="button" onClick={() => toggleNav((prev) => !prev)}>X</button>
+                            <button type="button" className="" onClick={() => toggleNav((prev) => !prev)}>X</button>
                         }
+                        </div>
+
+                        <div className="xsm:collapse xsm:absolute lg:visible lg:static">
+                            <FontAwesomeIcon icon={faBarsStaggered} onClick={() => toggleLgScreenFullNavDisplay()} className="hover:cursor-pointer" />
+                        </div>
 
                         <h1 className="hover:cursor-pointer sm:text-2xl xsm:text-xl" onClick={() => navigate("/")}>Balisong Flipping Center</h1>
                         
@@ -94,7 +111,7 @@ const Navbar = () => {
                                 isLoggedIn()
                                 ?
                                 <div>
-                                    <HeaderProfileDisplay relevant={true}/>
+                                    <HeaderProfileDisplay relevant={true} />
                                 </div>
                                 :
                                 <div className="relative">
@@ -135,18 +152,18 @@ const Navbar = () => {
 
             </header>
 
-            <aside className="">
+            <aside className="lg:collapse lg:absolute md:visible md:static">
                 {
                     navToggle
                     ?
-                    <HeaderNavbar />
+                    <HeaderNavbar lgScreenFullNavDisplay={false} />
                     :
                     <></>
                 }
             </aside>
 
             <aside className="xsm:collapse lg:visible">
-                <HeaderNavbar  />
+                <HeaderNavbar  lgScreenFullNavDisplay={lgScreenFullNavDisplay} />
             </aside>
         </>
     )
