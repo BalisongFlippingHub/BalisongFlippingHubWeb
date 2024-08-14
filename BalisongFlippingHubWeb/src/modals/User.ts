@@ -1,23 +1,23 @@
 
 export interface Profile {
+    /*All Profiles Data*/
     id: string | null,
     email: string | null,  
-    role: String | null, 
     posts: Array<string>,
-    profileImg: string | null,
-    bannerImg: string | null,
+    accountCreationDate: Date | null
+    role: string 
 
-    compnayName?: string | null,
-    companyDuration?: DoubleRange | null,
-    products?: Array<null>,
-    services?: Array<null>,
+    /*Profile Data specific for Users*/
     facebookLink?: string | null,
     instagramLink?: string | null,
     twitterLink?: string | null,
+    youtubeLink?: string | null,
+    redditLink?: string | null,
+    discordLink?: string | null,
     personalEmailLink?: string | null,
     personalWebsiteLink?: string | null,
 
+    profileImg?: string | null,
+    bannerImg?: string | null,
     displayName?: string | null
-    ownedKnives?: Array<null> | null
-    collectionBannerImg?: string | null
 }

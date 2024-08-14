@@ -152,7 +152,7 @@ const Navbar = ({ toggleLgScreenFullNavDisplay, lgScreenFullNavDisplay }: params
 
             </header>
 
-            <aside className="lg:collapse lg:absolute md:visible md:static">
+            <aside className="lg:collapse lg:absolute md:visible md:static z-10">
                 {
                     navToggle
                     ?
@@ -162,7 +162,7 @@ const Navbar = ({ toggleLgScreenFullNavDisplay, lgScreenFullNavDisplay }: params
                 }
             </aside>
 
-            <aside className="xsm:collapse lg:visible">
+            <aside className="xsm:collapse lg:visible z-10">
                 <HeaderNavbar  lgScreenFullNavDisplay={lgScreenFullNavDisplay} />
             </aside>
         </>

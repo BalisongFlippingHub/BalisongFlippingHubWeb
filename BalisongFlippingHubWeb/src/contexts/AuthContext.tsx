@@ -7,6 +7,7 @@ export type AuthContextType = {
     token: string | null,
     newlyCreatedPost: string,
     logout: () => void,
+    login: () => void,
     isLoggedIn: () => boolean; 
     setUser: React.Dispatch<SetStateAction<Profile | null>>,
     setToken: React.Dispatch<SetStateAction<string | null>>,
@@ -18,33 +19,28 @@ export const AuthContext = createContext<AuthContextType>({} as AuthContextType)
 export const AuthContextProvider: React.FC<{children: React.ReactNode}> = ({ children }) => {
     const [user, setUser] = useState<Profile | null>(null)
     const [token, setToken] = useState<string | null>(null)
+
+    const [rememberInfo, setToRememberInfo] = useState<boolean>(() => {
+        if (localStorage.getItem("remember-user-info")) {
+            return true
+        }
+        else {
+            return false
+        }
+    })
+    
     const [newlyCreatedPost, setNewlyCreatedPost] = useState<string>("")
 
     const [isReady, setIsReady] = useState(false)
 
     const navigate = useNavigate()
 
-    useEffect(() => {
-        // check for user already logged in
-        setToken("Fill")
-        setUser({
-            id: "1",
-            email: "tzenisekj@gmail.com",
-            role: "USER",
-            posts: [],
-            profileImg: null,
-            bannerImg: null,
-            displayName: "QSwKLegacy",
-            ownedKnives: [],
-            facebookLink: "",
-            instagramLink: "",
-            twitterLink: "",
-        })
-        setIsReady(true);
-    }, [])
-
     const isLoggedIn = () => {
         return !!user; 
+    }
+
+    const login = () => {
+
     }
 
     const logout = () => {
@@ -53,8 +49,29 @@ export const AuthContextProvider: React.FC<{children: React.ReactNode}> = ({ chi
         navigate("/login")
     }
 
+    useEffect(() => {
+        // check for user already logged in
+        // setToken("Fill")
+        // setUser({
+        //     id: "1",
+        //     displayName: "QSwKLegacy",
+        //     email: "tzenisekj@gmail.com ",
+        //     role: "USER",
+        //     profileImg: "", 
+        //     bannerImg: "",
+        //     facebookLink: "",
+        //     twitterLink: "",
+        //     youtubeLink: "", 
+        //     instagramLink: "",
+        //     discordLink: "",
+        //     posts: [],
+        //     accountCreationDate: null
+        // })
+        setIsReady(true);
+    }, [])
+
     return (
-        <AuthContext.Provider value={{ user, token, newlyCreatedPost, logout, isLoggedIn, setUser, setToken, setNewlyCreatedPost}}>
+        <AuthContext.Provider value={{ user, token, newlyCreatedPost, logout, login, isLoggedIn, setUser, setToken, setNewlyCreatedPost}}>
             {
                 isReady
                 ?

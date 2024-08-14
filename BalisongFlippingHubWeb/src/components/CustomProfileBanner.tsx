@@ -94,7 +94,7 @@ const CustomProfileBanner = () => {
     }, [user])
 
     return (
-        <div className="w-full h-full flex justify-center items-center bg-shadow-green-offset text-3xl font-bold z-1">
+        <div className="w-full h-full flex justify-center items-center bg-shadow-green-offset text-3xl font-bold">
             <input type="file" ref={imgRef} accept=".png,.jpg" className="invisible absolute" value={selectedImg} onChange={handleImgChange}/>
         {
             !user?.bannerImg

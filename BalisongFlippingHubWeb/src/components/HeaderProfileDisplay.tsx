@@ -37,7 +37,7 @@ const HeaderProfileDisplay = ({ relevant }: params) => {
             <div className="flex gap-2 hover:cursor-pointer" onClick={() => displayUserNav((prev) => !prev)}>
                 <div className="w-8 h-8 flex items-center justify-center rounded-full bg-black rounded-full">
                 {
-                    user?.profileImg === null
+                    user?.profileImg === null || user?.profileImg === ""
                     ?
                     <FontAwesomeIcon icon={faUser} />
                     :

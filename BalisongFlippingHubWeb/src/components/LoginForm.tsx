@@ -81,8 +81,8 @@ const LoginForm = () => {
 
     /*HTML return for login form component*/
     return (
-        <section className="flex w-full h-full">
-            <form className="m-auto p-6 flex flex-col bg-shadow-green-offset rounded-lg w-2/6 text-xl" onSubmit={handleSubmit}>
+        <section className="flex w-full h-full justify-center items-center">
+            <form className="p-8 flex flex-col bg-shadow-green-offset rounded-lg md:w-2/6 xsm:w-4/5 text-xl" onSubmit={handleSubmit}>
                 <h2 className="m-auto text-3xl font-bold bg-shadow-green-offset">Login</h2>
 
                 {/*Display of errors or alerts during use of login form*/}

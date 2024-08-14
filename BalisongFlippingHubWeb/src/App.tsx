@@ -32,19 +32,19 @@ const App = () => {
         <Route path="/unauthorized" element={<h2>Unaothorized</h2>} />
 
         {/*Protected Routes*/}
-        <Route element={<ProtectedRoutes allowedRoles={["MAKER", "USER", "ADMIN"]} />}>
+        <Route element={<ProtectedRoutes allowedRoles={["USER", "ADMIN"]} />}>
           <Route path="/me" element={<ProfilePage />} />
         </Route>
 
-        <Route element={<ProtectedRoutes allowedRoles={["MAKER", "USER"]} />}>
+        <Route element={<ProtectedRoutes allowedRoles={["USER"]} />}>
           <Route path="/me/configure" element={<ProfileConfigurePage />} />
         </Route>
 
-        <Route element={<ProtectedRoutes allowedRoles={["MAKER", "USER"]} />}>
+        <Route element={<ProtectedRoutes allowedRoles={["USER"]} />}>
           <Route path="/me/collection" element={<UserCollectionPage />} />
         </Route>
 
-        <Route element={<ProtectedRoutes allowedRoles={["MAKER", "USER", "ADMIN"]} />}>
+        <Route element={<ProtectedRoutes allowedRoles={["USER", "ADMIN"]} />}>
           <Route path="/me/create-post" element={<CreatePostPage />} />
         </Route>
 

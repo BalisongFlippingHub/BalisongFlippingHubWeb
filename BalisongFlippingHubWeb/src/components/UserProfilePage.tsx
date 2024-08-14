@@ -1,4 +1,3 @@
-
 import CustomProfileBanner from "./CustomProfileBanner";
 import CustomProfileImg from "./CustomProfileImg";
 import ProfileData from "./ProfileData";
@@ -14,6 +13,7 @@ const UserProfilePage = () => {
                     <CustomProfileBanner />
                     <CustomProfileImg />
                 </div>
+
                 <ProfileData />
             </section>
 
