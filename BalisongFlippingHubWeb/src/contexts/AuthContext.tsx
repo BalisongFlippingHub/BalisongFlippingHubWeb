@@ -5,13 +5,16 @@ import { useNavigate } from "react-router-dom";
 export type AuthContextType = {
     user: Profile | null,
     token: string | null,
+    rememberInfo: boolean,
     newlyCreatedPost: string,
     logout: () => void,
     login: () => void,
+    toggleRememberInfo: (email?: string, password?: string) => void,
     isLoggedIn: () => boolean; 
     setUser: React.Dispatch<SetStateAction<Profile | null>>,
     setToken: React.Dispatch<SetStateAction<string | null>>,
-    setNewlyCreatedPost: React.Dispatch<SetStateAction<string>>
+    setNewlyCreatedPost: React.Dispatch<SetStateAction<string>>,
+    setToRememberInfo: React.Dispatch<SetStateAction<boolean>>
 }
 
 export const AuthContext = createContext<AuthContextType>({} as AuthContextType);
@@ -43,6 +46,19 @@ export const AuthContextProvider: React.FC<{children: React.ReactNode}> = ({ chi
 
     }
 
+    const toggleRememberInfo = (email?: string, password?: string) => {
+        if (rememberInfo) {
+            if (email && password) {
+                localStorage.setItem("remembered-user-email", email)
+                localStorage.setItem("remembered-user-password", password)  
+            }
+        }
+        else {
+            localStorage.removeItem("remembered-user-email")
+            localStorage.removeItem("remembered-user-password")
+        }
+    }
+
     const logout = () => {
         setUser(null)
         setToken(null)
@@ -71,7 +87,7 @@ export const AuthContextProvider: React.FC<{children: React.ReactNode}> = ({ chi
     }, [])
 
     return (
-        <AuthContext.Provider value={{ user, token, newlyCreatedPost, logout, login, isLoggedIn, setUser, setToken, setNewlyCreatedPost}}>
+        <AuthContext.Provider value={{ user, token, rememberInfo, newlyCreatedPost, logout, login, toggleRememberInfo, isLoggedIn, setUser, setToken, setNewlyCreatedPost, setToRememberInfo}}>
             {
                 isReady
                 ?
