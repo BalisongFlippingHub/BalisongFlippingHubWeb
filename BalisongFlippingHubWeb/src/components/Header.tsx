@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import SearchBar from "./SearchBar";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBarsStaggered, faMagnifyingGlass, faUserPlus, faCircleUser } from "@fortawesome/free-solid-svg-icons";
+import HeaderNavbarBottom from "./HeaderNavbarBottom";
 
 interface params {
     lgScreenFullNavDisplay: boolean,
@@ -49,7 +50,7 @@ const Navbar = ({ toggleLgScreenFullNavDisplay, lgScreenFullNavDisplay }: params
 
     return (
         <>
-            <header className="flex xsm:flex-col md:flex-row fixed md:justify-between xsm:justify-center xsm:items-center h-16 w-full p-3 border border-shadow-green-offset bg-shadow-green z-10">
+            <header className="flex xsm:flex-col md:flex-row fixed md:justify-between xsm:justify-center xsm:items-center h-16 w-full p-3 border border-shadow-green-offset bg-black z-10">
             {
                 searchBarToggle
                 ?
@@ -164,6 +165,10 @@ const Navbar = ({ toggleLgScreenFullNavDisplay, lgScreenFullNavDisplay }: params
 
             <aside className="xsm:collapse lg:visible z-10">
                 <HeaderNavbar  lgScreenFullNavDisplay={lgScreenFullNavDisplay} />
+            </aside>
+
+            <aside className="lg:collapse lg:absolute fixed bg-black bottom-0 w-full z-10 flex justify-center">
+                <HeaderNavbarBottom />
             </aside>
         </>
     )

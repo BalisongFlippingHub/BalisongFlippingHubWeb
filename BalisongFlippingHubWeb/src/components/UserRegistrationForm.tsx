@@ -124,7 +124,7 @@ const UserRegistrationForm = () => {
             method: 'post',
             data: {
                 email: email,
-                accountName: displayName,
+                displayName: displayName,
                 password: password,
             }
         })

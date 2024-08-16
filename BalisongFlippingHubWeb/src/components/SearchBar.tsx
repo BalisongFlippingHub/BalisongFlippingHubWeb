@@ -17,7 +17,7 @@ const SearchBar = ({ toggleSearchBar }: params) => {
         <div className="relative">
             <div className="flex items-center w-96">
                 <input placeholder="Search..." className="p-2 w-full bg-shadow-green-offset" onChange={handleOnChange}/>
-                <FontAwesomeIcon icon={faMagnifyingGlass} className="p-2 bg-black h-7 hover:cursor-pointer" />
+                <FontAwesomeIcon icon={faMagnifyingGlass} className="p-2 h-7 hover:cursor-pointer" />
                 <button className="md:collapse ml-2 text-lg hover:cursor-pointer" type="button" onClick={() => toggleSearchBar()}>X</button>
             </div>
 

@@ -50,9 +50,15 @@ const HeaderProfileDisplay = ({ relevant }: params) => {
                     ?
                     <></>
                     :
-                    <div className="flex items-center xsm:collapse xsm:absolute md:visible md:static">
-                        <h3>{user?.displayName}</h3>
-                    </div>
+                        user?.displayName
+                        ?
+                        <div className="flex items-center xsm:collapse xsm:absolute md:visible md:static">
+                            <h3>{user?.displayName}</h3>
+                        </div>
+                        :
+                        <div className="flex items-center xsm:collapse xsm:absolute lg:visible lg:static">
+                            <h3>{user?.id}</h3>
+                        </div>
                 }
             </div>
 

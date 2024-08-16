@@ -8,7 +8,7 @@ const ProfileData = () => {
     const { user } = useAuth()
     const navigate = useNavigate()
 
-    if (user?.role === "MAKER") {
+    if (user?.role === "ADMIN") {
         return (
             <div>
 
@@ -23,7 +23,13 @@ const ProfileData = () => {
                     <div className="flex">
                         {/*Display User Identification*/}
                         <div className="flex flex-col ">
-                            <h3 className="text-3xl">{user?.displayName}</h3>
+                            {
+                                user?.displayName
+                                ?
+                                <h3 className="text-3xl">{user?.displayName}</h3>
+                                :
+                                <h3>{user?.id}</h3>
+                            }
                             <h6>3 Months</h6>
                         </div>
 

@@ -25,7 +25,7 @@ const LoginForm = () => {
 
     // context functions
     const navigate = useNavigate()
-    const { setUser, setToken, toggleRememberInfo, rememberInfo, setToRememberInfo } = useAuth()
+    const { toggleRememberInfo, rememberInfo, setToRememberInfo, login } = useAuth()
 
     // on mount function
     useEffect(() => {
@@ -87,8 +87,8 @@ const LoginForm = () => {
                     {/*Clear User Info */}
                     toggleRememberInfo()
                 }
-                setToken(res.data.token)
-                setUser(res.data.account)
+
+                login(res.data.token, res.data.account)
                 navigate("/community")
             }
         })

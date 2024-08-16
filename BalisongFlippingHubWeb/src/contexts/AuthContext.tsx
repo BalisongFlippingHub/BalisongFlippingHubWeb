@@ -8,7 +8,7 @@ export type AuthContextType = {
     rememberInfo: boolean,
     newlyCreatedPost: string,
     logout: () => void,
-    login: () => void,
+    login: (passed_token: string, passed_user: Profile) => void,
     toggleRememberInfo: (email?: string, password?: string) => void,
     isLoggedIn: () => boolean; 
     setUser: React.Dispatch<SetStateAction<Profile | null>>,
@@ -23,14 +23,7 @@ export const AuthContextProvider: React.FC<{children: React.ReactNode}> = ({ chi
     const [user, setUser] = useState<Profile | null>(null)
     const [token, setToken] = useState<string | null>(null)
 
-    const [rememberInfo, setToRememberInfo] = useState<boolean>(() => {
-        if (localStorage.getItem("remember-user-info")) {
-            return true
-        }
-        else {
-            return false
-        }
-    })
+    const [rememberInfo, setToRememberInfo] = useState<boolean>(false)
     
     const [newlyCreatedPost, setNewlyCreatedPost] = useState<string>("")
 
@@ -42,8 +35,11 @@ export const AuthContextProvider: React.FC<{children: React.ReactNode}> = ({ chi
         return !!user; 
     }
 
-    const login = () => {
-
+    const login = (passed_token: string, passed_user: Profile) => {
+        setUser(passed_user)
+        setToken(passed_token)
+        localStorage.setItem("saved-user", JSON.stringify(user))
+        localStorage.setItem("saved-token", JSON.stringify(token))
     }
 
     const toggleRememberInfo = (email?: string, password?: string) => {
@@ -62,15 +58,27 @@ export const AuthContextProvider: React.FC<{children: React.ReactNode}> = ({ chi
     const logout = () => {
         setUser(null)
         setToken(null)
+
+        localStorage.removeItem("saved-user")
+        localStorage.removeItem("saved-token")
+
         navigate("/login")
     }
 
     useEffect(() => {
         // check for user already logged in
+        const user_val = localStorage.getItem("saved-user")
+        const token_val = localStorage.getItem("saved-token")
+
+        if (user_val && token_val) {
+            setUser(JSON.parse(user_val))
+            setToken(JSON.parse(token_val))
+        }
+
         // setToken("Fill")
         // setUser({
         //     id: "1",
-        //     displayName: "QSwKLegacy",
+        //     displayName: "",
         //     email: "tzenisekj@gmail.com ",
         //     role: "USER",
         //     profileImg: "", 
