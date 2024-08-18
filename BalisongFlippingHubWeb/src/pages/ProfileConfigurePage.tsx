@@ -2,9 +2,9 @@
 const ProfileConfigurePage = () => {
 
     return (
-        <div>
+        <section className="w-full h-full">
 
-        </div>
+        </section>
     )
 }
 

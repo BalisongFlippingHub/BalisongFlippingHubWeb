@@ -246,23 +246,6 @@ const NewPostForm = ({ initiateCreatingLinkedPost, allowTimerSet, toggleLinkedPo
                 timeInHours: timerValue
             } as PostPreview
         }
-        else if (user?.role === "MAKER") {
-            return {
-                id: "1", 
-                caption: caption,
-                description: description,
-                creatorName: user?.compnayName,
-                creatorProfileImg: user?.profileImg,
-                creationDate: "Now",
-                files: selectedFiles,
-                likes: 0,
-                identifer: identifier,
-                isAnnouncement: isAnnouncement,
-                isPrivatePost: isPrivatePost,
-                hasTimer: timerSet,
-                timeInHours: timerValue
-            } as PostPreview
-        }
         else {
             return {
                 id: "1", 

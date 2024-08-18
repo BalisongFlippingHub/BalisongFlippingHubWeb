@@ -8,7 +8,7 @@ interface params {
 }
 
 const PostFilesDisplay = ({ files, filesStr }: params) => {
-    const [filesData, setFilesData] = useState<Array<BufferData>>([])
+    const [filesData, setFilesData] = useState<Array<ImageBufferData>>([])
     const [currentFileIndex, setCurrentfileIndex] = useState(0)
     const [fullScreen, setFullScreen] = useState(false)
 
@@ -81,7 +81,7 @@ const PostFilesDisplay = ({ files, filesStr }: params) => {
     useEffect(() => {
         if (!files) {
             if (filesStr) {
-                const filesArr: Array<BufferData> = []
+                const filesArr: Array<ImageBufferData> = []
                 const getFiles = async() => {
                     for (var i = 0; i < filesStr?.length; ++i) {
                         await axios.request({
@@ -92,8 +92,9 @@ const PostFilesDisplay = ({ files, filesStr }: params) => {
                         .then((res) => {
                             filesArr.push({
                                 data: Buffer.from(res.data, 'binary').toString('base64'),
+                                /*@ts-ignore*/
                                 type: res.headers.get("Content-Type")
-                            } as BufferData)
+                            } as ImageBufferData)
                         })
                         .catch((err) => {
                             console.log("Error getting img: ", err)
@@ -211,7 +212,7 @@ const PostFilesDisplay = ({ files, filesStr }: params) => {
             }  
         }
     }
-    catch(e) {
+    catch(e: any) {
         return (
             <div>
                 <p>{e.toString()}</p>

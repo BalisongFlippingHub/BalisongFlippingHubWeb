@@ -167,9 +167,15 @@ const Navbar = ({ toggleLgScreenFullNavDisplay, lgScreenFullNavDisplay }: params
                 <HeaderNavbar  lgScreenFullNavDisplay={lgScreenFullNavDisplay} />
             </aside>
 
-            <aside className="lg:collapse lg:absolute fixed bg-black bottom-0 w-full z-10 flex justify-center">
-                <HeaderNavbarBottom />
-            </aside>
+            {
+                isLoggedIn()
+                ?
+                <aside className="lg:collapse lg:absolute fixed bg-black bottom-0 w-full z-10 flex justify-center">
+                    <HeaderNavbarBottom />
+                </aside>
+                :
+                <></>
+            }
         </>
     )
 }

@@ -1,4 +1,4 @@
-interface BufferData {
+interface ImageBufferData {
     data: string,
     type: string
 }

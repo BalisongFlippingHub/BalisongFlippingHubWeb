@@ -9,7 +9,7 @@ interface params {
 }
 
 const ProfilePostCover = ({ post }: params) => {
-    const [coverImg, setCoverImg] = useState<BufferData | null>(null)
+    const [coverImg, setCoverImg] = useState<ImageBufferData | null>(null)
 
     useEffect(() => {
         if (post.coverFile !== "") {
@@ -23,8 +23,9 @@ const ProfilePostCover = ({ post }: params) => {
                     console.log(res)
                     setCoverImg({
                         data: Buffer.from(res.data, 'binary').toString('base64'),
+                        /*@ts-ignore*/
                         type: res.headers.get("Content-Type")
-                    } as BufferData)
+                    } as ImageBufferData)
                 })
                 .catch((err) => {
                     console.log("Error getting img: ", err)

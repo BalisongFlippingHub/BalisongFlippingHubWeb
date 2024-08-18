@@ -3,7 +3,7 @@ import useAuth from "../hooks/useAuth";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faDiscord, faFacebookSquare, faInstagram, faRedditSquare, faTwitterSquare, faYoutubeSquare } from "@fortawesome/free-brands-svg-icons";
 
-const ProfileData = () => {
+const UserProfileData = () => {
 
     const { user } = useAuth()
     const navigate = useNavigate()
@@ -90,4 +90,4 @@ const ProfileData = () => {
     }
 }
 
-export default ProfileData;
+export default UserProfileData;

@@ -3,6 +3,7 @@ import { faBell, faUser } from "@fortawesome/free-solid-svg-icons";
 import useAuth from "../hooks/useAuth";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
+import Image from "./Image";
 
 interface params {
     relevant: boolean
@@ -35,13 +36,13 @@ const HeaderProfileDisplay = ({ relevant }: params) => {
         <div className="flex gap-2">
             <button type="button"><FontAwesomeIcon icon={faBell}/></button>
             <div className="flex gap-2 hover:cursor-pointer" onClick={() => displayUserNav((prev) => !prev)}>
-                <div className="w-8 h-8 flex items-center justify-center rounded-full bg-black rounded-full">
+                <div className="w-8 h-8 flex items-center justify-center rounded-full bg-black rounded-full overflow-hidden">
                 {
                     user?.profileImg === null || user?.profileImg === ""
                     ?
                     <FontAwesomeIcon icon={faUser} />
                     :
-                    <img />
+                    <Image imageId={user?.profileImg} />
                 }
                 </div>
 

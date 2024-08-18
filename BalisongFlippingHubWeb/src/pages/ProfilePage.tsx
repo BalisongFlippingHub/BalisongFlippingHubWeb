@@ -1,10 +1,19 @@
 import UserProfilePage from "../components/UserProfilePage"
 import useAuth from "../hooks/useAuth"
 
-export const ProfilePage = () => {
+const ProfilePage = () => {
     const { user } = useAuth()
 
-    return (
-        <UserProfilePage />
-    )
+    if (user?.role === "ADMIN") {
+        return (
+            <div></div>
+        )
+    }
+    else {
+        return (
+            <UserProfilePage />
+        )
+    }
 }
+
+export default ProfilePage;

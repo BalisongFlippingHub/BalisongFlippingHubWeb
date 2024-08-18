@@ -2,7 +2,7 @@ import { Route, Routes } from 'react-router-dom'
 import MainLayout from './layouts/MainLayout'
 import { LoginPage } from './pages/LoginPage'
 
-import { ProfilePage } from './pages/ProfilePage'
+import ProfilePage  from './pages/ProfilePage'
 import ProtectedRoutes from './routes/ProtectedRoutes'
 import TutorialCenterPage from './pages/TutorialCenterPage'
 import ProductWorldPage from './pages/ProductWorldPage'

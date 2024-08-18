@@ -80,6 +80,7 @@ const CustomProfileBanner = () => {
             .then((res) => {
                 console.log(res)
                 setImgData(Buffer.from(res.data, 'binary').toString('base64'))
+                /*@ts-ignore*/
                 setImgType(res.headers.get("Content-Type"))
             })
             .catch((err) => {

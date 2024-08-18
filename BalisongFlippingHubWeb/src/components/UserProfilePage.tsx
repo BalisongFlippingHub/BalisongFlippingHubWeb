@@ -1,6 +1,6 @@
 import CustomProfileBanner from "./CustomProfileBanner";
 import CustomProfileImg from "./CustomProfileImg";
-import ProfileData from "./ProfileData";
+import UserProfileData from "./UserProfileData";
 import UserProfilePostsComponent from "./UserProfilePostsComponent";
 
 const UserProfilePage = () => {
@@ -14,7 +14,7 @@ const UserProfilePage = () => {
                     <CustomProfileImg />
                 </div>
 
-                <ProfileData />
+                <UserProfileData />
             </section>
 
             <section className="flex justify-center bg-shadow-green">

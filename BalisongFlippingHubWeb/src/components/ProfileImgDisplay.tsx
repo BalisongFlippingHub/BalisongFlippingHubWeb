@@ -10,7 +10,6 @@ const ProfileImgDisplay = ({ imgStr }: params) => {
     const [imgBinaryData, setImgBinaryData] = useState("")
     const [imgType, setImgType] = useState<string | null>("") 
 
-
     useEffect(() => {
         if (imgStr) {
             const getImg = async () => {
@@ -22,6 +21,7 @@ const ProfileImgDisplay = ({ imgStr }: params) => {
                 .then((res) => {
                     console.log("profile img found", res)
                     setImgBinaryData(Buffer.from(res.data, 'binary').toString('base64'))
+                    /*@ts-ignore*/
                     setImgType(res.headers.get("Content-Type"))
                 })
                 .catch((err) => {
