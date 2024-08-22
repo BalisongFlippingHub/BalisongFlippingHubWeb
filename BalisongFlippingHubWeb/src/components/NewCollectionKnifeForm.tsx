@@ -59,8 +59,9 @@ const NewCollectionKnifeForm = () => {
 
     // functions
     const calculateRankingsAverageScore = () => {
-        setAverageScore(0.0)
-
+        let sum = +qualityScore + +flippingScore + +feelScore + +soundScore + +durabilityScore
+        console.log(sum)
+        setAverageScore(sum / 5)
         // todo start next time
     }
 
@@ -118,28 +119,43 @@ const NewCollectionKnifeForm = () => {
 
     const qualityScaleOnChange = (e:any) => {
         setQualityScore(e.target.value)
-        calculateRankingsAverageScore()
+        if (averageScore == null) {
+            setAverageScore(0)
+        }
     }
 
     const flippingScaleOnChange = (e:any) => {
         setFlippingScore(e.target.value)
-        calculateRankingsAverageScore()
+        if (averageScore == null) {
+            setAverageScore(0)
+        }
     }
 
     const feelScaleOnChange = (e:any) => {
         setFeelScore(e.target.value)
-        calculateRankingsAverageScore()
+        if (averageScore == null) {
+            setAverageScore(0)
+        }
     }
 
     const soundScaleOnChange = (e:any) => {
         setSoundScore(e.target.value)
-        calculateRankingsAverageScore()
+        if (averageScore == null) {
+            setAverageScore(0)
+        }
     }
 
     const durabilityScaleOnChange = (e:any) => {
         setDurabilityScore(e.target.value)
-        calculateRankingsAverageScore()
+        if (averageScore == null) {
+            setAverageScore(0)
+        }
     }
+
+    useEffect(() => {
+        if (averageScore != null)
+            setAverageScore((+qualityScore + +flippingScore + +feelScore + +soundScore + +durabilityScore) / 5)
+    }, [qualityScore, flippingScore, feelScore, soundScore, durabilityScore])
 
     // on mount
     useEffect(() => {
@@ -357,7 +373,7 @@ const NewCollectionKnifeForm = () => {
                         {/*Quality Scale*/}
                         <div className="flex flex-col items-center">
                             <label>Quality</label>
-
+                            <h3>{qualityScore}</h3>
                             <div className="w-full flex justify-evenly items-center gap-2">
                                 <h6>Poor</h6>
                                 <input type="range" className="w-full" min={0} max={10} value={qualityScore} onChange={(e) => {qualityScaleOnChange(e)}} />
@@ -368,7 +384,7 @@ const NewCollectionKnifeForm = () => {
                         {/*Flippability Scale*/}
                         <div className="flex flex-col items-center">
                             <label>Flipping</label>
-
+                            <h3>{flippingScore}</h3>
                             <div className="w-full flex justify-evenly items-center gap-2">
                                 <h6>Poor</h6>
                                 <input type="range" className="w-full" min={0} max={10} value={flippingScore} onChange={(e) => {flippingScaleOnChange(e)}} />
@@ -379,7 +395,7 @@ const NewCollectionKnifeForm = () => {
                         {/*Feel Scale*/}
                         <div className="flex flex-col items-center">
                             <label>Feel</label>
-
+                            <h3>{feelScore}</h3>
                             <div className="w-full flex justify-evenly items-center gap-2">
                                 <h6>Poor</h6>
                                 <input type="range" className="w-full" min={0} max={10} value={feelScore} onChange={(e) => {feelScaleOnChange(e)}} />
@@ -390,7 +406,7 @@ const NewCollectionKnifeForm = () => {
                         {/*Sound Scale*/}
                         <div className="flex flex-col items-center">
                             <label>Sound</label>
-
+                            <h3>{soundScore}</h3>
                             <div className="w-full flex justify-evenly items-center gap-2">
                                 <h6>Poor</h6>
                                 <input type="range" className="w-full" min={0} max={10} value={soundScore} onChange={(e) => {soundScaleOnChange(e)}} />
@@ -401,7 +417,7 @@ const NewCollectionKnifeForm = () => {
                         {/*Durability Scale*/}
                         <div className="flex flex-col items-center">
                             <label>Durability</label>
-
+                            <h3>{durabilityScore}</h3>
                             <div className="w-full flex justify-evenly items-center gap-2">
                                 <h6>Poor</h6>
                                 <input type="range" className="w-full" min={0} max={10} value={durabilityScore} onChange={(e) => {durabilityScaleOnChange(e)}} />
