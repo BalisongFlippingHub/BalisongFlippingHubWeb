@@ -14,6 +14,7 @@ import UserCollectionPage from './pages/UserCollectionPage'
 import ProfileConfigurePage from './pages/ProfileConfigurePage'
 import AboutPage from './pages/AboutPage'
 import ContactUsPage from './pages/ContactUsPage'
+import AddNewKnifeToCollectionPage from './pages/AddNewKnifeToCollectionPage'
 
 const App = () => {
 
@@ -42,6 +43,10 @@ const App = () => {
 
         <Route element={<ProtectedRoutes allowedRoles={["USER"]} />}>
           <Route path="/me/collection" element={<UserCollectionPage />} />
+        </Route>
+
+        <Route element={<ProtectedRoutes allowedRoles={["USER"]} />}>
+          <Route path="/me/collection/add-knife" element={<AddNewKnifeToCollectionPage />} />
         </Route>
 
         <Route element={<ProtectedRoutes allowedRoles={["USER", "ADMIN"]} />}>

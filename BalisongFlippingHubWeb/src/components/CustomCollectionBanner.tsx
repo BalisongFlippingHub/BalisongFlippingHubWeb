@@ -123,7 +123,7 @@ const CustomCollectionBanner = ({ imageId }: params) => {
     }, [])
 
     return (
-        <div className="w-full h-72 flex justify-center items-center bg-shadow-green-offset text-3xl font-bold">
+        <div className="w-full h-96 flex justify-center items-center bg-shadow-green-offset text-3xl font-bold">
             {
                 enableInput
                 ?

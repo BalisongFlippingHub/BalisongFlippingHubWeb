@@ -36,16 +36,21 @@ const Image = ({ imageId, contain }: params) => {
             })
         } 
 
-        if (imageId) {
+        if (imageId && imageId !== "") {
             getImg()    
-        }
-        else {
-            setIsError(true)
         }
         
     }, []) 
 
-    if (isLoading) {
+
+    if (!imageId || imageId === "") {
+        return (
+            <div className="w-full h-full flex justify-center items-center bg-white">
+                <h4 className="text-black">No Image</h4>
+            </div>
+        )
+    }
+    else if (isLoading) {
         return (
             <div className="w-full h-full">
                 loading...

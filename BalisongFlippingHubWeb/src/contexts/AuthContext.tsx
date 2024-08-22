@@ -75,22 +75,22 @@ export const AuthContextProvider: React.FC<{children: React.ReactNode}> = ({ chi
             setToken(JSON.parse(token_val))
         }
 
-        // setToken("Fill")
-        // setUser({
-        //     id: "1",
-        //     displayName: "",
-        //     email: "tzenisekj@gmail.com ",
-        //     role: "USER",
-        //     profileImg: "", 
-        //     bannerImg: "",
-        //     facebookLink: "",
-        //     twitterLink: "",
-        //     youtubeLink: "", 
-        //     instagramLink: "",
-        //     discordLink: "",
-        //     posts: [],
-        //     accountCreationDate: null
-        // })
+        setToken("Fill")
+        setUser({
+            id: "1",
+            displayName: "",
+            email: "tzenisekj@gmail.com ",
+            role: "USER",
+            profileImg: "", 
+            bannerImg: "",
+            facebookLink: "",
+            twitterLink: "",
+            youtubeLink: "", 
+            instagramLink: "",
+            discordLink: "",
+            posts: [],
+            accountCreationDate: null
+        })
         setIsReady(true);
     }, [])
 
