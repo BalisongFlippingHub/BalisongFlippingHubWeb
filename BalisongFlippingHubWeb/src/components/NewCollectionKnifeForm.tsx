@@ -1,6 +1,9 @@
 import { faChevronDown, faChevronUp } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useEffect, useRef, useState } from "react";
+import KnifeMSRPInput from "./KnifeMSRPInput";
+import OverallKnifeLengthInput from "./OverallKnifeLengthInput";
+import KnifeWeightInput from "./KnifeWeightInput";
 
 const NewCollectionKnifeForm = () => {
     // refs
@@ -9,10 +12,6 @@ const NewCollectionKnifeForm = () => {
 
     const knifeMakerRef = useRef<HTMLInputElement>(null)
     const baseKnifeModelRef = useRef<HTMLInputElement>(null)
-
-    const liveBladeRadioRef = useRef<HTMLInputElement>(null)
-    const trainerRadioRef = useRef<HTMLInputElement>(null)
-    const bothRadioRef = useRef<HTMLInputElement>(null)
 
     const coverImageFileRef = useRef<HTMLInputElement>(null)
 
@@ -31,15 +30,19 @@ const NewCollectionKnifeForm = () => {
     const [baseKnifeModel, setBaseKnifeModel] = useState("")
 
     const [knifeType, setKnifeType] = useState("Live Blade")
-    const [handleConstruction, setHandleConstruction] = useState("Channel")
-    const [pivotSystem, setPivotSystem] = useState("Bushings")
 
     const [selectedCoverFileName, setSelectedCoverFileName] = useState("")
     const [selectedCoverFile, setSelectedCoverFile] = useState<File | null>(null)
 
     const [selectedDate, setSelectedDate] = useState("")
 
+    const [isFavoriteKnife, setIsFavoriteKnife] = useState(false)
+    const [isFavoriteFlipper, setIsFavroiteFlipper] = useState(false)
+
     // form state values knife info
+    const [knifeMSRP, setKnifeMSRP] = useState("")
+    const [overallLength, setOverallLength] = useState("")
+    const [knifeWeight, setKnifeWeight] = useState("")
 
     // form state values rankings
     const [averageScore, setAverageScore] = useState<Number | null>(null)
@@ -57,14 +60,6 @@ const NewCollectionKnifeForm = () => {
     const [displayRankingsInfo, toggleDisplayRankingsInfo] = useState(false)
     const [displayModWork, toggleDisplayModWork] = useState(false)
 
-    // functions
-    const calculateRankingsAverageScore = () => {
-        let sum = +qualityScore + +flippingScore + +feelScore + +soundScore + +durabilityScore
-        console.log(sum)
-        setAverageScore(sum / 5)
-        // todo start next time
-    }
-
     // on form submit
     const handleFormSubmit = (e:any) => {
         e.preventDefault()
@@ -76,8 +71,11 @@ const NewCollectionKnifeForm = () => {
             knifeType: knifeType,
             selectedCoverFile: selectedCoverFile,
             selectedDate: selectedDate,
-            handleConstruction: handleConstruction,
-            pivotSystem: pivotSystem
+            isFavoriteFlipper: isFavoriteFlipper,
+            isFavoriteKnife: isFavoriteKnife,
+            knifeMSRP: knifeMSRP,
+            overallLength: overallLength,
+            knifeWeight: knifeWeight
         }
 
         console.log("new knife obj: ", obj)
@@ -107,14 +105,6 @@ const NewCollectionKnifeForm = () => {
 
     const bladeTypeOnChange = (e:any) => {
         setKnifeType(e.target.value)
-    }
-
-    const handleConstructionOnChange = (e:any) => {
-        setHandleConstruction(e.target.value)
-    }
-
-    const pivotSystemOnChange = (e:any) => {
-        setPivotSystem(e.target.value)
     }
 
     const qualityScaleOnChange = (e:any) => {
@@ -150,6 +140,18 @@ const NewCollectionKnifeForm = () => {
         if (averageScore == null) {
             setAverageScore(0)
         }
+    }
+
+    const setKnifeMSRPOnChange = (input: string) => {
+        setKnifeMSRP(input)
+    }  
+
+    const setOverallLengthOnChange = (input: string) => {
+        setOverallLength(input)
+    }
+
+    const setKnifeWeightOnChange = (input: string) => {
+
     }
 
     useEffect(() => {
@@ -260,7 +262,7 @@ const NewCollectionKnifeForm = () => {
                             !selectedCoverFile
                             ?
                             <div className="w-full h-full flex items-center justify-center">
-                                No Image
+                                Cover Photo
                             </div>
                             :
                             <img src={URL.createObjectURL(selectedCoverFile)} className="w-full h-full object-cover" />
@@ -293,56 +295,125 @@ const NewCollectionKnifeForm = () => {
                     className="text-black"
                     />
                 </div>
-                
-                {/*Handle Construction*/}
-                <div className="flex flex-col items-evenly">   
-                    <label>Handle Construction:</label>
-                    <div>
-                        <div className="flex gap-2">
-                            <input type="radio" name="handleConstruction" value="Channel" defaultChecked onChange={(e) => handleConstructionOnChange(e)} />
-                            <label>Channel</label>
-                        </div>
 
-                        <div className="flex gap-2">
-                            <input type="radio" name="handleConstruction" value="Sandwich" onChange={(e) => handleConstructionOnChange(e)} />
-                            <label>Sandwhich</label>
-                        </div>
-
-                        <div className="flex gap-2">
-                            <input type="radio" name="handleConstruction" value="Chanwhich" onChange={(e) => handleConstructionOnChange(e)} />
-                            <label>Chanwhich</label>
-                        </div>
-
-                        <div className="flex gap-2">
-                            <input type="radio" name="handleConstruction" value="Other" onChange={(e) => handleConstructionOnChange(e)} />
-                            <label>Other</label>
-                        </div>
-                    </div>
+                <div className="flex flex-col justify-evenly">
+                    <label>Mark as Favorite Knife</label>
+                    <input
+                    type="checkbox"
+                    onChange={() => setIsFavoriteKnife((prev) => !prev)}
+                    />
                 </div>
 
-                {/*Pivot System*/}
-                <div className="flex flex-col items-evenly">
-                    <label>Pivot System:</label>
-                    <div className="flex gap-2">
-                        <input type="radio" name="pivotSystem" value="Washers" onChange={(e) => pivotSystemOnChange(e)} />
-                        <label>Washers</label>
-                    </div>
-
-                    <div className="flex gap-2">
-                        <input type="radio" name="pivotSystem" value="Bushings" defaultChecked onChange={(e) => pivotSystemOnChange(e)} />
-                        <label>Bushings</label>
-                    </div>
-
-                    <div className="flex gap-2">
-                        <input type="radio" name="pivotSystem"  value="Bearings" onChange={(e) => pivotSystemOnChange(e)} />
-                        <label>Bearings</label>
-                    </div>
-
-                    <div className="flex gap-2">
-                        <input type="radio" name="pivotSystem"  value="Other" onChange={(e) => pivotSystemOnChange(e)} />
-                        <label>Other</label>
-                    </div>
+                <div className="flex flex-col justify-evenly">
+                    <label>Mark as Favorite Flipper</label>
+                    <input
+                    type="checkbox"
+                    onChange={() => setIsFavroiteFlipper((prev) => !prev)}
+                    />
                 </div>
+            </div>
+
+            <span className="w-full h-1 bg-white"></span>
+
+            {/*Additional Knife Info*/}
+            <div>
+                <div className="flex items-center gap-1 hover:cursor-pointer" onClick={() => toggleDisplayAdditionalKnifeInfo((prev) => !prev)}>
+                    <h3>Additional Knife Info</h3>
+                    {
+                        !displayAdditionalKnifeInfo
+                        ?
+                        <FontAwesomeIcon icon={faChevronUp} />
+                        :
+                        <FontAwesomeIcon icon={faChevronDown} />
+                    }
+                </div>
+
+                {
+                    displayAdditionalKnifeInfo
+                    ?
+                    <div className="flex flex-col">
+                        {/*Knife Specs*/}
+                        <div className="flex flex-col items-center">
+                            <div className="text-xl font-bold border-b w-full flex justify-center p-1">
+                                <h4>Specs</h4>
+                            </div> 
+
+                            <KnifeMSRPInput setKnifeMSRPOnChange={setKnifeMSRPOnChange} />
+
+                            <OverallKnifeLengthInput setOverallLengthOnChange={setOverallLengthOnChange} />
+
+                            <KnifeWeightInput setKnifeWeightOnChange={setKnifeWeightOnChange} />
+
+                            <div>
+                                Pivot System
+                            </div>
+
+                            <div>
+                                Latch Type
+                            </div>
+
+                            <div>
+                                Pin System
+                            </div>
+                        </div>
+
+                        {/*Blade Info*/}
+                        <div className="flex flex-col items-center">
+                            <div className="text-xl font-bold border-b w-full flex justify-center p-1">
+                                <h4>Blade</h4>
+                            </div>
+
+                            <div>
+                                Blade Style
+                            </div>
+
+                            <div>
+                                Blade Length
+                            </div>
+
+                            <div>
+                                Blade Thickness
+                            </div>
+
+                            <div>
+                                Blade Finish
+                            </div>
+                            
+                            <div>
+                                Blade Material
+                            </div>
+                        </div>
+
+                        {/*Handles Info*/}
+                        <div className="flex flex-col items-center">
+                            <div className="text-xl font-bold border-b w-full flex justify-center p-1">
+                                <h4>Handles</h4>
+                            </div>
+
+                            <div>
+                                Handle Construction
+                            </div>
+
+                            <div>
+                                Handle Material
+                            </div>
+
+                            <div>
+                                Handle Finish
+                            </div>
+
+                            <div>
+                                Handle Length
+                            </div>
+
+                            <div>
+                                Handle Thickness
+                            </div>
+                        </div>
+                    </div>
+                    :
+                    <></>
+                }
             </div>
 
             <span className="w-full h-1 bg-white"></span>
@@ -457,32 +528,7 @@ const NewCollectionKnifeForm = () => {
             </div>
 
             <span className="w-full h-1 bg-white"></span>
-
-            {/*Additional Knife Info*/}
-            <div>
-                <div className="flex items-center gap-1 hover:cursor-pointer" onClick={() => toggleDisplayAdditionalKnifeInfo((prev) => !prev)}>
-                    <h3>Additional Knife Info</h3>
-                    {
-                        !displayAdditionalKnifeInfo
-                        ?
-                        <FontAwesomeIcon icon={faChevronUp} />
-                        :
-                        <FontAwesomeIcon icon={faChevronDown} />
-                    }
-                </div>
-
-                {
-                    displayAdditionalKnifeInfo
-                    ?
-                    <>
-                        display
-                    </>
-                    :
-                    <></>
-                }
-            </div>
             
-            <span className="w-full h-1 bg-white"></span>
             
             {/*Submit Button*/}
             {
