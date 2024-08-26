@@ -11,6 +11,7 @@ const KnifeWeightInput = ({ setKnifeWeightOnChange}: params) => {
     const [weightType, setWeightType] = useState("oz")
 
     const onWeightChange = (value: string) => {
+        
         setWeight(value)
         if (weightType !== "oz") {
             setKnifeWeightOnChange((+value / 28.35).toString())

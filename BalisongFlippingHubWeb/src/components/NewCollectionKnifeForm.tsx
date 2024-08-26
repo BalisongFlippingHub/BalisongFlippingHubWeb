@@ -4,6 +4,9 @@ import { useEffect, useRef, useState } from "react";
 import KnifeMSRPInput from "./KnifeMSRPInput";
 import OverallKnifeLengthInput from "./OverallKnifeLengthInput";
 import KnifeWeightInput from "./KnifeWeightInput";
+import PivotSystemInput from "./PivotSystemInput";
+import LatchTypeInput from "./LatchTypeInput";
+import PinSystemInput from "./PinSystemInput";
 
 const NewCollectionKnifeForm = () => {
     // refs
@@ -43,6 +46,9 @@ const NewCollectionKnifeForm = () => {
     const [knifeMSRP, setKnifeMSRP] = useState("")
     const [overallLength, setOverallLength] = useState("")
     const [knifeWeight, setKnifeWeight] = useState("")
+    const [pivotSystem, setPivotSystem] = useState("")
+    const [latchType, setLatchType] = useState("")
+    const [pinSystem, setPinSystem] = useState("")
 
     // form state values rankings
     const [averageScore, setAverageScore] = useState<Number | null>(null)
@@ -151,7 +157,19 @@ const NewCollectionKnifeForm = () => {
     }
 
     const setKnifeWeightOnChange = (input: string) => {
+        setKnifeWeight(input)
+    }
 
+    const setPivotSystemOnChange = (input: string) => {
+        setPivotSystem(input)
+    }
+
+    const setLatchTypeOnChange = (input: string) => {
+        setLatchType(input)
+    }
+
+    const setPinSystemOnChange = (input: string) => {
+        setPinSystem(input)
     }
 
     useEffect(() => {
@@ -344,17 +362,11 @@ const NewCollectionKnifeForm = () => {
 
                             <KnifeWeightInput setKnifeWeightOnChange={setKnifeWeightOnChange} />
 
-                            <div>
-                                Pivot System
-                            </div>
+                            <PivotSystemInput setPivotSystemOnChange={setPivotSystemOnChange} />
 
-                            <div>
-                                Latch Type
-                            </div>
+                            <LatchTypeInput setLatchTypeOnChange={setLatchTypeOnChange} />
 
-                            <div>
-                                Pin System
-                            </div>
+                            <PinSystemInput setPinSystemOnChange={setPinSystemOnChange} />
                         </div>
 
                         {/*Blade Info*/}
