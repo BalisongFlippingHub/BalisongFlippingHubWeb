@@ -7,5 +7,7 @@ export const bladeMaterial = [
     "s35vn", 
     "6061 Aluminium", 
     "7075 Aluminium", 
-    "Plastic"
+    "Plastic",
+    "Other", 
+    "Unknown"
 ]

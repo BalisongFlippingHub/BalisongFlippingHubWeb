@@ -7,6 +7,16 @@ import KnifeWeightInput from "./KnifeWeightInput";
 import PivotSystemInput from "./PivotSystemInput";
 import LatchTypeInput from "./LatchTypeInput";
 import PinSystemInput from "./PinSystemInput";
+import BladeStyleInput from "./BladeStyleInput";
+import BladeLengthInput from "./BladeLengthInput";
+import BladeThicknessInput from "./BladeThicknessInput";
+import BladeFinishInput from "./BladeFinishInput";
+import BladeMaterialInput from "./BladeMaterialInput";
+import HandleConstructionInput from "./HandleConstructionInput";
+import HandleMaterialInput from "./HandleMaterialInput";
+import HandleFinishInput from "./HandleFinishInput";
+import HandleLengthInput from "./HandleLengthInput";
+import HandleThicknessInput from "./HandleThicknessInput";
 
 const NewCollectionKnifeForm = () => {
     // refs
@@ -46,9 +56,21 @@ const NewCollectionKnifeForm = () => {
     const [knifeMSRP, setKnifeMSRP] = useState("")
     const [overallLength, setOverallLength] = useState("")
     const [knifeWeight, setKnifeWeight] = useState("")
-    const [pivotSystem, setPivotSystem] = useState("")
-    const [latchType, setLatchType] = useState("")
-    const [pinSystem, setPinSystem] = useState("")
+    const [pivotSystem, setPivotSystem] = useState("Unknown")
+    const [latchType, setLatchType] = useState("Unknown")
+    const [pinSystem, setPinSystem] = useState("Unknown")
+
+    const [bladeStyle, setBladeStyle] = useState("Unknown")
+    const [bladeLength, setBladeLength] = useState("")
+    const [bladeThickness, setBladeThickness] = useState("")
+    const [bladeFinish, setBladeFinish] = useState("Unknown")
+    const [bladeMaterial, setBladeMaterial] = useState("Unknown")
+
+    const [handleConstruction, setHandleConstruction] = useState("Unknown")
+    const [handleMaterial, setHandleMaterial] = useState("Unknown")
+    const [handleFinish, setHandleFinish] = useState("Unknown")
+    const [handleLength, setHandleLength] = useState("") 
+    const [handleThickness, setHandleThickness] = useState("")
 
     // form state values rankings
     const [averageScore, setAverageScore] = useState<Number | null>(null)
@@ -77,14 +99,35 @@ const NewCollectionKnifeForm = () => {
             knifeType: knifeType,
             selectedCoverFile: selectedCoverFile,
             selectedDate: selectedDate,
+
             isFavoriteFlipper: isFavoriteFlipper,
             isFavoriteKnife: isFavoriteKnife,
+
             knifeMSRP: knifeMSRP,
             overallLength: overallLength,
             knifeWeight: knifeWeight,
             pivotSystem: pivotSystem, 
             latchType: latchType, 
-            pinSystem: pinSystem
+            pinSystem: pinSystem,
+
+            bladeStyle: bladeStyle,
+            bladeLength: bladeLength,
+            bladeThickness: bladeThickness,
+            bladeFinish: bladeFinish, 
+            bladeMaterial: bladeMaterial,
+
+            handleConstruction: handleConstruction,
+            handleMaterial: handleMaterial,
+            handleFinish: handleFinish,
+            handleLength: handleLength,
+            handleThickness: handleThickness,
+
+            averageScore: averageScore,
+            qualityScore: qualityScore,
+            flippingScore: flippingScore,
+            feelScore: feelScore,
+            soundScore: soundScore,
+            durabilityScore: durabilityScore
         }
 
         console.log("new knife obj: ", obj)
@@ -173,6 +216,46 @@ const NewCollectionKnifeForm = () => {
 
     const setPinSystemOnChange = (input: string) => {
         setPinSystem(input)
+    }
+
+    const setBladeStyleOnChange = (input: string) => {
+        setBladeStyle(input)
+    }
+
+    const setBladeLengthOnChange = (input: string) => {
+        setBladeLength(input)
+    }
+
+    const setBladeThicknessOnChange = (input:string) => {
+        setBladeThickness(input)
+    }
+
+    const setBladeFinishOnChange = (input:string) => {
+        setBladeFinish(input)
+    }
+
+    const setBladeMaterialOnChange = (input:string) => {
+        setBladeMaterial(input)
+    }
+
+    const setHandleConstructionOnChange = (input:string) => {
+        setHandleConstruction(input)
+    }
+
+    const setHandleMaterialOnChange = (input:string) => {
+        setHandleMaterial(input)
+    }
+
+    const setHandleFinishOnChange = (input:string) => {
+        setHandleFinish(input)
+    }
+
+    const setHandleLengthOnChange = (input:string) => {
+        setHandleLength(input)
+    }
+
+    const setHandleThicknessOnChange = (input: string) => {
+        setHandleThickness(input)
     }
 
     useEffect(() => {
@@ -359,71 +442,51 @@ const NewCollectionKnifeForm = () => {
                                 <h4>Specs</h4>
                             </div> 
 
-                            <KnifeMSRPInput setKnifeMSRPOnChange={setKnifeMSRPOnChange} />
+                            <KnifeMSRPInput setKnifeMSRPOnChange={setKnifeMSRPOnChange} parentMSRP={knifeMSRP} />
 
-                            <OverallKnifeLengthInput setOverallLengthOnChange={setOverallLengthOnChange} />
+                            <OverallKnifeLengthInput setOverallLengthOnChange={setOverallLengthOnChange} parentKnifeLength={overallLength} />
 
-                            <KnifeWeightInput setKnifeWeightOnChange={setKnifeWeightOnChange} />
+                            <KnifeWeightInput setKnifeWeightOnChange={setKnifeWeightOnChange} parentWeight={knifeWeight} />
 
-                            <PivotSystemInput setPivotSystemOnChange={setPivotSystemOnChange} />
+                            <PivotSystemInput setPivotSystemOnChange={setPivotSystemOnChange} parentPivotSystem={pivotSystem} />
 
-                            <LatchTypeInput setLatchTypeOnChange={setLatchTypeOnChange} />
+                            <LatchTypeInput setLatchTypeOnChange={setLatchTypeOnChange} parentLatchType={latchType} />
 
-                            <PinSystemInput setPinSystemOnChange={setPinSystemOnChange} />
+                            <PinSystemInput setPinSystemOnChange={setPinSystemOnChange} parentPinSystem={pinSystem} />
                         </div>
 
                         {/*Blade Info*/}
-                        <div className="flex flex-col items-center">
+                        <div className="flex flex-col items-center gap-2">
                             <div className="text-xl font-bold border-b w-full flex justify-center p-1">
                                 <h4>Blade</h4>
                             </div>
 
-                            <div>
-                                Blade Style
-                            </div>
+                            <BladeLengthInput setBladeLengthOnChange={setBladeLengthOnChange} parentBladeLength={bladeLength} />
 
-                            <div>
-                                Blade Length
-                            </div>
+                            <BladeThicknessInput setBladeThicknessOnChange={setBladeThicknessOnChange} parentBladeThickness={bladeThickness} />
 
-                            <div>
-                                Blade Thickness
-                            </div>
+                            <BladeStyleInput setBladeStyleOnChange={setBladeStyleOnChange} parentBladeStyle={bladeStyle} />
 
-                            <div>
-                                Blade Finish
-                            </div>
+                            <BladeFinishInput setBladeFinishOnChange={setBladeFinishOnChange} parentBladeFinish={bladeFinish} />
                             
-                            <div>
-                                Blade Material
-                            </div>
+                            <BladeMaterialInput setBladeMaterialOnChange={setBladeMaterialOnChange} parentBladeMaterial={bladeMaterial} />
                         </div>
 
                         {/*Handles Info*/}
-                        <div className="flex flex-col items-center">
+                        <div className="flex flex-col items-center gap-2">
                             <div className="text-xl font-bold border-b w-full flex justify-center p-1">
                                 <h4>Handles</h4>
                             </div>
 
-                            <div>
-                                Handle Construction
-                            </div>
+                            <HandleConstructionInput setHandleConstructionOnChange={setHandleConstructionOnChange} parentHandleConstruction={handleConstruction} />
 
-                            <div>
-                                Handle Material
-                            </div>
+                            <HandleMaterialInput setHandleMaterialOnChange={setHandleMaterialOnChange} parentHandleMaterial={handleMaterial} />
 
-                            <div>
-                                Handle Finish
-                            </div>
+                            <HandleFinishInput setHandleFinishOnChange={setHandleFinishOnChange} parentHandleFinish={handleFinish} />
 
-                            <div>
-                                Handle Length
-                            </div>
+                            <HandleLengthInput setHandleLengthOnChange={setHandleLengthOnChange} parentLength={handleLength} />
 
-                            <div>
-                                Handle Thickness
-                            </div>
+                            <HandleThicknessInput setHandleThicknessOnChange={setHandleThicknessOnChange} parentHandleThickness={handleThickness} />
                         </div>
                     </div>
                     :
@@ -543,7 +606,6 @@ const NewCollectionKnifeForm = () => {
             </div>
 
             <span className="w-full h-1 bg-white"></span>
-            
             
             {/*Submit Button*/}
             {

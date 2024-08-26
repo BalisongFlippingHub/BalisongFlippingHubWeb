@@ -2,13 +2,14 @@ import { useRef, useState } from "react"
 import { latchType } from "../comboBoxData/LatchType"
 
 interface params {
-    setLatchTypeOnChange: Function
+    setLatchTypeOnChange: Function,
+    parentLatchType: string
 }
 
-const LatchTypeInput = ({ setLatchTypeOnChange }: params) => {
-    const latchTypeRef = useRef<HTMLInputElement>(null)
+const LatchTypeInput = ({ setLatchTypeOnChange, parentLatchType }: params) => {
+    const latchTypeRef = useRef<HTMLSelectElement>(null)
     
-    const [lType, setlType] = useState("Unknown")
+    const [lType, setlType] = useState(parentLatchType)
 
     const handleOnChange = (value: string) => {
         setlType(value)
@@ -24,6 +25,7 @@ const LatchTypeInput = ({ setLatchTypeOnChange }: params) => {
             <select 
             id="latchTypeList"
             value={lType}
+            ref={latchTypeRef}
             className="bg-inherit p-2 border-2 border-black"
             onChange={(e) => handleOnChange(e.target.value)}
             >

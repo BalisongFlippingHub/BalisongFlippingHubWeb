@@ -2,13 +2,14 @@ import { useRef, useState } from "react"
 import { pivotSystem } from "../comboBoxData/PivotSystem"
 
 interface params {
-    setPivotSystemOnChange: Function
+    setPivotSystemOnChange: Function,
+    parentPivotSystem: string
 }
 
-const PivotSystemInput = ({ setPivotSystemOnChange }: params) => {
-    const pivotSystemRef = useRef<HTMLInputElement>(null)
+const PivotSystemInput = ({ setPivotSystemOnChange, parentPivotSystem }: params) => {
+    const pivotSystemRef = useRef<HTMLSelectElement>(null)
     
-    const [pSystem, setPSystem] = useState("Unknown")
+    const [pSystem, setPSystem] = useState(parentPivotSystem)
 
     const handleOnChange = (value: string) => {
         setPSystem(value)
@@ -24,6 +25,7 @@ const PivotSystemInput = ({ setPivotSystemOnChange }: params) => {
             id="pivotList"
             className="bg-inherit p-2 border-2 border-black"
             value={pSystem}
+            ref={pivotSystemRef}
             onChange={(e) => handleOnChange(e.target.value)}
             >
             {

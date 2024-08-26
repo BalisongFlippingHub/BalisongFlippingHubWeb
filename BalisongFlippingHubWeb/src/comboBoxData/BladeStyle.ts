@@ -6,6 +6,7 @@ export const bladeStyle = [
     "Spear Point", 
     "American Tanto", 
     "Horse Shoe", 
+    "Weehawk",
     "Other", 
-    "Uknown"
+    "Unknown"
 ]

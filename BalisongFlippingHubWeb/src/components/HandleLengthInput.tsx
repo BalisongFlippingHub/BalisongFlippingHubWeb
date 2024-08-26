@@ -1,23 +1,23 @@
 import { useRef, useState } from "react"
 
 interface params {
-    setOverallLengthOnChange: Function,
-    parentKnifeLength: string
+    setHandleLengthOnChange: Function,
+    parentLength: string
 }
 
-const OverallKnifeLengthInput = ({ setOverallLengthOnChange, parentKnifeLength }: params) => {
+const HandleLengthInput = ({ setHandleLengthOnChange, parentLength}: params) => {
     const lengthInputRef = useRef<HTMLInputElement>(null)
     
     const [measureType, setMeasureType] = useState("In")
-    const [length, setLength] = useState(parentKnifeLength)
+    const [length, setLength] = useState(parentLength)
 
-    const overallLengthOnChange = (value: string) => {
+    const handleOnChange = (value: string) => {
         setLength(value)
         if (measureType !== "In") {
-            setOverallLengthOnChange(((+value / 12).toFixed(1)).toString())
+            setHandleLengthOnChange(((+value / 12).toFixed(1)).toString())
         }
         else {
-            setOverallLengthOnChange(((+value).toFixed(1)).toString())
+            setHandleLengthOnChange(((+value).toFixed(1)).toString())
         }
     }
 
@@ -43,7 +43,7 @@ const OverallKnifeLengthInput = ({ setOverallLengthOnChange, parentKnifeLength }
 
     return (
         <div className="flex gap-2 p-2">
-            <label>Overall Length:</label>
+            <label>Handle Length:</label>
             <input 
             type="number"
             ref={lengthInputRef}
@@ -56,7 +56,7 @@ const OverallKnifeLengthInput = ({ setOverallLengthOnChange, parentKnifeLength }
                 "0"
             }
             className="bg-inherit border-2 border-black w-16 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
-            onChange={(e) => overallLengthOnChange(e.target.value)}
+            onChange={(e) => handleOnChange(e.target.value)}
             onBlur={() => handleOnBlur()}
             />
 
@@ -64,7 +64,7 @@ const OverallKnifeLengthInput = ({ setOverallLengthOnChange, parentKnifeLength }
                 <div className="flex gap-1">
                     <input 
                     type="radio" 
-                    name="overall-cm/overall-in" 
+                    name="handle-length-cm/handle-length-in" 
                     defaultChecked
                     value="In"
                     onChange={(e) => onMeasureTypeChange(e.target.value)}
@@ -74,8 +74,8 @@ const OverallKnifeLengthInput = ({ setOverallLengthOnChange, parentKnifeLength }
 
                 <div className="flex gap-1">
                     <input 
-                    type="radio" 
-                    name="overall-cm/overall-in" 
+                    type="radio"
+                    name="handle-length-cm/handle-length-in" 
                     value="cm"
                     onChange={(e) => onMeasureTypeChange(e.target.value)}
                     />
@@ -86,4 +86,4 @@ const OverallKnifeLengthInput = ({ setOverallLengthOnChange, parentKnifeLength }
     )
 }
 
-export default OverallKnifeLengthInput
+export default HandleLengthInput

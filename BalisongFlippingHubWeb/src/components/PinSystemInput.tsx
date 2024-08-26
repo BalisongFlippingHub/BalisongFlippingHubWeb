@@ -2,13 +2,14 @@ import { useRef, useState } from "react"
 import { pinSystem } from "../comboBoxData/PinSystem"
 
 interface params {
-    setPinSystemOnChange: Function
+    setPinSystemOnChange: Function,
+    parentPinSystem: string
 }
 
-const PinSystemInput = ({ setPinSystemOnChange }: params) => {
-    const pinSystemRef = useRef<HTMLInputElement>(null)
+const PinSystemInput = ({ setPinSystemOnChange, parentPinSystem }: params) => {
+    const pinSystemRef = useRef<HTMLSelectElement>(null)
     
-    const [pSystem, setPSystem] = useState("Unknown")
+    const [pSystem, setPSystem] = useState(parentPinSystem)
 
     const handleOnChange = (value: string) => {
         setPSystem(value)
@@ -24,6 +25,7 @@ const PinSystemInput = ({ setPinSystemOnChange }: params) => {
             id="pinSystemList" 
             className="p-2 bg-inherit border-2 border-black" 
             onChange={(e) => handleOnChange(e.target.value)}
+            ref={pinSystemRef}
             value={pSystem}
             >
             {

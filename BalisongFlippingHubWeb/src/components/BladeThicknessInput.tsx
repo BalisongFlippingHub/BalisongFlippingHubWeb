@@ -1,53 +1,53 @@
 import { useRef, useState } from "react"
 
 interface params {
-    setOverallLengthOnChange: Function,
-    parentKnifeLength: string
+    setBladeThicknessOnChange: Function,
+    parentBladeThickness: string
 }
 
-const OverallKnifeLengthInput = ({ setOverallLengthOnChange, parentKnifeLength }: params) => {
-    const lengthInputRef = useRef<HTMLInputElement>(null)
+const BladeThicknessInput = ({ setBladeThicknessOnChange, parentBladeThickness }: params) => {
+    const thicknessInputRef = useRef<HTMLInputElement>(null)
     
     const [measureType, setMeasureType] = useState("In")
-    const [length, setLength] = useState(parentKnifeLength)
+    const [thickness, setThickness] = useState(parentBladeThickness)
 
-    const overallLengthOnChange = (value: string) => {
-        setLength(value)
+    const handleOnChange = (value: string) => {
+        setThickness(value)
         if (measureType !== "In") {
-            setOverallLengthOnChange(((+value / 12).toFixed(1)).toString())
+            setBladeThicknessOnChange(((+value / 12).toFixed(1)).toString())
         }
         else {
-            setOverallLengthOnChange(((+value).toFixed(1)).toString())
+            setBladeThicknessOnChange(((+value).toFixed(1)).toString())
         }
     }
 
     const onMeasureTypeChange = (value: string) => {
         if (measureType !== "In") {
-            if (length !== "") setLength((prev) => ((+prev / 12).toFixed(1)).toString())
+            if (thickness !== "") setThickness((prev) => ((+prev / 12).toFixed(1)).toString())
         }
 
         if (measureType !== "cm") {
-            if (length !== "") setLength((prev) => ((+prev * 12).toFixed(0)).toString())
+            if (thickness !== "") setThickness((prev) => ((+prev * 12).toFixed(0)).toString())
         }
         setMeasureType(value)
     }
 
     const handleOnBlur = () => {
         if (measureType === "In") {
-            setLength((prev) => ((+prev).toFixed(1)).toString())
+            setThickness((prev) => ((+prev).toFixed(1)).toString())
         }
         else {
-            setLength((prev) => ((+prev).toFixed(0)).toString())
+            setThickness((prev) => ((+prev).toFixed(0)).toString())
         }
     }
 
     return (
         <div className="flex gap-2 p-2">
-            <label>Overall Length:</label>
+            <label>Blade thickness:</label>
             <input 
             type="number"
-            ref={lengthInputRef}
-            value={length}
+            ref={thicknessInputRef}
+            value={thickness}
             placeholder={
                 measureType === "In"
                 ?
@@ -56,7 +56,7 @@ const OverallKnifeLengthInput = ({ setOverallLengthOnChange, parentKnifeLength }
                 "0"
             }
             className="bg-inherit border-2 border-black w-16 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
-            onChange={(e) => overallLengthOnChange(e.target.value)}
+            onChange={(e) => handleOnChange(e.target.value)}
             onBlur={() => handleOnBlur()}
             />
 
@@ -64,7 +64,7 @@ const OverallKnifeLengthInput = ({ setOverallLengthOnChange, parentKnifeLength }
                 <div className="flex gap-1">
                     <input 
                     type="radio" 
-                    name="overall-cm/overall-in" 
+                    name="blade-thickness-cm/blade-thickness-in" 
                     defaultChecked
                     value="In"
                     onChange={(e) => onMeasureTypeChange(e.target.value)}
@@ -74,8 +74,8 @@ const OverallKnifeLengthInput = ({ setOverallLengthOnChange, parentKnifeLength }
 
                 <div className="flex gap-1">
                     <input 
-                    type="radio" 
-                    name="overall-cm/overall-in" 
+                    type="radio"
+                    name="blade-thickness-cm/blade-thickness-in" 
                     value="cm"
                     onChange={(e) => onMeasureTypeChange(e.target.value)}
                     />
@@ -86,4 +86,4 @@ const OverallKnifeLengthInput = ({ setOverallLengthOnChange, parentKnifeLength }
     )
 }
 
-export default OverallKnifeLengthInput
+export default BladeThicknessInput

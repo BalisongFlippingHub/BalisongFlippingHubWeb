@@ -1,13 +1,14 @@
 import { useRef, useState } from "react"
 
 interface params {
-    setKnifeWeightOnChange: Function
+    setKnifeWeightOnChange: Function,
+    parentWeight: string
 }
 
-const KnifeWeightInput = ({ setKnifeWeightOnChange}: params) => {
+const KnifeWeightInput = ({ setKnifeWeightOnChange, parentWeight }: params) => {
     const weightInputRef = useRef<HTMLInputElement>(null)
 
-    const [weight, setWeight] = useState("")
+    const [weight, setWeight] = useState(parentWeight)
     const [weightType, setWeightType] = useState("oz")
 
     const checkDecimalValue = (value: string) => {
@@ -62,7 +63,7 @@ const KnifeWeightInput = ({ setKnifeWeightOnChange}: params) => {
                 <div className="flex gap-1">
                     <input 
                     type="radio" 
-                    name="oz/g" 
+                    name="knife-oz/knife-g" 
                     defaultChecked
                     value="oz"
                     onChange={(e) => onWeightTypeChange(e.target.value)}
@@ -72,8 +73,8 @@ const KnifeWeightInput = ({ setKnifeWeightOnChange}: params) => {
 
                 <div className="flex gap-1">
                     <input 
-                    type="radio" 
-                    name="oz/g" 
+                    type="radio"
+                    name="knife-oz/knife-g" 
                     value="g"
                     onChange={(e) => onWeightTypeChange(e.target.value)}
                     />

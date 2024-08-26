@@ -1,11 +1,13 @@
 import { useState } from "react"
 
 interface params {
-    setKnifeMSRPOnChange: Function
+    setKnifeMSRPOnChange: Function,
+    parentMSRP: string
 }
-const KnifeMSRPInput = ({ setKnifeMSRPOnChange }: params) => {
 
-    const [msrp, setMsrp] = useState("")
+const KnifeMSRPInput = ({ setKnifeMSRPOnChange, parentMSRP }: params) => {
+
+    const [msrp, setMsrp] = useState(parentMSRP)
     
     const msrpOnChange = (value: string) => {
         setMsrp(value)
