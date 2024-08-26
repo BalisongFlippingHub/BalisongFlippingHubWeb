@@ -8,8 +8,7 @@ interface params {
 const PivotSystemInput = ({ setPivotSystemOnChange }: params) => {
     const pivotSystemRef = useRef<HTMLInputElement>(null)
     
-    const [pSystem, setPSystem] = useState("")
-    const [previousPSystem, setPreviousPSystem] = useState("Unknown")
+    const [pSystem, setPSystem] = useState("Unknown")
 
     const handleOnChange = (value: string) => {
         setPSystem(value)
@@ -17,39 +16,24 @@ const PivotSystemInput = ({ setPivotSystemOnChange }: params) => {
         pivotSystemRef.current?.blur()
     }
 
-    const handleOnFocus = () => {
-        setPreviousPSystem(pSystem)
-        setPSystem("")
-    }
-
-    const handleOnBlur = () => {
-        
-    }
-
     return (
-        <div className="flex gap-2">
+        <div className="flex gap-2 items-center">
             <label>Pivot System:</label>
-            <input 
-            type="text" 
-            list="pivotList"
-            ref={pivotSystemRef}
-            value={pSystem}
-            placeholder={previousPSystem}
-            className="border-2 border-black bg-inherit"
-            onChange={(e) => handleOnChange(e.target.value)}
-            onFocus={() => handleOnFocus()}
-            onBlur={() => handleOnBlur()}
-            />
 
-            <datalist id="pivotList">
+            <select 
+            id="pivotList"
+            className="bg-inherit p-2 border-2 border-black"
+            value={pSystem}
+            onChange={(e) => handleOnChange(e.target.value)}
+            >
             {
                 pivotSystem.map((value, i) => {
                     return (
-                        <option key={i} value={value}>{value}</option>
+                        <option className="text-black" key={i} value={value}>{value}</option>
                     )
                 })
             }
-            </datalist>
+            </select>
         </div>
     )
 }

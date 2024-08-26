@@ -12,22 +12,31 @@ const OverallKnifeLengthInput = ({ setOverallLengthOnChange}: params) => {
     const overallLengthOnChange = (value: string) => {
         setLength(value)
         if (measureType !== "In") {
-            setOverallLengthOnChange((+value / 12).toString())
+            setOverallLengthOnChange(((+value / 12).toFixed(1)).toString())
         }
         else {
-            setOverallLengthOnChange(value)
+            setOverallLengthOnChange(((+value).toFixed(1)).toString())
         }
     }
 
     const onMeasureTypeChange = (value: string) => {
         if (measureType !== "In") {
-            if (length !== "") setLength((prev) => (+prev / 12).toString())
+            if (length !== "") setLength((prev) => ((+prev / 12).toFixed(1)).toString())
         }
 
         if (measureType !== "cm") {
-            if (length !== "") setLength((prev) => (+prev * 12).toString())
+            if (length !== "") setLength((prev) => ((+prev * 12).toFixed(0)).toString())
         }
         setMeasureType(value)
+    }
+
+    const handleOnBlur = () => {
+        if (measureType === "In") {
+            setLength((prev) => ((+prev).toFixed(1)).toString())
+        }
+        else {
+            setLength((prev) => ((+prev).toFixed(0)).toString())
+        }
     }
 
     return (
@@ -46,6 +55,7 @@ const OverallKnifeLengthInput = ({ setOverallLengthOnChange}: params) => {
             }
             className="bg-inherit border-2 border-black w-16 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
             onChange={(e) => overallLengthOnChange(e.target.value)}
+            onBlur={() => handleOnBlur()}
             />
 
             <div className="flex gap-4 items-center">

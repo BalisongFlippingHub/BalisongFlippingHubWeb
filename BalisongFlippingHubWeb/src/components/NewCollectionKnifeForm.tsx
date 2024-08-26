@@ -81,7 +81,10 @@ const NewCollectionKnifeForm = () => {
             isFavoriteKnife: isFavoriteKnife,
             knifeMSRP: knifeMSRP,
             overallLength: overallLength,
-            knifeWeight: knifeWeight
+            knifeWeight: knifeWeight,
+            pivotSystem: pivotSystem, 
+            latchType: latchType, 
+            pinSystem: pinSystem
         }
 
         console.log("new knife obj: ", obj)
@@ -351,7 +354,7 @@ const NewCollectionKnifeForm = () => {
                     ?
                     <div className="flex flex-col">
                         {/*Knife Specs*/}
-                        <div className="flex flex-col items-center">
+                        <div className="flex flex-col items-center gap-2">
                             <div className="text-xl font-bold border-b w-full flex justify-center p-1">
                                 <h4>Specs</h4>
                             </div> 

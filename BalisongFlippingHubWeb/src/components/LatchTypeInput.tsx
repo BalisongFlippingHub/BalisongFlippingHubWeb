@@ -6,50 +6,35 @@ interface params {
 }
 
 const LatchTypeInput = ({ setLatchTypeOnChange }: params) => {
-    const LatchTypeRef = useRef<HTMLInputElement>(null)
+    const latchTypeRef = useRef<HTMLInputElement>(null)
     
-    const [lType, setlType] = useState("")
-    const [previousLType, setPreviousLType] = useState("Unknown")
+    const [lType, setlType] = useState("Unknown")
 
     const handleOnChange = (value: string) => {
         setlType(value)
         setLatchTypeOnChange(value)
-        LatchTypeRef.current?.blur()
+        latchTypeRef.current?.blur()
     }
 
-    const handleOnFocus = () => {
-        setPreviousLType(lType)
-        setlType("")
-    }
-
-    const handleOnBlur = () => {
-        
-    }
 
     return (
-        <div className="flex gap-2">
+        <div className="flex gap-2 items-center">
             <label>Latch Type:</label>
-            <input 
-            type="text" 
-            list="latchTypeList"
-            ref={LatchTypeRef}
-            value={lType}
-            placeholder={previousLType}
-            className="border-2 border-black bg-inherit"
-            onChange={(e) => handleOnChange(e.target.value)}
-            onFocus={() => handleOnFocus()}
-            onBlur={() => handleOnBlur()}
-            />
 
-            <datalist id="latchTypeList">
+            <select 
+            id="latchTypeList"
+            value={lType}
+            className="bg-inherit p-2 border-2 border-black"
+            onChange={(e) => handleOnChange(e.target.value)}
+            >
             {
                 latchType.map((value, i) => {
                     return (
-                        <option key={i} value={value}>{value}</option>
+                        <option className="text-black" key={i} value={value}>{value}</option>
                     )
                 })
             }
-            </datalist>
+            </select>
         </div>
     )
 }

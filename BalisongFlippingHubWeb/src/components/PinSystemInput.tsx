@@ -8,8 +8,7 @@ interface params {
 const PinSystemInput = ({ setPinSystemOnChange }: params) => {
     const pinSystemRef = useRef<HTMLInputElement>(null)
     
-    const [pSystem, setPSystem] = useState("")
-    const [previousPSystem, setPreviousPSystem] = useState("Unknown")
+    const [pSystem, setPSystem] = useState("Unknown")
 
     const handleOnChange = (value: string) => {
         setPSystem(value)
@@ -17,39 +16,24 @@ const PinSystemInput = ({ setPinSystemOnChange }: params) => {
         pinSystemRef.current?.blur()
     }
 
-    const handleOnFocus = () => {
-        setPreviousPSystem(pSystem)
-        setPSystem("")
-    }
-
-    const handleOnBlur = () => {
-        
-    }
-
     return (
-        <div className="flex gap-2">
+        <div className="flex gap-2 items-center">
             <label>Pin System:</label>
-            <input 
-            type="text" 
-            list="pinSystemList"
-            ref={pinSystemRef}
-            value={pSystem}
-            placeholder={previousPSystem}
-            className="border-2 border-black bg-inherit"
-            onChange={(e) => handleOnChange(e.target.value)}
-            onFocus={() => handleOnFocus()}
-            onBlur={() => handleOnBlur()}
-            />
 
-            <datalist id="pinSystemList">
+            <select 
+            id="pinSystemList" 
+            className="p-2 bg-inherit border-2 border-black" 
+            onChange={(e) => handleOnChange(e.target.value)}
+            value={pSystem}
+            >
             {
                 pinSystem.map((value, i) => {
                     return (
-                        <option key={i} value={value}>{value}</option>
+                        <option className="text-black" key={i} value={value}>{value}</option>
                     )
                 })
             }
-            </datalist>
+            </select>
         </div>
     )
 }
