@@ -17,6 +17,7 @@ import HandleMaterialInput from "./HandleMaterialInput";
 import HandleFinishInput from "./HandleFinishInput";
 import HandleLengthInput from "./HandleLengthInput";
 import HandleThicknessInput from "./HandleThicknessInput";
+import KnifeBalanceInput from "./KnifeBalanceInput";
 
 const NewCollectionKnifeForm = () => {
     // refs
@@ -80,6 +81,8 @@ const NewCollectionKnifeForm = () => {
     const [feelScore, setFeelScore] = useState(5)
     const [soundScore, setSoundScore] = useState(5)
     const [durabilityScore, setDurabilityScore] = useState(5)
+
+    const [balance, setBalance] = useState<Number | null>(null)
 
     // form state values mod work
 
@@ -218,6 +221,10 @@ const NewCollectionKnifeForm = () => {
         setPinSystem(input)
     }
 
+    const setBalanceOnChange = (input: number) => {
+        setBalance(input)
+    }
+
     const setBladeStyleOnChange = (input: string) => {
         setBladeStyle(input)
     }
@@ -269,7 +276,7 @@ const NewCollectionKnifeForm = () => {
     }, [])
 
     return (
-        <form className="w-1/2 rounded-lg border border-none bg-shadow-green-offset p-4 flex flex-col gap-3" onSubmit={handleFormSubmit}>
+        <form className="w-5/6  bg-shadow-green-offset p-4 flex flex-col gap-3" onSubmit={handleFormSubmit}>
             {/*Form Title*/}
             <h2 className="border-b-2 pb-1 m-auto text-3xl">Add New Knife</h2>
 
@@ -453,6 +460,8 @@ const NewCollectionKnifeForm = () => {
                             <LatchTypeInput setLatchTypeOnChange={setLatchTypeOnChange} parentLatchType={latchType} />
 
                             <PinSystemInput setPinSystemOnChange={setPinSystemOnChange} parentPinSystem={pinSystem} />
+
+                            <KnifeBalanceInput setBalanceOnChange={setBalanceOnChange} />
                         </div>
 
                         {/*Blade Info*/}
