@@ -18,25 +18,22 @@ import HandleFinishInput from "./HandleFinishInput";
 import HandleLengthInput from "./HandleLengthInput";
 import HandleThicknessInput from "./HandleThicknessInput";
 import KnifeBalanceInput from "./KnifeBalanceInput";
+import NewKnifeDisplayNameInput from "./NewKnifeDisplayNameInput";
+import KnifeMakerInput from "./KnifeMakerInput";
+import BaseKnifeModelInput from "./BaseKnifeModelInput";
+import KnifeTypeInput from "./KnifeTypeInput";
+import CollectionKnifeCoverPhotoInput from "./CollectionKnifeCoverPhotoInput";
+import AqquiredDateInput from "./AqquiredDateInput";
+import FavoriteKnifeInput from "./FavoriteKnifeInput";
+import FavoriteFlipperInput from "./FavoriteFlipperInput";
 
-const NewCollectionKnifeForm = () => {
-    // refs
-    // form refs required info
-    const displayNameRef = useRef<HTMLInputElement>(null)
+interface params {
+    setNewKnifeObjOnSubmit: Function,
+    setFormNotReadyOnChange: Function,
+    collectionKnifeObj: CollectionKnifeDTO | null
+}
 
-    const knifeMakerRef = useRef<HTMLInputElement>(null)
-    const baseKnifeModelRef = useRef<HTMLInputElement>(null)
-
-    const coverImageFileRef = useRef<HTMLInputElement>(null)
-
-    const selectedDateRef = useRef<HTMLInputElement>(null)
-
-    // form refs additional knife info
-
-    // form refs rankings
-
-    // form refs mod work
-
+const NewCollectionKnifeForm = ({ setNewKnifeObjOnSubmit, collectionKnifeObj, setFormNotReadyOnChange }:params) => {
     // states
     // form state values required info
     const [displayName, setDisplayName] = useState("")
@@ -45,13 +42,12 @@ const NewCollectionKnifeForm = () => {
 
     const [knifeType, setKnifeType] = useState("Live Blade")
 
-    const [selectedCoverFileName, setSelectedCoverFileName] = useState("")
     const [selectedCoverFile, setSelectedCoverFile] = useState<File | null>(null)
 
     const [selectedDate, setSelectedDate] = useState("")
 
     const [isFavoriteKnife, setIsFavoriteKnife] = useState(false)
-    const [isFavoriteFlipper, setIsFavroiteFlipper] = useState(false)
+    const [isFavoriteFlipper, setIsFavoriteFlipper] = useState(false)
 
     // form state values knife info
     const [knifeMSRP, setKnifeMSRP] = useState("")
@@ -60,6 +56,8 @@ const NewCollectionKnifeForm = () => {
     const [pivotSystem, setPivotSystem] = useState("Unknown")
     const [latchType, setLatchType] = useState("Unknown")
     const [pinSystem, setPinSystem] = useState("Unknown")
+    const [balance, setBalance] = useState<Number | null>(null)
+    const [hasModualtedBalance, setHasModulatedBalance] = useState(false)
 
     const [bladeStyle, setBladeStyle] = useState("Unknown")
     const [bladeLength, setBladeLength] = useState("")
@@ -82,8 +80,6 @@ const NewCollectionKnifeForm = () => {
     const [soundScore, setSoundScore] = useState(5)
     const [durabilityScore, setDurabilityScore] = useState(5)
 
-    const [balance, setBalance] = useState<Number | null>(null)
-
     // form state values mod work
 
     // additional state values
@@ -91,27 +87,67 @@ const NewCollectionKnifeForm = () => {
     const [displayRankingsInfo, toggleDisplayRankingsInfo] = useState(false)
     const [displayModWork, toggleDisplayModWork] = useState(false)
 
-    // on form submit
-    const handleFormSubmit = (e:any) => {
-        e.preventDefault()
+    const fillForm = () => {
+        if (collectionKnifeObj !== null) {
+            setDisplayName(collectionKnifeObj.displayName)
+            setKNifeMaker(collectionKnifeObj.knifeMaker)
+            setBaseKnifeModel(collectionKnifeObj.baseKnifeModel)
+            setKnifeType(collectionKnifeObj.knifeType)
+            setSelectedDate(collectionKnifeObj.aqquiredDate)
+            setIsFavoriteKnife(collectionKnifeObj.isFavoriteKnife)
+            setIsFavoriteFlipper(collectionKnifeObj.isFavoriteFlipper)
+            setSelectedCoverFile(collectionKnifeObj.coverPhoto)
 
+            setKnifeMSRP(collectionKnifeObj.msrp)
+            setOverallLength(collectionKnifeObj.overallLength)
+            setKnifeWeight(collectionKnifeObj.weight)
+            setPivotSystem(collectionKnifeObj.pivotSystem)
+            setLatchType(collectionKnifeObj.latchType)
+            setPinSystem(collectionKnifeObj.pinSystem)
+            setHasModulatedBalance(collectionKnifeObj.hasModularBalance)
+            setBalance(collectionKnifeObj.balanceValue)
+
+            setBladeLength(collectionKnifeObj.bladeLength)
+            setBladeThickness(collectionKnifeObj.bladeThickness)
+            setBladeStyle(collectionKnifeObj.bladeStyle)
+            setBladeFinish(collectionKnifeObj.bladeFinish)
+            setBladeMaterial(collectionKnifeObj.bladeMaterial)
+
+            setHandleConstruction(collectionKnifeObj.handleConstruction)
+            setHandleMaterial(collectionKnifeObj.handleMaterial)
+            setHandleFinish(collectionKnifeObj.handleFinish)
+            setHandleLength(collectionKnifeObj.handleLength)
+            setHandleThickness(collectionKnifeObj.handleThickness)
+
+            setAverageScore(collectionKnifeObj.averageScore)
+            setQualityScore(collectionKnifeObj.qualityScore)
+            setFlippingScore(collectionKnifeObj.flippingScore)
+            setFeelScore(collectionKnifeObj.feelScore)
+            setDurabilityScore(collectionKnifeObj.durabilityScore)
+            setSoundScore(collectionKnifeObj.soundScore)
+        }
+    }
+
+    const updateParent = () => {
         const obj = {
             displayName: displayName,
             knifeMaker: knifeMaker,
             baseKnifeModel: baseKnifeModel, 
             knifeType: knifeType,
-            selectedCoverFile: selectedCoverFile,
-            selectedDate: selectedDate,
+            coverPhoto: selectedCoverFile,
+            aqquiredDate: selectedDate,
 
             isFavoriteFlipper: isFavoriteFlipper,
             isFavoriteKnife: isFavoriteKnife,
 
-            knifeMSRP: knifeMSRP,
+            msrp: knifeMSRP,
             overallLength: overallLength,
-            knifeWeight: knifeWeight,
+            weight: knifeWeight,
             pivotSystem: pivotSystem, 
             latchType: latchType, 
             pinSystem: pinSystem,
+            hasModularBalance: hasModualtedBalance,
+            balanceValue: balance,
 
             bladeStyle: bladeStyle,
             bladeLength: bladeLength,
@@ -131,39 +167,92 @@ const NewCollectionKnifeForm = () => {
             feelScore: feelScore,
             soundScore: soundScore,
             durabilityScore: durabilityScore
-        }
+        } as CollectionKnifeDTO
 
         console.log("new knife obj: ", obj)
+        setNewKnifeObjOnSubmit(obj)
+    }
+ 
+    // on form submit
+    const handleFormSubmit = (e:any) => {
+        if (e) 
+            e.preventDefault()
+
+        updateParent()
     }
 
     // on change functions
-    const displayNameOnChange = (e:any) => {
-        setDisplayName(e.target.value)
+    const setDisplayNameOnChange = (input:string) => {
+        setDisplayName(input)
+
+        if (collectionKnifeObj !== null) {
+            setFormNotReadyOnChange()
+        }
     }
 
-    const knifeMakerOnChange = (e:any) => {
-        setKNifeMaker(e.target.value)
+    const setKnifeMakerOnChange = (input:string) => {
+        setKNifeMaker(input)
+
+        if (collectionKnifeObj !== null) {
+            setFormNotReadyOnChange()
+        }
     }
 
-    const baseKnifeModelOnChange = (e:any) => {
-        setBaseKnifeModel(e.target.value)
+    const setBaseKnifeModelOnChange = (input:string) => {
+        setBaseKnifeModel(input)
+
+        if (collectionKnifeObj !== null) {
+            setFormNotReadyOnChange()
+        }
     }
 
-    const selectedCoverFileOnChange = (e:any) => {
-        setSelectedCoverFileName(e.target.value)
-        setSelectedCoverFile(e.target.files[0])
+    const setKnifeTypeOnchange = (input:string) => {
+        setKnifeType(input)
+
+        if (collectionKnifeObj !== null) {
+            setFormNotReadyOnChange()
+        }
     }
 
-    const selectedDateOnChange = (e:any) => {
-        setSelectedDate(e.target.value)
+    const setCoverFileOnChange = (input:File | null) => {
+        setSelectedCoverFile(input)
+
+        if (collectionKnifeObj !== null) {
+            setFormNotReadyOnChange()
+        }
     }
 
-    const bladeTypeOnChange = (e:any) => {
-        setKnifeType(e.target.value)
+    const setAqquiredDateOnChange = (input:string) => {
+        setSelectedDate(input)
+
+        if (collectionKnifeObj !== null) {
+            setFormNotReadyOnChange()
+        }
+    }
+
+    const setIsFavoriteKnifeOnChange = () => {
+        setIsFavoriteKnife((prev) => !prev)
+
+        if (collectionKnifeObj !== null) {
+            setFormNotReadyOnChange()
+        }
+    }
+
+    const setIsFavoriteFlipperOnChange = () => {
+        setIsFavoriteFlipper((prev) => !prev)
+
+        if (collectionKnifeObj !== null) {
+            setFormNotReadyOnChange()
+        }
     }
 
     const qualityScaleOnChange = (e:any) => {
         setQualityScore(e.target.value)
+
+        if (collectionKnifeObj !== null) {
+            setFormNotReadyOnChange()
+        }
+
         if (averageScore == null) {
             setAverageScore(0)
         }
@@ -171,98 +260,195 @@ const NewCollectionKnifeForm = () => {
 
     const flippingScaleOnChange = (e:any) => {
         setFlippingScore(e.target.value)
+
         if (averageScore == null) {
             setAverageScore(0)
+        }
+
+        if (collectionKnifeObj !== null) {
+            setFormNotReadyOnChange()
         }
     }
 
     const feelScaleOnChange = (e:any) => {
         setFeelScore(e.target.value)
+
         if (averageScore == null) {
             setAverageScore(0)
+        }
+
+        if (collectionKnifeObj !== null) {
+            setFormNotReadyOnChange()
         }
     }
 
     const soundScaleOnChange = (e:any) => {
         setSoundScore(e.target.value)
+
         if (averageScore == null) {
             setAverageScore(0)
+        }
+
+        if (collectionKnifeObj !== null) {
+            setFormNotReadyOnChange()
         }
     }
 
     const durabilityScaleOnChange = (e:any) => {
         setDurabilityScore(e.target.value)
+
         if (averageScore == null) {
             setAverageScore(0)
+        }
+
+        if (collectionKnifeObj !== null) {
+            setFormNotReadyOnChange()
         }
     }
 
     const setKnifeMSRPOnChange = (input: string) => {
         setKnifeMSRP(input)
+
+        if (collectionKnifeObj !== null) {
+            setFormNotReadyOnChange()
+        }
     }  
 
     const setOverallLengthOnChange = (input: string) => {
         setOverallLength(input)
+
+        if (collectionKnifeObj !== null) {
+            setFormNotReadyOnChange()
+        }
     }
 
     const setKnifeWeightOnChange = (input: string) => {
         setKnifeWeight(input)
+
+        if (collectionKnifeObj !== null) {
+            setFormNotReadyOnChange()
+        }
     }
 
     const setPivotSystemOnChange = (input: string) => {
         setPivotSystem(input)
+
+        if (collectionKnifeObj !== null) {
+            setFormNotReadyOnChange()
+        }
     }
 
     const setLatchTypeOnChange = (input: string) => {
         setLatchType(input)
+
+        if (collectionKnifeObj !== null) {
+            setFormNotReadyOnChange()
+        }
     }
 
     const setPinSystemOnChange = (input: string) => {
         setPinSystem(input)
+
+        if (collectionKnifeObj !== null) {
+            setFormNotReadyOnChange()
+        }
+    }
+
+    const setHasModulatedBalanceOnChange = (input: boolean) => {
+        setHasModulatedBalance(input)
+
+        if (collectionKnifeObj !== null) {
+            setFormNotReadyOnChange()
+        }
     }
 
     const setBalanceOnChange = (input: number) => {
         setBalance(input)
+
+        if (collectionKnifeObj !== null) {
+            setFormNotReadyOnChange()
+        }
+        console.log("called")
     }
 
     const setBladeStyleOnChange = (input: string) => {
         setBladeStyle(input)
+
+        if (collectionKnifeObj !== null) {
+            setFormNotReadyOnChange()
+        }
     }
 
     const setBladeLengthOnChange = (input: string) => {
         setBladeLength(input)
+
+        if (collectionKnifeObj !== null) {
+            setFormNotReadyOnChange()
+        }
     }
 
     const setBladeThicknessOnChange = (input:string) => {
         setBladeThickness(input)
+
+        if (collectionKnifeObj !== null) {
+            setFormNotReadyOnChange()
+        }
     }
 
     const setBladeFinishOnChange = (input:string) => {
         setBladeFinish(input)
+
+        if (collectionKnifeObj !== null) {
+            setFormNotReadyOnChange()
+        }
     }
 
     const setBladeMaterialOnChange = (input:string) => {
         setBladeMaterial(input)
+
+        if (collectionKnifeObj !== null) {
+            setFormNotReadyOnChange()
+        }
     }
 
     const setHandleConstructionOnChange = (input:string) => {
         setHandleConstruction(input)
+
+        if (collectionKnifeObj !== null) {
+            setFormNotReadyOnChange()
+        }
     }
 
     const setHandleMaterialOnChange = (input:string) => {
         setHandleMaterial(input)
+
+        if (collectionKnifeObj !== null) {
+            setFormNotReadyOnChange()
+        }
     }
 
     const setHandleFinishOnChange = (input:string) => {
         setHandleFinish(input)
+
+        if (collectionKnifeObj !== null) {
+            setFormNotReadyOnChange()
+        }
     }
 
     const setHandleLengthOnChange = (input:string) => {
         setHandleLength(input)
+
+        if (collectionKnifeObj !== null) {
+            setFormNotReadyOnChange()
+        }
     }
 
     const setHandleThicknessOnChange = (input: string) => {
         setHandleThickness(input)
+
+        if (collectionKnifeObj !== null) {
+            setFormNotReadyOnChange()
+        }
     }
 
     useEffect(() => {
@@ -272,7 +458,7 @@ const NewCollectionKnifeForm = () => {
 
     // on mount
     useEffect(() => {
-        displayNameRef.current?.focus()
+        fillForm()
     }, [])
 
     return (
@@ -281,20 +467,11 @@ const NewCollectionKnifeForm = () => {
             <h2 className="border-b-2 pb-1 m-auto text-3xl">Add New Knife</h2>
 
             {/*Major Info*/}
-            <div className="flex justify-between">
-                <div className="w-full mr-4 flex flex-col gap-3">
+            <div className="flex justify-between gap-4">
+                <div className="w-full flex flex-col gap-3">
+
                     {/*Display Name for new knife*/}
-                    <div className="flex flex-col gap-1">
-                        <label>Display Name:</label>
-                        <input 
-                        type="text" 
-                        required
-                        ref={displayNameRef}
-                        value={displayName}
-                        onChange={(e) => displayNameOnChange(e)}
-                        className="text-black"
-                         />
-                    </div>
+                    <NewKnifeDisplayNameInput setDisplayNameOnChange={setDisplayNameOnChange} parentDisplayName={displayName} />
 
                     {/*Knife Manufactuer Info*/}
                     <div className="flex flex-col gap-1">
@@ -302,92 +479,19 @@ const NewCollectionKnifeForm = () => {
 
                         <div className="border border-dashed p-3 flex flex-col gap-2">
                             {/*Knife Manufactuer*/}
-                            <div className="flex flex-col gap-1">
-                                <label>Knife Maker:</label>
-                                <input
-                                type="text"
-                                required 
-                                ref={knifeMakerRef}
-                                value={knifeMaker}
-                                onChange={(e) => knifeMakerOnChange(e)}
-                                className="text-black"
-                                />
-                            </div>
+                            <KnifeMakerInput setKnifeMakerOnChange={setKnifeMakerOnChange} parentKnifeMaker={knifeMaker} />
 
                             {/*Base Knife Model*/}
-                            <div className="flex flex-col gap-1">
-                                <label>Base Knife Model:</label>
-                                <input
-                                type="text"
-                                required 
-                                ref={baseKnifeModelRef}
-                                value={baseKnifeModel}
-                                onChange={(e) => baseKnifeModelOnChange(e)}
-                                className="text-black"
-                                />
-                            </div>
+                            <BaseKnifeModelInput setBaseKnifeModelOnChange={setBaseKnifeModelOnChange} parentBaseKnifeModel={baseKnifeModel} />
 
                             {/*Radio Button Selection for Live Blade, Trainer, or Both*/}
-                            <div className="flex justify-evenly">
-                                <div className="flex flex-col">
-                                    <label>Live Blade</label>
-                                    <input
-                                    type="radio"
-                                    name="bladeType"
-                                    value="Live Blade"
-                                    defaultChecked
-                                    onChange={(e) => bladeTypeOnChange(e)}
-                                    />
-                                </div>
-
-                                <div className="flex flex-col">
-                                    <label>Trainer</label>
-                                    <input
-                                    type="radio"
-                                    name="bladeType"
-                                    value="Trainer"
-                                    onChange={(e) => setKnifeType(e.target.value)}
-                                    />
-                                </div>
-
-                                <div className="flex flex-col">
-                                    <label>Both</label>
-                                    <input 
-                                    type="radio"
-                                    name="bladeType" 
-                                    value="Both"
-                                    onChange={(e) => setKnifeType(e.target.value)}
-                                    />
-                                </div>
-                            </div>
+                            <KnifeTypeInput setKnifeTypeOnChange={setKnifeTypeOnchange} parentKnifeType={knifeType} />
                         </div>
-                        
                     </div>
-                    
                 </div>
 
                 {/*Cover Image Input and Display for Image*/}
-                <div className="flex flex-col gap-2">
-                    <div className="w-full h-60 rounded-lg border overflow-hidden">
-                        {
-                            !selectedCoverFile
-                            ?
-                            <div className="w-full h-full flex items-center justify-center">
-                                Cover Photo
-                            </div>
-                            :
-                            <img src={URL.createObjectURL(selectedCoverFile)} className="w-full h-full object-cover" />
-                        }
-                    </div>
-                    <input
-                    type="file"
-                    required 
-                    ref={coverImageFileRef}
-                    value={selectedCoverFileName}
-                    onChange={(e) => selectedCoverFileOnChange(e)}
-                    accept="jpeg, png"
-                    />
-                </div>
+                <CollectionKnifeCoverPhotoInput setCoverFileOnChange={setCoverFileOnChange} parentCoverFile={selectedCoverFile} />
             </div>
 
             <span className="w-full h-1 bg-white"></span>
@@ -395,33 +499,13 @@ const NewCollectionKnifeForm = () => {
             {/*Extra Required Knife Info*/}
             <div className="flex justify-between">
                 {/*Aqquired Date*/}
-                <div className="flex flex-col gap-2">
-                    <label>Date Aqquired:</label>
-                    <input
-                    type="date"
-                    value={selectedDate}
-                    ref={selectedDateRef}
-                    required
-                    onChange={(e) => selectedDateOnChange(e)}
-                    className="text-black"
-                    />
-                </div>
+                <AqquiredDateInput setAqquiredDateOnChange={setAqquiredDateOnChange} parentAqquiredDate={selectedDate} />
 
-                <div className="flex flex-col justify-evenly">
-                    <label>Mark as Favorite Knife</label>
-                    <input
-                    type="checkbox"
-                    onChange={() => setIsFavoriteKnife((prev) => !prev)}
-                    />
-                </div>
+                {/*Mark As Favorite Knife*/}
+                <FavoriteKnifeInput setIsFavoriteKnifeOnChange={setIsFavoriteKnifeOnChange} parentIsFavoriteKnife={isFavoriteKnife} />
 
-                <div className="flex flex-col justify-evenly">
-                    <label>Mark as Favorite Flipper</label>
-                    <input
-                    type="checkbox"
-                    onChange={() => setIsFavroiteFlipper((prev) => !prev)}
-                    />
-                </div>
+                {/*Mark As Favorite Flipper*/}
+                <FavoriteFlipperInput setIsFavoriteFlipperOnChange={setIsFavoriteFlipperOnChange} parentIsFavoriteFlipper={isFavoriteFlipper} />
             </div>
 
             <span className="w-full h-1 bg-white"></span>
@@ -461,7 +545,7 @@ const NewCollectionKnifeForm = () => {
 
                             <PinSystemInput setPinSystemOnChange={setPinSystemOnChange} parentPinSystem={pinSystem} />
 
-                            <KnifeBalanceInput setBalanceOnChange={setBalanceOnChange} />
+                            <KnifeBalanceInput setBalanceOnChange={setBalanceOnChange} setHasModulatedBalanceOnChange={setHasModulatedBalanceOnChange} parentBalanceValue={balance} parentHasModulatedBalance={hasModualtedBalance} />
                         </div>
 
                         {/*Blade Info*/}
@@ -618,7 +702,7 @@ const NewCollectionKnifeForm = () => {
             
             {/*Submit Button*/}
             {
-                !(displayName === "" || knifeMaker === "" || baseKnifeModel === "" || selectedCoverFileName === "" || selectedCoverFile === null || selectedDate === "")
+                !(displayName === "" || knifeMaker === "" || baseKnifeModel === "" || selectedCoverFile === null || selectedDate === "")
                 ?
                 <button type="submit" className="bg-shadow w-1/3 m-auto p-2 rounded">Submit</button>
                 :
