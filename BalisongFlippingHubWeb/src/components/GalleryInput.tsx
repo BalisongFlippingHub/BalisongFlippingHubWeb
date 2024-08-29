@@ -27,20 +27,25 @@ const GalleryInput = ({ updateGalleryFiles, galleryFiles }:params ) => {
     }
 
     return (
-        <section className="flex flex-col items-center w-full gap-5">
+        <section className="flex flex-col items-center w-full h-full gap-3">
             {/*Title*/}
             <div className="text-4xl font-bold">
                 <h4>Gallery</h4>
             </div>
 
-            {/*Gallery Header*/}
-            <div className="border p-2 w-1/3 text-xl">
-                <p>Select up to 10 images or videos showing off your new knife. Videos must be at max 1 minute in duration.</p>
-            </div>
-
+            
             {/*Files Display*/}
-            <div className="w-3/5 border flex flex-col">
-                <div className="w-full h-[500px] flex items-center justify-center">
+            <div className="flex w-full">
+                <input 
+                    type="file"
+                    ref={filesInputRef} 
+                    onChange={(e) => handleOnChange(e)}
+                    hidden
+                    multiple
+                    accept="jpeg, png, mov"
+                />
+
+                <div className="flex items-center justify-center w-1/2 h-96 border">
                     {
                         selectedFiles
                         ?
@@ -49,37 +54,30 @@ const GalleryInput = ({ updateGalleryFiles, galleryFiles }:params ) => {
                         <h3 className="text-shadow text-3xl">No Files Selected</h3>
                     }
                 </div>
-                
-                <div className="flex border-t p-2 justify-center">
-                    <button type="button" onClick={() => filesInputRef.current?.click()} className="p-2 rounded-lg border text-xl bg-black">Select Files</button>
-                </div>
 
-                <div className="flex flex-wrap">
+                <div className="flex flex-col w-1/2 border border">
+                    <div className="flex justify-center">
+                        <button type="button" className="p-2 bg-black mt-2" onClick={() => filesInputRef.current?.click()}>Select Files</button>
+                    </div>
+
                     {
                         selectedFiles
                         ?
-                        selectedFiles?.map((file, i) => {
-                            return (
-                                <div className="w-20 h-20" key={i}>
-                                    <img src={URL.createObjectURL(file)} className="h-full w-full object-cover" onClick={() => setCurrentIndex(i)} />
-                                </div>
-                            )
-                        })
+                        <div className="flex flex-wrap">
+                        {
+                            selectedFiles?.map((file, i) => {
+                                return (
+                                    <div className="w-36 h-36" key={i}>
+                                        <img src={URL.createObjectURL(file)} className="h-full w-full object-cover" onClick={() => setCurrentIndex(i)} />
+                                    </div>
+                                )
+                            })
+                        }
+                        </div>
                         : 
                         <></>
                     }
                 </div>
-            </div>
-
-            <div>
-                <input 
-                type="file"
-                ref={filesInputRef} 
-                onChange={(e) => handleOnChange(e)}
-                hidden
-                multiple
-                accept="jpeg, png, mov"
-                />
             </div>
         </section>
     )

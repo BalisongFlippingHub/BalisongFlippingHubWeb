@@ -24,7 +24,7 @@ const AddNewKnifeToCollectionPage = () => {
     }
 
     return (
-        <section className="w-full h-full flex justify-center items-center bg-shadow-green relative">
+        <section className="w-full h-full flex justify-center items-center bg-shadow-green">
             {
                 newKnifeStep === "1"
                 ?
@@ -48,7 +48,7 @@ const AddNewKnifeToCollectionPage = () => {
                             <></>
             }
 
-            <div className="absolute top-0 left-0 bg-shadow">
+            <div className="absolute bottom-0 bg-shadow flex">
                 <button type="button" onClick={() => setNewKnifeStep("1")} className={
                     newKnifeStep === "1"
                     ?

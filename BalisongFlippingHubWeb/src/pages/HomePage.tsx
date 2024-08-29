@@ -11,15 +11,15 @@ const HomePage = () => {
 
     return (
         <>
-            <section className="h-full text-lg font-semibold">
-                <div className="h-1/6 flex justify-center items-center bg-shadow-green-offset text-3xl font-bold xsm:collapse xsm:absolute md:visible md:static">
+            <section className="h-screen text-lg font-semibold">
+                <div className="h-1/6 flex justify-center items-center bg-shadow-green-offset text-4xl font-bold xsm:collapse xsm:absolute md:visible md:static">
                     <h2 className="">Balisong Flipping Center</h2>
                 </div>
 
                 <div className="md:h-5/6 sm:h-auto flex items-center xsm:flex-col-reverse md:flex-row">
-                    <div className="md:w-1/2 sm:w-full flex flex-col justify-center p-8 text-center md:h-full sm:h-auto">
-                        <div className="text-xl flex flex-col items-center">
-                            <h3 className="font-bold text-5xl">Welcome!</h3>
+                    <div className="md:w-2/3 sm:w-full flex flex-col justify-center p-8 text-center md:h-full sm:h-auto">
+                        <div className="flex flex-col items-center">
+                            <h3 className="font-bold text-2xl">Welcome!</h3>
                             <p className="mt-6">Welcome to the Balisong Flipping Hub! The community center for entusiest about balisong flipping, collecting, modding and more!
                             Make a name for yourself, display your flipping clips, post your personal balisongs, put your modding buisness out there or show off your products for all to see.
                             </p>
@@ -57,8 +57,7 @@ const HomePage = () => {
                         </div>
                     </div>
 
-                    <div className="md:w-1/2 xsm:w-full md:mr-10">
-                        <HomePageDataDisplay />
+                    <div className="md:w-1/3 xsm:w-full md:mr-10">
                         <HomePageCaurosel />
                     </div>
                 </div>
