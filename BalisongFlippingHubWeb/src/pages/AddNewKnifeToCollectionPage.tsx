@@ -1,10 +1,13 @@
 import { useState } from "react";
 import NewCollectionKnifeForm from "../components/NewCollectionKnifeForm";
+import GalleryInput from "../components/GalleryInput";
 
 const AddNewKnifeToCollectionPage = () => {
     const [newKnifeStep, setNewKnifeStep] = useState("1")
     const [newKnifeObj, setNewKnifeObj] = useState<CollectionKnifeDTO | null>(null)
     const [formNotReady, setFormNotReady] = useState(true)
+
+    const [galleryFiles, setGalleryFiles] = useState<Array<File> | null>(null)
     
     const setNewKnifeObjOnSubmit = (obj: CollectionKnifeDTO) => {
         setNewKnifeObj(obj)
@@ -16,14 +19,33 @@ const AddNewKnifeToCollectionPage = () => {
         setFormNotReady(true)
     }
 
+    const updateGalleryFiles = (files: Array<File> | null) => {
+        setGalleryFiles(files)
+    }
+
     return (
         <section className="w-full h-full flex justify-center items-center bg-shadow-green relative">
             {
                 newKnifeStep === "1"
                 ?
-                <NewCollectionKnifeForm setNewKnifeObjOnSubmit={setNewKnifeObjOnSubmit} collectionKnifeObj={newKnifeObj} setFormNotReadyOnChange={setFormNotReadyOnChange} />
+                // <NewCollectionKnifeForm setNewKnifeObjOnSubmit={setNewKnifeObjOnSubmit} collectionKnifeObj={newKnifeObj} setFormNotReadyOnChange={setFormNotReadyOnChange} />
+                <GalleryInput updateGalleryFiles={updateGalleryFiles} galleryFiles={galleryFiles} />
                 :
-                <></>
+                    newKnifeStep === "2"
+                    ?
+                    <GalleryInput updateGalleryFiles={updateGalleryFiles} galleryFiles={galleryFiles} />
+                    :
+                        newKnifeStep === "3"
+                        ?
+                        <></>
+                        :
+                            newKnifeStep === "4"
+                            ?
+                            <div>
+                                Submit to backend
+                            </div>
+                            :
+                            <></>
             }
 
             <div className="absolute top-0 left-0 bg-shadow">
