@@ -16,11 +16,11 @@ const MainLayout = () => {
             {
                 !lgScreenFullNavDisplay
                 ?
-                <main className="min-h-screen max-h-auto lg:ml-[calc(192px)] pt-[64px] bg-shadow-green">
+                <main className="h-full w-full">
                     <Outlet />
                 </main>
                 :
-                <main className="min-h-screen max-h-auto lg:ml-[calc(64px)] pt-[64px] bg-shadow-green">
+                <main className="h-full w-full">
                     <Outlet />
                 </main>
             }

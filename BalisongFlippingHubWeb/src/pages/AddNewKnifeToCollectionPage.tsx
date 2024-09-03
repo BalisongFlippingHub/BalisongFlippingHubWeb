@@ -21,19 +21,23 @@ const AddNewKnifeToCollectionPage = () => {
 
     const updateGalleryFiles = (files: Array<File> | null) => {
         setGalleryFiles(files)
+        console.log(galleryFiles)
+    }
+
+    const setStepManually = (num: string) => {
+        setNewKnifeStep(num)
     }
 
     return (
-        <section className="w-full h-full flex justify-center items-center bg-shadow-green">
+        <section className=" h-full flex justify-center items-center bg-shadow-green relative">
             {
                 newKnifeStep === "1"
                 ?
-                // <NewCollectionKnifeForm setNewKnifeObjOnSubmit={setNewKnifeObjOnSubmit} collectionKnifeObj={newKnifeObj} setFormNotReadyOnChange={setFormNotReadyOnChange} />
-                <GalleryInput updateGalleryFiles={updateGalleryFiles} galleryFiles={galleryFiles} />
+                <NewCollectionKnifeForm setNewKnifeObjOnSubmit={setNewKnifeObjOnSubmit} collectionKnifeObj={newKnifeObj} setFormNotReadyOnChange={setFormNotReadyOnChange} />
                 :
                     newKnifeStep === "2"
                     ?
-                    <GalleryInput updateGalleryFiles={updateGalleryFiles} galleryFiles={galleryFiles} />
+                    <GalleryInput updateGalleryFiles={updateGalleryFiles} galleryFiles={galleryFiles} setStepManually={setStepManually} />
                     :
                         newKnifeStep === "3"
                         ?
@@ -48,13 +52,13 @@ const AddNewKnifeToCollectionPage = () => {
                             <></>
             }
 
-            <div className="absolute bottom-0 bg-shadow flex">
+            <div className="absolute lg:bottom-0 xsm:bottom-[66px] sm:bottom-12 lg:w-[calc(100%-192px)] xsm:w-full lg:ml-[192px] bg-shadow flex border">
                 <button type="button" onClick={() => setNewKnifeStep("1")} className={
                     newKnifeStep === "1"
                     ?
-                    "flex gap-1 items-center p-2 bg-shadow-green-offset w-full"
+                    "flex gap-3 items-center border-r p-2 bg-shadow-green-offset w-full"
                     :
-                    "flex gap-1 items-center p-2 w-full"
+                    "flex gap-1 items-center border-r p-2 w-full"
                 }>
                     <h2 className="rounded-full border w-7 h-7 text-center">1</h2>
                     <p>Form</p>
@@ -63,7 +67,7 @@ const AddNewKnifeToCollectionPage = () => {
                 {
                     formNotReady
                     ?
-                    <button type="button" disabled onClick={() => setNewKnifeStep("2")} className="flex gap-1 items-center p-2 w-full bg-shadow-green">
+                    <button type="button" disabled onClick={() => setNewKnifeStep("2")} className="flex gap-1 items-center border-r p-2 w-full bg-shadow-green">
                         <h2 className="rounded-full border w-7 h-7 text-center">2</h2>
                         <p>Gallery</p>
                     </button>
@@ -71,9 +75,9 @@ const AddNewKnifeToCollectionPage = () => {
                     <button type="button" onClick={() => setNewKnifeStep("2")} className={
                         newKnifeStep === "2"
                         ?
-                        "flex gap-1 items-center p-2 bg-shadow-green-offset w-full"
+                        "flex gap-1 items-center border-r p-2 bg-shadow-green-offset w-full"
                         :
-                        "flex gap-1 items-center p-2 w-full"
+                        "flex gap-1 items-center border-r p-2 w-full"
                     }>
                         <h2 className="rounded-full border w-7 h-7 text-center">2</h2>
                         <p>Gallery</p>
@@ -84,7 +88,7 @@ const AddNewKnifeToCollectionPage = () => {
                 {
                     formNotReady
                     ?
-                    <button type="button" disabled onClick={() => setNewKnifeStep("3")} className="flex gap-1 items-center p-2 bg-shadow-green w-full">
+                    <button type="button" disabled onClick={() => setNewKnifeStep("3")} className="flex gap-1 items-center p-2 bg-shadow-green border-r w-full">
                         <h2 className="rounded-full border w-7 h-7 text-center">3</h2>
                         <p>Post</p>
                     </button>
@@ -92,9 +96,9 @@ const AddNewKnifeToCollectionPage = () => {
                     <button type="button" onClick={() => setNewKnifeStep("3")} className={
                         newKnifeStep === "3"
                         ?
-                        "flex gap-1 items-center p-2 bg-shadow-green-offset w-full"
+                        "flex gap-1 items-center border-r p-2 bg-shadow-green-offset w-full"
                         :
-                        "flex gap-1 items-center p-2 w-full"
+                        "flex gap-1 items-center border-r p-2 w-full"
                     }>
                         <h2 className="rounded-full border w-7 h-7 text-center">3</h2>
                         <p>Post</p>
