@@ -8,3 +8,7 @@
     box-sizing: border-box;
     color:  white;
 }
+
+body {
+    background-color: #001a1a;
+}

@@ -3,29 +3,30 @@ import Header from "../components/Header";
 import { useState } from "react";
 
 const MainLayout = () => {
-    const [lgScreenFullNavDisplay, setLgScreenFullNavDisplay] = useState(false)
+  const [lgScreenFullNavDisplay, setLgScreenFullNavDisplay] = useState(false);
 
-    const toggleLgScreenFullNavDispaly = () => {
-        setLgScreenFullNavDisplay((prev) => !prev)
-    }
+  const toggleLgScreenFullNavDispaly = () => {
+    setLgScreenFullNavDisplay((prev) => !prev);
+  };
 
-    return (
-        <>
-            <Header toggleLgScreenFullNavDisplay={toggleLgScreenFullNavDispaly} lgScreenFullNavDisplay={lgScreenFullNavDisplay} />
+  return (
+    <>
+      <Header
+        toggleLgScreenFullNavDisplay={toggleLgScreenFullNavDispaly}
+        lgScreenFullNavDisplay={lgScreenFullNavDisplay}
+      />
 
-            {
-                !lgScreenFullNavDisplay
-                ?
-                <main className="h-full w-full">
-                    <Outlet />
-                </main>
-                :
-                <main className="h-full w-full">
-                    <Outlet />
-                </main>
-            }
-        </>
-    )
-}
+      {!lgScreenFullNavDisplay ? (
+        <main className="h-full w-full">
+          <Outlet />
+        </main>
+      ) : (
+        <main className="h-full w-full">
+          <Outlet />
+        </main>
+      )}
+    </>
+  );
+};
 
-export default MainLayout; 
+export default MainLayout;
