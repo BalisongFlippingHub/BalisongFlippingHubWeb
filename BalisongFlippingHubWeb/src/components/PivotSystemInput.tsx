@@ -1,43 +1,46 @@
-import { useRef, useState } from "react"
-import { pivotSystem } from "../comboBoxData/PivotSystem"
+import { useRef, useState } from "react";
+import { pivotSystem } from "../comboBoxData/PivotSystem";
 
 interface params {
-    setPivotSystemOnChange: Function,
-    parentPivotSystem: string
+  setPivotSystemOnChange: Function;
+  parentPivotSystem: string;
 }
 
-const PivotSystemInput = ({ setPivotSystemOnChange, parentPivotSystem }: params) => {
-    const pivotSystemRef = useRef<HTMLSelectElement>(null)
-    
-    const [pSystem, setPSystem] = useState(parentPivotSystem)
+const PivotSystemInput = ({
+  setPivotSystemOnChange,
+  parentPivotSystem,
+}: params) => {
+  const pivotSystemRef = useRef<HTMLSelectElement>(null);
 
-    const handleOnChange = (value: string) => {
-        setPSystem(value)
-        setPivotSystemOnChange(value)
-        pivotSystemRef.current?.blur()
-    }
+  const [pSystem, setPSystem] = useState(parentPivotSystem);
 
-    return (
-        <div className="flex gap-2 items-center">
-            <label>Pivot System:</label>
+  const handleOnChange = (value: string) => {
+    setPSystem(value);
+    setPivotSystemOnChange(value);
+    pivotSystemRef.current?.blur();
+  };
 
-            <select 
-            id="pivotList"
-            className="bg-inherit p-2 border-2 border-black"
-            value={pSystem}
-            ref={pivotSystemRef}
-            onChange={(e) => handleOnChange(e.target.value)}
-            >
-            {
-                pivotSystem.map((value, i) => {
-                    return (
-                        <option className="text-black" key={i} value={value}>{value}</option>
-                    )
-                })
-            }
-            </select>
-        </div>
-    )
-}
+  return (
+    <div className="flex gap-2 items-center">
+      <label className="text-lg font-bold">Pivot System:</label>
 
-export default PivotSystemInput
+      <select
+        id="pivotList"
+        className="bg-shadow-green text-lg p-2 border-2 border-black rounded"
+        value={pSystem}
+        ref={pivotSystemRef}
+        onChange={(e) => handleOnChange(e.target.value)}
+      >
+        {pivotSystem.map((value, i) => {
+          return (
+            <option className="" key={i} value={value}>
+              {value}
+            </option>
+          );
+        })}
+      </select>
+    </div>
+  );
+};
+
+export default PivotSystemInput;

@@ -502,8 +502,6 @@ const NewCollectionKnifeForm = ({
           />
         </div>
 
-        <span className="w-full h-1 bg-white"></span>
-
         {/*Extra Required Knife Info*/}
         <div className="flex justify-between">
           {/*Aqquired Date*/}
@@ -525,15 +523,15 @@ const NewCollectionKnifeForm = ({
           />
         </div>
 
-        <span className="w-full h-1 bg-white"></span>
+        <span className="w-full h-2 bg-shadow-green rounded"></span>
 
         {/*Additional Knife Info*/}
         <div>
           <div
-            className="flex items-center gap-1 hover:cursor-pointer"
+            className="flex items-center gap-2 hover:cursor-pointer"
             onClick={() => toggleDisplayAdditionalKnifeInfo((prev) => !prev)}
           >
-            <h3>Additional Knife Info</h3>
+            <h3 className="text-lg font-bold">Additional Knife Info</h3>
             {!displayAdditionalKnifeInfo ? (
               <FontAwesomeIcon icon={faChevronUp} />
             ) : (
@@ -544,40 +542,44 @@ const NewCollectionKnifeForm = ({
           {displayAdditionalKnifeInfo ? (
             <div className="flex flex-col">
               {/*Knife Specs*/}
-              <div className="flex flex-col items-center gap-2">
-                <div className="text-xl font-bold border-b w-full flex justify-center p-1">
+              <div className="flex flex-col items-center gap-6">
+                <div className="text-xl font-bold border-b-4 border-dashed border-shadow-green w-full flex justify-center p-1">
                   <h4>Specs</h4>
                 </div>
 
-                <KnifeMSRPInput
-                  setKnifeMSRPOnChange={setKnifeMSRPOnChange}
-                  parentMSRP={knifeMSRP}
-                />
+                <div className="w-full flex justify-between">
+                  <KnifeMSRPInput
+                    setKnifeMSRPOnChange={setKnifeMSRPOnChange}
+                    parentMSRP={knifeMSRP}
+                  />
 
-                <OverallKnifeLengthInput
-                  setOverallLengthOnChange={setOverallLengthOnChange}
-                  parentKnifeLength={overallLength}
-                />
+                  <OverallKnifeLengthInput
+                    setOverallLengthOnChange={setOverallLengthOnChange}
+                    parentKnifeLength={overallLength}
+                  />
 
-                <KnifeWeightInput
-                  setKnifeWeightOnChange={setKnifeWeightOnChange}
-                  parentWeight={knifeWeight}
-                />
+                  <KnifeWeightInput
+                    setKnifeWeightOnChange={setKnifeWeightOnChange}
+                    parentWeight={knifeWeight}
+                  />
+                </div>
 
-                <PivotSystemInput
-                  setPivotSystemOnChange={setPivotSystemOnChange}
-                  parentPivotSystem={pivotSystem}
-                />
+                <div className="w-full flex justify-between">
+                  <PivotSystemInput
+                    setPivotSystemOnChange={setPivotSystemOnChange}
+                    parentPivotSystem={pivotSystem}
+                  />
 
-                <LatchTypeInput
-                  setLatchTypeOnChange={setLatchTypeOnChange}
-                  parentLatchType={latchType}
-                />
+                  <LatchTypeInput
+                    setLatchTypeOnChange={setLatchTypeOnChange}
+                    parentLatchType={latchType}
+                  />
 
-                <PinSystemInput
-                  setPinSystemOnChange={setPinSystemOnChange}
-                  parentPinSystem={pinSystem}
-                />
+                  <PinSystemInput
+                    setPinSystemOnChange={setPinSystemOnChange}
+                    parentPinSystem={pinSystem}
+                  />
+                </div>
 
                 <KnifeBalanceInput
                   setBalanceOnChange={setBalanceOnChange}
@@ -590,12 +592,12 @@ const NewCollectionKnifeForm = ({
               </div>
 
               {/*Blade Info*/}
-              <div className="flex flex-col items-center gap-2">
-                <div className="text-xl font-bold border-b w-full flex justify-center p-1">
+              <div className="flex flex-col items-center gap-6 mb-6">
+                <div className="text-xl font-bold border-b-4 border-shadow-green border-dashed w-full flex justify-center p-1">
                   <h4>Blade</h4>
                 </div>
 
-                <div className="flex justify-evenly items-center w-full pt-5 pb-5">
+                <div className="flex justify-evenly items-center w-full">
                   <BladeStyleInput
                     setBladeStyleOnChange={setBladeStyleOnChange}
                     parentBladeStyle={bladeStyle}
@@ -615,7 +617,7 @@ const NewCollectionKnifeForm = ({
 
               {/*Handles Info*/}
               <div className="flex flex-col items-center gap-2">
-                <div className="text-xl font-bold border-b w-full flex justify-center p-1">
+                <div className="text-xl font-bold border-b-4 border-dashed border-shadow-green w-full flex justify-center p-1">
                   <h4>Handles</h4>
                 </div>
 
@@ -644,15 +646,15 @@ const NewCollectionKnifeForm = ({
           )}
         </div>
 
-        <span className="w-full h-1 bg-white"></span>
+        <span className="w-full h-2 bg-shadow-green rounded"></span>
 
         {/*Rankings*/}
         <div>
           <div
-            className="flex items-center gap-1 hover:cursor-pointer"
+            className="flex items-center gap-2 hover:cursor-pointer"
             onClick={() => toggleDisplayRankingsInfo((prev) => !prev)}
           >
-            <h3>Rankings</h3>
+            <h3 className="text-lg font-bold">Rankings</h3>
             {!displayRankingsInfo ? (
               <FontAwesomeIcon icon={faChevronUp} />
             ) : (
@@ -661,9 +663,9 @@ const NewCollectionKnifeForm = ({
           </div>
 
           {displayRankingsInfo ? (
-            <div className="w-full flex flex-col">
+            <div className="w-full flex flex-col gap-2">
               {/*Overall Score*/}
-              <div className="flex flex-col items-center justify-center gap-1">
+              <div className="flex flex-col items-center justify-center gap-1 text-lg">
                 <h5>Overall Score</h5>
                 <h6>
                   {averageScore == null ? "-" : averageScore.toString()}/10
@@ -775,15 +777,15 @@ const NewCollectionKnifeForm = ({
           )}
         </div>
 
-        <span className="w-full h-1 bg-white"></span>
+        <span className="w-full h-2 bg-shadow-green"></span>
 
         {/*Mod Work*/}
         <div>
           <div
-            className="flex items-center gap-1 hover:cursor-pointer"
+            className="flex items-center gap-2 hover:cursor-pointer"
             onClick={() => toggleDisplayModWork((prev) => !prev)}
           >
-            <h3>Mod Work</h3>
+            <h3 className="text-lg font-bold">Mod Work</h3>
             {!displayModWork ? (
               <FontAwesomeIcon icon={faChevronUp} />
             ) : (
@@ -794,7 +796,7 @@ const NewCollectionKnifeForm = ({
           {displayModWork ? <>display</> : <></>}
         </div>
 
-        <span className="w-full h-1 bg-white"></span>
+        <span className="w-full h-2 bg-shadow-green"></span>
 
         {/*Submit Button*/}
         {!(
@@ -804,14 +806,17 @@ const NewCollectionKnifeForm = ({
           selectedCoverFile === null ||
           selectedDate === ""
         ) ? (
-          <button type="submit" className="bg-shadow w-1/3 m-auto p-2 rounded">
+          <button
+            type="submit"
+            className="bg-shadow-green w-1/4 m-auto p-4 rounded border border-black text-lg font-bold"
+          >
             Submit
           </button>
         ) : (
           <button
             type="submit"
             disabled
-            className="bg-shadow w-1/3 m-auto p-2 rounded"
+            className="p-4 bg-shadow border border-black rounded w-1/4 m-auto text-lg text-black font-bold"
           >
             Submit
           </button>
