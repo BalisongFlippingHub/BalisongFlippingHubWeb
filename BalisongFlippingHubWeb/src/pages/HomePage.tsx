@@ -9,7 +9,7 @@ const HomePage = () => {
 
   return (
     <>
-      <section className="h-screen text-lg font-semibold pt-[64px] pl-[192px]">
+      <section className="h-screen text-lg font-semibold pt-[64px] lg:pl-[192px]">
         <div className="h-1/6 flex justify-center items-center bg-shadow-green-offset text-4xl font-bold xsm:collapse xsm:absolute md:visible md:static">
           <h2 className="">Balisong Flipping Center</h2>
         </div>

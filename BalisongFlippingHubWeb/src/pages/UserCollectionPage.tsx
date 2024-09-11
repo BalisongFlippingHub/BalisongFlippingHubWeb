@@ -42,7 +42,7 @@ const UserCollectionPage = () => {
   }, []);
 
   return (
-    <section className="w-full h-full flex flex-col pl-[192px] pt-[64px]">
+    <section className="w-full h-full flex flex-col lg:pl-[192px] pt-[64px]">
       {/*Collection Banner Image atop of page*/}
       {collection?.bannerImg ||
       collection?.bannerImg === "" ||

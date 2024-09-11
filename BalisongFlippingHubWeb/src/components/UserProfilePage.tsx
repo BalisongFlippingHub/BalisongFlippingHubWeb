@@ -6,7 +6,7 @@ import UserProfilePostsComponent from "./UserProfilePostsComponent";
 const UserProfilePage = () => {
   return (
     <>
-      <section className="text-lg font-semibold border-b flex flex-col justify-between pt-[64px] pl-[192px]">
+      <section className="text-lg font-semibold border-b flex flex-col justify-between pt-[64px] lg:pl-[192px]">
         {/*Account Info*/}
         <div className="w-full flex flex-col items-center lg:h-80 md:h-72 sm:h-64 xsm:h-52 relative">
           <CustomProfileBanner />

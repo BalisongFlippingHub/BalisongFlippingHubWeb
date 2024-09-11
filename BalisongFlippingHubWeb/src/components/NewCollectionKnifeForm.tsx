@@ -431,15 +431,17 @@ const NewCollectionKnifeForm = ({
   }, []);
 
   return (
-    <section className="w-full h-full ml-48 mt-30 flex flex-col pt-24 items-center gap-10">
-      <div className="flex w-full relative justify-center">
-        <h2 className="justify-self-center text-4xl">Add New Knife</h2>
+    <section className="max-w-[1450px] w-full h-full lg:ml-48 mt-30 flex flex-col pt-24 items-center gap-10 md:pb-10">
+      <div className="flex lg:w-5/6 md:w-[92%] xsm:w-full relative justify-center">
+        <h2 className="justify-self-center md:text-4xl xsm:text-3xl">
+          Add New Knife
+        </h2>
 
         {collectionKnifeObj === null ? (
           <button
             type="button"
             disabled
-            className="flex items-center gap-2 text-2xl border p-2 absolute right-6"
+            className="flex items-center gap-2 md:text-2xl xsm:text-lg border p-2 absolute md:right-0 xsm:right-4"
           >
             <h3>Gallery</h3>
             <FontAwesomeIcon icon={faCircleArrowRight} />
@@ -447,7 +449,7 @@ const NewCollectionKnifeForm = ({
         ) : (
           <button
             type="button"
-            className="flex items-center gap-2 text-2xl border p-2 absolute right-6 hover:bg-shadow-green-offset"
+            className="flex items-center gap-2 md:text-2xl xsm:text-lg border p-2 absolute md:right-0 xsm:right-4 hover:bg-shadow-green-offset"
             onClick={() => setStepManually("2")}
           >
             <h3>Gallery</h3>
@@ -457,11 +459,11 @@ const NewCollectionKnifeForm = ({
       </div>
 
       <form
-        className="w-5/6 bg-shadow-green-offset p-4 flex flex-col gap-3 mb-20 rounded"
+        className="lg:w-5/6 md:w-[92%] xsm:w-full bg-shadow-green-offset p-4 xsm:pb-8 md:pb-4 flex flex-col gap-3 mb-20 rounded"
         onSubmit={handleFormSubmit}
       >
         {/*Major Info*/}
-        <div className="flex justify-between gap-4">
+        <div className="flex xsm:flex-col-reverse md:flex-row md:justify-between xsm:justify-center xsm:items-center gap-4">
           <div className="w-full flex flex-col gap-3">
             {/*Display Name for new knife*/}
             <NewKnifeDisplayNameInput
@@ -503,24 +505,26 @@ const NewCollectionKnifeForm = ({
         </div>
 
         {/*Extra Required Knife Info*/}
-        <div className="flex justify-between">
+        <div className="flex xsm:flex-col md:flex-row xsm:items-center xsm:gap-4 justify-between">
           {/*Aqquired Date*/}
           <AqquiredDateInput
             setAqquiredDateOnChange={setAqquiredDateOnChange}
             parentAqquiredDate={selectedDate}
           />
 
-          {/*Mark As Favorite Knife*/}
-          <FavoriteKnifeInput
-            setIsFavoriteKnifeOnChange={setIsFavoriteKnifeOnChange}
-            parentIsFavoriteKnife={isFavoriteKnife}
-          />
+          <div className="flex justify-between md:w-2/3 xsm:w-full">
+            {/*Mark As Favorite Knife*/}
+            <FavoriteKnifeInput
+              setIsFavoriteKnifeOnChange={setIsFavoriteKnifeOnChange}
+              parentIsFavoriteKnife={isFavoriteKnife}
+            />
 
-          {/*Mark As Favorite Flipper*/}
-          <FavoriteFlipperInput
-            setIsFavoriteFlipperOnChange={setIsFavoriteFlipperOnChange}
-            parentIsFavoriteFlipper={isFavoriteFlipper}
-          />
+            {/*Mark As Favorite Flipper*/}
+            <FavoriteFlipperInput
+              setIsFavoriteFlipperOnChange={setIsFavoriteFlipperOnChange}
+              parentIsFavoriteFlipper={isFavoriteFlipper}
+            />
+          </div>
         </div>
 
         <span className="w-full h-2 bg-shadow-green rounded"></span>
@@ -542,12 +546,12 @@ const NewCollectionKnifeForm = ({
           {displayAdditionalKnifeInfo ? (
             <div className="flex flex-col">
               {/*Knife Specs*/}
-              <div className="flex flex-col items-center gap-6">
+              <div className="flex flex-col items-center gap-2">
                 <div className="text-xl font-bold border-b-4 border-dashed border-shadow-green w-full flex justify-center p-1">
                   <h4>Specs</h4>
                 </div>
 
-                <div className="w-full flex justify-between">
+                <div className="w-full flex xsm:flex-col md:flex-row justify-between items-center">
                   <KnifeMSRPInput
                     setKnifeMSRPOnChange={setKnifeMSRPOnChange}
                     parentMSRP={knifeMSRP}
@@ -564,7 +568,7 @@ const NewCollectionKnifeForm = ({
                   />
                 </div>
 
-                <div className="w-full flex justify-between">
+                <div className="w-full flex md:flex-row xsm:flex-col justify-between xsm:items-center gap-4">
                   <PivotSystemInput
                     setPivotSystemOnChange={setPivotSystemOnChange}
                     parentPivotSystem={pivotSystem}
@@ -597,7 +601,7 @@ const NewCollectionKnifeForm = ({
                   <h4>Blade</h4>
                 </div>
 
-                <div className="flex justify-evenly items-center w-full">
+                <div className="flex md:flex-row xsm:flex-col justify-evenly items-center w-full gap-4">
                   <BladeStyleInput
                     setBladeStyleOnChange={setBladeStyleOnChange}
                     parentBladeStyle={bladeStyle}
@@ -621,7 +625,7 @@ const NewCollectionKnifeForm = ({
                   <h4>Handles</h4>
                 </div>
 
-                <div className="flex justify-evenly items-center w-full pt-5 pb-5">
+                <div className="flex md:flex-row xsm:flex-col justify-evenly items-center w-full pt-5 pb-5 gap-4">
                   <HandleConstructionInput
                     setHandleConstructionOnChange={
                       setHandleConstructionOnChange

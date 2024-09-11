@@ -53,7 +53,7 @@ const AddNewKnifeToCollectionPage = () => {
         <></>
       )}
 
-      <div className="fixed lg:bottom-0 xsm:bottom-[66px] sm:bottom-12 lg:w-[calc(100%-192px)] xsm:w-full lg:ml-[192px] bg-shadow flex border">
+      <div className="fixed lg:bottom-0 xsm:bottom-[48px] sm:bottom-12 lg:w-[calc(100%-192px)] xsm:w-full lg:ml-[192px] bg-shadow flex border">
         <button
           type="button"
           onClick={() => setNewKnifeStep("1")}

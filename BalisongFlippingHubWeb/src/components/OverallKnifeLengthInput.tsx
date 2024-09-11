@@ -52,7 +52,7 @@ const OverallKnifeLengthInput = ({
         ref={lengthInputRef}
         value={length}
         placeholder={measureType === "In" ? "0.0" : "0"}
-        className="bg-shadow-green p-1 text-lg border-2 border-black w-16 rounded [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
+        className="bg-shadow-green p-1 text-lg border-2 border-black w-32 rounded [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
         onChange={(e) => overallLengthOnChange(e.target.value)}
         onBlur={() => handleOnBlur()}
       />
