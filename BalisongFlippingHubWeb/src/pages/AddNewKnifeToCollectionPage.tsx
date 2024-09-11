@@ -33,11 +33,16 @@ const AddNewKnifeToCollectionPage = () => {
   return (
     <section className="h-full flex justify-center items-center">
       {newKnifeStep === "1" ? (
-        <NewCollectionKnifeForm
-          setNewKnifeObjOnSubmit={setNewKnifeObjOnSubmit}
+        // <NewCollectionKnifeForm
+        //   setNewKnifeObjOnSubmit={setNewKnifeObjOnSubmit}
+        //   setStepManually={setStepManually}
+        //   collectionKnifeObj={newKnifeObj}
+        //   setFormNotReadyOnChange={setFormNotReadyOnChange}
+        // />
+        <GalleryInput
+          updateGalleryFiles={updateGalleryFiles}
+          galleryFiles={galleryFiles}
           setStepManually={setStepManually}
-          collectionKnifeObj={newKnifeObj}
-          setFormNotReadyOnChange={setFormNotReadyOnChange}
         />
       ) : newKnifeStep === "2" ? (
         <GalleryInput
