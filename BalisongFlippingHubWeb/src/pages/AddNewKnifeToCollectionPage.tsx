@@ -64,8 +64,8 @@ const AddNewKnifeToCollectionPage = () => {
           onClick={() => setNewKnifeStep("1")}
           className={
             newKnifeStep === "1"
-              ? "flex gap-3 items-center border-r p-2 bg-shadow-green-offset w-full"
-              : "flex gap-1 items-center border-r p-2 w-full"
+              ? "flex gap-1 items-center xsm:justify-center sm:justify-normal border-r p-2 bg-shadow-green-offset w-full"
+              : "flex gap-1 items-center xsm:justify-center sm:justify-normal border-r p-2 w-full"
           }
         >
           <h2 className="rounded-full border w-7 h-7 text-center">1</h2>
@@ -77,7 +77,7 @@ const AddNewKnifeToCollectionPage = () => {
             type="button"
             disabled
             onClick={() => setNewKnifeStep("2")}
-            className="flex gap-1 items-center border-r p-2 w-full bg-shadow-green"
+            className="flex gap-1 items-center xsm:justify-center sm:justify-normal border-r p-2 w-full bg-shadow-green"
           >
             <h2 className="rounded-full border w-7 h-7 text-center">2</h2>
             <p>Gallery</p>
@@ -88,8 +88,8 @@ const AddNewKnifeToCollectionPage = () => {
             onClick={() => setNewKnifeStep("2")}
             className={
               newKnifeStep === "2"
-                ? "flex gap-1 items-center border-r p-2 bg-shadow-green-offset w-full"
-                : "flex gap-1 items-center border-r p-2 w-full"
+                ? "flex gap-1 items-center xsm:justify-center sm:justify-normal border-r p-2 bg-shadow-green-offset w-full"
+                : "flex gap-1 items-center xsm:justify-center sm:justify-normal border-r p-2 w-full"
             }
           >
             <h2 className="rounded-full border w-7 h-7 text-center">2</h2>
@@ -102,7 +102,7 @@ const AddNewKnifeToCollectionPage = () => {
             type="button"
             disabled
             onClick={() => setNewKnifeStep("3")}
-            className="flex gap-1 items-center p-2 bg-shadow-green border-r w-full"
+            className="flex gap-1 items-center xsm:justify-center sm:justify-normal p-2 bg-shadow-green border-r w-full"
           >
             <h2 className="rounded-full border w-7 h-7 text-center">3</h2>
             <p>Post</p>
@@ -113,8 +113,8 @@ const AddNewKnifeToCollectionPage = () => {
             onClick={() => setNewKnifeStep("3")}
             className={
               newKnifeStep === "3"
-                ? "flex gap-1 items-center border-r p-2 bg-shadow-green-offset w-full"
-                : "flex gap-1 items-center border-r p-2 w-full"
+                ? "flex gap-1 items-center xsm:justify-center sm:justify-normal border-r p-2 bg-shadow-green-offset w-full"
+                : "flex gap-1 items-center xsm:justify-center sm:justify-normal border-r p-2 w-full"
             }
           >
             <h2 className="rounded-full border w-7 h-7 text-center">3</h2>
@@ -127,7 +127,7 @@ const AddNewKnifeToCollectionPage = () => {
             type="button"
             disabled
             onClick={() => setNewKnifeStep("4")}
-            className="flex gap-1 items-center p-2 bg-shadow-green w-full"
+            className="flex gap-1 items-center xsm:justify-center sm:justify-normal p-2 bg-shadow-green w-full"
           >
             <h2 className="rounded-full border w-7 h-7 text-center">4</h2>
             <p>Submit</p>
@@ -138,8 +138,8 @@ const AddNewKnifeToCollectionPage = () => {
             onClick={() => setNewKnifeStep("4")}
             className={
               newKnifeStep === "4"
-                ? "flex gap-1 items-center p-2 bg-shadow-green-offset w-full"
-                : "flex gap-1 items-center p-2 w-full"
+                ? "flex gap-1 items-center xsm:justify-center sm:justify-normal p-2 bg-shadow-green-offset w-full"
+                : "flex gap-1 items-center xsm:justify-center sm:justify-normal p-2 w-full"
             }
           >
             <h2 className="rounded-full border w-7 h-7 text-center">4</h2>

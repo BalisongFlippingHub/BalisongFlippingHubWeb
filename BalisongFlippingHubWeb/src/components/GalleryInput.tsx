@@ -76,7 +76,7 @@ const GalleryInput = ({
   const removeFile = (index: number) => {
     if (selectedFiles !== null) {
       if (currentIndex === selectedFiles.length - 1) {
-        setCurrentIndex((prev) => prev - 1);
+        if (currentIndex !== 0) setCurrentIndex((prev) => prev - 1);
       }
 
       const newArr: Array<File> = selectedFiles.filter((_file, i) => {
@@ -95,7 +95,7 @@ const GalleryInput = ({
   return (
     <section className="flex flex-col pt-[58px] h-screen w-full lg:pl-[192px]">
       {/*Title*/}
-      <div className="text-3xl font-bold w-full flex justify-between p-4">
+      <div className="text-3xl font-bold w-full flex justify-around p-4">
         <button
           className="flex items-center gap-2 border p-2 hover:bg-shadow-green-offset"
           type="button"
@@ -143,7 +143,7 @@ const GalleryInput = ({
             />
           </div>
         ) : (
-          <div className="md:w-1/2 xsm:w-full h-full flex items-center justify-center border-4 rounded border-black">
+          <div className="md:w-1/2 xsm:w-full h-full flex items-center justify-center bg-black">
             <h3 className="text-shadow text-3xl">No Files Selected</h3>
           </div>
         )}
@@ -151,18 +151,49 @@ const GalleryInput = ({
         {/*Selection of files and file uploads*/}
         <div className="flex flex-col xsm:h-2/6 md:h-full xsm:w-full md:w-1/2 items-center">
           {/*Gallery Files Navigation*/}
-          <div className="flex justify-center h-1/3 w-full">
-            <button
-              type="button"
-              className="bg-black p-4 h-10 text-center"
-              onClick={() => filesInputRef.current?.click()}
-            >
-              Select Files
-            </button>
+          <div className="flex flex-col items-center w-full bg-shadow-green-offset">
+            <div className="w-full flex justify-center p-2 border-b-2 border-black">
+              <button
+                type="button"
+                className="bg-black p-2 text-lg rounded hover:bg-shadow-green"
+                onClick={() => filesInputRef.current?.click()}
+              >
+                Select Files
+              </button>
+            </div>
+
+            <div className="flex flex-col items-center text-lg p-4">
+              <p>**Optional**</p>
+
+              <p>
+                Chose up to 10 images or videos to fill the gallery, showing off
+                your new knife.
+              </p>
+
+              <div className="w-full flex justify-end">
+                {selectedFiles && selectedFiles.length > 0 ? (
+                  <button
+                    type="button"
+                    className="text-lg font-bold bg-shadow-green p-2 rounded hover:bg-black"
+                    onClick={() => setStepManually("3")}
+                  >
+                    Submit
+                  </button>
+                ) : (
+                  <button
+                    type="button"
+                    className="underline text-lg text-black font-bold hover:text-white"
+                    onClick={() => setStepManually("3")}
+                  >
+                    Skip To Next Step
+                  </button>
+                )}
+              </div>
+            </div>
           </div>
           {/*Visual display for all currenly selected files*/}
           {selectedFiles ? (
-            <div className="flex flex-wrap h-2/3 w-full">
+            <div className="flex flex-wrap h-full w-full xsm:pb-24 md:pb-0">
               {selectedFiles?.map((file, i) => {
                 return (
                   <div
