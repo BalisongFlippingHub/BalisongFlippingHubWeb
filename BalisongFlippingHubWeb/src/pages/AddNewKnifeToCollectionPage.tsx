@@ -1,6 +1,7 @@
 import { useState } from "react";
 import NewCollectionKnifeForm from "../components/NewCollectionKnifeForm";
 import GalleryInput from "../components/GalleryInput";
+import NewCollectionKnifeCustomPost from "../components/NewCollectionKnifeCustomPost";
 
 const AddNewKnifeToCollectionPage = () => {
   const [newKnifeStep, setNewKnifeStep] = useState("1");
@@ -33,16 +34,11 @@ const AddNewKnifeToCollectionPage = () => {
   return (
     <section className="h-full flex justify-center items-center">
       {newKnifeStep === "1" ? (
-        // <NewCollectionKnifeForm
-        //   setNewKnifeObjOnSubmit={setNewKnifeObjOnSubmit}
-        //   setStepManually={setStepManually}
-        //   collectionKnifeObj={newKnifeObj}
-        //   setFormNotReadyOnChange={setFormNotReadyOnChange}
-        // />
-        <GalleryInput
-          updateGalleryFiles={updateGalleryFiles}
-          galleryFiles={galleryFiles}
+        <NewCollectionKnifeForm
+          setNewKnifeObjOnSubmit={setNewKnifeObjOnSubmit}
           setStepManually={setStepManually}
+          collectionKnifeObj={newKnifeObj}
+          setFormNotReadyOnChange={setFormNotReadyOnChange}
         />
       ) : newKnifeStep === "2" ? (
         <GalleryInput
@@ -51,7 +47,7 @@ const AddNewKnifeToCollectionPage = () => {
           setStepManually={setStepManually}
         />
       ) : newKnifeStep === "3" ? (
-        <></>
+        <NewCollectionKnifeCustomPost />
       ) : newKnifeStep === "4" ? (
         <div>Submit to backend</div>
       ) : (

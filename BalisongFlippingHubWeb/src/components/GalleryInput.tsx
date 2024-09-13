@@ -95,15 +95,15 @@ const GalleryInput = ({
   return (
     <section className="flex flex-col pt-[58px] h-screen w-full lg:pl-[192px]">
       {/*Title*/}
-      <div className="text-3xl font-bold w-full flex justify-around p-4">
+      <div className="text-3xl font-bold w-full flex justify-around p-4 mt-2">
         <button
           className="flex items-center gap-2 border p-2 hover:bg-shadow-green-offset"
           type="button"
           onClick={() => setStepManually("1")}
         >
           <FontAwesomeIcon icon={faCircleArrowLeft} />
-          <h3 className="xsm:collapse xsm:absolute sm:static sm:visible">
-            Edit Form
+          <h3 className="xsm:collapse xsm:absolute sm:static sm:visible text-2xl">
+            Form
           </h3>
         </button>
 
@@ -114,8 +114,8 @@ const GalleryInput = ({
           type="button"
           onClick={() => setStepManually("3")}
         >
-          <h3 className="xsm:collapse xsm:absolute sm:static sm:visible">
-            Edit Post
+          <h3 className="xsm:collapse xsm:absolute sm:static sm:visible text-2xl">
+            Post
           </h3>
           <FontAwesomeIcon icon={faCircleArrowRight} />
         </button>
@@ -177,7 +177,7 @@ const GalleryInput = ({
                     className="text-lg font-bold bg-shadow-green p-2 rounded hover:bg-black"
                     onClick={() => setStepManually("3")}
                   >
-                    Submit
+                    To Next Step
                   </button>
                 ) : (
                   <button
