@@ -431,7 +431,7 @@ const NewCollectionKnifeForm = ({
   }, []);
 
   return (
-    <section className="max-w-[1450px] w-full h-full lg:ml-48 mt-30 flex flex-col pt-24 items-center gap-10 md:pb-10">
+    <section className="max-w-[1225px] w-full h-full lg:ml-48 mt-30 flex flex-col pt-24 items-center gap-10 md:pb-10">
       <div className="flex lg:w-5/6 md:w-[92%] xsm:w-full relative justify-center">
         <h2 className="justify-self-center md:text-4xl xsm:text-3xl">
           Add New Knife
@@ -441,7 +441,7 @@ const NewCollectionKnifeForm = ({
           <button
             type="button"
             disabled
-            className="flex items-center gap-2 md:text-2xl xsm:text-lg border p-2 absolute md:right-0 xsm:right-4"
+            className="flex items-center gap-2 md:text-2xl xsm:text-lg border p-2 absolute md:right-4 xsm:right-4"
           >
             <h3>Gallery</h3>
             <FontAwesomeIcon icon={faCircleArrowRight} />
@@ -449,7 +449,7 @@ const NewCollectionKnifeForm = ({
         ) : (
           <button
             type="button"
-            className="flex items-center gap-2 md:text-2xl xsm:text-lg border p-2 absolute md:right-0 xsm:right-4 hover:bg-shadow-green-offset"
+            className="flex items-center gap-2 md:text-2xl xsm:text-lg border p-2 absolute md:right-4 xsm:right-4 hover:bg-shadow-green-offset"
             onClick={() => setStepManually("2")}
           >
             <h3>Gallery</h3>

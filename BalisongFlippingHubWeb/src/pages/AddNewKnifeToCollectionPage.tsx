@@ -1,7 +1,7 @@
 import { useState } from "react";
 import NewCollectionKnifeForm from "../components/NewCollectionKnifeForm";
 import GalleryInput from "../components/GalleryInput";
-import NewCollectionKnifeCustomPost from "../components/NewCollectionKnifeCustomPost";
+import NewCollectionKnifeSummary from "../components/NewCollectionKnifeSummary";
 
 const AddNewKnifeToCollectionPage = () => {
   const [newKnifeStep, setNewKnifeStep] = useState("1");
@@ -47,7 +47,11 @@ const AddNewKnifeToCollectionPage = () => {
           setStepManually={setStepManually}
         />
       ) : newKnifeStep === "3" ? (
-        <NewCollectionKnifeCustomPost />
+        <NewCollectionKnifeSummary
+          galleryFiles={galleryFiles}
+          newKnifeObj={newKnifeObj}
+          setStepManually={setStepManually}
+        />
       ) : newKnifeStep === "4" ? (
         <div>Submit to backend</div>
       ) : (
@@ -101,7 +105,7 @@ const AddNewKnifeToCollectionPage = () => {
             className="flex gap-1 items-center xsm:justify-center sm:justify-normal p-2 bg-shadow-green border-r w-full"
           >
             <h2 className="rounded-full border w-7 h-7 text-center">3</h2>
-            <p>Post</p>
+            <p>Summary</p>
           </button>
         ) : (
           <button
@@ -114,24 +118,17 @@ const AddNewKnifeToCollectionPage = () => {
             }
           >
             <h2 className="rounded-full border w-7 h-7 text-center">3</h2>
-            <p>Post</p>
+            <p>Summary</p>
           </button>
         )}
 
         {formNotReady ? (
-          <button
-            type="button"
-            disabled
-            onClick={() => setNewKnifeStep("4")}
-            className="flex gap-1 items-center xsm:justify-center sm:justify-normal p-2 bg-shadow-green w-full"
-          >
+          <div className="flex gap-1 items-center xsm:justify-center sm:justify-normal p-2 bg-shadow-green w-full">
             <h2 className="rounded-full border w-7 h-7 text-center">4</h2>
             <p>Submit</p>
-          </button>
+          </div>
         ) : (
-          <button
-            type="button"
-            onClick={() => setNewKnifeStep("4")}
+          <div
             className={
               newKnifeStep === "4"
                 ? "flex gap-1 items-center xsm:justify-center sm:justify-normal p-2 bg-shadow-green-offset w-full"
@@ -140,7 +137,7 @@ const AddNewKnifeToCollectionPage = () => {
           >
             <h2 className="rounded-full border w-7 h-7 text-center">4</h2>
             <p>Submit</p>
-          </button>
+          </div>
         )}
       </div>
     </section>

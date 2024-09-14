@@ -93,11 +93,11 @@ const GalleryInput = ({
   }, [removeFile, setSelectedFiles]);
 
   return (
-    <section className="flex flex-col pt-[58px] h-screen w-full lg:pl-[192px]">
+    <section className="flex flex-col pt-[58px] h-screen w-full lg:pl-[192px] items-center">
       {/*Title*/}
-      <div className="text-3xl font-bold w-full flex justify-around p-4 mt-2">
+      <div className="text-3xl font-bold w-full max-w-[1225px] flex justify-center p-4 mt-2 relative">
         <button
-          className="flex items-center gap-2 border p-2 hover:bg-shadow-green-offset"
+          className="flex items-center gap-2 border p-2 hover:bg-shadow-green-offset absolute left-4"
           type="button"
           onClick={() => setStepManually("1")}
         >
@@ -110,12 +110,12 @@ const GalleryInput = ({
         <h4 className="text-4xl">Gallery</h4>
 
         <button
-          className="flex items-center gap-2 border p-2 hover:bg-shadow-green-offset"
+          className="flex items-center gap-2 border p-2 hover:bg-shadow-green-offset absolute right-4"
           type="button"
           onClick={() => setStepManually("3")}
         >
           <h3 className="xsm:collapse xsm:absolute sm:static sm:visible text-2xl">
-            Post
+            Summary
           </h3>
           <FontAwesomeIcon icon={faCircleArrowRight} />
         </button>
