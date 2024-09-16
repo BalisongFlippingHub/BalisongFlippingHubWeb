@@ -1,6 +1,5 @@
 import {
   faCircleArrowLeft,
-  faCircleArrowRight,
   faPenToSquare,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -44,7 +43,7 @@ const NewCollectionKnifeSummary = ({
 
           <button
             className="absolute top-4 right-4"
-            onClick={() => setStepManually("2")}
+            onClick={() => setStepManually("1")}
             type="button"
           >
             <FontAwesomeIcon icon={faPenToSquare} size="xl" />
@@ -221,12 +220,20 @@ const NewCollectionKnifeSummary = ({
         {/*Gallery Files Display*/}
         {galleryFiles && galleryFiles.length > 0 ? (
           <section
-            className="bg-black rounded"
+            className="bg-black rounded relative"
             onClick={() => setStepManually("2")}
           >
             <div className="mt-4 mb-4 w-full flex justify-center text-2xl font-bold">
               <h4 className="border-b-2 pb-1">Gallery Files</h4>
             </div>
+
+            <button
+              className="absolute top-4 right-4"
+              onClick={() => setStepManually("2")}
+              type="button"
+            >
+              <FontAwesomeIcon icon={faPenToSquare} size="xl" />
+            </button>
 
             <div className="flex w-full flex-wrap">
               {galleryFiles.map((file, i) => {
@@ -250,7 +257,7 @@ const NewCollectionKnifeSummary = ({
           <button
             type="button"
             onClick={() => setStepManually("4")}
-            className="p-2 rounded bg-black hover:bg-shadow-green-offset text-xl"
+            className="p-4 rounded border hover:bg-shadow-green-offset text-2xl"
           >
             Submit Knife
           </button>

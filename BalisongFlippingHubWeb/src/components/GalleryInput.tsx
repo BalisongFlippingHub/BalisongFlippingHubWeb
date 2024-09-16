@@ -95,7 +95,7 @@ const GalleryInput = ({
   return (
     <section className="flex flex-col pt-[58px] h-screen w-full lg:pl-[192px] items-center">
       {/*Title*/}
-      <div className="text-3xl font-bold w-full max-w-[1225px] flex justify-center p-4 mt-2 relative">
+      <div className="text-3xl font-bold w-full max-w-[1225px] flex justify-center p-4 mt-2 relative mb-3">
         <button
           className="flex items-center gap-2 border p-2 hover:bg-shadow-green-offset absolute left-4"
           type="button"

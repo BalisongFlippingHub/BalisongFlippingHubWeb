@@ -431,9 +431,9 @@ const NewCollectionKnifeForm = ({
   }, []);
 
   return (
-    <section className="max-w-[1225px] w-full h-full lg:ml-48 mt-30 flex flex-col pt-24 items-center gap-10 md:pb-10">
-      <div className="flex lg:w-5/6 md:w-[92%] xsm:w-full relative justify-center">
-        <h2 className="justify-self-center md:text-4xl xsm:text-3xl">
+    <section className="max-w-[1225px] w-full h-full lg:ml-48 flex flex-col pt-[64px] items-center md:pb-10">
+      <div className="flex lg:w-5/6 md:w-[92%] xsm:w-full relative justify-center p-4 mb-3">
+        <h2 className="justify-self-center md:text-4xl xsm:text-3xl font-bold">
           Add New Knife
         </h2>
 
