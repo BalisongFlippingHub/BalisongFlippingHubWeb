@@ -452,7 +452,9 @@ const NewCollectionKnifeForm = ({
             className="flex items-center gap-2 md:text-2xl xsm:text-lg border p-2 absolute md:right-4 xsm:right-4 hover:bg-shadow-green-offset"
             onClick={() => setStepManually("2")}
           >
-            <h3>Gallery</h3>
+            <h3 className="xsm:absolute xsm:collapse md:static md:visible">
+              Gallery
+            </h3>
             <FontAwesomeIcon icon={faCircleArrowRight} />
           </button>
         )}
