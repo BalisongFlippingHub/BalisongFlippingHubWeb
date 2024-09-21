@@ -1,5 +1,5 @@
 import { useRef, useState } from "react";
-import { latchType } from "../comboBoxData/LatchType";
+import { latchType } from "../../comboBoxData/LatchType";
 
 interface params {
   setLatchTypeOnChange: Function;

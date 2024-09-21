@@ -1,5 +1,5 @@
 import { useRef, useState } from "react";
-import { pivotSystem } from "../comboBoxData/PivotSystem";
+import { pivotSystem } from "../../comboBoxData/PivotSystem";
 
 interface params {
   setPivotSystemOnChange: Function;

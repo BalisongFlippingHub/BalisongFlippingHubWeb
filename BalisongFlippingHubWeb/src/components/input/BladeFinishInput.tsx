@@ -1,5 +1,5 @@
 import { useRef, useState } from "react";
-import { bladeFinish } from "../comboBoxData/BladeFinish";
+import { bladeFinish } from "../../comboBoxData/BladeFinish";
 
 interface params {
   setBladeFinishOnChange: Function;

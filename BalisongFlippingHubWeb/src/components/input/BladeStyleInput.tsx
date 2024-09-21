@@ -1,5 +1,5 @@
 import { useRef, useState } from "react";
-import { bladeStyle } from "../comboBoxData/BladeStyle";
+import { bladeStyle } from "../../comboBoxData/BladeStyle";
 
 interface params {
   setBladeStyleOnChange: Function;

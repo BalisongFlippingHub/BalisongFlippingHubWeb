@@ -3,106 +3,102 @@ import { Profile } from "../modals/User";
 import { useNavigate } from "react-router-dom";
 
 export type AuthContextType = {
-    user: Profile | null,
-    token: string | null,
-    rememberInfo: boolean,
-    newlyCreatedPost: string,
-    logout: () => void,
-    login: (passed_token: string, passed_user: Profile) => void,
-    toggleRememberInfo: (email?: string, password?: string) => void,
-    isLoggedIn: () => boolean; 
-    setUser: React.Dispatch<SetStateAction<Profile | null>>,
-    setToken: React.Dispatch<SetStateAction<string | null>>,
-    setNewlyCreatedPost: React.Dispatch<SetStateAction<string>>,
-    setToRememberInfo: React.Dispatch<SetStateAction<boolean>>
-}
+  user: Profile | null;
+  token: string | null;
+  rememberInfo: boolean;
+  newlyCreatedPost: string;
+  logout: () => void;
+  login: (passed_token: string, passed_user: Profile) => void;
+  toggleRememberInfo: (email?: string, password?: string) => void;
+  isLoggedIn: () => boolean;
+  setUser: React.Dispatch<SetStateAction<Profile | null>>;
+  setToken: React.Dispatch<SetStateAction<string | null>>;
+  setNewlyCreatedPost: React.Dispatch<SetStateAction<string>>;
+  setToRememberInfo: React.Dispatch<SetStateAction<boolean>>;
+};
 
-export const AuthContext = createContext<AuthContextType>({} as AuthContextType);
+export const AuthContext = createContext<AuthContextType>(
+  {} as AuthContextType
+);
 
-export const AuthContextProvider: React.FC<{children: React.ReactNode}> = ({ children }) => {
-    const [user, setUser] = useState<Profile | null>(null)
-    const [token, setToken] = useState<string | null>(null)
+export const AuthContextProvider: React.FC<{ children: React.ReactNode }> = ({
+  children,
+}) => {
+  const [token, setToken] = useState<string | null>(null);
+  const [user, setUser] = useState<Profile | null>(null);
+  const [userCollection, setUserCollection] = useState(null);
 
-    const [rememberInfo, setToRememberInfo] = useState<boolean>(false)
-    
-    const [newlyCreatedPost, setNewlyCreatedPost] = useState<string>("")
+  const [rememberInfo, setToRememberInfo] = useState<boolean>(false);
 
-    const [isReady, setIsReady] = useState(false)
+  const [newlyCreatedPost, setNewlyCreatedPost] = useState<string>("");
 
-    const navigate = useNavigate()
+  const [isReady, setIsReady] = useState(false);
 
-    const isLoggedIn = () => {
-        return !!user; 
-    }
+  const navigate = useNavigate();
 
-    const login = (passed_token: string, passed_user: Profile) => {
-        setUser(passed_user)
-        setToken(passed_token)
-        localStorage.setItem("saved-user", JSON.stringify(user))
-        localStorage.setItem("saved-token", JSON.stringify(token))
-    }
+  const getCollectionData = async () => {};
 
-    const toggleRememberInfo = (email?: string, password?: string) => {
-        if (rememberInfo) {
-            if (email && password) {
-                localStorage.setItem("remembered-user-email", email)
-                localStorage.setItem("remembered-user-password", password)  
-            }
-        }
-        else {
-            localStorage.removeItem("remembered-user-email")
-            localStorage.removeItem("remembered-user-password")
-        }
-    }
+  const isLoggedIn = () => {
+    return !!user;
+  };
 
-    const logout = () => {
-        setUser(null)
-        setToken(null)
+  const login = (passed_token: string, passed_user: Profile) => {
+    setUser(passed_user);
+    setToken(passed_token);
 
-        localStorage.removeItem("saved-user")
-        localStorage.removeItem("saved-token")
+    // get user collection data
+    getCollectionData();
+  };
 
-        navigate("/login")
-    }
+  const toggleRememberInfo = (email?: string, password?: string) => {};
 
-    useEffect(() => {
-        // check for user already logged in
-        const user_val = localStorage.getItem("saved-user")
-        const token_val = localStorage.getItem("saved-token")
+  const logout = () => {
+    setUser(null);
+    setToken(null);
 
-        if (user_val && token_val) {
-            setUser(JSON.parse(user_val))
-            setToken(JSON.parse(token_val))
-        }
+    navigate("/login");
+  };
 
-        setToken("Fill")
-        setUser({
-            id: "1",
-            displayName: "",
-            email: "tzenisekj@gmail.com ",
-            role: "USER",
-            profileImg: "", 
-            bannerImg: "",
-            facebookLink: "",
-            twitterLink: "",
-            youtubeLink: "", 
-            instagramLink: "",
-            discordLink: "",
-            posts: [],
-            accountCreationDate: null
-        })
-        setIsReady(true);
-    }, [])
+  useEffect(() => {
+    // check for user already logged in
 
-    return (
-        <AuthContext.Provider value={{ user, token, rememberInfo, newlyCreatedPost, logout, login, toggleRememberInfo, isLoggedIn, setUser, setToken, setNewlyCreatedPost, setToRememberInfo}}>
-            {
-                isReady
-                ?
-                children
-                :
-                null
-            }
-        </AuthContext.Provider>
-    )
-}
+    // setToken("Fill")
+    // setUser({
+    //     id: "1",
+    //     displayName: "",
+    //     email: "tzenisekj@gmail.com ",
+    //     role: "USER",
+    //     profileImg: "",
+    //     bannerImg: "",
+    //     facebookLink: "",
+    //     twitterLink: "",
+    //     youtubeLink: "",
+    //     instagramLink: "",
+    //     discordLink: "",
+    //     posts: [],
+    //     accountCreationDate: null
+    // })
+    setIsReady(true);
+  }, []);
+
+  return (
+    <AuthContext.Provider
+      value={{
+        user,
+        token,
+        rememberInfo,
+        newlyCreatedPost,
+        logout,
+        login,
+        toggleRememberInfo,
+        isLoggedIn,
+        setUser,
+        setToken,
+        setNewlyCreatedPost,
+        setToRememberInfo,
+      }}
+    >
+      {isReady ? children : null}
+    </AuthContext.Provider>
+  );
+};

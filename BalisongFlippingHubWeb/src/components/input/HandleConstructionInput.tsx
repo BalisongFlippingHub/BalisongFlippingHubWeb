@@ -1,5 +1,5 @@
 import { useRef, useState } from "react";
-import { handleConstruction } from "../comboBoxData/HandleConstruction";
+import { handleConstruction } from "../../comboBoxData/HandleConstruction";
 
 interface params {
   setHandleConstructionOnChange: Function;

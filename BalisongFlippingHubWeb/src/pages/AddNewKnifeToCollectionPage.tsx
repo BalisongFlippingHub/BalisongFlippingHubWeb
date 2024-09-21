@@ -2,6 +2,7 @@ import { useState } from "react";
 import NewCollectionKnifeForm from "../components/NewCollectionKnifeForm";
 import GalleryInput from "../components/GalleryInput";
 import NewCollectionKnifeSummary from "../components/NewCollectionKnifeSummary";
+import NewCollectionKnifeSubmit from "../components/NewCollectionKnifeSubmit";
 
 const AddNewKnifeToCollectionPage = () => {
   const [newKnifeStep, setNewKnifeStep] = useState("1");
@@ -53,7 +54,11 @@ const AddNewKnifeToCollectionPage = () => {
           setStepManually={setStepManually}
         />
       ) : newKnifeStep === "4" ? (
-        <div>Submit to backend</div>
+        <NewCollectionKnifeSubmit
+          galleryFiles={galleryFiles}
+          newKnifeObj={newKnifeObj}
+          setStepManually={setStepManually}
+        />
       ) : (
         <></>
       )}

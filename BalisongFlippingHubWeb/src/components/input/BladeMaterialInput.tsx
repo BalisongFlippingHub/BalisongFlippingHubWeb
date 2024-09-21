@@ -1,5 +1,5 @@
 import { useRef, useState } from "react";
-import { bladeMaterial } from "../comboBoxData/BladeMaterial";
+import { bladeMaterial } from "../../comboBoxData/BladeMaterial";
 
 interface params {
   setBladeMaterialOnChange: Function;

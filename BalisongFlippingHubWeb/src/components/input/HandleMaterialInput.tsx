@@ -1,5 +1,5 @@
 import { useRef, useState } from "react";
-import { handleMaterial } from "../comboBoxData/HandleMaterial";
+import { handleMaterial } from "../../comboBoxData/HandleMaterial";
 
 interface params {
   setHandleMaterialOnChange: Function;

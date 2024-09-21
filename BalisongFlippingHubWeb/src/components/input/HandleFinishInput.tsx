@@ -1,5 +1,5 @@
 import { useRef, useState } from "react";
-import { handleFinish } from "../comboBoxData/HandleFinish";
+import { handleFinish } from "../../comboBoxData/HandleFinish";
 
 interface params {
   setHandleFinishOnChange: Function;

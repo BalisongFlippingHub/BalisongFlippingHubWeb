@@ -1,5 +1,5 @@
 import { useRef, useState } from "react";
-import { pinSystem } from "../comboBoxData/PinSystem";
+import { pinSystem } from "../../comboBoxData/PinSystem";
 
 interface params {
   setPinSystemOnChange: Function;
