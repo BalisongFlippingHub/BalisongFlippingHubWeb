@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
-import axios from "../api/axios";
-import useAuth from "../hooks/useAuth";
+import axios from "../../api/axios";
+import useAuth from "../../hooks/useAuth";
+import { CollectionKnifeDTO } from "../../modals/CollectionKnife";
 
 interface params {
   galleryFiles: Array<File> | null;

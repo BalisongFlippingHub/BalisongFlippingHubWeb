@@ -1,8 +1,9 @@
 import { useState } from "react";
-import NewCollectionKnifeForm from "../components/NewCollectionKnifeForm";
-import GalleryInput from "../components/GalleryInput";
-import NewCollectionKnifeSummary from "../components/NewCollectionKnifeSummary";
-import NewCollectionKnifeSubmit from "../components/NewCollectionKnifeSubmit";
+import NewCollectionKnifeForm from "../components/newCollectionKnifeComponents/NewCollectionKnifeForm";
+import GalleryInput from "../components/newCollectionKnifeComponents/GalleryInput";
+import NewCollectionKnifeSummary from "../components/newCollectionKnifeComponents/NewCollectionKnifeSummary";
+import NewCollectionKnifeSubmit from "../components/newCollectionKnifeComponents/NewCollectionKnifeSubmit";
+import { CollectionKnifeDTO } from "../modals/CollectionKnife";
 
 const AddNewKnifeToCollectionPage = () => {
   const [newKnifeStep, setNewKnifeStep] = useState("1");

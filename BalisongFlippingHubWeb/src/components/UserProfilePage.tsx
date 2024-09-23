@@ -1,4 +1,4 @@
-import CustomProfileBanner from "./CustomProfileBanner";
+import CustomProfileBanner from "./customBanners/CustomProfileBanner";
 import CustomProfileImg from "./CustomProfileImg";
 import UserProfileData from "./UserProfileData";
 import UserProfilePostsComponent from "./UserProfilePostsComponent";

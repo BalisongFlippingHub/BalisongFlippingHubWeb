@@ -1,10 +1,10 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBell, faUser } from "@fortawesome/free-solid-svg-icons";
-import useAuth from "../hooks/useAuth";
+import useAuth from "../../hooks/useAuth";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
-import Image from "./Image";
-import useCollection from "../hooks/useCollection";
+import Image from "../Image";
+import useCollection from "../../hooks/useCollection";
 
 interface params {
   relevant: boolean;

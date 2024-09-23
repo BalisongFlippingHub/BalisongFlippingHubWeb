@@ -1,9 +1,9 @@
 import { useLocation, useNavigate } from "react-router-dom";
-import useAuth from "../hooks/useAuth";
+import useAuth from "../../hooks/useAuth";
 import HeaderProfileDisplay from "./HeaderProfileDisplay";
-import HeaderNavbar from "./HeaderNavbar";
+import HeaderNavbar from "../navigation/HeaderNavbar";
 import { useEffect, useState } from "react";
-import SearchBar from "./SearchBar";
+import SearchBar from "../SearchBar";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faBarsStaggered,
@@ -11,7 +11,7 @@ import {
   faUserPlus,
   faCircleUser,
 } from "@fortawesome/free-solid-svg-icons";
-import HeaderNavbarBottom from "./HeaderNavbarBottom";
+import HeaderNavbarBottom from "../navigation/HeaderNavbarBottom";
 
 interface params {
   lgScreenFullNavDisplay: boolean;

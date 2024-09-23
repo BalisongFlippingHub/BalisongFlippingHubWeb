@@ -3,6 +3,7 @@ import {
   faPenToSquare,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { CollectionKnifeDTO } from "../../modals/CollectionKnife";
 
 interface params {
   galleryFiles: Array<File> | null;

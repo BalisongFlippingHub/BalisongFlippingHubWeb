@@ -12,8 +12,8 @@ import {
   faChevronDown,
 } from "@fortawesome/free-solid-svg-icons";
 import { faHubspot } from "@fortawesome/free-brands-svg-icons";
-import useAuth from "../hooks/useAuth";
-import Image from "./Image";
+import useAuth from "../../hooks/useAuth";
+import Image from "../Image";
 
 interface params {
   lgScreenFullNavDisplay: boolean;

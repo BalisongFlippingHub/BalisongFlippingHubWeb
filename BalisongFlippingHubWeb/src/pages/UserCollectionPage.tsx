@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import CustomCollectionBanner from "../components/CustomCollectionBanner";
+import CustomCollectionBanner from "../components/customBanners/CustomCollectionBanner";
 import useAuth from "../hooks/useAuth";
 import CollectionOwnedKnivesDisplay from "../components/CollectionOwnedKnivesDisplay";
 import CollectionPostsDisplay from "../components/CollectionPostsDisplay";
