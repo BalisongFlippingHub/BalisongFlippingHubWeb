@@ -1,7 +1,9 @@
+import { CollectionKnife } from "./CollectionKnife";
+
 export interface Collection {
   id: string;
   userId: string;
   bannerImg: string | null;
 
-  ownedKnives: Array<CollectionKnifeDTO> | null;
+  collectedKnives: Array<CollectionKnife> | null;
 }

@@ -1,55 +1,31 @@
-import { cloneElement, useEffect, useState } from "react";
+import { useEffect } from "react";
 import CustomCollectionBanner from "../components/CustomCollectionBanner";
-import { Collection } from "../modals/Collection";
-import axios from "../api/axios";
 import useAuth from "../hooks/useAuth";
 import CollectionOwnedKnivesDisplay from "../components/CollectionOwnedKnivesDisplay";
 import CollectionPostsDisplay from "../components/CollectionPostsDisplay";
 import Image from "../components/Image";
 import { useNavigate } from "react-router-dom";
+import useCollection from "../hooks/useCollection";
 
 const UserCollectionPage = () => {
-  const [collection, setCollection] = useState<Collection | null>(null);
-
-  const [isLoading, setIsLoading] = useState(false);
-  const [isError, setIsError] = useState(false);
-
   const { user } = useAuth();
+  const { collectionData } = useCollection();
+
   const navigate = useNavigate();
 
   useEffect(() => {
-    const getCollectionData = async () => {
-      setIsLoading(true);
-      await axios
-        .request({
-          url: `/collection/any/${user?.collectionId}`,
-          method: "get",
-        })
-        .then((res) => {
-          console.log("getting collection data response", res);
-          setCollection(res.data);
-        })
-        .catch((err) => {
-          console.log("Update Collection img error: ", err);
-          setIsError(true);
-        })
-        .finally(() => {
-          setIsLoading(false);
-        });
-    };
-
-    getCollectionData();
+    console.log(collectionData);
   }, []);
 
   return (
-    <section className="w-full h-full flex flex-col lg:pl-[192px] pt-[64px]">
+    <section className="w-full h-screen flex flex-col lg:pl-[192px] pt-[64px]">
       {/*Collection Banner Image atop of page*/}
-      {collection?.bannerImg ||
-      collection?.bannerImg === "" ||
-      collection === null ? (
+      {collectionData?.bannerImg ||
+      collectionData?.bannerImg === "" ||
+      collectionData === null ? (
         <CustomCollectionBanner />
       ) : (
-        <CustomCollectionBanner imageId={collection.bannerImg} />
+        <CustomCollectionBanner imageId={collectionData.bannerImg} />
       )}
 
       {/*Users Collection Info*/}
@@ -68,7 +44,9 @@ const UserCollectionPage = () => {
             onClick={() => navigate("/me")}
           >
             <h4 className="text-2xl">{user?.displayName}</h4>
-            <h5 className="text-shadow text-lg">0 Knives</h5>
+            <h5 className="text-shadow text-lg">
+              {collectionData?.collectedKnives?.length} Knives
+            </h5>
           </div>
         </div>
 
@@ -87,12 +65,14 @@ const UserCollectionPage = () => {
       {/*Display Owned Knives and Recent Posts*/}
       <section className="w-full h-full flex sm:flex-col md:flex-row">
         {/*Component for displaying all Owned Knives*/}
-        {!collection ||
-        !collection?.ownedKnives ||
-        collection?.ownedKnives.length === 0 ? (
+        {!collectionData ||
+        !collectionData?.collectedKnives ||
+        collectionData?.collectedKnives.length === 0 ? (
           <CollectionOwnedKnivesDisplay />
         ) : (
-          <CollectionOwnedKnivesDisplay ownedKnives={collection?.ownedKnives} />
+          <CollectionOwnedKnivesDisplay
+            ownedKnives={collectionData?.collectedKnives}
+          />
         )}
 
         {/*Component to display all posts specific to user collection*/}

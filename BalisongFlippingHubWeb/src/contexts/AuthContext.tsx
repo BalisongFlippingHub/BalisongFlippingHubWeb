@@ -29,7 +29,7 @@ export const AuthContextProvider: React.FC<{ children: React.ReactNode }> = ({
   const [token, setToken] = useState<string | null>(null);
   const [user, setUser] = useState<Profile | null>(null);
 
-  const [rememberInfo, setToRememberInfo] = useState<boolean>(false);
+  const [rememberInfo, setToRememberInfo] = useState<boolean>(true);
 
   const [newlyCreatedPost, setNewlyCreatedPost] = useState<string>("");
 
