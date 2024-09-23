@@ -2,6 +2,7 @@ import { useState, useRef, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import useAuth from "../hooks/useAuth";
 import axios from "../api/axios";
+import useCollection from "../hooks/useCollection";
 
 const LoginForm = () => {
   // form refs
@@ -24,14 +25,16 @@ const LoginForm = () => {
 
   // context functions
   const navigate = useNavigate();
-  const { toggleRememberInfo, rememberInfo, setToRememberInfo, login } =
-    useAuth();
+  const {
+    setRememberInfo,
+    toggleRememberInfo,
+    login,
+    disableRememberInfo,
+    rememberInfo,
+  } = useAuth();
+  const { getCollectionDataFromBackend } = useCollection();
 
-  // on mount function
-  useEffect(() => {
-    emailRef.current?.focus();
-  }, []);
-
+  // function to handle setting user input for email field
   const handleOnChangeEmail = (e: any) => {
     setEmail(e.target?.value);
     if (buttonDisabled) {
@@ -43,6 +46,7 @@ const LoginForm = () => {
     }
   };
 
+  // function to handle setting user input for password field
   const handleOnChangePassword = (e: any) => {
     setPassword(e.target?.value);
     if (buttonDisabled) {
@@ -54,15 +58,14 @@ const LoginForm = () => {
     }
   };
 
-  const handleCheckboxChange = () => {
-    setToRememberInfo((prev) => !prev);
-  };
-
+  // submit function to login user
   const handleSubmit = async (e: { preventDefault: () => void }) => {
     e.preventDefault();
 
+    // checks for valid info to pass
     if (email.trim() === "" || password.trim() === "") return;
 
+    // creates login object
     const obj = {
       email: email.trim(),
       password: password.trim(),
@@ -83,20 +86,18 @@ const LoginForm = () => {
           /*Successful authorization of user*/
         }
         console.log("Logging user in response:", res);
-        if (res.status === 200) {
-          if (rememberInfo) {
-            {
-              /*Save User Info*/
-            }
-            toggleRememberInfo(email, password);
-          } else {
-            {
-              /*Clear User Info */
-            }
-            toggleRememberInfo();
-          }
 
+        // set saved user info
+        if (res.status === 200) {
+          if (rememberInfo) setRememberInfo(email);
+
+          // set auth context with user and token
           login(res.data.token, res.data.account);
+
+          // pass collection ID to collection context to set collection data
+          getCollectionDataFromBackend(res.data.account.collectionId);
+
+          // navigate logged in user to community page
           navigate("/community");
         }
       })
@@ -120,8 +121,15 @@ const LoginForm = () => {
     - Focuses the user to the email input field
     - TODO- Autofills email and password fields with users credentials when user has selected the "Remember Me" checkbox
     */
+  // on mount function
   useEffect(() => {
-    emailRef.current?.focus();
+    // load saved user info
+    if (rememberInfo) {
+      setEmail(localStorage.getItem("remembered-user-email")!);
+
+      // focus user on email input
+      passwordRef.current?.focus();
+    } else emailRef.current?.focus();
   }, []);
 
   /*HTML return for login form component*/
@@ -192,14 +200,14 @@ const LoginForm = () => {
               id="rememberMe"
               className=""
               checked
-              onChange={() => handleCheckboxChange()}
+              onClick={disableRememberInfo}
             />
           ) : (
             <input
               type="checkbox"
               id="rememberMe"
               className=""
-              onChange={() => handleCheckboxChange()}
+              onClick={toggleRememberInfo}
             />
           )}
           <label htmlFor="rememberMe" className="bg-shadow-green-offset">
@@ -239,6 +247,8 @@ const LoginForm = () => {
             Register Here
           </h3>
         </div>
+
+        {/*TODO- create div for forgotten passwords*/}
 
         {/*TODO- Create div for oath loggins*/}
       </form>

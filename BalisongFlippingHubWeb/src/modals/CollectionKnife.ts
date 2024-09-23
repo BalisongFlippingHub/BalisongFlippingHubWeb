@@ -1,4 +1,5 @@
 interface CollectionKnifeDTO {
+  id: string | null;
   displayName: string;
   knifeMaker: string;
   baseKnifeModel: string;
@@ -32,6 +33,4 @@ interface CollectionKnifeDTO {
   feelScore: number;
   soundScore: number;
   durabilityScore: number;
-
-  // todo at mod work
 }

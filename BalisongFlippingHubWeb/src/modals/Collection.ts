@@ -1,8 +1,7 @@
 export interface Collection {
-    id: string,
-    userId: string,
-    bannerImg: string | null,
+  id: string;
+  userId: string;
+  bannerImg: string | null;
 
-    ownedKnives: Array<string> | null,
-
+  ownedKnives: Array<CollectionKnifeDTO> | null;
 }

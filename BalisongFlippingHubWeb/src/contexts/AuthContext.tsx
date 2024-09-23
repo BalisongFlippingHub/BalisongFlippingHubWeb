@@ -9,7 +9,9 @@ export type AuthContextType = {
   newlyCreatedPost: string;
   logout: () => void;
   login: (passed_token: string, passed_user: Profile) => void;
-  toggleRememberInfo: (email?: string, password?: string) => void;
+  setRememberInfo: (email: string) => void;
+  disableRememberInfo: () => void;
+  toggleRememberInfo: () => void;
   isLoggedIn: () => boolean;
   setUser: React.Dispatch<SetStateAction<Profile | null>>;
   setToken: React.Dispatch<SetStateAction<string | null>>;
@@ -26,7 +28,6 @@ export const AuthContextProvider: React.FC<{ children: React.ReactNode }> = ({
 }) => {
   const [token, setToken] = useState<string | null>(null);
   const [user, setUser] = useState<Profile | null>(null);
-  const [userCollection, setUserCollection] = useState(null);
 
   const [rememberInfo, setToRememberInfo] = useState<boolean>(false);
 
@@ -36,8 +37,6 @@ export const AuthContextProvider: React.FC<{ children: React.ReactNode }> = ({
 
   const navigate = useNavigate();
 
-  const getCollectionData = async () => {};
-
   const isLoggedIn = () => {
     return !!user;
   };
@@ -45,12 +44,28 @@ export const AuthContextProvider: React.FC<{ children: React.ReactNode }> = ({
   const login = (passed_token: string, passed_user: Profile) => {
     setUser(passed_user);
     setToken(passed_token);
-
-    // get user collection data
-    getCollectionData();
   };
 
-  const toggleRememberInfo = (email?: string, password?: string) => {};
+  const setRememberInfo = (email: string) => {
+    setToRememberInfo(true);
+    localStorage.setItem("remember-user", "true");
+    localStorage.setItem("remembered-user-email", email);
+  };
+
+  const disableRememberInfo = () => {
+    setToRememberInfo(false);
+    localStorage.removeItem("remember-user");
+    localStorage.removeItem("remembered-user-email");
+  };
+
+  const toggleRememberInfo = () => {
+    if (rememberInfo) {
+      disableRememberInfo();
+    } else {
+      setToRememberInfo(true);
+      localStorage.setItem("remember-user", "true");
+    }
+  };
 
   const logout = () => {
     setUser(null);
@@ -61,6 +76,11 @@ export const AuthContextProvider: React.FC<{ children: React.ReactNode }> = ({
 
   useEffect(() => {
     // check for user already logged in
+
+    // check for remembering user login info
+    if (localStorage.getItem("remember-user") === "true") {
+      setToRememberInfo(true);
+    }
 
     // setToken("Fill")
     // setUser({
@@ -90,6 +110,8 @@ export const AuthContextProvider: React.FC<{ children: React.ReactNode }> = ({
         newlyCreatedPost,
         logout,
         login,
+        setRememberInfo,
+        disableRememberInfo,
         toggleRememberInfo,
         isLoggedIn,
         setUser,
