@@ -85,11 +85,7 @@ const Navbar = ({
               </div>
 
               <div className="xsm:collapse xsm:absolute lg:visible lg:static">
-                <FontAwesomeIcon
-                  icon={faBarsStaggered}
-                  onClick={() => toggleLgScreenFullNavDisplay()}
-                  className="hover:cursor-pointer"
-                />
+                <FontAwesomeIcon icon={faBarsStaggered} className="" />
               </div>
 
               <h1
@@ -229,11 +225,11 @@ const Navbar = ({
       </header>
 
       <aside className="lg:collapse lg:absolute md:visible md:static z-10">
-        {navToggle ? <HeaderNavbar lgScreenFullNavDisplay={false} /> : <></>}
+        {navToggle ? <HeaderNavbar /> : <></>}
       </aside>
 
       <aside className="xsm:collapse lg:visible z-10">
-        <HeaderNavbar lgScreenFullNavDisplay={lgScreenFullNavDisplay} />
+        <HeaderNavbar />
       </aside>
 
       {isLoggedIn() ? (
