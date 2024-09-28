@@ -74,13 +74,14 @@ const BannerImageConfiguration = () => {
           {user?.bannerImg ? (
             <Image imageId={user?.bannerImg} />
           ) : (
-            <h5>Banner Image</h5>
+            <h5>No Banner Image</h5>
           )}
 
           {/*Button to select a new image*/}
           <button
-            className="absolute bottom-8 right-8 text-lg font-semibold bg-shadow p-2 rounded hover:bg-shadow-green border-2 border-shadow-green"
+            type="button"
             onClick={() => fileInputRef.current?.click()}
+            className="p-2 rounded bg-shadow hover:bg-shadow-green absolute right-4 bottom-4 z-10 "
           >
             Edit Banner
           </button>
