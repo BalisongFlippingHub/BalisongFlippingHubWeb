@@ -85,7 +85,7 @@ export const AuthContextProvider: React.FC<{ children: React.ReactNode }> = ({
     setToken("Fill");
     setUser({
       id: "1",
-      displayName: "",
+      displayName: "Test",
       email: "tzenisekj@gmail.com ",
       role: "USER",
       profileImg: "",

@@ -24,7 +24,7 @@ const ProfileImageConfiguration = () => {
   };
 
   return (
-    <div className="flex flex-col gap-2 items-center z-0">
+    <div className="flex flex-col items-center z-0">
       {/*Display Image or Holder Value*/}
       <div className="border overflow-hidden flex justify-center items-center w-36 h-36 rounded-full">
         {user?.profileImg ? (
@@ -42,32 +42,25 @@ const ProfileImageConfiguration = () => {
 
       <div className="flex flex-col">
         {/*Button to prompt file selection*/}
-        <div className="flex items-center gap-2">
-          <button
-            type="button"
-            className="p-1 bg-shadow rounded hover:bg-shadow-green hover:border-white border"
-            onClick={() => inputRef.current?.click()}
-          >
-            Edit Profile Image
-          </button>
-
-          {isLoading ? <h6>Loading...</h6> : <></>}
-        </div>
-
-        {/*Loading Display*/}
-        {isError ? (
-          <div className="flex gap-2 items-center h-20">
-            <h6>Error...</h6>
-            <div className="p-2 border border-red rounded flex justify-center items-center">
-              <p>{errMsg}</p>
-              <button type="button" onClick={() => resetStates()}>
+        <div className="flex items-center">
+          {isLoading ? (
+            <p>Loading...</p>
+          ) : isError ? (
+            <div className="h-28 flex flex-col border border-red mt-4 items-center justify-center p-2">
+              <p>Error</p>
+              <p>Failed to Change Profile Image</p>
+              <button
+                type="button"
+                onClick={() => resetStates()}
+                className="p-1 rounded border"
+              >
                 Close
               </button>
             </div>
-          </div>
-        ) : (
-          <div className="h-20"></div>
-        )}
+          ) : (
+            <div className="h-32 w-20"></div>
+          )}
+        </div>
       </div>
 
       {/*Hidden File Input*/}
