@@ -78,7 +78,11 @@ const ProfileConfigurePage = () => {
                     <FontAwesomeIcon icon={faEdit} />
                   </div>
 
-                  <h6>...</h6>
+                  <h6>
+                    {user?.facebookLink && user?.facebookLink !== ""
+                      ? user?.facebookLink
+                      : "..."}
+                  </h6>
                 </div>
               </div>
 
@@ -93,7 +97,11 @@ const ProfileConfigurePage = () => {
                     <FontAwesomeIcon icon={faEdit} />
                   </div>
 
-                  <h6>...</h6>
+                  <h6>
+                    {user?.instagramLink && user.instagramLink !== ""
+                      ? user.instagramLink
+                      : "..."}
+                  </h6>
                 </div>
               </div>
             </div>
@@ -110,7 +118,11 @@ const ProfileConfigurePage = () => {
                     <FontAwesomeIcon icon={faEdit} />
                   </div>
 
-                  <h6>...</h6>
+                  <h6>
+                    {user?.twitterLink && user?.twitterLink !== ""
+                      ? user?.twitterLink
+                      : "..."}
+                  </h6>
                 </div>
               </div>
 
@@ -125,7 +137,11 @@ const ProfileConfigurePage = () => {
                     <FontAwesomeIcon icon={faEdit} />
                   </div>
 
-                  <h6>...</h6>
+                  <h6>
+                    {user?.youtubeLink && user?.youtubeLink !== ""
+                      ? user?.youtubeLink
+                      : "..."}
+                  </h6>
                 </div>
               </div>
             </div>
@@ -142,7 +158,11 @@ const ProfileConfigurePage = () => {
                     <FontAwesomeIcon icon={faEdit} />
                   </div>
 
-                  <h6>...</h6>
+                  <h6>
+                    {user?.redditLink && user?.redditLink !== ""
+                      ? user?.redditLink
+                      : "..."}
+                  </h6>
                 </div>
               </div>
 
@@ -157,7 +177,11 @@ const ProfileConfigurePage = () => {
                     <FontAwesomeIcon icon={faEdit} />
                   </div>
 
-                  <h6>...</h6>
+                  <h6>
+                    {user?.discordLink && user?.discordLink !== ""
+                      ? user?.discordLink
+                      : "..."}
+                  </h6>
                 </div>
               </div>
             </div>
@@ -174,7 +198,11 @@ const ProfileConfigurePage = () => {
                     <FontAwesomeIcon icon={faEdit} />
                   </div>
 
-                  <h6>...</h6>
+                  <h6>
+                    {user?.personalEmailLink && user?.personalEmailLink !== ""
+                      ? user?.personalEmailLink
+                      : "..."}
+                  </h6>
                 </div>
               </div>
 
@@ -191,7 +219,12 @@ const ProfileConfigurePage = () => {
                     <FontAwesomeIcon icon={faEdit} />
                   </div>
 
-                  <h6>...</h6>
+                  <h6>
+                    {user?.personalWebsiteLink &&
+                    user?.personalWebsiteLink !== ""
+                      ? user?.personalWebsiteLink
+                      : "..."}
+                  </h6>
                 </div>
               </div>
             </div>
