@@ -1,23 +1,30 @@
 import { Route, Routes } from "react-router-dom";
 import MainLayout from "./layouts/MainLayout";
-import { LoginPage } from "./pages/LoginPage";
+import { LoginPage } from "./pages/auth/LoginPage";
 
-import ProfilePage from "./pages/ProfilePage";
+import ProfilePage from "./pages/profiles/ProfilePage";
 import ProtectedRoutes from "./routes/ProtectedRoutes";
 import TutorialCenterPage from "./pages/TutorialCenterPage";
 import ProductWorldPage from "./pages/ProductWorldPage";
-import RegisterPage from "./pages/RegisterPage";
+import RegisterPage from "./pages/auth/RegisterPage";
 import HomePage from "./pages/HomePage";
 import CommunityPage from "./pages/CommunityPage";
 import CreatePostPage from "./pages/CreatePostPage";
 import UserCollectionPage from "./pages/UserCollectionPage";
-import ProfileConfigurePage from "./pages/ProfileConfigurePage";
+import ProfileConfigurePage from "./pages/configuration/ProfileConfigurePage";
 import AboutPage from "./pages/AboutPage";
 import ContactUsPage from "./pages/ContactUsPage";
 import AddNewKnifeToCollectionPage from "./pages/AddNewKnifeToCollectionPage";
-import ProfileConfigurationLinksPage from "./pages/ProfileConfigurationLinksPage";
-import ProfileConfigurationDisplayNamePage from "./pages/ProfileConfigurationDisplayNamePage";
-import ProfileConfigurationProfileCaptionPage from "./pages/ProfileConfigurationProfileCaptionPage";
+import ProfileConfigurationLinksPage from "./pages/configuration/ProfileConfigurationLinksPage";
+import ProfileConfigurationDisplayNamePage from "./pages/configuration/ProfileConfigurationDisplayNamePage";
+import ProfileConfigurationProfileCaptionPage from "./pages/configuration/ProfileConfigurationProfileCaptionPage";
+import ProfileConfigurationMeasurementUnitsPage from "./pages/configuration/ProfileConfigurationMeasurementUnitsPage";
+import ProfileConfigurationChangeEmailPage from "./pages/configuration/ProfileConfigurationChangeEmailPage";
+import ProfileConfigurationChangePasswordPage from "./pages/configuration/ProfileConfigurationChangePasswordPage";
+import ProfileConfigurationChangeCurrencyPage from "./pages/configuration/ProfileConfigurationChangeCurrencyPage";
+import ProfileConfigurationResetAccountPage from "./pages/configuration/ProfileConfigurationResetAccountPage";
+import ProfileConfigurationHideAccountPage from "./pages/configuration/ProfileConfigurationHideAccountPage";
+import ProfileConfigurationDeleteAccountPage from "./pages/configuration/ProfileConfigurationDeleteAccountPage";
 
 const App = () => {
   return (
@@ -42,6 +49,7 @@ const App = () => {
         {/*Profile Configuration Routes*/}
         <Route element={<ProtectedRoutes allowedRoles={["USER"]} />}>
           <Route path="/me/configure" element={<ProfileConfigurePage />} />
+
           <Route
             path="/me/configure/display_name"
             element={<ProfileConfigurationDisplayNamePage />}
@@ -81,6 +89,41 @@ const App = () => {
           <Route
             path="/me/configure/personal_website_link"
             element={<ProfileConfigurationLinksPage linkType="website" />}
+          />
+
+          <Route
+            path="/me/configure/measurement_units"
+            element={<ProfileConfigurationMeasurementUnitsPage />}
+          />
+
+          <Route
+            path="/me/configure/currency"
+            element={<ProfileConfigurationChangeCurrencyPage />}
+          />
+
+          <Route
+            path="/me/configure/email"
+            element={<ProfileConfigurationChangeEmailPage />}
+          />
+
+          <Route
+            path="/me/configure/password"
+            element={<ProfileConfigurationChangePasswordPage />}
+          />
+
+          <Route
+            path="/me/configure/reset_account"
+            element={<ProfileConfigurationResetAccountPage />}
+          />
+
+          <Route
+            path="/me/configure/hide_account"
+            element={<ProfileConfigurationHideAccountPage />}
+          />
+
+          <Route
+            path="/me/configure/delete_account"
+            element={<ProfileConfigurationDeleteAccountPage />}
           />
         </Route>
 

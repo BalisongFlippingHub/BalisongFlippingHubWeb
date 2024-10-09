@@ -180,6 +180,7 @@ const UserRegistrationForm = () => {
                 email: email,
                 password: password,
               },
+              withCredentials: true,
             })
             .then((res) => {
               {
@@ -191,10 +192,7 @@ const UserRegistrationForm = () => {
                 if (rememberInfo) setRememberInfo(email);
 
                 // login user in context
-                login(res.data.token, res.data.account);
-
-                // call api to get collection data relevant to user
-                getCollectionDataFromBackend(res.data.account.collectionId);
+                login(res.data.accessToken, res.data.account);
 
                 // navigate to community page on successful login
                 navigate("/community");

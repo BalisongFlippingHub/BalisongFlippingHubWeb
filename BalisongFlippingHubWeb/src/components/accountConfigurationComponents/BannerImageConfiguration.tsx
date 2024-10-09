@@ -81,7 +81,7 @@ const BannerImageConfiguration = () => {
           <button
             type="button"
             onClick={() => fileInputRef.current?.click()}
-            className="p-2 rounded bg-shadow hover:bg-shadow-green absolute right-4 bottom-4 z-10 "
+            className="p-2 rounded bg-shadow hover:bg-shadow-green absolute right-4 bottom-4 z-10 text-lg hover:border"
           >
             Edit Banner
           </button>

@@ -80,6 +80,7 @@ const LoginForm = () => {
         url: "/auth/login",
         method: "post",
         data: obj,
+        withCredentials: true,
       })
       .then((res) => {
         {
@@ -92,10 +93,7 @@ const LoginForm = () => {
           if (rememberInfo) setRememberInfo(email);
 
           // set auth context with user and token
-          login(res.data.token, res.data.account);
-
-          // pass collection ID to collection context to set collection data
-          getCollectionDataFromBackend(res.data.account.collectionId);
+          login(res.data.accessToken, res.data.account);
 
           // navigate logged in user to community page
           navigate("/community");

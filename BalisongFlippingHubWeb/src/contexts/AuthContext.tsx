@@ -1,10 +1,12 @@
 import { SetStateAction, createContext, useEffect, useState } from "react";
 import { Profile } from "../modals/User";
 import { useNavigate } from "react-router-dom";
+import axios from "../api/axios";
+import useCollection from "../hooks/useCollection";
 
 export type AuthContextType = {
   user: Profile | null;
-  token: string | null;
+  accessToken: string | null;
   rememberInfo: boolean;
   newlyCreatedPost: string;
   logout: () => void;
@@ -14,7 +16,7 @@ export type AuthContextType = {
   toggleRememberInfo: () => void;
   isLoggedIn: () => boolean;
   setUser: React.Dispatch<SetStateAction<Profile | null>>;
-  setToken: React.Dispatch<SetStateAction<string | null>>;
+  setAccessToken: React.Dispatch<SetStateAction<string | null>>;
   setNewlyCreatedPost: React.Dispatch<SetStateAction<string>>;
   setToRememberInfo: React.Dispatch<SetStateAction<boolean>>;
 };
@@ -26,7 +28,7 @@ export const AuthContext = createContext<AuthContextType>(
 export const AuthContextProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
-  const [token, setToken] = useState<string | null>(null);
+  const [accessToken, setAccessToken] = useState<string | null>(null);
   const [user, setUser] = useState<Profile | null>(null);
 
   const [rememberInfo, setToRememberInfo] = useState<boolean>(true);
@@ -36,14 +38,40 @@ export const AuthContextProvider: React.FC<{ children: React.ReactNode }> = ({
   const [isReady, setIsReady] = useState(false);
 
   const navigate = useNavigate();
+  const { getCollectionDataFromBackend } = useCollection();
 
   const isLoggedIn = () => {
     return !!user;
   };
 
+  const handleTokenRefresh = () => {
+    setTimeout(async () => {
+      if (!user) return;
+
+      await axios
+        .request({
+          url: "/auth/refresh-access-token",
+          method: "get",
+          withCredentials: true,
+        })
+        .then((res) => {
+          console.log(res);
+          setAccessToken(res.data);
+          handleTokenRefresh();
+        })
+        .catch((err) => {
+          console.log(err);
+          logout();
+        })
+        .finally(() => {});
+    }, 60000);
+  };
+
   const login = (passed_token: string, passed_user: Profile) => {
+    setAccessToken(passed_token);
     setUser(passed_user);
-    setToken(passed_token);
+
+    handleTokenRefresh();
   };
 
   const setRememberInfo = (email: string) => {
@@ -67,45 +95,67 @@ export const AuthContextProvider: React.FC<{ children: React.ReactNode }> = ({
     }
   };
 
-  const logout = () => {
+  const logout = async () => {
     setUser(null);
-    setToken(null);
+    setAccessToken(null);
+
+    // logout in backend
+    axios
+      .request({
+        url: "/auth/logout",
+        method: "post",
+        withCredentials: true,
+      })
+      .then((res) => {
+        console.log(res);
+      })
+      .catch((err) => {
+        console.log(err);
+      })
+      .finally(() => {});
 
     navigate("/login");
   };
 
   useEffect(() => {
-    // check for user already logged in
+    // attempt to retrieve user
 
     // check for remembering user login info
     if (localStorage.getItem("remember-user") === "true") {
       setToRememberInfo(true);
     }
 
-    setToken("Fill");
-    setUser({
-      id: "1",
-      displayName: "Test",
-      email: "tzenisekj@gmail.com ",
-      role: "USER",
-      profileImg: "",
-      bannerImg: "",
-      facebookLink: "",
-      twitterLink: "",
-      youtubeLink: "",
-      instagramLink: "",
-      discordLink: "",
-      accountCreationDate: null,
-      lastLogin: null,
-    });
+    // setToken("Fill");
+    // setUser({
+    //   id: "1",
+    //   displayName: "Test",
+    //   email: "tzenisekj@gmail.com ",
+    //   role: "USER",
+    //   profileImg: "",
+    //   bannerImg: "",
+    //   facebookLink: "",
+    //   twitterLink: "",
+    //   youtubeLink: "",
+    //   instagramLink: "",
+    //   discordLink: "",
+    //   accountCreationDate: null,
+    //   lastLogin: null,
+    // });
     setIsReady(true);
   }, []);
+
+  useEffect(() => {
+    console.log("calling on login");
+    if (user && accessToken) {
+      getCollectionDataFromBackend(user?.collectionId!);
+    }
+  }, [login]);
 
   return (
     <AuthContext.Provider
       value={{
         user,
-        token,
+        accessToken,
         rememberInfo,
         newlyCreatedPost,
         logout,
@@ -115,7 +165,7 @@ export const AuthContextProvider: React.FC<{ children: React.ReactNode }> = ({
         toggleRememberInfo,
         isLoggedIn,
         setUser,
-        setToken,
+        setAccessToken,
         setNewlyCreatedPost,
         setToRememberInfo,
       }}
