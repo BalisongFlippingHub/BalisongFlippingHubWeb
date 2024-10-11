@@ -144,13 +144,6 @@ export const AuthContextProvider: React.FC<{ children: React.ReactNode }> = ({
     setIsReady(true);
   }, []);
 
-  useEffect(() => {
-    console.log("calling on login");
-    if (user && accessToken) {
-      getCollectionDataFromBackend(user?.collectionId!);
-    }
-  }, [login]);
-
   return (
     <AuthContext.Provider
       value={{

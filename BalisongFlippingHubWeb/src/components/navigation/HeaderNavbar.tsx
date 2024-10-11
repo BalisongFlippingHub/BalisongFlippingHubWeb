@@ -10,12 +10,14 @@ import {
   faPhoneFlip,
   faChevronDown,
 } from "@fortawesome/free-solid-svg-icons";
-import { faHubspot } from "@fortawesome/free-brands-svg-icons";
-import useAuth from "../../hooks/useAuth";
 import Image from "../Image";
+import { useSelector } from "react-redux";
+import { RootState } from "../../redux/store";
+import { faHubspot } from "@fortawesome/free-brands-svg-icons";
 
 const HeaderNavbar = () => {
-  const { isLoggedIn, user } = useAuth();
+  const accessToken = useSelector((state: RootState) => state.auth.accessToken);
+  const user = useSelector((state: RootState) => state.auth.user);
 
   const navlinkStyles = ({ isActive }: any) => {
     return {
@@ -60,7 +62,7 @@ const HeaderNavbar = () => {
           <FontAwesomeIcon icon={faEarthAmericas} />
           <h1>Product World</h1>
         </NavLink>
-        {isLoggedIn() ? (
+        {accessToken && user ? (
           <>
             <div className="flex justify-between p-2 items-center border-b-2 border-shadow-green-offset bg-black">
               <div className="flex items-center gap-2">

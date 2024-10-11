@@ -1,8 +1,8 @@
 import { useState, useRef, useEffect } from "react";
+import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import useAuth from "../hooks/useAuth";
-import axios from "../api/axios";
-import useCollection from "../hooks/useCollection";
+import { AppDispatch, RootState } from "../redux/store";
+import { login } from "../redux/auth/authActions";
 
 const LoginForm = () => {
   // form refs
@@ -13,36 +13,22 @@ const LoginForm = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  // error handling state
-  const [error, setError] = useState(false);
-  const [errMsg, setErrMsg] = useState("");
-
-  // loading state
-  const [isLoading, setIsLoading] = useState(false);
-
   // button enabling and disabling
   const [buttonDisabled, setButtonDisabled] = useState(false);
 
   // context functions
   const navigate = useNavigate();
-  const {
-    setRememberInfo,
-    toggleRememberInfo,
-    login,
-    disableRememberInfo,
-    rememberInfo,
-  } = useAuth();
-  const { getCollectionDataFromBackend } = useCollection();
+  const dispatch = useDispatch<AppDispatch>();
+
+  const error = useSelector((state: RootState) => state.auth.error);
+  const errMsg = useSelector((state: RootState) => state.auth.errorMsg);
+  const isLoading = useSelector((state: RootState) => state.auth.loading);
 
   // function to handle setting user input for email field
   const handleOnChangeEmail = (e: any) => {
     setEmail(e.target?.value);
     if (buttonDisabled) {
       setButtonDisabled(false);
-    }
-
-    if (error) {
-      setError(false);
     }
   };
 
@@ -51,10 +37,6 @@ const LoginForm = () => {
     setPassword(e.target?.value);
     if (buttonDisabled) {
       setButtonDisabled(false);
-    }
-
-    if (error) {
-      setError(false);
     }
   };
 
@@ -74,44 +56,14 @@ const LoginForm = () => {
     {
       /*Authenticate user in back end*/
     }
-    setIsLoading(true);
-    axios
-      .request({
-        url: "/auth/login",
-        method: "post",
-        data: obj,
-        withCredentials: true,
+    dispatch(
+      login({
+        email,
+        password,
       })
-      .then((res) => {
-        {
-          /*Successful authorization of user*/
-        }
-        console.log("Logging user in response:", res);
-
-        // set saved user info
-        if (res.status === 200) {
-          if (rememberInfo) setRememberInfo(email);
-
-          // set auth context with user and token
-          login(res.data.accessToken, res.data.account);
-
-          // navigate logged in user to community page
-          navigate("/community");
-        }
-      })
-      .catch((err) => {
-        {
-          /*Error authorizing user with passed credentials*/
-        }
-        console.log("Loggin user in error: ", err);
-        setErrMsg("*Error logging in with current credientials.*");
-        setError(true);
-        emailRef.current?.focus();
-        setButtonDisabled(true);
-      })
-      .finally(() => {
-        setIsLoading(false);
-      });
+    )
+      .unwrap()
+      .then(() => navigate("/community"));
   };
 
   /*
@@ -122,12 +74,6 @@ const LoginForm = () => {
   // on mount function
   useEffect(() => {
     // load saved user info
-    if (rememberInfo) {
-      setEmail(localStorage.getItem("remembered-user-email")!);
-
-      // focus user on email input
-      passwordRef.current?.focus();
-    } else emailRef.current?.focus();
   }, []);
 
   /*HTML return for login form component*/
@@ -192,22 +138,6 @@ const LoginForm = () => {
 
         {/*Check box for allowing the site to remember specific users*/}
         <div className="flex gap-2 bg-shadow-green-offset">
-          {rememberInfo ? (
-            <input
-              type="checkbox"
-              id="rememberMe"
-              className=""
-              checked
-              onClick={disableRememberInfo}
-            />
-          ) : (
-            <input
-              type="checkbox"
-              id="rememberMe"
-              className=""
-              onClick={toggleRememberInfo}
-            />
-          )}
           <label htmlFor="rememberMe" className="bg-shadow-green-offset">
             Remember Me
           </label>

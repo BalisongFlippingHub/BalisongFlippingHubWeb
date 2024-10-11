@@ -1,6 +1,7 @@
 import { createContext, useEffect, useState } from "react";
 import axios from "../api/axios";
 import { Collection } from "../modals/Collection";
+import useAuth from "../hooks/useAuth";
 
 export type CollectionContextType = {
   collectionData: Collection | null;

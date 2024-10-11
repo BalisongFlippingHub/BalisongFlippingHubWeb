@@ -1,10 +1,12 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBell, faUser } from "@fortawesome/free-solid-svg-icons";
-import useAuth from "../../hooks/useAuth";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import Image from "../Image";
-import useCollection from "../../hooks/useCollection";
+import { useDispatch, useSelector } from "react-redux";
+import { AppDispatch } from "../../redux/store";
+import { logout } from "../../redux/auth/authActions";
+import { RootState } from "../../redux/store";
 
 interface params {
   relevant: boolean;
@@ -14,15 +16,18 @@ const HeaderProfileDisplay = ({ relevant }: params) => {
   const [userNav, displayUserNav] = useState(false);
   const [currURL, setCurrURL] = useState("");
 
-  const { user, logout } = useAuth();
-  const { clearCollectionData } = useCollection();
+  const user = useSelector((state: RootState) => state.auth.user);
+  const dispatch = useDispatch<AppDispatch>();
 
   const navigate = useNavigate();
   const location = useLocation();
 
   const handleLogout = () => {
-    logout();
-    clearCollectionData();
+    dispatch(logout())
+      .unwrap()
+      .then(() => navigate("/login"));
+
+    // TODO clear users collection state
   };
 
   useEffect(() => {

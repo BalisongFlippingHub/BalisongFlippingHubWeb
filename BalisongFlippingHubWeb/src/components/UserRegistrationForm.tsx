@@ -1,8 +1,9 @@
 import { useRef, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import useAuth from "../hooks/useAuth";
-import axios from "../api/axios";
-import useCollection from "../hooks/useCollection";
+import { AppDispatch, RootState } from "../redux/store";
+import { login, registerNewUser } from "../redux/auth/authActions";
+import { clearError, setError } from "../redux/auth/authSlice";
 
 const badDisplayNames = [
   "fuck",
@@ -41,19 +42,15 @@ const UserRegistrationForm = () => {
   const [password, setPassword] = useState("");
   const [confirmedPassword, setConfirmedPassword] = useState("");
 
-  // loading state
-  const [isLoading, setIsLoading] = useState(false);
-
-  // error handling state
-  const [errMsg, setErrMsg] = useState("");
-  const [isError, setIsError] = useState(false);
-
   // state to handle button enabling and disabling
   const [buttonDisabled, setButtonDisabled] = useState(false);
 
   // contexts
-  const { login, rememberInfo, setRememberInfo } = useAuth();
-  const { getCollectionDataFromBackend } = useCollection();
+  const isLoading = useSelector((state: RootState) => state.auth.loading);
+  const isError = useSelector((state: RootState) => state.auth.error);
+  const errMsg = useSelector((state: RootState) => state.auth.errorMsg);
+
+  const dispatch = useDispatch<AppDispatch>();
   const navigate = useNavigate();
 
   const handleDisplayNameChange = (e: any) => {
@@ -63,9 +60,7 @@ const UserRegistrationForm = () => {
       setButtonDisabled(false);
     }
 
-    if (isError) {
-      setIsError(false);
-    }
+    dispatch(clearError());
   };
 
   const handlePasswordChange = (e: any) => {
@@ -75,9 +70,7 @@ const UserRegistrationForm = () => {
       setButtonDisabled(false);
     }
 
-    if (isError) {
-      setIsError(false);
-    }
+    dispatch(clearError());
   };
 
   const handleConfirmedPasswordChange = (e: any) => {
@@ -87,9 +80,7 @@ const UserRegistrationForm = () => {
       setButtonDisabled(false);
     }
 
-    if (isError) {
-      setIsError(false);
-    }
+    dispatch(clearError());
   };
 
   const passwordCheck = () => {
@@ -100,8 +91,7 @@ const UserRegistrationForm = () => {
       /*Check for passwords match*/
     }
     if (password != confirmedPassword) {
-      setErrMsg("*Passwords do not match.*");
-      setIsError(true);
+      dispatch(setError("*Passwords do not match.*"));
       passwordRef.current?.focus();
       setButtonDisabled(true);
       return false;
@@ -118,8 +108,7 @@ const UserRegistrationForm = () => {
 
     for (var i = 0; i < badDisplayNames.length; i++) {
       if (holderVal.includes(badDisplayNames[i])) {
-        setErrMsg("*Inappropriate display name.*");
-        setIsError(true);
+        dispatch(setError("*Inappropriate display name.*"));
         displayNameRef.current?.focus();
         setButtonDisabled(true);
         return false;
@@ -149,76 +138,29 @@ const UserRegistrationForm = () => {
     password.trim();
     email.trim();
 
-    {
-      /*Begin Registration with back end*/
-    }
-    setIsLoading(true);
-    axios
-      .request({
-        url: "/auth/register",
-        method: "post",
-        data: {
-          email: email,
-          displayName: displayName,
-          password: password,
-        },
+    // call function to register
+    dispatch(
+      registerNewUser({
+        email,
+        displayName,
+        password,
       })
-      .then((res) => {
-        {
-          /*On Successful Creation*/
-        }
-        console.log("Creating Account Res: ", res);
-        if (res?.status === 200) {
-          {
-            /*Login Directly*/
-          }
-          axios
-            .request({
-              url: "/auth/login",
-              method: "post",
-              data: {
-                email: email,
-                password: password,
-              },
-              withCredentials: true,
-            })
-            .then((res) => {
-              {
-                /*Upon Successful Login*/
-              }
-              console.log("Logging user in response:", res);
-              // set remembered info
-              if (res.status === 200) {
-                if (rememberInfo) setRememberInfo(email);
-
-                // login user in context
-                login(res.data.accessToken, res.data.account);
-
-                // navigate to community page on successful login
-                navigate("/community");
-              }
-            })
-            .catch((err) => {
-              {
-                /*Failed to automatically login user*/
-              }
-              console.log("Loggin user in error: ", err);
-              navigate("/login");
-            });
-        }
+    )
+      .unwrap()
+      .then(() => {
+        // on successful registration attempt login
+        console.log("successful registration. attempting to login user...");
+        dispatch(
+          login({
+            email,
+            password,
+          })
+        )
+          .unwrap()
+          .then(() => navigate("/community"))
+          .catch(() => navigate("/login"));
       })
-      .catch((err) => {
-        {
-          /*Error found in registering new user*/
-        }
-        console.log(err);
-        setErrMsg("*Error registering new account.*");
-        setIsError(true);
-        emailRef.current?.focus();
-      })
-      .finally(() => {
-        setIsLoading(false);
-      });
+      .catch(() => {});
   };
 
   return (
@@ -239,7 +181,7 @@ const UserRegistrationForm = () => {
         <div className="flex justify-center items-center flex flex-col">
           <h1 className="text-4xl">Register Here</h1>
           {isError ? (
-            errMsg === "*Error registering new account.*" ? (
+            errMsg === "Error registering new account." ? (
               <p className="text-red">{errMsg}</p>
             ) : (
               <p className="invisible">Fill</p>
@@ -254,7 +196,7 @@ const UserRegistrationForm = () => {
           <div className="flex gap-2">
             <label className="font-semibold">*Email</label>
             {isError ? (
-              errMsg === "*Email already registered with account.*" ? (
+              errMsg === "Email already exists." ? (
                 <p className="text-red">{errMsg}</p>
               ) : (
                 <></>

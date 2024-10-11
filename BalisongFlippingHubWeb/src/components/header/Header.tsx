@@ -1,5 +1,5 @@
 import { useLocation, useNavigate } from "react-router-dom";
-import useAuth from "../../hooks/useAuth";
+import { useSelector } from "react-redux";
 import HeaderProfileDisplay from "./HeaderProfileDisplay";
 import HeaderNavbar from "../navigation/HeaderNavbar";
 import { useEffect, useState } from "react";
@@ -12,23 +12,23 @@ import {
   faCircleUser,
 } from "@fortawesome/free-solid-svg-icons";
 import HeaderNavbarBottom from "../navigation/HeaderNavbarBottom";
+import { RootState } from "../../redux/store";
 
 interface params {
   lgScreenFullNavDisplay: boolean;
   toggleLgScreenFullNavDisplay: Function;
 }
 
-const Navbar = ({
-  toggleLgScreenFullNavDisplay,
-  lgScreenFullNavDisplay,
-}: params) => {
+const Navbar = ({ toggleLgScreenFullNavDisplay }: params) => {
   const [navToggle, toggleNav] = useState(false);
   const [searchBarToggle, setSearchBarToggle] = useState(false);
   const [accountToggle, setAccountToggle] = useState(false);
 
   const [currURL, setCurrURL] = useState("");
 
-  const { isLoggedIn } = useAuth();
+  const accessToken = useSelector((state: RootState) => state.auth.accessToken);
+  const user = useSelector((state: RootState) => state.auth.user);
+
   const navigate = useNavigate();
 
   const location = useLocation();
@@ -159,7 +159,7 @@ const Navbar = ({
                 >
                   <FontAwesomeIcon icon={faMagnifyingGlass} />
                 </button>
-                {isLoggedIn() ? (
+                {user && accessToken ? (
                   <div>
                     <HeaderProfileDisplay relevant={true} />
                   </div>
@@ -200,7 +200,7 @@ const Navbar = ({
               <SearchBar toggleSearchBar={toggleSearchBar} />
             </div>
 
-            {isLoggedIn() ? (
+            {user && accessToken ? (
               <div className="xsm:absolute xsm:collapse md:static md:visible">
                 <HeaderProfileDisplay relevant={false} />
               </div>
@@ -232,7 +232,7 @@ const Navbar = ({
         <HeaderNavbar />
       </aside>
 
-      {isLoggedIn() ? (
+      {user && accessToken ? (
         <aside className="lg:collapse lg:absolute fixed bg-black bottom-0 w-full z-10 flex justify-center">
           <HeaderNavbarBottom />
         </aside>
