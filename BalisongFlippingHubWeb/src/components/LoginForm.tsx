@@ -3,6 +3,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { AppDispatch, RootState } from "../redux/store";
 import { login } from "../redux/auth/authActions";
+import { setToRememberLoginInfo, toggleOffRememberLoginInfo } from "../redux/auth/authSlice";
 
 const LoginForm = () => {
   // form refs
@@ -23,6 +24,7 @@ const LoginForm = () => {
   const error = useSelector((state: RootState) => state.auth.error);
   const errMsg = useSelector((state: RootState) => state.auth.errorMsg);
   const isLoading = useSelector((state: RootState) => state.auth.loading);
+  const rememberInfo = useSelector((state: RootState) => state.auth.rememberLoginCredentials)
 
   // function to handle setting user input for email field
   const handleOnChangeEmail = (e: any) => {
@@ -47,12 +49,6 @@ const LoginForm = () => {
     // checks for valid info to pass
     if (email.trim() === "" || password.trim() === "") return;
 
-    // creates login object
-    const obj = {
-      email: email.trim(),
-      password: password.trim(),
-    };
-
     {
       /*Authenticate user in back end*/
     }
@@ -63,7 +59,13 @@ const LoginForm = () => {
       })
     )
       .unwrap()
-      .then(() => navigate("/community"));
+      .then(() => {
+        // on success save email
+        if (rememberInfo) {
+          localStorage.setItem("saved-user-email", email)
+          navigate("/community")
+        }
+      });
   };
 
   /*
@@ -74,11 +76,15 @@ const LoginForm = () => {
   // on mount function
   useEffect(() => {
     // load saved user info
+    if (rememberInfo) {
+      const fetchedEmail = localStorage.getItem("saved-user-email")
+      if (fetchedEmail) setEmail(fetchedEmail)
+    }
   }, []);
 
   /*HTML return for login form component*/
   return (
-    <section className="flex w-full h-screen lg:pl-[192px] justify-center items-center">
+    <section className="flex w-full h-screen pt-[64px] lg:pl-[192px] justify-center items-center">
       <form
         className="p-8 flex flex-col gap-3 bg-shadow-green-offset rounded-lg md:w-2/6 xsm:w-4/5 text-xl"
         onSubmit={handleSubmit}
@@ -137,10 +143,18 @@ const LoginForm = () => {
         </div>
 
         {/*Check box for allowing the site to remember specific users*/}
-        <div className="flex gap-2 bg-shadow-green-offset">
+        <div className="flex gap-2 bg-shadow-green-offset items-center">
           <label htmlFor="rememberMe" className="bg-shadow-green-offset">
             Remember Me
           </label>
+
+          {
+            rememberInfo
+            ?
+            <input checked type="checkbox" onClick={() => dispatch(toggleOffRememberLoginInfo())} />
+            :
+            <input type="checkbox" onClick={() => dispatch(setToRememberLoginInfo())} />
+          }
         </div>
 
         {/*Submit button to login*/}

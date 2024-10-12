@@ -1,6 +1,8 @@
-import { createSlice, PayloadAction, SerializedError } from "@reduxjs/toolkit";
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { Profile } from "../../modals/User";
-import { login, logout, registerNewUser } from "./authActions";
+import { login, logout, registerNewUser, refreshAccessToken } from "./authActions";
+import { AppDispatch } from "../store";
+import { clearCollection } from "../collection/collectionSlice";
 
 interface AuthState {
   user: Profile | null;
@@ -9,7 +11,6 @@ interface AuthState {
   error: boolean;
   errorMsg: string;
   loading: boolean;
-  success: boolean;
 }
 
 const initialState: AuthState = {
@@ -18,22 +19,21 @@ const initialState: AuthState = {
   rememberLoginCredentials: false,
   error: false,
   errorMsg: "",
-  loading: false,
-  success: false,
+  loading: false
 };
 
 const authSlice = createSlice({
   name: "auth",
   initialState,
   reducers: {
-    toggleToRememberLogiinCredentials: (state) => {
-      if (!state.rememberLoginCredentials) {
-        localStorage.setItem("remember-login-info", "true");
-      } else {
-        localStorage.removeItem("remember-login-info");
-      }
-
-      state.rememberLoginCredentials = !state.rememberLoginCredentials;
+    setToRememberLoginInfo: (state) => {
+      state.rememberLoginCredentials = true
+      localStorage.setItem("save-user-info", "true")
+    },
+    toggleOffRememberLoginInfo: (state) => {
+      state.rememberLoginCredentials = false
+      localStorage.removeItem("save-user-info")
+      localStorage.removeItem("saved-user-email")
     },
     setError: (state, action: PayloadAction<string>) => {
       state.error = true;
@@ -77,10 +77,12 @@ const authSlice = createSlice({
           }>
         ) => {
           // handle successful login
-          console.log(action);
           state.accessToken = action.payload.accessToken;
           state.user = action.payload.account;
           state.loading = false;
+
+          // update collection slice
+
         }
       )
       .addCase(login.rejected, (state, action: PayloadAction<any>) => {
@@ -104,11 +106,31 @@ const authSlice = createSlice({
         state.loading = false;
         state.accessToken = null;
         state.user = null;
-      });
+
+        // clear collection slice
+        clearCollection()
+      })
+      .addCase(refreshAccessToken.fulfilled, (state, action: PayloadAction<string>) => {
+        // on successful refresh of access token check for valid access token
+        if (action.payload !== "") {
+          state.accessToken = action.payload
+
+          // set timeout to recall refresh on access token
+          setTimeout(() => {
+            refreshAccessToken()
+          }, 10000)
+        }
+      })
+      .addCase(refreshAccessToken.rejected, (state, action: PayloadAction<any>) => {
+        // when unauthorized with failed attempt to get new access token
+        // reset state
+        state = initialState
+        
+      })
   },
 });
 
-export const { toggleToRememberLogiinCredentials, setError, clearError } =
+export const { setToRememberLoginInfo, toggleOffRememberLoginInfo, setError, clearError } =
   authSlice.actions;
 
 export default authSlice.reducer;

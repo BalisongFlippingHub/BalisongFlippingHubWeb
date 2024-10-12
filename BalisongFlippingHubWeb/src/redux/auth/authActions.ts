@@ -1,4 +1,4 @@
-import { createAsyncThunk, isRejected } from "@reduxjs/toolkit";
+import { createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "../../api/axios";
 
 interface RegistrationPayload {
@@ -54,3 +54,18 @@ export const logout = createAsyncThunk("auth/logout", async () => {
     withCredentials: true,
   });
 });
+
+export const refreshAccessToken = createAsyncThunk("auth/refresh-access-token", async (_payload, { rejectWithValue } ) => {
+  try {
+    const newAccessToken: string = await axios.request({
+      url: "/auth/refresh-access-token",
+      method: "get", 
+      withCredentials: true
+    })
+
+    return newAccessToken; 
+  }
+  catch (error: any) {
+    return rejectWithValue(error.response.data)
+  }
+})
