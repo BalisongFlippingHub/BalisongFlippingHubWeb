@@ -1,8 +1,9 @@
 import { useRef, useState } from "react";
-import useAuth from "../../hooks/useAuth";
 import Image from "../Image";
-import axios from "../../api/axios";
+import { axiosApiInstanceAuth } from "../../api/axios";
 import { Profile } from "../../modals/User";
+import { useAppDispatch, useAppSelector } from "../../redux/hooks";
+import { setNewUser } from "../../redux/auth/authSlice";
 
 const BannerImageConfiguration = () => {
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -14,7 +15,10 @@ const BannerImageConfiguration = () => {
   const [isError, setIsError] = useState(false);
   const [errorMsg, setErrorMsg] = useState("");
 
-  const { user, setUser, token } = useAuth();
+  const user = useAppSelector((state) => state.auth.user);
+  const token = useAppSelector((state) => state.auth.accessToken);
+
+  const dispatch = useAppDispatch();
 
   const resetErrorState = () => {
     setIsError(false);
@@ -30,7 +34,7 @@ const BannerImageConfiguration = () => {
 
     // submit to backend
     setIsLoading(true);
-    await axios
+    await axiosApiInstanceAuth
       .request({
         url: "/accounts/me/update-banner-img",
         method: "post",
@@ -43,22 +47,19 @@ const BannerImageConfiguration = () => {
       })
       .then((res) => {
         // success on saving new image
-        setUser((prev) => {
-          return {
-            ...prev,
+        dispatch(
+          setNewUser({
+            ...user,
             bannerImg: res.data,
-          } as Profile;
-        });
+          } as Profile)
+        );
       })
       .catch((err) => {
-        // catch error
         setIsError(true);
-        setErrorMsg("Failed to save new image");
+        setErrorMsg("Error");
       })
       .finally(() => {
-        // reset state
         setIsLoading(false);
-        setCurrentFile("");
       });
   };
 

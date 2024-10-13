@@ -1,5 +1,5 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import axios from "../../api/axios";
+import { axiosApiInstance } from "../../api/axios";
 
 interface RegistrationPayload {
   email: string;
@@ -17,7 +17,7 @@ export const registerNewUser = createAsyncThunk(
   async (payload: RegistrationPayload, thunkAPI) => {
     console.log(payload);
     try {
-      await axios.request({
+      await axiosApiInstance.request({
         url: "/auth/register",
         method: "post",
         data: payload,
@@ -33,7 +33,7 @@ export const login = createAsyncThunk(
   "auth/login",
   async (payload: LoginPayload, thunkAPI) => {
     try {
-      const response = await axios.request({
+      const response = await axiosApiInstance.request({
         url: "/auth/login",
         method: "post",
         withCredentials: true,
@@ -48,24 +48,27 @@ export const login = createAsyncThunk(
 );
 
 export const logout = createAsyncThunk("auth/logout", async () => {
-  await axios.request({
+  await axiosApiInstance.request({
     url: "/auth/logout",
     method: "post",
     withCredentials: true,
   });
 });
 
-export const refreshAccessToken = createAsyncThunk("auth/refresh-access-token", async (_payload, { rejectWithValue } ) => {
-  try {
-    const newAccessToken: string = await axios.request({
-      url: "/auth/refresh-access-token",
-      method: "get", 
-      withCredentials: true
-    })
+export const refreshAccessToken = createAsyncThunk(
+  "auth/refresh-access-token",
+  async (_payload, { rejectWithValue }) => {
+    try {
+      console.log("calling refresh token");
+      const newAccessToken: string = await axiosApiInstance.request({
+        url: "/auth/refresh-access-token",
+        method: "get",
+        withCredentials: true,
+      });
 
-    return newAccessToken; 
+      return newAccessToken;
+    } catch (error: any) {
+      return rejectWithValue(error.response.data);
+    }
   }
-  catch (error: any) {
-    return rejectWithValue(error.response.data)
-  }
-})
+);

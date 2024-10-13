@@ -1,8 +1,8 @@
 import UserProfilePage from "../../components/UserProfilePage";
-import useAuth from "../../hooks/useAuth";
+import { useAppSelector } from "../../redux/hooks";
 
 const ProfilePage = () => {
-  const { user } = useAuth();
+  const user = useAppSelector((state) => state.auth.user);
 
   if (user?.role === "ADMIN") {
     return <div></div>;

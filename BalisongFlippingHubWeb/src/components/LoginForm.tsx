@@ -3,7 +3,10 @@ import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { AppDispatch, RootState } from "../redux/store";
 import { login } from "../redux/auth/authActions";
-import { setToRememberLoginInfo, toggleOffRememberLoginInfo } from "../redux/auth/authSlice";
+import {
+  setToRememberLoginInfo,
+  toggleOffRememberLoginInfo,
+} from "../redux/auth/authSlice";
 
 const LoginForm = () => {
   // form refs
@@ -24,7 +27,9 @@ const LoginForm = () => {
   const error = useSelector((state: RootState) => state.auth.error);
   const errMsg = useSelector((state: RootState) => state.auth.errorMsg);
   const isLoading = useSelector((state: RootState) => state.auth.loading);
-  const rememberInfo = useSelector((state: RootState) => state.auth.rememberLoginCredentials)
+  const rememberInfo = useSelector(
+    (state: RootState) => state.auth.rememberLoginCredentials
+  );
 
   // function to handle setting user input for email field
   const handleOnChangeEmail = (e: any) => {
@@ -62,9 +67,10 @@ const LoginForm = () => {
       .then(() => {
         // on success save email
         if (rememberInfo) {
-          localStorage.setItem("saved-user-email", email)
-          navigate("/community")
+          localStorage.setItem("saved-user-email", email);
         }
+
+        navigate("/community");
       });
   };
 
@@ -77,8 +83,8 @@ const LoginForm = () => {
   useEffect(() => {
     // load saved user info
     if (rememberInfo) {
-      const fetchedEmail = localStorage.getItem("saved-user-email")
-      if (fetchedEmail) setEmail(fetchedEmail)
+      const fetchedEmail = localStorage.getItem("saved-user-email");
+      if (fetchedEmail) setEmail(fetchedEmail);
     }
   }, []);
 
@@ -148,13 +154,18 @@ const LoginForm = () => {
             Remember Me
           </label>
 
-          {
-            rememberInfo
-            ?
-            <input checked type="checkbox" onClick={() => dispatch(toggleOffRememberLoginInfo())} />
-            :
-            <input type="checkbox" onClick={() => dispatch(setToRememberLoginInfo())} />
-          }
+          {rememberInfo ? (
+            <input
+              checked
+              type="checkbox"
+              onClick={() => dispatch(toggleOffRememberLoginInfo())}
+            />
+          ) : (
+            <input
+              type="checkbox"
+              onClick={() => dispatch(setToRememberLoginInfo())}
+            />
+          )}
         </div>
 
         {/*Submit button to login*/}

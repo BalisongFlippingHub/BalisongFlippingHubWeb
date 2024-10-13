@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
-import axios from "../../api/axios";
-import useAuth from "../../hooks/useAuth";
+import { axiosApiInstanceAuth } from "../../api/axios";
 import { CollectionKnifeDTO } from "../../modals/CollectionKnife";
+import { useAppSelector } from "../../redux/hooks";
 
 interface params {
   galleryFiles: Array<File> | null;
@@ -19,7 +19,8 @@ const NewCollectionKnifeSubmit = ({
   const [isError, setIsError] = useState(false);
   const [erorMsg, setErrorMsg] = useState("");
 
-  const { token, user } = useAuth();
+  const user = useAppSelector((state) => state.auth.user);
+  const token = useAppSelector((state) => state.auth.accessToken);
 
   const validateNewKnifeObj = () => {
     return true;
@@ -91,7 +92,7 @@ const NewCollectionKnifeSubmit = ({
 
     // post to api
     setIsLoading(true);
-    await axios
+    await axiosApiInstanceAuth
       .request({
         url: "/collection/me/add-knife",
         method: "post",

@@ -2,15 +2,15 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import BannerImageConfiguration from "../../components/accountConfigurationComponents/BannerImageConfiguration";
 import ProfileImageConfiguration from "../../components/accountConfigurationComponents/ProfileImageConfiguration";
 import { faEdit } from "@fortawesome/free-solid-svg-icons";
-import useAuth from "../../hooks/useAuth";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
+import { useAppSelector } from "../../redux/hooks";
 
 const ProfileConfigurePage = () => {
   const [displayWarning, setDisplayWarning] = useState(false);
   const [warningIdentifier, setWarningIdentifier] = useState("");
 
-  const { user } = useAuth();
+  const user = useAppSelector((state) => state.auth.user);
 
   const navigate = useNavigate();
 

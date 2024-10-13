@@ -49,7 +49,9 @@ const UserRegistrationForm = () => {
   const isLoading = useSelector((state: RootState) => state.auth.loading);
   const isError = useSelector((state: RootState) => state.auth.error);
   const errMsg = useSelector((state: RootState) => state.auth.errorMsg);
-  const rememberInfo = useSelector((state: RootState) => state.auth.rememberLoginCredentials); 
+  const rememberInfo = useSelector(
+    (state: RootState) => state.auth.rememberLoginCredentials
+  );
 
   const dispatch = useDispatch<AppDispatch>();
   const navigate = useNavigate();
@@ -159,10 +161,17 @@ const UserRegistrationForm = () => {
         )
           .unwrap()
           .then(() => {
+            // set email info if prompted to save
             if (rememberInfo) {
-              localStorage.setItem("saved-user-email", email)
-              navigate("/community")
+              localStorage.setItem("saved-user-email", email);
             }
+
+            // set up collection
+
+            // set up event loop for refreshing access token
+
+            // navigate to community page
+            navigate("/community");
           })
           .catch(() => navigate("/login"));
       })

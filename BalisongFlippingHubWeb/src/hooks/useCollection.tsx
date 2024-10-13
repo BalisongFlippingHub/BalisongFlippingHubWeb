@@ -1,8 +1,8 @@
-import { useContext } from "react";
-import { CollectionContext } from "../contexts/CollectionContext";
+// import { useContext } from "react";
+// import { CollectionContext } from "../contexts/CollectionContext";
 
-const useCollection = () => {
-  return useContext(CollectionContext);
-};
+// const useCollection = () => {
+//   return useContext(CollectionContext);
+// };
 
-export default useCollection;
+// export default useCollection;

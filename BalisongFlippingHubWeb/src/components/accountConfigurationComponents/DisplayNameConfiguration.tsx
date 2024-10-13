@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
-import useAuth from "../../hooks/useAuth";
-import axios from "../../api/axios";
+import { axiosApiInstanceAuth } from "../../api/axios";
+import { useAppSelector } from "../../redux/hooks";
 
 const DisplayNameConfiguration = () => {
   const displayNameInputRef = useRef<HTMLInputElement>(null);
@@ -11,7 +11,8 @@ const DisplayNameConfiguration = () => {
   const [errMsg, setErrMsg] = useState("");
   const [isSuccess, setIsSuccess] = useState<boolean | null>(null);
 
-  const { user, accessToken } = useAuth();
+  const user = useAppSelector((state) => state.auth.user);
+  const accessToken = useAppSelector((state) => state.auth.accessToken);
 
   const validateNewDisplayName = (newName: string) => {
     return true;
@@ -43,7 +44,7 @@ const DisplayNameConfiguration = () => {
     if (validateNewDisplayName(newDisplayName)) {
       console.log(newDisplayName);
       setIsLoading(true);
-      await axios
+      await axiosApiInstanceAuth
         .request({
           url: "/accounts/me/change-display-name",
           method: "post",

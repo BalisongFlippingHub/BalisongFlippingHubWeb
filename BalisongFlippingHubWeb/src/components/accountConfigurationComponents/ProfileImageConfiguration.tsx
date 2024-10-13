@@ -1,6 +1,6 @@
 import { useRef, useState } from "react";
-import useAuth from "../../hooks/useAuth";
 import Image from "../Image";
+import { useAppSelector } from "../../redux/hooks";
 
 const ProfileImageConfiguration = () => {
   const inputRef = useRef<HTMLInputElement>(null);
@@ -9,7 +9,7 @@ const ProfileImageConfiguration = () => {
   const [isError, setIsError] = useState(true);
   const [errMsg, setErrMsg] = useState("");
 
-  const { user } = useAuth();
+  const user = useAppSelector((state) => state.auth.user);
 
   const resetStates = () => {
     setIsLoading(false);
