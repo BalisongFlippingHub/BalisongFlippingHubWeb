@@ -1,6 +1,5 @@
 import axios from "axios";
 import { store } from "../redux/store";
-import { logout } from "../redux/auth/authActions";
 import { setNewAccessToken } from "../redux/auth/authSlice";
 
 export const axiosApiInstance = axios.create({
@@ -31,25 +30,28 @@ axiosApiInstanceAuth.interceptors.response.use(
 
       try {
         // attempt to retrieve a new access token using passed refresh token
+        console.log("attempting get new access token");
         const response = await axios.get(
-          "http://localhost:8080/auth/refresh-access-token"
+          "http://localhost:8080/auth/refresh-access-token",
+          {
+            withCredentials: true,
+          }
         );
 
+        console.log("refresh response", response);
         // update state with new access token
         store.dispatch(setNewAccessToken(response.data));
 
         // update auth header
-        axiosApiInstanceAuth.defaults.headers.common[
-          "Authorization"
-        ] = `Bearer ${response.data}`;
+        // axiosApiInstanceAuth.defaults.headers.common[
+        //   "Authorization"
+        // ] = `Bearer ${response.data}`;
+        originRequest.headers["Authorization"] = `Bearer ${response.data}`;
 
         // retry original request with new auth
         return axiosApiInstanceAuth(originRequest);
       } catch (refreshError) {
         // catch error or failed attempt to get new access token
-        // logout user from state
-        store.dispatch(logout());
-
         // return refresh error
         return Promise.reject(refreshError);
       }

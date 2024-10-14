@@ -1,8 +1,6 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { Profile } from "../../modals/User";
 import { login, logout, registerNewUser } from "./authActions";
-import { store } from "../store";
-import { clearCollection } from "../collection/collectionSlice";
 
 interface AuthState {
   user: Profile | null;

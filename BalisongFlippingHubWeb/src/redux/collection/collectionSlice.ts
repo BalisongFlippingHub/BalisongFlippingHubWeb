@@ -1,18 +1,15 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { Collection } from "../../modals/Collection";
+import { CollectionKnife } from "../../modals/CollectionKnife";
 
 interface CollectionState {
-    collection: Collection | null,
-    loading: boolean,
-    error: boolean
-    errorMessage: string
+  collection: Collection | null;
+  collectionKnives: Array<CollectionKnife>;
 }
 
 const initialState: CollectionState = {
   collection: null,
-  loading: false,
-  error: false,
-  errorMessage: ""
+  collectionKnives: [],
 };
 
 const collectionSlice = createSlice({
@@ -20,15 +17,16 @@ const collectionSlice = createSlice({
   initialState,
   reducers: {
     clearCollection: (state) => {
-        state = initialState
+      state = initialState;
+    },
+    setCollection: (state, action: PayloadAction<Collection>) => {
+      state.collection = action.payload;
+      state.collectionKnives = action.payload.collectedKnives!;
     },
   },
-  extraReducers: (builder) => {
-    
-  },
+  extraReducers: (builder) => {},
 });
 
-export const { clearCollection} =
-  collectionSlice.actions;
+export const { clearCollection, setCollection } = collectionSlice.actions;
 
 export default collectionSlice.reducer;

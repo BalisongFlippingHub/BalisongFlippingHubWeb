@@ -54,21 +54,3 @@ export const logout = createAsyncThunk("auth/logout", async () => {
     withCredentials: true,
   });
 });
-
-export const refreshAccessToken = createAsyncThunk(
-  "auth/refresh-access-token",
-  async (_payload, { rejectWithValue }) => {
-    try {
-      console.log("calling refresh token");
-      const newAccessToken: string = await axiosApiInstance.request({
-        url: "/auth/refresh-access-token",
-        method: "get",
-        withCredentials: true,
-      });
-
-      return newAccessToken;
-    } catch (error: any) {
-      return rejectWithValue(error.response.data);
-    }
-  }
-);

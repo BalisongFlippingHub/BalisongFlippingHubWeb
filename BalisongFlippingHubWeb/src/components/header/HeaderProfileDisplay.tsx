@@ -7,6 +7,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch } from "../../redux/store";
 import { logout } from "../../redux/auth/authActions";
 import { RootState } from "../../redux/store";
+import { clearCollection } from "../../redux/collection/collectionSlice";
 
 interface params {
   relevant: boolean;
@@ -25,7 +26,10 @@ const HeaderProfileDisplay = ({ relevant }: params) => {
   const handleLogout = () => {
     dispatch(logout())
       .unwrap()
-      .then(() => navigate("/login"));
+      .finally(() => {
+        dispatch(clearCollection());
+        navigate("/login");
+      });
 
     // TODO clear users collection state
   };

@@ -1,9 +1,11 @@
 import { useRef, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { AppDispatch, RootState } from "../redux/store";
 import { login, registerNewUser } from "../redux/auth/authActions";
 import { clearError, setError } from "../redux/auth/authSlice";
+import { useAppSelector } from "../redux/hooks";
+import { setCollection } from "../redux/collection/collectionSlice";
 
 const badDisplayNames = [
   "fuck",
@@ -46,11 +48,12 @@ const UserRegistrationForm = () => {
   const [buttonDisabled, setButtonDisabled] = useState(false);
 
   // contexts
-  const isLoading = useSelector((state: RootState) => state.auth.loading);
-  const isError = useSelector((state: RootState) => state.auth.error);
-  const errMsg = useSelector((state: RootState) => state.auth.errorMsg);
-  const rememberInfo = useSelector(
-    (state: RootState) => state.auth.rememberLoginCredentials
+  const isLoading = useAppSelector((state) => state.auth.loading);
+  const isError = useAppSelector((state) => state.auth.error);
+  const errMsg = useAppSelector((state) => state.auth.errorMsg);
+
+  const rememberInfo = useAppSelector(
+    (state) => state.auth.rememberLoginCredentials
   );
 
   const dispatch = useDispatch<AppDispatch>();
@@ -160,15 +163,14 @@ const UserRegistrationForm = () => {
           })
         )
           .unwrap()
-          .then(() => {
+          .then((res) => {
             // set email info if prompted to save
             if (rememberInfo) {
               localStorage.setItem("saved-user-email", email);
             }
 
-            // set up collection
-
-            // set up event loop for refreshing access token
+            // set collection data
+            dispatch(setCollection(res.collection));
 
             // navigate to community page
             navigate("/community");

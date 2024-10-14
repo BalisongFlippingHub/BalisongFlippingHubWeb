@@ -7,6 +7,7 @@ import {
   setToRememberLoginInfo,
   toggleOffRememberLoginInfo,
 } from "../redux/auth/authSlice";
+import { setCollection } from "../redux/collection/collectionSlice";
 
 const LoginForm = () => {
   // form refs
@@ -64,11 +65,15 @@ const LoginForm = () => {
       })
     )
       .unwrap()
-      .then(() => {
+      .then((res) => {
         // on success save email
+        console.log("res", res);
         if (rememberInfo) {
           localStorage.setItem("saved-user-email", email);
         }
+
+        // set collection data
+        dispatch(setCollection(res.collection));
 
         navigate("/community");
       });

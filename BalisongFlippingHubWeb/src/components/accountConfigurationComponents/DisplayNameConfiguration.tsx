@@ -1,6 +1,10 @@
 import { useEffect, useRef, useState } from "react";
 import { axiosApiInstanceAuth } from "../../api/axios";
-import { useAppSelector } from "../../redux/hooks";
+import { useAppDispatch, useAppSelector } from "../../redux/hooks";
+import { clearCollection } from "../../redux/collection/collectionSlice";
+import { logout } from "../../redux/auth/authActions";
+import { setNewUser } from "../../redux/auth/authSlice";
+import { Profile } from "../../modals/User";
 
 const DisplayNameConfiguration = () => {
   const displayNameInputRef = useRef<HTMLInputElement>(null);
@@ -12,7 +16,8 @@ const DisplayNameConfiguration = () => {
   const [isSuccess, setIsSuccess] = useState<boolean | null>(null);
 
   const user = useAppSelector((state) => state.auth.user);
-  const accessToken = useAppSelector((state) => state.auth.accessToken);
+
+  const dispatch = useAppDispatch();
 
   const validateNewDisplayName = (newName: string) => {
     return true;
@@ -49,21 +54,28 @@ const DisplayNameConfiguration = () => {
           url: "/accounts/me/change-display-name",
           method: "post",
           data: newDisplayName,
-          headers: {
-            Authorization: "Bearer " + accessToken,
-            Accept: "application/json",
-          },
         })
         .then((res) => {
           console.log(res);
           // update with new display name
+          dispatch(
+            setNewUser({
+              ...user,
+              displayName: res.data,
+            } as Profile)
+          );
+
           setIsSuccess(true);
         })
         .catch((err) => {
-          console.log(err);
           // error in updating in back end
           setIsError(true);
           setErrMsg("Failed to update new display name");
+
+          if (err.response.status === 401) {
+            dispatch(clearCollection());
+            dispatch(logout());
+          }
         })
         .finally(() => {
           setIsLoading(false);
