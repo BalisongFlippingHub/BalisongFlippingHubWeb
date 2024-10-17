@@ -92,7 +92,10 @@ const DisplayNameConfiguration = () => {
       className="w-full max-w-[1000px] flex flex-col items-center gap-2 p-4"
       onSubmit={(e) => handleSubmit(e)}
     >
-      <p className="text-lg">Please input only letters, numbers, and _.</p>
+      <p className="text-lg">
+        Display names can contain letters, numbers or these special characters:
+        ! . _
+      </p>
 
       <div className="flex w-full gap-2 items-center">
         <div className="flex w-full">

@@ -1,6 +1,11 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { Profile } from "../../modals/User";
-import { login, logout, registerNewUser } from "./authActions";
+import {
+  login,
+  loginWithRefreshToken,
+  logout,
+  registerNewUser,
+} from "./authActions";
 
 interface AuthState {
   user: Profile | null;
@@ -47,6 +52,13 @@ const authSlice = createSlice({
     setNewUser: (state, action: PayloadAction<Profile>) => {
       state.user = action.payload;
     },
+    setCredentials: (
+      state,
+      action: PayloadAction<{ newUser: Profile; newAccessToken: string }>
+    ) => {
+      state.user = action.payload.newUser;
+      state.accessToken = action.payload.newAccessToken;
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -92,6 +104,34 @@ const authSlice = createSlice({
         state.error = true;
         state.errorMsg = action.payload;
       })
+      .addCase(loginWithRefreshToken.pending, (state) => {
+        // handle login is loading
+        state.loading = true;
+      })
+      .addCase(
+        loginWithRefreshToken.fulfilled,
+        (
+          state,
+          action: PayloadAction<{
+            accessToken: string;
+            account: Profile | null;
+          }>
+        ) => {
+          // handle successful login
+          state.accessToken = action.payload.accessToken;
+          state.user = action.payload.account;
+          state.loading = false;
+        }
+      )
+      .addCase(
+        loginWithRefreshToken.rejected,
+        (state, action: PayloadAction<any>) => {
+          // handle error in logging in user
+          state.loading = false;
+          state.error = true;
+          state.errorMsg = action.payload;
+        }
+      )
       .addCase(logout.pending, (state) => {
         // handle loading logout
         state.loading = true;
@@ -118,6 +158,7 @@ export const {
   clearError,
   setNewAccessToken,
   setNewUser,
+  setCredentials,
 } = authSlice.actions;
 
 export default authSlice.reducer;

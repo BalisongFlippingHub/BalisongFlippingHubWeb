@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { axiosApiInstanceAuth } from "../../api/axios";
 import { CollectionKnifeDTO } from "../../modals/CollectionKnife";
-import { useAppSelector } from "../../redux/hooks";
+import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 
 interface params {
   galleryFiles: Array<File> | null;
@@ -20,7 +20,7 @@ const NewCollectionKnifeSubmit = ({
   const [erorMsg, setErrorMsg] = useState("");
 
   const user = useAppSelector((state) => state.auth.user);
-  const token = useAppSelector((state) => state.auth.accessToken);
+  const dispatch = useAppDispatch();
 
   const validateNewKnifeObj = () => {
     return true;
@@ -98,13 +98,15 @@ const NewCollectionKnifeSubmit = ({
         method: "post",
         data: formData,
         headers: {
-          Authorization: "Bearer " + token,
           Accept: "application/json",
           "Content-Type": "multipart/form-data",
         },
       })
       .then((res) => {
+        // successful creation of new knife
         console.log("adding new knife responese", res);
+
+        // update the state
       })
       .catch((err) => {
         console.log("adding new knife error", err);

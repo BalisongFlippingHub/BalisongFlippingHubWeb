@@ -1,16 +1,16 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import BannerImageConfiguration from "../../components/accountConfigurationComponents/BannerImageConfiguration";
-import ProfileImageConfiguration from "../../components/accountConfigurationComponents/ProfileImageConfiguration";
 import { faEdit } from "@fortawesome/free-solid-svg-icons";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { useAppSelector } from "../../redux/hooks";
+import Image from "../../components/Image";
 
 const ProfileConfigurePage = () => {
   const [displayWarning, setDisplayWarning] = useState(false);
   const [warningIdentifier, setWarningIdentifier] = useState("");
 
   const user = useAppSelector((state) => state.auth.user);
+  const collectionData = useAppSelector((state) => state.collection.collection);
 
   const navigate = useNavigate();
 
@@ -39,15 +39,41 @@ const ProfileConfigurePage = () => {
       <div className="bg-black w-full max-w-[925px] rounded-lg flex flex-col items-center bg-black">
         {/*Banner Image Change*/}
         <div className="w-full relative">
-          <BannerImageConfiguration />
+          <div className="w-full h-52 rounded-b-2xl bg-shadow-green-offset relative flex justify-center items-center text-2xl font-bold">
+            {user?.bannerImg ? (
+              <Image imageId={user?.bannerImg!} />
+            ) : (
+              <h5>No Banner Image</h5>
+            )}
+
+            <button
+              type="button"
+              className="text-lg font-semibold absolute bottom-4 right-4 bg-shadow p-2 rounded z-10 hover:bg-shadow-green"
+              onClick={() => navigate("/me/configure/profile-banner")}
+            >
+              Edit Banner
+            </button>
+          </div>
 
           {/*Profile Image Change*/}
-          <div className="absolute right-0 left-0 bottom-0 translate-y-[196px]">
-            <ProfileImageConfiguration />
+          <div className="rounded-full overflow-hidden absolute w-full flex flex-col gap-2 justify-center items-center -translate-y-[5rem]">
+            <div
+              className="h-40 w-40 rounded-full overflow-hidden hover:cursor-pointer border-4 border-black hover:border-shadow-green"
+              onClick={() => navigate("/me/configure/profile-image")}
+            >
+              <Image imageId={user?.profileImg!} />
+            </div>
+
+            <button
+              className="bg-shadow text-lg font-bold p-2 rounded hover:bg-shadow-green"
+              onClick={() => navigate("/me/configure/profile-image")}
+            >
+              Edit Profile Image
+            </button>
           </div>
         </div>
 
-        <span className="w-full h-36 p-4"></span>
+        <span className="w-full h-40 p-4"></span>
         <div className="w-full h-full p-4 flex flex-col gap-6 mt-10">
           {/*Display Name and Caption*/}
           <div className="w-full flex gap-2">
@@ -296,6 +322,27 @@ const ProfileConfigurePage = () => {
               <h5 className="-translate-y-5 text-2xl font-bold bg-black">
                 Collection
               </h5>
+
+              {/*Collection Banner Image Change*/}
+              <div className="w-1/2 h-20">
+                <div
+                  className="w-full h-full bg-shadow p-2 rounded hover:cursor-pointer hover:bg-shadow-green"
+                  onClick={() =>
+                    navigate("/me/configure/collection-banner-image")
+                  }
+                >
+                  <div className="flex justify-between text-2xl">
+                    <h5>Banner Image</h5>
+                    <FontAwesomeIcon icon={faEdit} />
+                  </div>
+
+                  <h6>
+                    {collectionData?.bannerImg
+                      ? collectionData.bannerImg
+                      : "..."}
+                  </h6>
+                </div>
+              </div>
             </div>
 
             {/*Auth*/}

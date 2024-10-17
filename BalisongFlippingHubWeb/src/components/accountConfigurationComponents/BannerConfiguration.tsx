@@ -5,7 +5,7 @@ import { Profile } from "../../modals/User";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import { setNewUser } from "../../redux/auth/authSlice";
 
-const BannerImageConfiguration = () => {
+const BannerConfiguration = () => {
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const [currentFile, setCurrentFile] = useState("");
@@ -118,4 +118,4 @@ const BannerImageConfiguration = () => {
   );
 };
 
-export default BannerImageConfiguration;
+export default BannerConfiguration;

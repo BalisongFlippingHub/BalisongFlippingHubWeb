@@ -1,4 +1,4 @@
-import { Route, Routes } from "react-router-dom";
+import { Route, Routes, useNavigate } from "react-router-dom";
 import MainLayout from "./layouts/MainLayout";
 import { LoginPage } from "./pages/auth/LoginPage";
 
@@ -25,8 +25,42 @@ import ProfileConfigurationChangeCurrencyPage from "./pages/configuration/Profil
 import ProfileConfigurationResetAccountPage from "./pages/configuration/ProfileConfigurationResetAccountPage";
 import ProfileConfigurationHideAccountPage from "./pages/configuration/ProfileConfigurationHideAccountPage";
 import ProfileConfigurationDeleteAccountPage from "./pages/configuration/ProfileConfigurationDeleteAccountPage";
+import ProfileConfigurationProfileImagePage from "./pages/configuration/ProfileConfigurationProfileImagePage";
+import ProfileConfigurationProfileBannerPage from "./pages/configuration/ProfileConfigurationProfileBannerPage";
+import { useEffect } from "react";
+import { useAppDispatch } from "./redux/hooks";
+import { setCredentials, setToRememberLoginInfo } from "./redux/auth/authSlice";
+import { loginWithRefreshToken } from "./redux/auth/authActions";
+import { setCollection } from "./redux/collection/collectionSlice";
 
 const App = () => {
+  const dispatch = useAppDispatch();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    // configure app on mount
+    // get remember login state
+    const toRememberLogin = localStorage.getItem("save-user-info");
+    if (toRememberLogin === "true") {
+      dispatch(setToRememberLoginInfo());
+    }
+
+    // attempt to login user with valid refresh token
+    dispatch(loginWithRefreshToken())
+      .unwrap()
+      .then((res) => {
+        dispatch(
+          setCredentials({
+            newUser: res.data.account,
+            newAccessToken: res.data.accessToken,
+          })
+        );
+        dispatch(setCollection(res.data.collection));
+        navigate("/community");
+      })
+      .catch((error) => console.log(error));
+  }, []);
+
   return (
     <Routes>
       <Route path="/" element={<MainLayout />}>
@@ -49,6 +83,16 @@ const App = () => {
         {/*Profile Configuration Routes*/}
         <Route element={<ProtectedRoutes allowedRoles={["USER"]} />}>
           <Route path="/me/configure" element={<ProfileConfigurePage />} />
+
+          <Route
+            path="/me/configure/profile-banner"
+            element={<ProfileConfigurationProfileBannerPage />}
+          />
+
+          <Route
+            path="/me/configure/profile-image"
+            element={<ProfileConfigurationProfileImagePage />}
+          />
 
           <Route
             path="/me/configure/display_name"
@@ -99,6 +143,11 @@ const App = () => {
           <Route
             path="/me/configure/currency"
             element={<ProfileConfigurationChangeCurrencyPage />}
+          />
+
+          <Route
+            path="/me/configure/collection-banner-image"
+            element={<ProfileConfigurationProfileBannerPage />}
           />
 
           <Route

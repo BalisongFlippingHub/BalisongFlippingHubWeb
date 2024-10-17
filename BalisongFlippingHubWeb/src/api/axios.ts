@@ -10,9 +10,14 @@ export const axiosApiInstance = axios.create({
 export const axiosApiInstanceAuth = axios.create({
   baseURL: "http://localhost:8080",
   withCredentials: true,
-  headers: {
-    Authorization: `Bearer ${store.getState().auth.accessToken}`,
-  },
+});
+
+/*Axios auth request interceptor to set auth token before every request*/
+axiosApiInstanceAuth.interceptors.request.use((config) => {
+  const accessToken = store.getState().auth.accessToken;
+  config.headers.Authorization = `Bearer ${accessToken}`;
+
+  return config;
 });
 
 /*Interceptor for every auth request to check for a failed accesst token.*/
@@ -30,7 +35,7 @@ axiosApiInstanceAuth.interceptors.response.use(
 
       try {
         // attempt to retrieve a new access token using passed refresh token
-        console.log("attempting get new access token");
+
         const response = await axios.get(
           "http://localhost:8080/auth/refresh-access-token",
           {
@@ -38,14 +43,10 @@ axiosApiInstanceAuth.interceptors.response.use(
           }
         );
 
-        console.log("refresh response", response);
         // update state with new access token
         store.dispatch(setNewAccessToken(response.data));
 
         // update auth header
-        // axiosApiInstanceAuth.defaults.headers.common[
-        //   "Authorization"
-        // ] = `Bearer ${response.data}`;
         originRequest.headers["Authorization"] = `Bearer ${response.data}`;
 
         // retry original request with new auth

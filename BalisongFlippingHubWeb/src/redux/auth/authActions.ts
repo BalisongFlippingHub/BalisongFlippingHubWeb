@@ -47,6 +47,22 @@ export const login = createAsyncThunk(
   }
 );
 
+export const loginWithRefreshToken = createAsyncThunk(
+  "auth/loginWithRefreshToken",
+  async (_, thunkAPI) => {
+    try {
+      const response = await axiosApiInstance.request({
+        url: "auth/refresh-token-login",
+        method: "post",
+      });
+
+      return response.data;
+    } catch (error: any) {
+      return thunkAPI.rejectWithValue(error.response.data);
+    }
+  }
+);
+
 export const logout = createAsyncThunk("auth/logout", async () => {
   await axiosApiInstance.request({
     url: "/auth/logout",
