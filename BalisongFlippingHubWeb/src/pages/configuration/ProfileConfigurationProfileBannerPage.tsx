@@ -1,7 +1,9 @@
+import BannerConfiguration from "../../components/accountConfigurationComponents/BannerConfiguration";
+
 const ProfileConfigurationProfileBannerPage = () => {
   return (
-    <section>
-      <h5>Banner Image</h5>
+    <section className="pt-[64px] lg:pl-[192px] flex justify-center w-full">
+      <BannerConfiguration />
     </section>
   );
 };

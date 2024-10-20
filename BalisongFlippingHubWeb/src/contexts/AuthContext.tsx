@@ -1,169 +1,63 @@
-// import { SetStateAction, createContext, useEffect, useState } from "react";
-// import { Profile } from "../modals/User";
-// import { useNavigate } from "react-router-dom";
-// import axios from "../api/axios";
-// import useCollection from "../hooks/useCollection";
+import { createContext, useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { useAppDispatch } from "../redux/hooks";
+import {
+  setCredentials,
+  setToRememberLoginInfo,
+} from "../redux/auth/authSlice";
+import { loginWithRefreshToken } from "../redux/auth/authActions";
+import { setCollection } from "../redux/collection/collectionSlice";
 
-// export type AuthContextType = {
-//   user: Profile | null;
-//   accessToken: string | null;
-//   rememberInfo: boolean;
-//   newlyCreatedPost: string;
-//   logout: () => void;
-//   login: (passed_token: string, passed_user: Profile) => void;
-//   setRememberInfo: (email: string) => void;
-//   disableRememberInfo: () => void;
-//   toggleRememberInfo: () => void;
-//   isLoggedIn: () => boolean;
-//   setUser: React.Dispatch<SetStateAction<Profile | null>>;
-//   setAccessToken: React.Dispatch<SetStateAction<string | null>>;
-//   setNewlyCreatedPost: React.Dispatch<SetStateAction<string>>;
-//   setToRememberInfo: React.Dispatch<SetStateAction<boolean>>;
-// };
+export type AuthContextType = {
+  isLoading: boolean;
+};
 
-// export const AuthContext = createContext<AuthContextType>(
-//   {} as AuthContextType
-// );
+export const AuthContext = createContext<AuthContextType>(
+  {} as AuthContextType
+);
 
-// export const AuthContextProvider: React.FC<{ children: React.ReactNode }> = ({
-//   children,
-// }) => {
-//   const [accessToken, setAccessToken] = useState<string | null>(null);
-//   const [user, setUser] = useState<Profile | null>(null);
+export const AuthContextProvider: React.FC<{ children: React.ReactNode }> = ({
+  children,
+}) => {
+  const [isLoading, setIsLoading] = useState(false);
 
-//   const [rememberInfo, setToRememberInfo] = useState<boolean>(true);
+  const navigate = useNavigate();
+  const dispatch = useAppDispatch();
 
-//   const [newlyCreatedPost, setNewlyCreatedPost] = useState<string>("");
+  useEffect(() => {
+    setIsLoading(true);
+    // configure app on mount
+    // get remember login state
+    const toRememberLogin = localStorage.getItem("save-user-info");
+    if (toRememberLogin === "true") {
+      dispatch(setToRememberLoginInfo());
+    }
 
-//   const [isReady, setIsReady] = useState(false);
+    // attempt to login user with valid refresh token
+    dispatch(loginWithRefreshToken())
+      .unwrap()
+      .then((res) => {
+        dispatch(
+          setCredentials({
+            newUser: res.data.account,
+            newAccessToken: res.data.accessToken,
+          })
+        );
+        dispatch(setCollection(res.data.collection));
+        navigate("/community");
+      })
+      .catch((error) => console.log(error));
 
-//   const navigate = useNavigate();
-//   const { getCollectionDataFromBackend } = useCollection();
+    setIsLoading(false);
+  }, []);
 
-//   const isLoggedIn = () => {
-//     return !!user;
-//   };
-
-//   const handleTokenRefresh = () => {
-//     setTimeout(async () => {
-//       if (!user) return;
-
-//       await axios
-//         .request({
-//           url: "/auth/refresh-access-token",
-//           method: "get",
-//           withCredentials: true,
-//         })
-//         .then((res) => {
-//           console.log(res);
-//           setAccessToken(res.data);
-//           handleTokenRefresh();
-//         })
-//         .catch((err) => {
-//           console.log(err);
-//           logout();
-//         })
-//         .finally(() => {});
-//     }, 60000);
-//   };
-
-//   const login = (passed_token: string, passed_user: Profile) => {
-//     setAccessToken(passed_token);
-//     setUser(passed_user);
-
-//     handleTokenRefresh();
-//   };
-
-//   const setRememberInfo = (email: string) => {
-//     setToRememberInfo(true);
-//     localStorage.setItem("remember-user", "true");
-//     localStorage.setItem("remembered-user-email", email);
-//   };
-
-//   const disableRememberInfo = () => {
-//     setToRememberInfo(false);
-//     localStorage.removeItem("remember-user");
-//     localStorage.removeItem("remembered-user-email");
-//   };
-
-//   const toggleRememberInfo = () => {
-//     if (rememberInfo) {
-//       disableRememberInfo();
-//     } else {
-//       setToRememberInfo(true);
-//       localStorage.setItem("remember-user", "true");
-//     }
-//   };
-
-//   const logout = async () => {
-//     setUser(null);
-//     setAccessToken(null);
-
-//     // logout in backend
-//     axios
-//       .request({
-//         url: "/auth/logout",
-//         method: "post",
-//         withCredentials: true,
-//       })
-//       .then((res) => {
-//         console.log(res);
-//       })
-//       .catch((err) => {
-//         console.log(err);
-//       })
-//       .finally(() => {});
-
-//     navigate("/login");
-//   };
-
-//   useEffect(() => {
-//     // attempt to retrieve user
-
-//     // check for remembering user login info
-//     if (localStorage.getItem("remember-user") === "true") {
-//       setToRememberInfo(true);
-//     }
-
-//     // setToken("Fill");
-//     // setUser({
-//     //   id: "1",
-//     //   displayName: "Test",
-//     //   email: "tzenisekj@gmail.com ",
-//     //   role: "USER",
-//     //   profileImg: "",
-//     //   bannerImg: "",
-//     //   facebookLink: "",
-//     //   twitterLink: "",
-//     //   youtubeLink: "",
-//     //   instagramLink: "",
-//     //   discordLink: "",
-//     //   accountCreationDate: null,
-//     //   lastLogin: null,
-//     // });
-//     setIsReady(true);
-//   }, []);
-
-//   return (
-//     <AuthContext.Provider
-//       value={{
-//         user,
-//         accessToken,
-//         rememberInfo,
-//         newlyCreatedPost,
-//         logout,
-//         login,
-//         setRememberInfo,
-//         disableRememberInfo,
-//         toggleRememberInfo,
-//         isLoggedIn,
-//         setUser,
-//         setAccessToken,
-//         setNewlyCreatedPost,
-//         setToRememberInfo,
-//       }}
-//     >
-//       {isReady ? children : null}
-//     </AuthContext.Provider>
-//   );
-// };
+  return (
+    <AuthContext.Provider
+      value={{
+        isLoading,
+      }}
+    >
+      {!isLoading ? children : null}
+    </AuthContext.Provider>
+  );
+};

@@ -161,7 +161,7 @@ const LoginForm = () => {
 
           {rememberInfo ? (
             <input
-              checked
+              defaultChecked
               type="checkbox"
               onClick={() => dispatch(toggleOffRememberLoginInfo())}
             />

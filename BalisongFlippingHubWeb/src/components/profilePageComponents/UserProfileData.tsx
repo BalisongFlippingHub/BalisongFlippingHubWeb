@@ -8,7 +8,8 @@ import {
   faTwitterSquare,
   faYoutubeSquare,
 } from "@fortawesome/free-brands-svg-icons";
-import { useAppSelector } from "../redux/hooks";
+import { useAppSelector } from "../../redux/hooks";
+import { faCircleUser } from "@fortawesome/free-solid-svg-icons";
 
 const UserProfileData = () => {
   const user = useAppSelector((state) => state.auth.user);
@@ -18,18 +19,36 @@ const UserProfileData = () => {
     return <div></div>;
   } else {
     return (
-      <div className="flex justify-between md:h-48 sm:h-40 xsm:h-36 p-3">
+      <div className="flex justify-between md:h-48 sm:h-40 xsm:h-36 p-4">
         {/*Display User Data*/}
         <div className="place-self-end flex flex-col">
           <div className="flex">
             {/*Display User Identification*/}
-            <div className="flex flex-col ">
-              {user?.displayName ? (
-                <h3 className="text-3xl">{user?.displayName}</h3>
-              ) : (
-                <h3>{user?.id}</h3>
-              )}
-              <h6>3 Months</h6>
+            <div className="flex flex-col">
+              {/*Display Name*/}
+              <div className="flex items-center gap-2 text-3xl">
+                <FontAwesomeIcon icon={faCircleUser} />
+                {user?.displayName && user?.displayName !== "" ? (
+                  <h5>{user?.displayName}</h5>
+                ) : (
+                  <h5>{user?.id}</h5>
+                )}
+              </div>
+
+              {/*Badges Display*/}
+              <div className="w-full flex justify-center">
+                <h6>Badges...</h6>
+              </div>
+
+              {/*Account Age*/}
+              <div className="text-lg">
+                <h5>Age: 1 month</h5>
+              </div>
+
+              {/*Profile Caption*/}
+              <div>
+                <h6>Caption...</h6>
+              </div>
             </div>
 
             {/*Display Users Links*/}

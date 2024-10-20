@@ -3,8 +3,12 @@ import HomePageCaurosel from "../components/HomePageCaurosel";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faGlobe, faEarthAmericas } from "@fortawesome/free-solid-svg-icons";
 import { faHubspot } from "@fortawesome/free-brands-svg-icons";
+import { useAppSelector } from "../redux/hooks";
 
 const HomePage = () => {
+  const user = useAppSelector((state) => state.auth.user);
+  const accessToken = useAppSelector((state) => state.auth.accessToken);
+
   const navigate = useNavigate();
 
   return (
@@ -15,31 +19,42 @@ const HomePage = () => {
             <div className="flex flex-col items-center gap-4">
               <h4 className="text-3xl font-bold">Welcome!</h4>
 
-              <p className="text-xl text-center">
+              <p className="text-2xl text-center">
                 Welcome to the Balisong Flipping Center! The central hub for
                 balisong related content and the home of knife enthusiest,
                 flippers, modders and more. Scroll to learn more, or make an
                 account today to jump right into the balisong community.
               </p>
 
-              <button
-                type="button"
-                onClick={() => navigate("/register")}
-                className="p-2 rounded bg-black hover:bg-shadow-green-offset hover:border hover:border-white border border-shadow-green"
-              >
-                Register Now
-              </button>
-
-              <div className="flex gap-2 items-center">
-                <p>Already have an account?</p>
+              {user && accessToken && accessToken !== "" ? (
                 <button
                   type="button"
-                  onClick={() => navigate("/login")}
-                  className="underline hover:text-blue"
+                  className="p-4 rounded bg-black text-xl hover:bg-shadow-green-offset border"
                 >
-                  Login Here
+                  To Profile
                 </button>
-              </div>
+              ) : (
+                <>
+                  <button
+                    type="button"
+                    onClick={() => navigate("/register")}
+                    className="p-2 rounded bg-black hover:bg-shadow-green-offset hover:border hover:border-white border border-shadow-green text-xl"
+                  >
+                    Register Now
+                  </button>
+
+                  <div className="flex gap-2 items-center">
+                    <p>Already have an account?</p>
+                    <button
+                      type="button"
+                      onClick={() => navigate("/login")}
+                      className="underline hover:text-blue"
+                    >
+                      Login Here
+                    </button>
+                  </div>
+                </>
+              )}
             </div>
           </div>
 

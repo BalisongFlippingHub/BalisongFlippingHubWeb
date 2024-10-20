@@ -1,7 +1,9 @@
+import ProfileImageConfiguration from "../../components/accountConfigurationComponents/ProfileImageConfiguration";
+
 const ProfileConfigurationProfileImagePage = () => {
   return (
-    <section>
-      <h5>Profile Image Change Page</h5>
+    <section className="pt-[64px] lg:pl-[192px]">
+      <ProfileImageConfiguration />
     </section>
   );
 };
