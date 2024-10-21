@@ -2,12 +2,10 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBell, faUser } from "@fortawesome/free-solid-svg-icons";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
-import Image from "../Image";
-import { useDispatch, useSelector } from "react-redux";
-import { AppDispatch } from "../../redux/store";
+import ProfileImageDisplay from "../ProfileImageDisplay";
 import { logout } from "../../redux/auth/authActions";
-import { RootState } from "../../redux/store";
 import { clearCollection } from "../../redux/collection/collectionSlice";
+import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 
 interface params {
   relevant: boolean;
@@ -17,8 +15,8 @@ const HeaderProfileDisplay = ({ relevant }: params) => {
   const [userNav, displayUserNav] = useState(false);
   const [currURL, setCurrURL] = useState("");
 
-  const user = useSelector((state: RootState) => state.auth.user);
-  const dispatch = useDispatch<AppDispatch>();
+  const user = useAppSelector((state) => state.auth.user);
+  const dispatch = useAppDispatch();
 
   const navigate = useNavigate();
   const location = useLocation();
@@ -58,7 +56,7 @@ const HeaderProfileDisplay = ({ relevant }: params) => {
           {user?.profileImg === null || user?.profileImg === "" ? (
             <FontAwesomeIcon icon={faUser} />
           ) : (
-            <Image imageId={user?.profileImg} />
+            <ProfileImageDisplay />
           )}
         </div>
 

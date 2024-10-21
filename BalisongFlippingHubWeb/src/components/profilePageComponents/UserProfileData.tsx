@@ -21,8 +21,8 @@ const UserProfileData = () => {
     return (
       <div className="flex justify-between md:h-48 sm:h-40 xsm:h-36 p-4">
         {/*Display User Data*/}
-        <div className="place-self-end flex flex-col">
-          <div className="flex">
+        <div className="flex flex-col h-full">
+          <div className="flex h-full">
             {/*Display User Identification*/}
             <div className="flex flex-col">
               {/*Display Name*/}
@@ -38,11 +38,6 @@ const UserProfileData = () => {
               {/*Badges Display*/}
               <div className="w-full flex justify-center">
                 <h6>Badges...</h6>
-              </div>
-
-              {/*Account Age*/}
-              <div className="text-lg">
-                <h5>Age: 1 month</h5>
               </div>
 
               {/*Profile Caption*/}

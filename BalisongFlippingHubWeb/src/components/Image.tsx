@@ -12,6 +12,8 @@ const Image = ({ imageId, contain }: params) => {
   const [isLoading, setIsLoading] = useState(false);
   const [isError, setIsError] = useState(false);
 
+  useEffect(() => {}, [imageId]);
+
   useEffect(() => {
     const getImg = async () => {
       setIsLoading(true);

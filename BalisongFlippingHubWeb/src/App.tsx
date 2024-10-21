@@ -29,13 +29,16 @@ import ProfileConfigurationDeleteAccountPage from "./pages/configuration/Profile
 import ProfileConfigurationProfileImagePage from "./pages/configuration/ProfileConfigurationProfileImagePage";
 import ProfileConfigurationProfileBannerPage from "./pages/configuration/ProfileConfigurationProfileBannerPage";
 import { useEffect, useState } from "react";
-import { useAppDispatch } from "./redux/hooks";
+import { useAppDispatch, useAppSelector } from "./redux/hooks";
 import { setCredentials, setToRememberLoginInfo } from "./redux/auth/authSlice";
 import { loginWithRefreshToken } from "./redux/auth/authActions";
 import { setCollection } from "./redux/collection/collectionSlice";
 
 const App = () => {
   const [isLoading, setIsLoading] = useState(false);
+
+  const user = useAppSelector((state) => state.auth.user);
+  const accessToken = useAppSelector((state) => state.auth.accessToken);
 
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
@@ -50,19 +53,21 @@ const App = () => {
     }
 
     // attempt to login user with valid refresh token
-    dispatch(loginWithRefreshToken())
-      .unwrap()
-      .then((res) => {
-        dispatch(
-          setCredentials({
-            newUser: res.data.account,
-            newAccessToken: res.data.accessToken,
-          })
-        );
-        dispatch(setCollection(res.data.collection));
-        navigate("/community");
-      })
-      .catch((error) => console.log(error));
+    if (!user && !accessToken) {
+      dispatch(loginWithRefreshToken())
+        .unwrap()
+        .then((res) => {
+          dispatch(
+            setCredentials({
+              newUser: res.data.account,
+              newAccessToken: res.data.accessToken,
+            })
+          );
+          dispatch(setCollection(res.data.collection));
+          navigate("/community");
+        })
+        .catch((error) => console.log(error));
+    }
 
     setIsLoading(false);
   }, []);

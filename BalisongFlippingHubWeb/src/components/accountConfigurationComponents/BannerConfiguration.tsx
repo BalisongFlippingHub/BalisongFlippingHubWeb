@@ -1,9 +1,11 @@
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import Image from "../Image";
 import { axiosApiInstanceAuth } from "../../api/axios";
 import { Profile } from "../../modals/User";
 import { setNewUser } from "../../redux/auth/authSlice";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faCircleLeft } from "@fortawesome/free-solid-svg-icons";
 import { useNavigate } from "react-router-dom";
 
 const BannerConfiguration = () => {
@@ -19,6 +21,7 @@ const BannerConfiguration = () => {
   const user = useAppSelector((state) => state.auth.user);
 
   const dispatch = useAppDispatch();
+  const navigate = useNavigate();
 
   const handleOnChange = (e: any) => {
     if (isSuccess) {
@@ -65,11 +68,21 @@ const BannerConfiguration = () => {
   };
 
   return (
-    <div className="w-full flex flex-col items-center gap-10">
-      {/*Display Current Banner Image*/}
-      <div className="pt-4 text-2xl font-bold flex flex-col items-center gap-4 w-full border-t-8 border-b-8 border-black pt-10 pb-10">
-        <h5>Current Banner</h5>
+    <div className="w-full flex flex-col items-center">
+      {/*Go Back Button*/}
+      <div className="w-full p-4">
+        <button
+          type="button"
+          className="bg-shadow hover:bg-shadow-green-offset p-2 rounded text-xl flex gap-2 items-center"
+          onClick={() => navigate("/me/configure")}
+        >
+          <FontAwesomeIcon icon={faCircleLeft} />
+          <h6>Go Back</h6>
+        </button>
+      </div>
 
+      {/*Display Current Banner Image*/}
+      <div className="text-2xl font-bold flex flex-col items-center gap-4 w-full">
         {isSuccess ? (
           <div className="w-full h-64 bg-shadow-green-offset flex items-center justify-center">
             <img
@@ -104,11 +117,11 @@ const BannerConfiguration = () => {
 
       {/*Display and form for new banner image selection*/}
       <form
-        className="w-1/2 flex flex-col items-center"
+        className="w-1/2 flex flex-col items-center mt-10"
         onSubmit={(e) => handleSubmit(e)}
       >
         <div className="w-full flex flex-col items-center text-2xl font-bold border p-4 gap-4">
-          <h5>Selected Banner</h5>
+          <h5>Select New Banner</h5>
 
           <div className="w-full h-96 rounded-lg overflow-hidden bg-black flex items-center justify-center">
             {selectedFile ? (

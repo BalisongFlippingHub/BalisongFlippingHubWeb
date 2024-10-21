@@ -10,14 +10,13 @@ import {
   faPhoneFlip,
   faChevronDown,
 } from "@fortawesome/free-solid-svg-icons";
-import Image from "../Image";
-import { useSelector } from "react-redux";
-import { RootState } from "../../redux/store";
+import ProfileImageDisplay from "../ProfileImageDisplay";
 import { faHubspot } from "@fortawesome/free-brands-svg-icons";
+import { useAppSelector } from "../../redux/hooks";
 
 const HeaderNavbar = () => {
-  const accessToken = useSelector((state: RootState) => state.auth.accessToken);
-  const user = useSelector((state: RootState) => state.auth.user);
+  const accessToken = useAppSelector((state) => state.auth.accessToken);
+  const user = useAppSelector((state) => state.auth.user);
 
   const navlinkStyles = ({ isActive }: any) => {
     return {
@@ -68,7 +67,7 @@ const HeaderNavbar = () => {
               <div className="flex items-center gap-2">
                 {user?.profileImg ? (
                   <div className="rounded-full h-10 w-10 overflow-hidden">
-                    <Image imageId={user?.profileImg!} />
+                    <ProfileImageDisplay />
                   </div>
                 ) : (
                   <></>
