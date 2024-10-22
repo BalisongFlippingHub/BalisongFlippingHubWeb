@@ -8,18 +8,11 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faBarsStaggered,
   faMagnifyingGlass,
-  faUserPlus,
-  faCircleUser,
 } from "@fortawesome/free-solid-svg-icons";
 import HeaderNavbarBottom from "../navigation/HeaderNavbarBottom";
 import { RootState } from "../../redux/store";
 
-interface params {
-  lgScreenFullNavDisplay: boolean;
-  toggleLgScreenFullNavDisplay: Function;
-}
-
-const Navbar = ({ toggleLgScreenFullNavDisplay }: params) => {
+const Navbar = () => {
   const [navToggle, toggleNav] = useState(false);
   const [searchBarToggle, setSearchBarToggle] = useState(false);
   const [accountToggle, setAccountToggle] = useState(false);
@@ -58,170 +51,73 @@ const Navbar = ({ toggleLgScreenFullNavDisplay }: params) => {
 
   return (
     <>
-      <header className="flex xsm:flex-col md:flex-row fixed md:justify-between xsm:justify-center xsm:items-center h-16 w-full p-3 border border-shadow-green-offset bg-black z-10">
+      <header className="flex fixed justify-between items-center h-16 w-full p-3 border border-shadow-green-offset bg-black z-10">
+        {/*Search Bar for small screens*/}
         {searchBarToggle ? (
-          <>
-            <div className="md:collapse md:absolute xsm:visible xsm:static">
-              <SearchBar toggleSearchBar={toggleSearchBar} />
-            </div>
+          <div className="w-full xsm:fixed z-10 justify-center flex bg-black xsm:visible md:collapse md:absolute">
+            <SearchBar toggleSearchBar={toggleSearchBar} />
+          </div>
+        ) : (
+          <></>
+        )}
 
-            <div className="flex items-center gap-3 xsm:collapse xsm:absolute md:visible md:static">
-              <div className="lg:absolute lg:collapse md:visible md:static">
-                {!navToggle ? (
-                  <FontAwesomeIcon
-                    icon={faBarsStaggered}
-                    onClick={() => toggleNav((prev) => !prev)}
-                    className="hover:cursor-pointer"
-                  />
-                ) : (
-                  <button
-                    type="button"
-                    className=""
-                    onClick={() => toggleNav((prev) => !prev)}
-                  >
-                    X
-                  </button>
-                )}
-              </div>
+        {/*Hamburger Menu and Logo*/}
+        <div className="flex gap-2 md:text-2xl xsm:text-xl">
+          <div
+            className="hover:cursor-pointer lg:collapse lg:absolute xsm:visible xsm:static"
+            onClick={() => toggleNav((prev) => !prev)}
+          >
+            {!navToggle ? (
+              <FontAwesomeIcon icon={faBarsStaggered} />
+            ) : (
+              <h2>X</h2>
+            )}
+          </div>
 
-              <div className="xsm:collapse xsm:absolute lg:visible lg:static">
-                <FontAwesomeIcon icon={faBarsStaggered} className="" />
-              </div>
+          <div className="xsm:collapse xsm:absolute lg:static lg:visible">
+            <FontAwesomeIcon icon={faBarsStaggered} />
+          </div>
 
-              <h1
-                className="hover:cursor-pointer md:text-2xl sm:text-md"
-                onClick={() => navigate("/")}
-              >
-                Balisong Flipping Center
-              </h1>
-            </div>
+          <h1 onClick={() => navigate("/")} className="hover:cursor-pointer">
+            Balisong Flipping Center
+          </h1>
+        </div>
 
-            <div className="xsm:collapse md:visible xsm:absolute md:static">
-              <SearchBar toggleSearchBar={toggleSearchBar} />
-            </div>
+        {/*Search Bar*/}
+        <div className="md:visible md:static xsm:collapse xsm:absolute">
+          <SearchBar toggleSearchBar={toggleSearchBar} />
+        </div>
 
-            <div className="xsm:collapse xsm:absolute md:static md:visible">
+        {/*Profile Display or Login/Registration Btn and Search Bar Toggle*/}
+        <div className="flex items-center gap-4">
+          <div
+            className="xsm:visible xsm:static md:collapse md:absolute hover:cursor-pointer"
+            onClick={() => toggleSearchBar()}
+          >
+            <FontAwesomeIcon icon={faMagnifyingGlass} />
+          </div>
+
+          {user && accessToken ? (
+            <HeaderProfileDisplay />
+          ) : (
+            <div className="flex gap-1 items-center text-lg">
               <button
+                type="button"
+                className="hover:underline hover:font-bold"
                 onClick={() => navigate("/login")}
-                className="p-2 hover:underline underline-offset-4"
               >
                 Login
               </button>
               <button
+                type="button"
+                className="bg-shadow-green pl-2 pr-2 pt-1 pb-1 rounded hover:bg-shadow-green-offset border border-black hover:border-white"
                 onClick={() => navigate("/register")}
-                className="p-1 border-2 border-shadow-green-offset rounded hover:bg-shadow-green-offset"
               >
-                Register Now
+                Register
               </button>
             </div>
-          </>
-        ) : (
-          <>
-            <div className="flex items-center gap-3 xsm:w-full xsm:justify-between md:w-auto">
-              <div className="lg:absolute lg:collapse md:visible md:static">
-                {!navToggle ? (
-                  <FontAwesomeIcon
-                    icon={faBarsStaggered}
-                    onClick={() => toggleNav((prev) => !prev)}
-                    className="hover:cursor-pointer"
-                  />
-                ) : (
-                  <button
-                    type="button"
-                    className=""
-                    onClick={() => toggleNav((prev) => !prev)}
-                  >
-                    X
-                  </button>
-                )}
-              </div>
-
-              <div className="xsm:collapse xsm:absolute lg:visible lg:static">
-                <FontAwesomeIcon
-                  icon={faBarsStaggered}
-                  onClick={() => toggleLgScreenFullNavDisplay()}
-                  className="hover:cursor-pointer"
-                />
-              </div>
-
-              <h1
-                className="hover:cursor-pointer sm:text-2xl xsm:text-xl"
-                onClick={() => navigate("/")}
-              >
-                Balisong Flipping Center
-              </h1>
-
-              <div className="md:collapse xsm:visible md:absolute flex gap-2">
-                <button
-                  type="button"
-                  onClick={toggleSearchBar}
-                  className="mr-1"
-                >
-                  <FontAwesomeIcon icon={faMagnifyingGlass} />
-                </button>
-                {user && accessToken ? (
-                  <div>
-                    <HeaderProfileDisplay relevant={true} />
-                  </div>
-                ) : (
-                  <div className="relative">
-                    <button
-                      type="button"
-                      onClick={() => setAccountToggle((prev) => !prev)}
-                    >
-                      <FontAwesomeIcon icon={faCircleUser} />
-                    </button>
-                    {accountToggle ? (
-                      <div className="absolute w-32 -right-3 bg-shadow-green-offset p-2 z-5 text-lg translate-y-5">
-                        <button
-                          className="flex flex-row-reverse items-center justify-between w-full h-full"
-                          onClick={() => navigate("/register")}
-                        >
-                          <FontAwesomeIcon icon={faUserPlus} />
-                          <h3>Register</h3>
-                        </button>
-                        <button
-                          className="flex flex-row-reverse items-center justify-between w-full h-full"
-                          onClick={() => navigate("/login")}
-                        >
-                          <FontAwesomeIcon icon={faCircleUser} />
-                          <h3>Login</h3>
-                        </button>
-                      </div>
-                    ) : (
-                      <></>
-                    )}
-                  </div>
-                )}
-              </div>
-            </div>
-
-            <div className="xsm:collapse md:visible xsm:absolute md:static">
-              <SearchBar toggleSearchBar={toggleSearchBar} />
-            </div>
-
-            {user && accessToken ? (
-              <div className="xsm:absolute xsm:collapse md:static md:visible">
-                <HeaderProfileDisplay relevant={false} />
-              </div>
-            ) : (
-              <div className="xsm:collapse xsm:absolute md:static md:visible">
-                <button
-                  onClick={() => navigate("/login")}
-                  className="p-2 hover:underline underline-offset-4"
-                >
-                  Login
-                </button>
-                <button
-                  onClick={() => navigate("/register")}
-                  className="p-1 border-2 border-shadow-green-offset rounded hover:bg-shadow-green-offset"
-                >
-                  Register Now
-                </button>
-              </div>
-            )}
-          </>
-        )}
+          )}
+        </div>
       </header>
 
       <aside className="lg:collapse lg:absolute md:visible md:static z-10">
