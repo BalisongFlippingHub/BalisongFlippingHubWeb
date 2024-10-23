@@ -41,7 +41,7 @@ const ProfileConfigurationLinksPage = ({ linkType }: params) => {
   };
 
   return (
-    <section className="pt-[64px] pl-[192px] w-full flex flex-col items-center">
+    <section className="pt-[64px] lg:pl-[192px] w-full flex flex-col items-center w-full">
       {/*Go Back Btn*/}
       <div className="w-full p-4">
         <button

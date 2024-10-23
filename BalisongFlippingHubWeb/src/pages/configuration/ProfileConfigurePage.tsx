@@ -86,12 +86,12 @@ const ProfileConfigurePage = () => {
                 className="w-full h-full bg-shadow p-2 rounded hover:cursor-pointer hover:bg-shadow-green"
                 onClick={() => navigate("/me/configure/display_name")}
               >
-                <div className="flex justify-between text-2xl">
+                <div className="flex justify-between md:text-2xl xsm:text-xl font-bold">
                   <h5>Display Name</h5>
                   <FontAwesomeIcon icon={faEdit} />
                 </div>
 
-                <h6>
+                <h6 className="">
                   {user?.displayName && user?.displayName !== ""
                     ? user?.displayName
                     : user?.id}
@@ -104,7 +104,7 @@ const ProfileConfigurePage = () => {
                 className="w-full h-full bg-shadow p-2 rounded hover:cursor-pointer hover:bg-shadow-green"
                 onClick={() => navigate("/me/configure/about_me")}
               >
-                <div className="flex justify-between text-2xl">
+                <div className="flex justify-between md:text-2xl xsm:text-xl">
                   <h5>Profile Caption</h5>
                   <FontAwesomeIcon icon={faEdit} />
                 </div>
@@ -121,7 +121,7 @@ const ProfileConfigurePage = () => {
                 className="w-full h-full bg-shadow p-2 rounded hover:cursor-pointer hover:bg-shadow-green"
                 onClick={() => navigate("/me/configure/about_me")}
               >
-                <div className="flex justify-between text-2xl">
+                <div className="flex justify-between md:text-2xl xsm:text-xl">
                   <h5>Badges Display</h5>
                   <FontAwesomeIcon icon={faEdit} />
                 </div>
@@ -142,7 +142,7 @@ const ProfileConfigurePage = () => {
                   className="w-full h-full bg-shadow p-2 rounded hover:cursor-pointer hover:bg-shadow-green"
                   onClick={() => navigate("/me/configure/facebook_link")}
                 >
-                  <div className="flex justify-between text-2xl">
+                  <div className="flex justify-between md:text-2xl xsm:text-xl">
                     <h5>Facebook</h5>
                     <FontAwesomeIcon icon={faEdit} />
                   </div>
@@ -161,7 +161,7 @@ const ProfileConfigurePage = () => {
                   className="w-full h-full bg-shadow p-2 rounded hover:cursor-pointer hover:bg-shadow-green"
                   onClick={() => navigate("/me/configure/instagram_link")}
                 >
-                  <div className="flex justify-between text-2xl">
+                  <div className="flex justify-between md:text-2xl xsm:text-xl">
                     <h5>Instagram</h5>
                     <FontAwesomeIcon icon={faEdit} />
                   </div>
@@ -182,7 +182,7 @@ const ProfileConfigurePage = () => {
                   className="w-full h-full bg-shadow p-2 rounded hover:cursor-pointer hover:bg-shadow-green"
                   onClick={() => navigate("/me/configure/twitter_link")}
                 >
-                  <div className="flex justify-between text-2xl">
+                  <div className="flex justify-between md:text-2xl xsm:text-xl">
                     <h5>Twitter</h5>
                     <FontAwesomeIcon icon={faEdit} />
                   </div>
@@ -201,7 +201,7 @@ const ProfileConfigurePage = () => {
                   className="w-full h-full bg-shadow p-2 rounded hover:cursor-pointer hover:bg-shadow-green"
                   onClick={() => navigate("/me/configure/youtube_link")}
                 >
-                  <div className="flex justify-between text-2xl">
+                  <div className="flex justify-between md:text-2xl xsm:text-xl">
                     <h5>Youtube</h5>
                     <FontAwesomeIcon icon={faEdit} />
                   </div>
@@ -222,7 +222,7 @@ const ProfileConfigurePage = () => {
                   className="w-full h-full bg-shadow p-2 rounded hover:cursor-pointer hover:bg-shadow-green"
                   onClick={() => navigate("/me/configure/reddit_link")}
                 >
-                  <div className="flex justify-between text-2xl">
+                  <div className="flex justify-between md:text-2xl xsm:text-xl">
                     <h5>Reddit</h5>
                     <FontAwesomeIcon icon={faEdit} />
                   </div>
@@ -241,7 +241,7 @@ const ProfileConfigurePage = () => {
                   className="w-full h-full bg-shadow p-2 rounded hover:cursor-pointer hover:bg-shadow-green"
                   onClick={() => navigate("/me/configure/discord_link")}
                 >
-                  <div className="flex justify-between text-2xl">
+                  <div className="flex justify-between md:text-2xl xsm:text-xl">
                     <h5>Discord</h5>
                     <FontAwesomeIcon icon={faEdit} />
                   </div>
@@ -262,7 +262,7 @@ const ProfileConfigurePage = () => {
                   className="w-full h-full bg-shadow p-2 rounded hover:cursor-pointer hover:bg-shadow-green"
                   onClick={() => navigate("/me/configure/personal_email_link")}
                 >
-                  <div className="flex justify-between text-2xl">
+                  <div className="flex justify-between md:text-2xl xsm:text-xl">
                     <h5>Email</h5>
                     <FontAwesomeIcon icon={faEdit} />
                   </div>
@@ -283,7 +283,7 @@ const ProfileConfigurePage = () => {
                     navigate("/me/configure/personal_website_link")
                   }
                 >
-                  <div className="flex justify-between text-2xl">
+                  <div className="flex justify-between md:text-2xl xsm:text-xl">
                     <h5>Website</h5>
                     <FontAwesomeIcon icon={faEdit} />
                   </div>
@@ -311,7 +311,7 @@ const ProfileConfigurePage = () => {
                     className="w-full h-full bg-shadow p-2 rounded hover:cursor-pointer hover:bg-shadow-green"
                     onClick={() => navigate("/me/configure/measurement_units")}
                   >
-                    <div className="flex justify-between text-2xl">
+                    <div className="flex justify-between md:text-2xl xsm:text-xl">
                       <h5>Measure Units</h5>
                       <FontAwesomeIcon icon={faEdit} />
                     </div>
@@ -326,7 +326,7 @@ const ProfileConfigurePage = () => {
                     className="w-full h-full bg-shadow p-2 rounded hover:cursor-pointer hover:bg-shadow-green"
                     onClick={() => navigate("/me/configure/currency")}
                   >
-                    <div className="flex justify-between text-2xl">
+                    <div className="flex justify-between md:text-2xl xsm:text-xl">
                       <h5>Currency</h5>
                       <FontAwesomeIcon icon={faEdit} />
                     </div>
@@ -351,7 +351,7 @@ const ProfileConfigurePage = () => {
                     navigate("/me/configure/collection-banner-image")
                   }
                 >
-                  <div className="flex justify-between text-2xl">
+                  <div className="flex justify-between md:text-2xl xsm:text-xl">
                     <h5>Banner Image</h5>
                     <FontAwesomeIcon icon={faEdit} />
                   </div>
@@ -378,7 +378,7 @@ const ProfileConfigurePage = () => {
                     className="w-full h-full bg-shadow p-2 rounded hover:cursor-pointer hover:bg-shadow-green"
                     onClick={() => navigate("/me/configure/email")}
                   >
-                    <div className="flex justify-between text-2xl">
+                    <div className="flex justify-between md:text-2xl xsm:text-xl">
                       <h5>Email</h5>
                       <FontAwesomeIcon icon={faEdit} />
                     </div>
@@ -393,7 +393,7 @@ const ProfileConfigurePage = () => {
                     className="w-full h-full bg-shadow p-2 rounded hover:cursor-pointer hover:bg-shadow-green"
                     onClick={() => navigate("/me/configure/password")}
                   >
-                    <div className="flex justify-between text-2xl">
+                    <div className="flex justify-between md:text-2xl xsm:text-xl">
                       <h5>Password</h5>
                       <FontAwesomeIcon icon={faEdit} />
                     </div>

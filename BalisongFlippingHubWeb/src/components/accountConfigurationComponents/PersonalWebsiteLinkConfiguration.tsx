@@ -104,7 +104,7 @@ const PersonalWebsiteLinkConfiguration = () => {
 
   return (
     <form
-      className="w-1/2 flex flex-col items-center gap-2"
+      className="w-full max-w-[1000px] flex flex-col items-center gap-2 p-4"
       onSubmit={(e) => handleSubmit(e)}
     >
       <p className="text-lg">Link your Personal Website.</p>
