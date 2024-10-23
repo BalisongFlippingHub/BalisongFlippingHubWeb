@@ -7,13 +7,13 @@ const UserProfilePage = () => {
   return (
     <>
       <section className="w-full h-screen pt-[64px] lg:pl-[192px]">
-        <div className="w-full h-[40%] border-b">
-          <div className="h-[45%] w-full">
+        <div className="w-full md:h-[40%] xsm:h-[48%]  border-b">
+          <div className="md:h-[45%] xsm:h-[38%] w-full">
             <ProfileBannerImage />
             <ProfileImage />
           </div>
 
-          <div className="w-full h-[55%]">
+          <div className="w-full md:h-[55%] xsm:h-[62%]">
             <UserProfileData />
           </div>
         </div>

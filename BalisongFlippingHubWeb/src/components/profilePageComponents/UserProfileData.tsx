@@ -10,24 +10,27 @@ import {
 } from "@fortawesome/free-brands-svg-icons";
 import { useAppSelector } from "../../redux/hooks";
 import { faCircleUser } from "@fortawesome/free-solid-svg-icons";
+import Image from "../Image";
 
 const UserProfileData = () => {
   const user = useAppSelector((state) => state.auth.user);
+  const collectionData = useAppSelector((state) => state.collection.collection);
+
   const navigate = useNavigate();
 
   if (user?.role === "ADMIN") {
     return <div></div>;
   } else {
     return (
-      <div className="flex justify-between h-full p-4">
+      <div className="flex justify-between h-full p-4 xsm:pt-16 md:pt-4">
         {/*Display User Data*/}
         <div className="flex flex-col h-full">
           <div className="flex h-full">
             {/*Display User Identification*/}
             <div className="flex flex-col">
               {/*Display Name*/}
-              <div className="flex items-center gap-2 text-3xl">
-                <FontAwesomeIcon icon={faCircleUser} />
+              <div className="flex items-center gap-2 md:text-3xl xsm:text-2xl">
+                <FontAwesomeIcon icon={faCircleUser} size="xl" />
                 {user?.displayName && user?.displayName !== "" ? (
                   <h5>{user?.displayName}</h5>
                 ) : (
@@ -41,7 +44,7 @@ const UserProfileData = () => {
               </div> */}
 
               {/*Profile Caption*/}
-              <div>
+              <div className="w-full flex justify-center">
                 <h6>Caption...</h6>
               </div>
             </div>
@@ -83,11 +86,21 @@ const UserProfileData = () => {
         </div>
 
         {/*Collection Img Display and Link to Collection Page*/}
-        <div
-          className="place-self-center h-5/6 lg:w-80 md:w-72 sm:w-48 xsm:w-36 bg-black rounded-lg flex justify-center items-center hover:cursor-pointer"
-          onClick={() => navigate("/me/collection")}
-        >
-          <h3 className="font-bold md:text-4xl sm:text-2xl">Collection</h3>
+        <div className="h-full flex items-end">
+          <button
+            type="button"
+            className="bg-black p-4 rounded-lg flex justify-center items-center relative md:w-80 md:h-40 xsm:w-36 xsm:h-24"
+            onClick={() => navigate("/me/collection")}
+          >
+            <h4 className="absolute md:text-3xl font-bold xsm:text-lg">
+              Collection
+            </h4>
+            {collectionData?.bannerImg && collectionData.bannerImg !== "" ? (
+              <Image imageId={collectionData.bannerImg!} />
+            ) : (
+              <></>
+            )}
+          </button>
         </div>
       </div>
     );
