@@ -129,7 +129,7 @@ const Navbar = () => {
       </aside>
 
       {user && accessToken ? (
-        <aside className="lg:collapse lg:absolute fixed bg-black bottom-0 w-full z-10 flex justify-center">
+        <aside className="lg:collapse lg:absolute fixed bg-black bottom-0 w-full z-10 flex justify-center border-t-2 border-shadow-green">
           <HeaderNavbarBottom />
         </aside>
       ) : (

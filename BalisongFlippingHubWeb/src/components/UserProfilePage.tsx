@@ -5,23 +5,24 @@ import ProfileBannerImage from "./profilePageComponents/ProfileBannerImage";
 
 const UserProfilePage = () => {
   return (
-    <div className="w-full h-screen pt-[64px] lg:pl-[192px]">
-      <section className="w-full h-[40%] border-b-4 border-b-8 border-black">
-        {/*Banner*/}
-        <ProfileBannerImage />
+    <>
+      <section className="w-full h-screen pt-[64px] lg:pl-[192px]">
+        <div className="w-full h-[40%] border-b">
+          <div className="h-[45%] w-full">
+            <ProfileBannerImage />
+            <ProfileImage />
+          </div>
 
-        {/*Profile Image*/}
-        <ProfileImage />
+          <div className="w-full h-[55%]">
+            <UserProfileData />
+          </div>
+        </div>
 
-        {/*Account Details*/}
-        <UserProfileData />
+        <div>
+          <UserProfilePostsComponent />
+        </div>
       </section>
-
-      <section className="flex justify-center bg-shadow-green w-full">
-        {/*Show Off Posts*/}
-        <UserProfilePostsComponent />
-      </section>
-    </div>
+    </>
   );
 };
 

@@ -71,7 +71,7 @@ const ProfileBannerImage = () => {
     );
   } else {
     return (
-      <div className="w-full h-[60%] bg-shadow-green-offset overflow-hidden">
+      <div className="w-full h-full bg-shadow-green-offset overflow-hidden">
         {user?.bannerImg && user?.bannerImg !== "" ? (
           <div
             className="w-full h-full hover:cursor-pointer"

@@ -19,7 +19,7 @@ const UserProfileData = () => {
     return <div></div>;
   } else {
     return (
-      <div className="flex justify-between md:h-48 sm:h-40 xsm:h-36 p-4">
+      <div className="flex justify-between h-full p-4">
         {/*Display User Data*/}
         <div className="flex flex-col h-full">
           <div className="flex h-full">
@@ -35,10 +35,10 @@ const UserProfileData = () => {
                 )}
               </div>
 
-              {/*Badges Display*/}
+              {/* Badges Display
               <div className="w-full flex justify-center">
                 <h6>Badges...</h6>
-              </div>
+              </div> */}
 
               {/*Profile Caption*/}
               <div>
@@ -48,32 +48,32 @@ const UserProfileData = () => {
 
             {/*Display Users Links*/}
             <div className="flex place-self-end gap-2 ml-5">
-              {user?.instagramLink ? (
+              {!user?.instagramLink ? (
                 <></>
               ) : (
                 <FontAwesomeIcon icon={faInstagram} size="xl" />
               )}
-              {user?.facebookLink ? (
+              {!user?.facebookLink ? (
                 <></>
               ) : (
                 <FontAwesomeIcon icon={faFacebookSquare} size="xl" />
               )}
-              {user?.twitterLink ? (
+              {!user?.twitterLink ? (
                 <></>
               ) : (
                 <FontAwesomeIcon icon={faTwitterSquare} size="xl" />
               )}
-              {user?.youtubeLink ? (
+              {!user?.youtubeLink ? (
                 <></>
               ) : (
                 <FontAwesomeIcon icon={faYoutubeSquare} size="xl" />
               )}
-              {user?.discordLink ? (
+              {!user?.discordLink ? (
                 <></>
               ) : (
                 <FontAwesomeIcon icon={faDiscord} size="xl" />
               )}
-              {user?.redditLink ? (
+              {!user?.redditLink ? (
                 <></>
               ) : (
                 <FontAwesomeIcon icon={faRedditSquare} size="xl" />

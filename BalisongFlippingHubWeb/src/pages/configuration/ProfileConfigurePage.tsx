@@ -34,7 +34,7 @@ const ProfileConfigurePage = () => {
   };
 
   return (
-    <section className="w-full flex justify-center lg:pl-[192px] pt-[64px] relative">
+    <section className="w-full flex justify-center lg:pl-[192px] pt-[64px] relative xsm:pb-10 lg:pb-0">
       {/*Display and Editing of Account settings and Info*/}
       <div className="bg-black w-full max-w-[925px] rounded-lg flex flex-col items-center bg-black">
         {/*Banner Image Change*/}
@@ -99,7 +99,7 @@ const ProfileConfigurePage = () => {
               </div>
             </div>
 
-            <div className="w-1/2 h-20">
+            <div className="w-1/2 h-20 overflow-hidden">
               <div
                 className="w-full h-full bg-shadow p-2 rounded hover:cursor-pointer hover:bg-shadow-green"
                 onClick={() => navigate("/me/configure/about_me")}
@@ -137,7 +137,7 @@ const ProfileConfigurePage = () => {
 
             <div className="flex w-full gap-2">
               {/*Facebook Edit*/}
-              <div className="w-1/2 h-20">
+              <div className="w-1/2 h-20 overflow-hidden">
                 <div
                   className="w-full h-full bg-shadow p-2 rounded hover:cursor-pointer hover:bg-shadow-green"
                   onClick={() => navigate("/me/configure/facebook_link")}
@@ -156,7 +156,7 @@ const ProfileConfigurePage = () => {
               </div>
 
               {/*Instagram Edit*/}
-              <div className="w-1/2 h-20">
+              <div className="w-1/2 h-20 overflow-hidden">
                 <div
                   className="w-full h-full bg-shadow p-2 rounded hover:cursor-pointer hover:bg-shadow-green"
                   onClick={() => navigate("/me/configure/instagram_link")}
@@ -177,7 +177,7 @@ const ProfileConfigurePage = () => {
 
             <div className="flex w-full gap-2">
               {/*Twitter Edit*/}
-              <div className="w-1/2 h-20">
+              <div className="w-1/2 h-20 overflow-hidden">
                 <div
                   className="w-full h-full bg-shadow p-2 rounded hover:cursor-pointer hover:bg-shadow-green"
                   onClick={() => navigate("/me/configure/twitter_link")}
@@ -196,7 +196,7 @@ const ProfileConfigurePage = () => {
               </div>
 
               {/*Youtube Edit*/}
-              <div className="w-1/2 h-20">
+              <div className="w-1/2 h-20 overflow-hidden">
                 <div
                   className="w-full h-full bg-shadow p-2 rounded hover:cursor-pointer hover:bg-shadow-green"
                   onClick={() => navigate("/me/configure/youtube_link")}
@@ -217,7 +217,7 @@ const ProfileConfigurePage = () => {
 
             <div className="flex w-full gap-2">
               {/*Reddit Edit*/}
-              <div className="w-1/2 h-20">
+              <div className="w-1/2 h-20 overflow-hidden">
                 <div
                   className="w-full h-full bg-shadow p-2 rounded hover:cursor-pointer hover:bg-shadow-green"
                   onClick={() => navigate("/me/configure/reddit_link")}
@@ -236,7 +236,7 @@ const ProfileConfigurePage = () => {
               </div>
 
               {/*Discord Edit*/}
-              <div className="w-1/2 h-20">
+              <div className="w-1/2 h-20 overflow-hidden">
                 <div
                   className="w-full h-full bg-shadow p-2 rounded hover:cursor-pointer hover:bg-shadow-green"
                   onClick={() => navigate("/me/configure/discord_link")}
@@ -257,13 +257,13 @@ const ProfileConfigurePage = () => {
 
             <div className="flex w-full gap-2">
               {/*Personal Email Edit*/}
-              <div className="w-1/2 h-20">
+              <div className="w-1/2 h-20 overflow-hidden">
                 <div
                   className="w-full h-full bg-shadow p-2 rounded hover:cursor-pointer hover:bg-shadow-green"
                   onClick={() => navigate("/me/configure/personal_email_link")}
                 >
                   <div className="flex justify-between text-2xl">
-                    <h5>Personal Email</h5>
+                    <h5>Email</h5>
                     <FontAwesomeIcon icon={faEdit} />
                   </div>
 
@@ -276,7 +276,7 @@ const ProfileConfigurePage = () => {
               </div>
 
               {/*Personal Website Edit*/}
-              <div className="w-1/2 h-20">
+              <div className="w-1/2 h-20 overflow-hidden">
                 <div
                   className="w-full h-full bg-shadow p-2 rounded hover:cursor-pointer hover:bg-shadow-green"
                   onClick={() =>
@@ -284,7 +284,7 @@ const ProfileConfigurePage = () => {
                   }
                 >
                   <div className="flex justify-between text-2xl">
-                    <h5>Personal Website</h5>
+                    <h5>Website</h5>
                     <FontAwesomeIcon icon={faEdit} />
                   </div>
 
@@ -312,7 +312,7 @@ const ProfileConfigurePage = () => {
                     onClick={() => navigate("/me/configure/measurement_units")}
                   >
                     <div className="flex justify-between text-2xl">
-                      <h5>Measurement Units</h5>
+                      <h5>Measure Units</h5>
                       <FontAwesomeIcon icon={faEdit} />
                     </div>
 
@@ -405,7 +405,7 @@ const ProfileConfigurePage = () => {
 
               <div className="w-full flex flex-col items-center gap-2 mt-10">
                 {/*Reset Account*/}
-                <div className="w-1/3 h-20">
+                <div className="md:w-1/3 xsm:w-2/3 h-20">
                   <div
                     className="w-full h-full bg-red p-2 rounded hover:cursor-pointer hover:opacity-25"
                     onClick={() => setWarningDiv("reset")}
@@ -418,7 +418,7 @@ const ProfileConfigurePage = () => {
                 </div>
 
                 {/*Hide Account*/}
-                <div className="w-1/3 h-20">
+                <div className="md:w-1/3 xsm:w-2/3 h-20">
                   <div
                     className="w-full h-full bg-red p-2 rounded hover:cursor-pointer hover:opacity-25"
                     onClick={() => setWarningDiv("hide")}
@@ -431,7 +431,7 @@ const ProfileConfigurePage = () => {
                 </div>
 
                 {/*Delete Account*/}
-                <div className="w-1/3 h-20">
+                <div className="md:w-1/3 xsm:w-2/3 h-20">
                   <div
                     className="w-full h-full bg-red p-2 rounded hover:cursor-pointer hover:opacity-25"
                     onClick={() => setWarningDiv("delete")}
