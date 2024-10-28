@@ -80,7 +80,7 @@ const HeaderNavbar = () => {
             </div>
 
             <NavLink
-              to="/me"
+              to={`/${user?.displayName}/${user?.identifierCode}`}
               style={navlinkStyles}
               className="p-2 pl-4 w-full border-b-2 border-shadow-green-offset flex items-center justify-between"
             >

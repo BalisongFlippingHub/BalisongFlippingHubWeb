@@ -33,6 +33,7 @@ import { useAppDispatch, useAppSelector } from "./redux/hooks";
 import { setCredentials, setToRememberLoginInfo } from "./redux/auth/authSlice";
 import { loginWithRefreshToken } from "./redux/auth/authActions";
 import { setCollection } from "./redux/collection/collectionSlice";
+import ProfileConfigurationCollectionBannerImagePage from "./pages/configuration/ProfileConfigurationCollectionBannerImagePage";
 
 const App = () => {
   const [isLoading, setIsLoading] = useState(false);
@@ -92,6 +93,8 @@ const App = () => {
           <Route path="/contact-us" element={<ContactUsPage />} />
           <Route path="/unauthorized" element={<h2>Unaothorized</h2>} />
 
+          <Route path="/:account/:identifier" element={<ProfilePage />} />
+
           {/*Protected Routes from Auth*/}
           <Route element={<ProtectedRoutes />}>
             <Route path="/login" element={<LoginPage />} />
@@ -99,12 +102,6 @@ const App = () => {
           </Route>
 
           {/*Auth Protected Routes*/}
-          <Route
-            element={<AuthProtectedRoutes allowedRoles={["USER", "ADMIN"]} />}
-          >
-            <Route path="/me" element={<ProfilePage />} />
-          </Route>
-
           {/*Profile Configuration Routes*/}
           <Route element={<AuthProtectedRoutes allowedRoles={["USER"]} />}>
             <Route path="/me/configure" element={<ProfileConfigurePage />} />
@@ -172,7 +169,7 @@ const App = () => {
 
             <Route
               path="/me/configure/collection-banner-image"
-              element={<ProfileConfigurationProfileBannerPage />}
+              element={<ProfileConfigurationCollectionBannerImagePage />}
             />
 
             <Route

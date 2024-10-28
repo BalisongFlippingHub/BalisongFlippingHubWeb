@@ -19,6 +19,7 @@ export interface Profile {
   profileImg?: string | null;
   bannerImg?: string | null;
   displayName?: string | null;
+  identifierCode?: string | null;
 
   collectionId?: string | null;
 }

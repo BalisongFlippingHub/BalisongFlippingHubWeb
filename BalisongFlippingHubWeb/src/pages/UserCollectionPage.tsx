@@ -13,7 +13,7 @@ const UserCollectionPage = () => {
   return (
     <section className="w-full h-screen flex flex-col lg:pl-[192px] pt-[64px]">
       {/*Collection Banner Image*/}
-      <section className="w-full h-[25%]">
+      <section className="w-full h-[20%]">
         {collectionData?.bannerImg ? (
           <Image imageId={collectionData?.bannerImg!} />
         ) : (

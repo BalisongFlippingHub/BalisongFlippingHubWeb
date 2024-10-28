@@ -2,6 +2,7 @@ import { useNavigate } from "react-router-dom";
 import Image from "../Image";
 import { useAppSelector } from "../../redux/hooks";
 import { CollectionKnife } from "../../modals/CollectionKnife";
+import OwnedKnifeCard from "./OwnedKnifeCard";
 
 const CollectionOwnedKnivesDisplay = () => {
   const ownedKnives: Array<CollectionKnife> = useAppSelector(
@@ -41,26 +42,7 @@ const CollectionOwnedKnivesDisplay = () => {
           </button>
 
           {ownedKnives.map((knife, i) => {
-            return (
-              <div
-                key={i}
-                className="h-80 w-52 flex items-center justify-center bg-shadow-green-offset rounded overflow-hidden relative"
-              >
-                <Image imageId={knife.coverPhoto} />
-
-                <div className=" bg-black opacity-0 hover:opacity-80 hover:cursor-pointer w-full h-full absolute flex flex-col p-2">
-                  <div className="w-full flex justify-center text-xl border-b">
-                    <h5>{knife.displayName}</h5>
-                  </div>
-
-                  <div className="w-full flex flex-col justify-center items-center">
-                    <h6>{knife.baseKnifeModel}</h6>
-                    <h6>{knife.knifeMaker}</h6>
-                    <h6>{knife.aqquiredDate}</h6>
-                  </div>
-                </div>
-              </div>
-            );
+            return <OwnedKnifeCard knife={knife} key={i} />;
           })}
         </div>
       )}
