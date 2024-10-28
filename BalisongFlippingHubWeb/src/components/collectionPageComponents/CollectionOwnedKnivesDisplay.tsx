@@ -1,5 +1,4 @@
 import { useNavigate } from "react-router-dom";
-import Image from "../Image";
 import { useAppSelector } from "../../redux/hooks";
 import { CollectionKnife } from "../../modals/CollectionKnife";
 import OwnedKnifeCard from "./OwnedKnifeCard";

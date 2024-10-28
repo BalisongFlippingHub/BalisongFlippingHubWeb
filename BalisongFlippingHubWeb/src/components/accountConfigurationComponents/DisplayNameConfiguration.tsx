@@ -61,7 +61,8 @@ const DisplayNameConfiguration = () => {
           dispatch(
             setNewUser({
               ...user,
-              displayName: res.data,
+              displayName: res.data.displayName,
+              identifierCode: res.data.identifierCode,
             } as Profile)
           );
 

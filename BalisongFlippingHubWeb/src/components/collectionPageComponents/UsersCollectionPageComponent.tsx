@@ -35,8 +35,9 @@ const UsersCollectionPageComponent = () => {
             className="rounded-full w-36 h-36 border overflow-hidden hover:cursor-pointer"
             onClick={
               user?.profileImg
-                ? () => navigate("/me")
-                : () => navigate("/me/configure/profile-image")
+                ? () =>
+                    navigate(`/${user?.displayName}/${user?.identifierCode}`)
+                : () => navigate("/configure/profile-image")
             }
           >
             <Image imageId={user?.profileImg!} />

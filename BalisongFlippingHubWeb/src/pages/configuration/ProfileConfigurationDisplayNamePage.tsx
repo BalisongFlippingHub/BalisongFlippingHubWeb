@@ -12,7 +12,7 @@ const ProfileConfigurationDisplayNamePage = () => {
         <button
           type="button"
           className="rounded bg-shadow p-2 hover:bg-shadow-green-offset flex items-center gap-4"
-          onClick={() => navigate("/me/configure")}
+          onClick={() => navigate("/configure")}
         >
           <FontAwesomeIcon icon={faCircleArrowLeft} size="2xl" />
           <h5>Go Back</h5>

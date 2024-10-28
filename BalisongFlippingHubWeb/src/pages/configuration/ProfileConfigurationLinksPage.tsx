@@ -47,7 +47,7 @@ const ProfileConfigurationLinksPage = ({ linkType }: params) => {
         <button
           type="button"
           className="flex items-center gap-2 text-xl bg-shadow p-2 rounded hover:bg-shadow-green-offset"
-          onClick={() => navigate("/me/configure")}
+          onClick={() => navigate("/configure")}
         >
           <FontAwesomeIcon icon={faCircleLeft} />
           <h5>Go Back</h5>

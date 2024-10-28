@@ -66,18 +66,6 @@ const ProfileImageConfiguration = () => {
 
   return (
     <div className="w-full flex flex-col items-center">
-      {/*Go Back Button*/}
-      <div className="w-full p-4">
-        <button
-          type="button"
-          className="p-3 rounded bg-shadow flex gap-2 items-center text-xl hover:bg-shadow-green-offset"
-          onClick={() => navigate("/me/configure")}
-        >
-          <FontAwesomeIcon icon={faCircleLeft} />
-          <h6>Go Back</h6>
-        </button>
-      </div>
-
       {/*Display Current Profile Image*/}
       <div className="w-60 h-60 overflow-hidden bg-shadow rounded-full flex justify-center items-center text-xl">
         {isSuccess ? (

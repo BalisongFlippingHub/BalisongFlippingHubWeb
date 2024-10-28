@@ -71,18 +71,6 @@ const CollectionBannerConfiguration = () => {
 
   return (
     <div className="w-full flex flex-col items-center">
-      {/*Go Back Button*/}
-      <div className="w-full p-4">
-        <button
-          type="button"
-          className="bg-shadow hover:bg-shadow-green-offset p-2 rounded text-xl flex gap-2 items-center"
-          onClick={() => navigate("/me/configure")}
-        >
-          <FontAwesomeIcon icon={faCircleLeft} />
-          <h6>Go Back</h6>
-        </button>
-      </div>
-
       {/*Display Current Banner Image*/}
       <div className="text-2xl font-bold flex flex-col items-center gap-4 w-full">
         {isSuccess ? (

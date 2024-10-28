@@ -2,7 +2,7 @@ import { Route, Routes, useNavigate } from "react-router-dom";
 import MainLayout from "./layouts/MainLayout";
 import { LoginPage } from "./pages/auth/LoginPage";
 
-import ProfilePage from "./pages/profiles/ProfilePage";
+import ProfilePage from "./pages/ProfilePage";
 import AuthProtectedRoutes from "./routes/AuthProtectedRoutes";
 import ProtectedRoutes from "./routes/ProtectedRoutes";
 import TutorialCenterPage from "./pages/TutorialCenterPage";
@@ -74,8 +74,9 @@ const App = () => {
   }, []);
 
   if (isLoading) {
+    // loading screen
     return (
-      <main className="w-full h-screen flex justify-center items-center text-3xl">
+      <main className="w-full h-screen flex justify-center items-center text-5xl">
         <h1>Loading...</h1>
       </main>
     );
@@ -94,6 +95,7 @@ const App = () => {
           <Route path="/unauthorized" element={<h2>Unaothorized</h2>} />
 
           <Route path="/:account/:identifier" element={<ProfilePage />} />
+
           <Route
             path="/:account/:identifier/collection"
             element={<UserCollectionPage />}
@@ -105,9 +107,9 @@ const App = () => {
             <Route path="/register" element={<RegisterPage />} />
           </Route>
 
-          {/*Auth Protected Routes*/}
-          {/*Profile Configuration Routes*/}
+          {/*Auth Protected Routes for only users*/}
           <Route element={<AuthProtectedRoutes allowedRoles={["USER"]} />}>
+            {/*Configuration routes*/}
             <Route path="/configure" element={<ProfileConfigurePage />} />
 
             <Route
@@ -200,15 +202,15 @@ const App = () => {
               path="/configure/delete_account"
               element={<ProfileConfigurationDeleteAccountPage />}
             />
-          </Route>
 
-          <Route element={<AuthProtectedRoutes allowedRoles={["USER"]} />}>
+            {/*Auth Collection Routes*/}
             <Route
               path="/add-collection-knife"
               element={<AddNewKnifeToCollectionPage />}
             />
           </Route>
 
+          {/*Auth protected routes for both admins and users*/}
           <Route
             element={<AuthProtectedRoutes allowedRoles={["USER", "ADMIN"]} />}
           >

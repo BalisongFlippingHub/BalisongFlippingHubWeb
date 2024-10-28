@@ -90,7 +90,11 @@ const UserProfileData = () => {
           <button
             type="button"
             className="bg-black p-1 rounded-lg flex justify-center items-center relative md:w-80 md:h-40 xsm:w-36 xsm:h-24"
-            onClick={() => navigate("/me/collection")}
+            onClick={() =>
+              navigate(
+                `/${user?.displayName}/${user?.identifierCode}/collection`
+              )
+            }
           >
             <h4 className="absolute md:text-4xl font-bold xsm:text-lg">
               Collection

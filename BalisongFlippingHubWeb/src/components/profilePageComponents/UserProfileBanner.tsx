@@ -6,7 +6,7 @@ import { axiosApiInstanceAuth } from "../../api/axios";
 import { Profile } from "../../modals/User";
 import { setNewUser } from "../../redux/auth/authSlice";
 
-const ProfileImage = () => {
+const UserProfileBanner = () => {
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const [isFullScreen, setIsFullScreen] = useState(false);
@@ -26,7 +26,7 @@ const ProfileImage = () => {
     setIsLoading(true);
     await axiosApiInstanceAuth
       .request({
-        url: "/accounts/me/update-profile-img",
+        url: "/accounts/me/update-banner-img",
         method: "post",
         data: fn,
         headers: {
@@ -34,16 +34,16 @@ const ProfileImage = () => {
         },
       })
       .then((res) => {
+        console.log(res);
         const new_user = {
           ...user,
-          profileImg: res.data,
+          bannerImg: res.data,
         } as Profile;
-
         dispatch(setNewUser(new_user));
       })
       .catch((error) => {
         console.log(error);
-        navigate("/me/configure/profile-image");
+        navigate("/configure/profile-banner");
       })
       .finally(() => {
         setIsLoading(false);
@@ -57,56 +57,55 @@ const ProfileImage = () => {
           className="h-full w-5/6 relative"
           onClick={() => setIsFullScreen(false)}
         >
-          <Image imageId={user?.profileImg!} />
+          <Image imageId={user?.bannerImg!} />
 
           <button
             type="button"
-            className="absolute bg-shadow bottom-10 right-10 text-2xl p-4 rounded border-4 border-black hover:bg-shadow-green"
-            onClick={() => navigate("/me/configure/profile-image")}
+            className="absolute bottom-10 right-10 text-2xl bg-shadow rounded p-4 hover:bg-shadow-green border-4 border-black rounded"
+            onClick={() => navigate("/configure/profile-banner")}
           >
-            Edit Profile Image
+            Edit Banner
           </button>
         </div>
       </div>
     );
   } else {
     return (
-      <div className="w-full flex justify-center relative">
-        <div className="md:h-52 md:w-52 xsm:h-36 xsm:w-36 border-4 border-shadow-green rounded-full absolute md:-translate-y-[6.5rem] xsm:-translate-y-[4.4rem] overflow-hidden">
-          {user?.profileImg ? (
-            <div
-              className="w-full h-full hover:cursor-pointer"
-              onClick={() => setIsFullScreen(true)}
-            >
-              <Image imageId={user?.profileImg!} />
-            </div>
-          ) : (
-            <div
-              className="w-full h-full flex justify-center items-center bg-white hover:cursor-pointer"
-              onClick={() => fileInputRef.current?.click()}
-            >
-              {isLoading ? (
-                <h6>Loading...</h6>
-              ) : (
-                <>
-                  <h5 className="text-black text-xl font-bold">
-                    + Profile Image
-                  </h5>
+      <div className="w-full h-full bg-shadow-green-offset overflow-hidden">
+        {user?.bannerImg && user?.bannerImg !== "" ? (
+          <div
+            className="w-full h-full hover:cursor-pointer"
+            onClick={() => setIsFullScreen(true)}
+          >
+            <Image imageId={user?.bannerImg!} />
+          </div>
+        ) : (
+          <div className="w-full h-full flex justify-center items-center text-2xl font-bold">
+            {isLoading ? (
+              <h5>Loading...</h5>
+            ) : (
+              <>
+                <h5
+                  className="border-4 rounded border-dashed p-14 hover:bg-shadow-green hover:cursor-pointer"
+                  onClick={() => fileInputRef.current?.click()}
+                >
+                  Click To Set Profile Banner
+                </h5>
 
-                  <input
-                    type="file"
-                    hidden
-                    ref={fileInputRef}
-                    onChange={(e) => handleFileOnChange(e.target.files!)}
-                  />
-                </>
-              )}
-            </div>
-          )}
-        </div>
+                <input
+                  type="file"
+                  hidden
+                  ref={fileInputRef}
+                  accept="jpeg, png"
+                  onChange={(e) => handleFileOnChange(e.target.files!)}
+                />
+              </>
+            )}
+          </div>
+        )}
       </div>
     );
   }
 };
 
-export default ProfileImage;
+export default UserProfileBanner;
