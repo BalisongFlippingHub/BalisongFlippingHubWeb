@@ -41,7 +41,7 @@ const ProfileConfigurePage = () => {
         <div className="w-full relative">
           <div
             className="w-full h-52 rounded-b-2xl bg-shadow-green-offset relative flex justify-center items-center text-2xl font-bold hover:cursor-pointer"
-            onClick={() => navigate("/me/configure/profile-banner")}
+            onClick={() => navigate("/configure/profile-banner")}
           >
             {user?.bannerImg ? (
               <Image imageId={user?.bannerImg!} />
@@ -52,7 +52,7 @@ const ProfileConfigurePage = () => {
             <button
               type="button"
               className="text-lg font-semibold absolute bottom-4 right-4 bg-shadow p-2 rounded z-10 hover:bg-shadow-green border-2 border-black"
-              onClick={() => navigate("/me/configure/profile-banner")}
+              onClick={() => navigate("/configure/profile-banner")}
             >
               Edit Banner
             </button>
@@ -62,14 +62,14 @@ const ProfileConfigurePage = () => {
           <div className="rounded-full overflow-hidden absolute w-full flex flex-col gap-2 justify-center items-center -translate-y-[5rem]">
             <div
               className="h-40 w-40 rounded-full overflow-hidden hover:cursor-pointer border-4 border-black hover:border-shadow-green"
-              onClick={() => navigate("/me/configure/profile-image")}
+              onClick={() => navigate("/configure/profile-image")}
             >
               <Image imageId={user?.profileImg!} />
             </div>
 
             <button
               className="bg-shadow text-lg font-bold p-2 rounded hover:bg-shadow-green"
-              onClick={() => navigate("/me/configure/profile-image")}
+              onClick={() => navigate("/configure/profile-image")}
             >
               Edit Profile Image
             </button>
@@ -84,7 +84,7 @@ const ProfileConfigurePage = () => {
               {/*Display Name Link*/}
               <div
                 className="w-full h-full bg-shadow p-2 rounded hover:cursor-pointer hover:bg-shadow-green"
-                onClick={() => navigate("/me/configure/display_name")}
+                onClick={() => navigate("/configure/display_name")}
               >
                 <div className="flex justify-between md:text-2xl xsm:text-xl font-bold">
                   <h5>Display Name</h5>
@@ -102,7 +102,7 @@ const ProfileConfigurePage = () => {
             <div className="w-1/2 h-20 overflow-hidden">
               <div
                 className="w-full h-full bg-shadow p-2 rounded hover:cursor-pointer hover:bg-shadow-green"
-                onClick={() => navigate("/me/configure/about_me")}
+                onClick={() => navigate("/configure/about_me")}
               >
                 <div className="flex justify-between md:text-2xl xsm:text-xl">
                   <h5>Profile Caption</h5>
@@ -119,7 +119,7 @@ const ProfileConfigurePage = () => {
             <div className="w-1/2 h-20">
               <div
                 className="w-full h-full bg-shadow p-2 rounded hover:cursor-pointer hover:bg-shadow-green"
-                onClick={() => navigate("/me/configure/about_me")}
+                onClick={() => navigate("/configure/about_me")}
               >
                 <div className="flex justify-between md:text-2xl xsm:text-xl">
                   <h5>Badges Display</h5>
@@ -140,7 +140,7 @@ const ProfileConfigurePage = () => {
               <div className="w-1/2 h-20 overflow-hidden">
                 <div
                   className="w-full h-full bg-shadow p-2 rounded hover:cursor-pointer hover:bg-shadow-green"
-                  onClick={() => navigate("/me/configure/facebook_link")}
+                  onClick={() => navigate("/configure/facebook_link")}
                 >
                   <div className="flex justify-between md:text-2xl xsm:text-xl">
                     <h5>Facebook</h5>
@@ -159,7 +159,7 @@ const ProfileConfigurePage = () => {
               <div className="w-1/2 h-20 overflow-hidden">
                 <div
                   className="w-full h-full bg-shadow p-2 rounded hover:cursor-pointer hover:bg-shadow-green"
-                  onClick={() => navigate("/me/configure/instagram_link")}
+                  onClick={() => navigate("/configure/instagram_link")}
                 >
                   <div className="flex justify-between md:text-2xl xsm:text-xl">
                     <h5>Instagram</h5>
@@ -180,7 +180,7 @@ const ProfileConfigurePage = () => {
               <div className="w-1/2 h-20 overflow-hidden">
                 <div
                   className="w-full h-full bg-shadow p-2 rounded hover:cursor-pointer hover:bg-shadow-green"
-                  onClick={() => navigate("/me/configure/twitter_link")}
+                  onClick={() => navigate("/configure/twitter_link")}
                 >
                   <div className="flex justify-between md:text-2xl xsm:text-xl">
                     <h5>Twitter</h5>
@@ -199,7 +199,7 @@ const ProfileConfigurePage = () => {
               <div className="w-1/2 h-20 overflow-hidden">
                 <div
                   className="w-full h-full bg-shadow p-2 rounded hover:cursor-pointer hover:bg-shadow-green"
-                  onClick={() => navigate("/me/configure/youtube_link")}
+                  onClick={() => navigate("/configure/youtube_link")}
                 >
                   <div className="flex justify-between md:text-2xl xsm:text-xl">
                     <h5>Youtube</h5>
@@ -220,7 +220,7 @@ const ProfileConfigurePage = () => {
               <div className="w-1/2 h-20 overflow-hidden">
                 <div
                   className="w-full h-full bg-shadow p-2 rounded hover:cursor-pointer hover:bg-shadow-green"
-                  onClick={() => navigate("/me/configure/reddit_link")}
+                  onClick={() => navigate("/configure/reddit_link")}
                 >
                   <div className="flex justify-between md:text-2xl xsm:text-xl">
                     <h5>Reddit</h5>
@@ -239,7 +239,7 @@ const ProfileConfigurePage = () => {
               <div className="w-1/2 h-20 overflow-hidden">
                 <div
                   className="w-full h-full bg-shadow p-2 rounded hover:cursor-pointer hover:bg-shadow-green"
-                  onClick={() => navigate("/me/configure/discord_link")}
+                  onClick={() => navigate("/configure/discord_link")}
                 >
                   <div className="flex justify-between md:text-2xl xsm:text-xl">
                     <h5>Discord</h5>
@@ -260,7 +260,7 @@ const ProfileConfigurePage = () => {
               <div className="w-1/2 h-20 overflow-hidden">
                 <div
                   className="w-full h-full bg-shadow p-2 rounded hover:cursor-pointer hover:bg-shadow-green"
-                  onClick={() => navigate("/me/configure/personal_email_link")}
+                  onClick={() => navigate("/configure/personal_email_link")}
                 >
                   <div className="flex justify-between md:text-2xl xsm:text-xl">
                     <h5>Email</h5>
@@ -279,9 +279,7 @@ const ProfileConfigurePage = () => {
               <div className="w-1/2 h-20 overflow-hidden">
                 <div
                   className="w-full h-full bg-shadow p-2 rounded hover:cursor-pointer hover:bg-shadow-green"
-                  onClick={() =>
-                    navigate("/me/configure/personal_website_link")
-                  }
+                  onClick={() => navigate("/configure/personal_website_link")}
                 >
                   <div className="flex justify-between md:text-2xl xsm:text-xl">
                     <h5>Website</h5>
@@ -309,7 +307,7 @@ const ProfileConfigurePage = () => {
                 <div className="w-1/2 h-20">
                   <div
                     className="w-full h-full bg-shadow p-2 rounded hover:cursor-pointer hover:bg-shadow-green"
-                    onClick={() => navigate("/me/configure/measurement_units")}
+                    onClick={() => navigate("/configure/measurement_units")}
                   >
                     <div className="flex justify-between md:text-2xl xsm:text-xl">
                       <h5>Measure Units</h5>
@@ -324,7 +322,7 @@ const ProfileConfigurePage = () => {
                 <div className="w-1/2 h-20">
                   <div
                     className="w-full h-full bg-shadow p-2 rounded hover:cursor-pointer hover:bg-shadow-green"
-                    onClick={() => navigate("/me/configure/currency")}
+                    onClick={() => navigate("/configure/currency")}
                   >
                     <div className="flex justify-between md:text-2xl xsm:text-xl">
                       <h5>Currency</h5>
@@ -347,9 +345,7 @@ const ProfileConfigurePage = () => {
               <div className="w-1/2 h-20">
                 <div
                   className="w-full h-full bg-shadow p-2 rounded hover:cursor-pointer hover:bg-shadow-green"
-                  onClick={() =>
-                    navigate("/me/configure/collection-banner-image")
-                  }
+                  onClick={() => navigate("/configure/collection-banner-image")}
                 >
                   <div className="flex justify-between md:text-2xl xsm:text-xl">
                     <h5>Banner Image</h5>
@@ -376,7 +372,7 @@ const ProfileConfigurePage = () => {
                 <div className="w-1/2 h-20">
                   <div
                     className="w-full h-full bg-shadow p-2 rounded hover:cursor-pointer hover:bg-shadow-green"
-                    onClick={() => navigate("/me/configure/email")}
+                    onClick={() => navigate("/configure/email")}
                   >
                     <div className="flex justify-between md:text-2xl xsm:text-xl">
                       <h5>Email</h5>
@@ -391,7 +387,7 @@ const ProfileConfigurePage = () => {
                 <div className="w-1/2 h-20">
                   <div
                     className="w-full h-full bg-shadow p-2 rounded hover:cursor-pointer hover:bg-shadow-green"
-                    onClick={() => navigate("/me/configure/password")}
+                    onClick={() => navigate("/configure/password")}
                   >
                     <div className="flex justify-between md:text-2xl xsm:text-xl">
                       <h5>Password</h5>
@@ -475,7 +471,7 @@ const ProfileConfigurePage = () => {
 
                   <button
                     type="button"
-                    onClick={() => navigate("/me/configure/reset_account")}
+                    onClick={() => navigate("/configure/reset_account")}
                     className="bg-red p-2 rounded"
                   >
                     Reset Account
@@ -504,7 +500,7 @@ const ProfileConfigurePage = () => {
 
                   <button
                     type="button"
-                    onClick={() => navigate("/me/configure/hide_account")}
+                    onClick={() => navigate("/configure/hide_account")}
                     className="bg-red p-2 rounded"
                   >
                     Hide Account
@@ -532,7 +528,7 @@ const ProfileConfigurePage = () => {
 
                   <button
                     type="button"
-                    onClick={() => navigate("/me/configure/delete_account")}
+                    onClick={() => navigate("/configure/delete_account")}
                     className="bg-red p-2 rounded"
                   >
                     Delete Account

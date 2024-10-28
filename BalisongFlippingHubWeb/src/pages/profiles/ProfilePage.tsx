@@ -10,6 +10,7 @@ const ProfilePage = () => {
   console.log(account, identifier);
 
   if (user?.displayName != account && user?.identifierCode != identifier) {
+    // todo create component for displaying a different users page
     return <div>test</div>;
   } else {
     return <UserProfilePage />;

@@ -87,11 +87,7 @@ const HeaderProfileDisplay = () => {
             </li>
             <li
               className="flex p-2 hover:cursor-pointer hover:bg-shadow-green border-b"
-              onClick={() =>
-                navigate(
-                  `/${user?.displayName}#${user?.identifierCode}/configure`
-                )
-              }
+              onClick={() => navigate(`/configure`)}
             >
               Settings
             </li>

@@ -89,7 +89,7 @@ const HeaderNavbar = () => {
             </NavLink>
 
             <NavLink
-              to="/me/collection"
+              to={`/${user?.displayName}/${user?.identifierCode}/collection`}
               style={profileNavLinkStyles}
               className="p-2 pl-4 w-full border-b-2 border-shadow-green-offset flex items-center justify-between"
             >
@@ -98,7 +98,7 @@ const HeaderNavbar = () => {
             </NavLink>
 
             <NavLink
-              to="/me/create-post"
+              to="/create-post"
               style={profileNavLinkStyles}
               className="p-2 pl-4 w-full border-b-2 border-shadow-green-offset flex items-center justify-between"
             >
