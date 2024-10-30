@@ -27,6 +27,7 @@ import AqquiredDateInput from "../input/AqquiredDateInput";
 import FavoriteKnifeInput from "../input/FavoriteKnifeInput";
 import FavoriteFlipperInput from "../input/FavoriteFlipperInput";
 import { CollectionKnifeDTO } from "../../modals/CollectionKnife";
+import { useAppSelector } from "../../redux/hooks";
 
 interface params {
   setNewKnifeObjOnSubmit: Function;
@@ -90,6 +91,11 @@ const NewCollectionKnifeForm = ({
     useState(false);
   const [displayRankingsInfo, toggleDisplayRankingsInfo] = useState(false);
   const [displayModWork, toggleDisplayModWork] = useState(false);
+
+  // collection data
+  const collectedKnives = useAppSelector(
+    (state) => state.collection.collectionKnives
+  );
 
   const fillForm = () => {
     if (collectionKnifeObj !== null) {
@@ -169,9 +175,15 @@ const NewCollectionKnifeForm = ({
     setNewKnifeObjOnSubmit(obj);
   };
 
+  const displayNameIsDuplicate = () => {
+    return collectedKnives.find((knife) => knife.displayName === displayName);
+  };
+
   // on form submit
   const handleFormSubmit = (e: any) => {
     if (e) e.preventDefault();
+
+    if (displayNameIsDuplicate()) return;
 
     updateParent();
   };
@@ -808,6 +820,7 @@ const NewCollectionKnifeForm = ({
         {/*Submit Button*/}
         {!(
           displayName === "" ||
+          displayNameIsDuplicate() ||
           knifeMaker === "" ||
           baseKnifeModel === "" ||
           selectedCoverFile === null ||

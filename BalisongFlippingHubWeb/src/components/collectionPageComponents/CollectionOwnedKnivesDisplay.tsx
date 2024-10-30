@@ -34,7 +34,7 @@ const CollectionOwnedKnivesDisplay = () => {
           <button
             type="button"
             className="h-80 w-52 bg-shadow rounded"
-            onClick={() => navigate("/me/collection/add-knife")}
+            onClick={() => navigate("/add-collection-knife")}
           >
             <p>Add</p>
             <p>+</p>

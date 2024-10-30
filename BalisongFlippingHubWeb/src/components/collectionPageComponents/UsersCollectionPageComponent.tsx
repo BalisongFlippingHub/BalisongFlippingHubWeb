@@ -19,7 +19,7 @@ const UsersCollectionPageComponent = () => {
         ) : (
           <div
             className="w-full h-full bg-shadow-green-offset flex justify-center items-center text-3xl font-bold hover:cursor-pointer"
-            onClick={() => navigate("/me/configure/collection-banner-image")}
+            onClick={() => navigate("/configure/collection-banner-image")}
           >
             <h5 className="border-2 rounded border-dashed p-10 hover:bg-shadow-green">
               Click To Set Banner
@@ -45,7 +45,9 @@ const UsersCollectionPageComponent = () => {
 
           <div
             className="hover:cursor-pointer place-self-center"
-            onClick={() => navigate("/me")}
+            onClick={() =>
+              navigate(`/${user?.displayName}/${user?.identifierCode}`)
+            }
           >
             <h4 className="text-2xl">{user?.displayName}</h4>
             <h5 className="text-shadow text-lg">

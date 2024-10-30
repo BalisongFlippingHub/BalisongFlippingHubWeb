@@ -34,6 +34,7 @@ import { setCredentials, setToRememberLoginInfo } from "./redux/auth/authSlice";
 import { loginWithRefreshToken } from "./redux/auth/authActions";
 import { setCollection } from "./redux/collection/collectionSlice";
 import ProfileConfigurationCollectionBannerImagePage from "./pages/configuration/ProfileConfigurationCollectionBannerImagePage";
+import CollectionKnifePage from "./pages/CollectionKnifePage";
 
 const App = () => {
   const [isLoading, setIsLoading] = useState(false);
@@ -60,12 +61,11 @@ const App = () => {
         .then((res) => {
           dispatch(
             setCredentials({
-              newUser: res.data.account,
-              newAccessToken: res.data.accessToken,
+              newUser: res.account,
+              newAccessToken: res.accessToken,
             })
           );
-          dispatch(setCollection(res.data.collection));
-          navigate("/community");
+          dispatch(setCollection(res.collection));
         })
         .catch((error) => console.log(error));
     }
@@ -99,6 +99,11 @@ const App = () => {
           <Route
             path="/:account/:identifier/collection"
             element={<UserCollectionPage />}
+          />
+
+          <Route
+            path="/:account/:identifier/collection/:knife"
+            element={<CollectionKnifePage />}
           />
 
           {/*Protected Routes from Auth*/}

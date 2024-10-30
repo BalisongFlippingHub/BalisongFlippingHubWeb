@@ -1,6 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import { CollectionKnife } from "../../modals/CollectionKnife";
 import Image from "../Image";
+import { useAppSelector } from "../../redux/hooks";
 
 interface params {
   knife: CollectionKnife;
@@ -8,11 +9,16 @@ interface params {
 
 const OwnedKnifeCard = ({ knife }: params) => {
   const navigate = useNavigate();
+  const user = useAppSelector((state) => state.auth.user);
 
   return (
     <div
       className="w-52 h-80 flex flex-col bg-black rounded hover:cursor-pointer"
-      onClick={() => navigate(`/me/collection/knife/${knife.id}`)}
+      onClick={() =>
+        navigate(
+          `/${user?.displayName}/${user?.identifierCode}/collection/${knife.displayName}`
+        )
+      }
     >
       <div className="w-full flex justify-center text-xl font-bold">
         <h4>{knife.displayName}</h4>
