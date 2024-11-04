@@ -41,6 +41,31 @@ const GalleryInput = ({
     return false;
   };
 
+  const videoTooLarge = (video: File) => {
+    // file reader object loads video to vidoe element
+    const reader = new FileReader();
+    reader.onload = function (e: any) {
+      // creates element
+      var videoElement = document.createElement("video");
+
+      // sets element src
+      videoElement.src = e.target.result;
+
+      // checks video duration upon load
+      var timer = setInterval(function () {
+        if (videoElement.readyState === 4) {
+          // if vidoe duration is less than 2 minutes it's valid
+          if (videoElement.duration > 120) {
+            return true;
+          } else {
+            return false;
+          }
+        }
+      }, 500);
+    };
+    return true;
+  };
+
   const handleOnChange = (e: any) => {
     const files = e.target.files;
     const arr: Array<File> = [];
@@ -56,8 +81,15 @@ const GalleryInput = ({
         if (arr.length === 10) break;
       }
 
+      let file: File = files[i];
+
       // check for file already existing in selected files
-      if (checkSelectedFileExistance(files[i])) continue;
+      if (checkSelectedFileExistance(file)) continue;
+
+      // validate if video file
+      if (file.type === ".mp4") {
+        if (videoTooLarge(file)) break;
+      }
 
       arr.push(files[i]);
       arrNames.push(files[i].name);

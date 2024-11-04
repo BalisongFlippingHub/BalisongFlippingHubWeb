@@ -35,6 +35,7 @@ import { loginWithRefreshToken } from "./redux/auth/authActions";
 import { setCollection } from "./redux/collection/collectionSlice";
 import ProfileConfigurationCollectionBannerImagePage from "./pages/configuration/ProfileConfigurationCollectionBannerImagePage";
 import CollectionKnifePage from "./pages/CollectionKnifePage";
+import TestPage from "./pages/TestPage";
 
 const App = () => {
   const [isLoading, setIsLoading] = useState(false);
@@ -93,6 +94,7 @@ const App = () => {
           <Route path="/about-page" element={<AboutPage />} />
           <Route path="/contact-us" element={<ContactUsPage />} />
           <Route path="/unauthorized" element={<h2>Unaothorized</h2>} />
+          <Route path="/test" element={<TestPage />} />
 
           <Route path="/:account/:identifier" element={<ProfilePage />} />
 
