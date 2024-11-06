@@ -4,6 +4,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useEffect, useRef, useState } from "react";
+import GalleryInputSelectedFilesFileCoverDisplay from "./GalleryInputSelectedFilesFileCoverDisplay";
 
 interface params {
   updateGalleryFiles: Function;
@@ -42,6 +43,9 @@ const GalleryInput = ({
   };
 
   const videoTooLarge = (video: File) => {
+    // boolean variable
+    var isTooLong: boolean = false;
+
     // file reader object loads video to vidoe element
     const reader = new FileReader();
     reader.onload = function (e: any) {
@@ -54,16 +58,24 @@ const GalleryInput = ({
       // checks video duration upon load
       var timer = setInterval(function () {
         if (videoElement.readyState === 4) {
-          // if vidoe duration is less than 2 minutes it's valid
-          if (videoElement.duration > 120) {
-            return true;
-          } else {
-            return false;
-          }
+          console.log(
+            "The duration is: " + videoElement.duration.toFixed(2) + " seconds"
+          );
+
+          // if duration is larger than 300 seconds or 5 minutes, set to be too long
+          if (videoElement.duration > 300) isTooLong = true;
+
+          // stops loop
+          clearInterval(timer);
         }
       }, 500);
     };
-    return true;
+
+    // starts reader
+    reader.readAsDataURL(video);
+
+    // returns value
+    return isTooLong;
   };
 
   const handleOnChange = (e: any) => {
@@ -87,8 +99,9 @@ const GalleryInput = ({
       if (checkSelectedFileExistance(file)) continue;
 
       // validate if video file
-      if (file.type === ".mp4") {
-        if (videoTooLarge(file)) break;
+      console.log(file);
+      if (file.type === "video/mp4") {
+        if (videoTooLarge(file)) continue;
       }
 
       arr.push(files[i]);
@@ -117,6 +130,10 @@ const GalleryInput = ({
 
       setSelectedFiles(newArr);
     }
+  };
+
+  const changeCurrentIndex = (index: number) => {
+    setCurrentIndex(index);
   };
 
   useEffect(() => {
@@ -169,10 +186,20 @@ const GalleryInput = ({
         {/*Big display for selected file*/}
         {selectedFiles && selectedFiles.length > 0 ? (
           <div className="md:w-1/2 xsm:w-full md:h-full xsm:h-4/6 bg-black">
-            <img
-              src={URL.createObjectURL(selectedFiles[currentIndex])}
-              className="w-full h-full object-contain"
-            />
+            {selectedFiles[currentIndex].type === "video/mp4" ? (
+              <video
+                src={URL.createObjectURL(selectedFiles[currentIndex])}
+                className="w-full h-full object-contain"
+                autoPlay
+                muted
+                loop
+              />
+            ) : (
+              <img
+                src={URL.createObjectURL(selectedFiles[currentIndex])}
+                className="w-full h-full object-contain"
+              />
+            )}
           </div>
         ) : (
           <div className="md:w-1/2 xsm:w-full h-full flex items-center justify-center bg-black">
@@ -228,27 +255,14 @@ const GalleryInput = ({
             <div className="flex flex-wrap h-full w-full xsm:pb-24 md:pb-0">
               {selectedFiles?.map((file, i) => {
                 return (
-                  <div
-                    className="w-1/5 h-1/2 relative hover:cursor-pointer"
-                    key={i}
-                  >
-                    <img
-                      src={URL.createObjectURL(file)}
-                      className="h-full w-full object-cover"
+                  <div className="w-1/5 h-1/2">
+                    <GalleryInputSelectedFilesFileCoverDisplay
+                      file={file}
+                      index={i}
+                      key={i}
+                      removeFile={removeFile}
+                      changeCurrentIndex={changeCurrentIndex}
                     />
-
-                    <div
-                      className="bg-black absolute top-0 bottom-0 left-0 right-0 flex justify-center hover:opacity-75 opacity-0"
-                      onMouseOver={() => setCurrentIndex(i)}
-                    >
-                      <button
-                        type="button"
-                        className="w-full h-full"
-                        onClick={() => removeFile(i)}
-                      >
-                        Remove
-                      </button>
-                    </div>
                   </div>
                 );
               })}

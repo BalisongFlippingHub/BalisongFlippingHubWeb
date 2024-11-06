@@ -4,6 +4,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { CollectionKnifeDTO } from "../../modals/CollectionKnife";
+import GalleryInputSelectedFilesFileCoverDisplay from "./GalleryInputSelectedFilesFileCoverDisplay";
 
 interface params {
   galleryFiles: Array<File> | null;
@@ -352,10 +353,7 @@ const NewCollectionKnifeSummary = ({
               {galleryFiles.map((file, i) => {
                 return (
                   <div key={i} className="h-52 w-1/5 hover:cursor-pointer">
-                    <img
-                      src={URL.createObjectURL(file)}
-                      className="object-cover w-full h-full"
-                    />
+                    <GalleryInputSelectedFilesFileCoverDisplay file={file} />
                   </div>
                 );
               })}

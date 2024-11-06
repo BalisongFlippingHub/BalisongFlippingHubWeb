@@ -36,6 +36,7 @@ import { setCollection } from "./redux/collection/collectionSlice";
 import ProfileConfigurationCollectionBannerImagePage from "./pages/configuration/ProfileConfigurationCollectionBannerImagePage";
 import CollectionKnifePage from "./pages/CollectionKnifePage";
 import TestPage from "./pages/TestPage";
+import { Profile } from "./modals/User";
 
 const App = () => {
   const [isLoading, setIsLoading] = useState(false);
@@ -70,6 +71,20 @@ const App = () => {
         })
         .catch((error) => console.log(error));
     }
+
+    dispatch(
+      setCredentials({
+        newUser: {
+          id: "1",
+          displayName: "Test",
+          identifierCode: "4444",
+          role: "USER",
+          email: "test@gmail.com",
+          collectionId: "1123",
+        } as Profile,
+        newAccessToken: "1234",
+      })
+    );
 
     setIsLoading(false);
   }, []);
