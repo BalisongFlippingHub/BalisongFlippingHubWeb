@@ -45,7 +45,9 @@ const GalleryInputSelectedFilesFileCoverDisplay = ({
   return (
     <div
       className="w-full h-full relative hover:cursor-pointer"
-      onMouseOver={() => changeCurrentIndex(index)}
+      onMouseOver={
+        changeCurrentIndex ? () => changeCurrentIndex(index) : () => {}
+      }
     >
       {file.type === "video/mp4" ? (
         <>
@@ -70,7 +72,7 @@ const GalleryInputSelectedFilesFileCoverDisplay = ({
         <button
           type="button"
           className="w-full h-full"
-          onClick={() => removeFile(index)}
+          onClick={removeFile ? () => removeFile(index) : () => {}}
         >
           Remove
         </button>
