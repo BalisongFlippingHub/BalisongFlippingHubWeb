@@ -28,10 +28,19 @@ axiosApiInstanceAuth.interceptors.response.use(
     // get error request
     const originRequest = error.config;
 
+    console.log("error: ", error);
     // check for error status if retried
-    if (error.response.status === 403 && !originRequest._retry) {
+    if (
+      (error.response.status === 403 || !error.response) &&
+      !originRequest._retry
+    ) {
       // set retry to true to prevent infinite loop
       originRequest._retry = true;
+
+      if (!error.response) {
+        if (error.config.data === FormData)
+          originRequest.headers["Content-Type"] = "multipart/form-data";
+      }
 
       try {
         // attempt to retrieve a new access token using passed refresh token

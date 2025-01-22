@@ -57,20 +57,32 @@ const Image = ({ imageId, contain }: params) => {
       return <div className="w-full h-full">ERROR</div>;
     }
 
-    return (
-      <img
-        className={
-          contain
-            ? "w-full h-full object-contain"
-            : "w-full h-full object-cover"
-        }
-        src={
-          image?.type !== "image/png"
-            ? `data:image/png;base64,${image?.data}`
-            : `data:image/jpeg;base64,${image?.data}`
-        }
-      />
-    );
+    if (image?.type === "video/mp4") {
+      return (
+        <video
+          src={`data:video/mp4;base64,${image?.data}`}
+          className={
+            contain
+              ? "w-full h-full object-contain"
+              : "w-full h-full object-cover"
+          }
+          autoPlay
+          controls
+          muted
+        ></video>
+      );
+    } else {
+      return (
+        <img
+          className={
+            contain
+              ? "w-full h-full object-contain"
+              : "w-full h-full object-cover"
+          }
+          src={`data:image/*;base64,${image?.data}`}
+        />
+      );
+    }
   }
 };
 

@@ -13,33 +13,40 @@ const GalleryInputSelectedFilesFileCoverDisplay = ({
   removeFile,
   changeCurrentIndex,
 }: params) => {
-  const [videoDuration, setVideoDuration] = useState("00.00");
+  const [isLoading, setIsLoading] = useState(true);
+  const [videoDuration, setVideoDuration] = useState("");
 
   useEffect(() => {
-    // file reader object loads video to vidoe element
-    const reader = new FileReader();
-    reader.onload = function (e: any) {
-      // creates element
-      var videoElement = document.createElement("video");
+    if (file.type === "video/mp4") {
+      // file reader object loads video to vidoe element
+      const reader = new FileReader();
+      reader.onload = function (e: any) {
+        // creates element
+        var videoElement = document.createElement("video");
 
-      // sets element src
-      videoElement.src = e.target.result;
+        // sets element src
+        videoElement.src = e.target.result;
 
-      // checks video duration upon load
-      var timer = setInterval(function () {
-        if (videoElement.readyState === 4) {
-          console.log(
-            "The duration is: " + videoElement.duration.toFixed(2) + " seconds"
-          );
+        // checks video duration upon load
+        var timer = setInterval(function () {
+          if (videoElement.readyState === 4) {
+            console.log(
+              "The duration is: " +
+                videoElement.duration.toFixed(2) +
+                " seconds"
+            );
 
-          setVideoDuration(videoElement.duration.toFixed(2));
+            console.log("setting video duration");
+            setVideoDuration(videoElement.duration.toFixed(2));
 
-          clearInterval(timer);
-        }
-      }, 500);
-    };
+            clearInterval(timer);
+          }
+        }, 500);
+      };
 
-    reader.readAsDataURL(file);
+      reader.readAsDataURL(file);
+    }
+    setIsLoading(false);
   }, []);
 
   return (
@@ -49,7 +56,9 @@ const GalleryInputSelectedFilesFileCoverDisplay = ({
         changeCurrentIndex ? () => changeCurrentIndex(index) : () => {}
       }
     >
-      {file.type === "video/mp4" ? (
+      {isLoading ? (
+        <div className="w-full h-full bg-black"></div>
+      ) : file.type === "video/mp4" ? (
         <>
           <video
             src={URL.createObjectURL(file)}

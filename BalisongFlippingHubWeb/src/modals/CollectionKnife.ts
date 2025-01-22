@@ -53,7 +53,7 @@ export interface CollectionKnife {
   latchType: string;
   pinSystem: string;
   hasModularBalance: boolean;
-  balanceValue: number | null;
+  balanceValue: string | null;
 
   bladeStyle: string;
   bladeFinish: string;

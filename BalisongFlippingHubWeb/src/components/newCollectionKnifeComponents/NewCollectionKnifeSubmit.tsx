@@ -89,6 +89,8 @@ const NewCollectionKnifeSubmit = ({ galleryFiles, newKnifeObj }: params) => {
       formData.append("galleryFiles", "");
     }
 
+    console.log("form data: ", formData);
+
     // post to api
     setIsLoading(true);
     await axiosApiInstanceAuth
@@ -97,8 +99,8 @@ const NewCollectionKnifeSubmit = ({ galleryFiles, newKnifeObj }: params) => {
         method: "post",
         data: formData,
         headers: {
-          Accept: "application/json",
           "Content-Type": "multipart/form-data",
+          Accept: "application/json",
         },
       })
       .then((res) => {
