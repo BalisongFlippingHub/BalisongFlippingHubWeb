@@ -2,11 +2,6 @@ import { useRef, useState } from "react";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import Image from "../Image";
 import { axiosApiInstanceAuth } from "../../api/axios";
-import { Profile } from "../../modals/User";
-import { setNewUser } from "../../redux/auth/authSlice";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCircleLeft } from "@fortawesome/free-solid-svg-icons";
-import { useNavigate } from "react-router-dom";
 import { Collection } from "../../modals/Collection";
 import { setCollection } from "../../redux/collection/collectionSlice";
 
@@ -17,13 +12,12 @@ const CollectionBannerConfiguration = () => {
 
   const [isLoading, setIsLoading] = useState(false);
   const [isError, setIsError] = useState(false);
-  const [errorMessage, setErrorMessage] = useState("");
+  const [_errorMessage, _setErrorMessage] = useState("");
   const [isSuccess, setIsSuccess] = useState(false);
 
   const collectionData = useAppSelector((state) => state.collection.collection);
 
   const dispatch = useAppDispatch();
-  const navigate = useNavigate();
 
   const handleOnChange = (e: any) => {
     if (isSuccess) {

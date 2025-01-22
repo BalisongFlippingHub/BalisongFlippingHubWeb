@@ -8,7 +8,7 @@ const CollectionPostsDisplay = () => {
   const [posts, setPosts] = useState<Array<CollectionTimelinePostModal> | null>(
     null
   );
-  const [isLoading, setIsLoading] = useState(false);
+  const [_isLoading, setIsLoading] = useState(false);
 
   const collectionData = useAppSelector((state) => state.collection.collection);
 

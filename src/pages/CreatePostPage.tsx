@@ -2,8 +2,6 @@ import { useState } from "react";
 import NewPostForm from "../components/NewPostForm";
 import { CreationPostDTO } from "../modals/Post";
 import { axiosApiInstanceAuth } from "../api/axios";
-import { Profile } from "../modals/User";
-import { useNavigate } from "react-router-dom";
 import { useAppSelector } from "../redux/hooks";
 
 const CreatePostPage = () => {
@@ -21,10 +19,8 @@ const CreatePostPage = () => {
   const [linkedPostObjFiles, setLinkedPostObjFiles] =
     useState<Array<File> | null>(null);
 
-  const user = useAppSelector((state) => state.auth.user);
+  // const user = useAppSelector((state) => state.auth.user);
   const token = useAppSelector((state) => state.auth.accessToken);
-
-  const navigate = useNavigate();
 
   const initiateCreatingLinkedPost = () => {
     setCreatingLinkedPost((prev) => !prev);

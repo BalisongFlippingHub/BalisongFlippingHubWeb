@@ -19,7 +19,7 @@ const DisplayNameConfiguration = () => {
 
   const dispatch = useAppDispatch();
 
-  const validateNewDisplayName = (newName: string) => {
+  const validateNewDisplayName = (_newName: string) => {
     return true;
   };
 

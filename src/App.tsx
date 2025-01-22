@@ -1,4 +1,4 @@
-import { Route, Routes, useNavigate } from "react-router-dom";
+import { Route, Routes } from "react-router-dom";
 import MainLayout from "./layouts/MainLayout";
 import { LoginPage } from "./pages/auth/LoginPage";
 
@@ -36,7 +36,6 @@ import { setCollection } from "./redux/collection/collectionSlice";
 import ProfileConfigurationCollectionBannerImagePage from "./pages/configuration/ProfileConfigurationCollectionBannerImagePage";
 import CollectionKnifePage from "./pages/CollectionKnifePage";
 import TestPage from "./pages/TestPage";
-import { Profile } from "./modals/User";
 
 const App = () => {
   const [isLoading, setIsLoading] = useState(false);
@@ -45,7 +44,6 @@ const App = () => {
   const accessToken = useAppSelector((state) => state.auth.accessToken);
 
   const dispatch = useAppDispatch();
-  const navigate = useNavigate();
 
   useEffect(() => {
     setIsLoading(true);

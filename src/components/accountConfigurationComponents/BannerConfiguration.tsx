@@ -4,9 +4,6 @@ import Image from "../Image";
 import { axiosApiInstanceAuth } from "../../api/axios";
 import { Profile } from "../../modals/User";
 import { setNewUser } from "../../redux/auth/authSlice";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCircleLeft } from "@fortawesome/free-solid-svg-icons";
-import { useNavigate } from "react-router-dom";
 
 const BannerConfiguration = () => {
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -15,13 +12,12 @@ const BannerConfiguration = () => {
 
   const [isLoading, setIsLoading] = useState(false);
   const [isError, setIsError] = useState(false);
-  const [errorMessage, setErrorMessage] = useState("");
+  const [_errorMessage, _setErrorMessage] = useState("");
   const [isSuccess, setIsSuccess] = useState(false);
 
   const user = useAppSelector((state) => state.auth.user);
 
   const dispatch = useAppDispatch();
-  const navigate = useNavigate();
 
   const handleOnChange = (e: any) => {
     if (isSuccess) {

@@ -1,8 +1,8 @@
-import { Post2 } from "../../modals/Post";
+import { CollectionTimelinePostModal } from "../../modals/Post";
 import CollectionTimelinePost from "../posts/collectionTimelinePost/CollectionTimelinePost";
 
 interface params {
-  post: Post2;
+  post: CollectionTimelinePostModal;
 }
 
 const CollectionPost = ({ post }: params) => {

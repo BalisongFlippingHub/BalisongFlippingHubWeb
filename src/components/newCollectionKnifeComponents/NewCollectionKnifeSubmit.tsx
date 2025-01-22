@@ -14,7 +14,7 @@ interface params {
 const NewCollectionKnifeSubmit = ({ galleryFiles, newKnifeObj }: params) => {
   const [isLoading, setIsLoading] = useState(false);
   const [isError, setIsError] = useState(false);
-  const [erorMsg, setErrorMsg] = useState("");
+  const [_erorMsg, setErrorMsg] = useState("");
 
   const user = useAppSelector((state) => state.auth.user);
   const collectionData = useAppSelector((state) => state.collection.collection);

@@ -1,9 +1,6 @@
 import { useRef, useState } from "react";
 import Image from "../Image";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCircleLeft, faN } from "@fortawesome/free-solid-svg-icons";
-import { useNavigate } from "react-router-dom";
 import { axiosApiInstanceAuth } from "../../api/axios";
 import { Profile } from "../../modals/User";
 import { setNewUser } from "../../redux/auth/authSlice";
@@ -13,15 +10,14 @@ const ProfileImageConfiguration = () => {
 
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
 
-  const [isLoading, setIsLoading] = useState(false);
-  const [isError, setIsError] = useState(true);
-  const [errMsg, setErrMsg] = useState("");
+  const [_isLoading, setIsLoading] = useState(false);
+  const [_isError, setIsError] = useState(true);
+  const [_errMsg, _setErrMsg] = useState("");
   const [isSuccess, setIsSuccess] = useState(false);
 
   const user = useAppSelector((state) => state.auth.user);
 
   const dispatch = useAppDispatch();
-  const navigate = useNavigate();
 
   const handleFileSelection = (files: FileList) => {
     if (files[0] === null) return;

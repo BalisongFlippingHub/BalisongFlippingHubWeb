@@ -9,7 +9,7 @@ const FavoriteFlipperInput = ({
   setIsFavoriteFlipperOnChange,
   parentIsFavoriteFlipper,
 }: params) => {
-  const [isFavoriteFlipper, setIsFavoriteFlipper] = useState(
+  const [_isFavoriteFlipper, setIsFavoriteFlipper] = useState(
     parentIsFavoriteFlipper
   );
 

@@ -9,7 +9,9 @@ const FavoriteKnifeInput = ({
   setIsFavoriteKnifeOnChange,
   parentIsFavoriteKnife,
 }: params) => {
-  const [isFavoriteKnife, setIsFavoriteKnife] = useState(parentIsFavoriteKnife);
+  const [_isFavoriteKnife, setIsFavoriteKnife] = useState(
+    parentIsFavoriteKnife
+  );
 
   const handleOnChange = () => {
     setIsFavoriteKnifeOnChange();

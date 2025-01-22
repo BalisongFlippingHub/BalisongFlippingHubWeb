@@ -30,6 +30,9 @@ const PostDisplay = ({ postId, post, isNewlyCreatedPost }: params) => {
   useEffect(() => {
     setIsLoading(true);
 
+    if (isNewlyCreatedPost) {
+    }
+
     if (!post) {
       // load post data from api
       const getPostData = async () => {

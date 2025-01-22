@@ -1,7 +1,7 @@
 import { useRef, useState } from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { AppDispatch, RootState } from "../redux/store";
+import { AppDispatch } from "../redux/store";
 import { login, registerNewUser } from "../redux/auth/authActions";
 import { clearError, setError } from "../redux/auth/authSlice";
 import { useAppSelector } from "../redux/hooks";

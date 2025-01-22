@@ -3,8 +3,8 @@ import { useRef, useState } from "react";
 const VideoTestComponent = () => {
   const videoFileInputRef = useRef<HTMLInputElement>(null);
 
-  const [selectedVideoFile, setSelectedVideoFile] = useState<File | null>(null);
-  const [selectedVideoFileStr, setSelectedVideoFileStr] = useState("");
+  // const [selectedVideoFile, setSelectedVideoFile] = useState<File | null>(null);
+  // const [selectedVideoFileStr, setSelectedVideoFileStr] = useState("");
   const [videoDuration, setVideoDuration] = useState<any>(null);
 
   const handleOnChange = (videoFile: File) => {

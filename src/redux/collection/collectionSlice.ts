@@ -17,14 +17,15 @@ const collectionSlice = createSlice({
   initialState,
   reducers: {
     clearCollection: (state) => {
-      state = initialState;
+      state.collection = null;
+      state.collectionKnives = [];
     },
     setCollection: (state, action: PayloadAction<Collection>) => {
       state.collection = action.payload;
       state.collectionKnives = action.payload.collectedKnives!;
     },
   },
-  extraReducers: (builder) => {},
+  extraReducers: (_builder) => {},
 });
 
 export const { clearCollection, setCollection } = collectionSlice.actions;
