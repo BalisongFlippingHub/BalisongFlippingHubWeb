@@ -62,7 +62,7 @@ const Navbar = () => {
         )}
 
         {/*Hamburger Menu and Logo*/}
-        <div className="flex gap-2 md:text-2xl xsm:text-xl">
+        <div className="flex md:gap-2 xsm:gap-1 md:text-2xl xsm:text-lg items-center">
           <div
             className="hover:cursor-pointer lg:collapse lg:absolute xsm:visible xsm:static"
             onClick={() => toggleNav((prev) => !prev)}
