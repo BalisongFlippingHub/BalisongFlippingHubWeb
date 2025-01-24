@@ -89,7 +89,7 @@ const Navbar = () => {
         </div>
 
         {/*Profile Display or Login/Registration Btn and Search Bar Toggle*/}
-        <div className="flex items-center gap-4">
+        <div className="flex items-center sm:gap-4 xsm:gap-2">
           <div
             className="xsm:visible xsm:static md:collapse md:absolute hover:cursor-pointer"
             onClick={() => toggleSearchBar()}
