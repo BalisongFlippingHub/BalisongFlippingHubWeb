@@ -33,7 +33,7 @@ const HeaderNavbar = () => {
   };
 
   return (
-    <nav className="fixed h-[calc(100%_-_64px)] lg:w-48 translate-y-[64px] border-r border-shadow-green-offset flex flex-col justify-between bg-black z-8 xsm:w-full xsm:h-5/6 md:w-1/3 xsm:border-b-2 md:border-b-none md:h-[calc(100%_-_64px)] xsm:border-shadow-green-offset z-10">
+    <nav className="fixed h-[calc(100%_-_64px)] lg:w-48 translate-y-[64px] border-r border-shadow-green-offset flex flex-col justify-between bg-black z-8 xsm:w-full xsm:h-[calc(100%_-_64px)] md:w-1/3 xsm:border-b-2 md:border-b-none md:h-[calc(100%_-_64px)] xsm:border-shadow-green-offset z-10">
       <div className="flex flex-col">
         <NavLink
           to="/community"
