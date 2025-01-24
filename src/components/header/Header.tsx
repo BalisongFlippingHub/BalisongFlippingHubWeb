@@ -103,17 +103,10 @@ const Navbar = () => {
             <div className="flex gap-1 items-center text-lg">
               <button
                 type="button"
-                className="hover:underline hover:font-bold"
+                className="bg-shadow-green-offset pl-4 pr-4 pt-1 pb-1 rounded-lg hover:bg-shadow-green-offset border border-black hover:border-white"
                 onClick={() => navigate("/login")}
               >
                 Login
-              </button>
-              <button
-                type="button"
-                className="bg-shadow-green pl-2 pr-2 pt-1 pb-1 rounded hover:bg-shadow-green-offset border border-black hover:border-white"
-                onClick={() => navigate("/register")}
-              >
-                Register
               </button>
             </div>
           )}
