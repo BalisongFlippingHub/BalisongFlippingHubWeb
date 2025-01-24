@@ -15,11 +15,11 @@ const HomePage = () => {
     <>
       <section className="md:h-screen xsm:h-auto text-lg font-semibold pt-[64px] lg:pl-[192px] flex flex-col relative">
         <div className="w-full md:h-1/2 xsm:h-auto flex md:flex-row xsm:flex-col-reverse">
-          <div className="md:w-1/2 xsm:w-full flex justify-center items-center p-10">
-            <div className="flex flex-col items-center gap-4">
+          <div className="md:w-1/2 xsm:w-full flex justify-center items-center xsm:p-3 sm:p-5">
+            <div className="flex flex-col items-center gap-4 xsm:h-screen justify-center sm:h-auto pb-[64px]">
               <h4 className="text-3xl font-bold">Welcome!</h4>
 
-              <p className="text-2xl text-center">
+              <p className="text-2xl xsm:text-xl text-center">
                 Welcome to the Balisong Flipping Center! The central hub for
                 balisong related content and the home of knife enthusiest,
                 flippers, modders and more. Scroll to learn more, or make an
@@ -58,7 +58,7 @@ const HomePage = () => {
             </div>
           </div>
 
-          <div className="md:w-1/2 xsm:w-full md:p-10 xsm:p-0 flex items-center justify-center">
+          <div className="md:w-1/2 xsm:w-full xsm:collapse sm:visible md:p-10 xsm:p-0 flex items-center justify-center">
             <HomePageCaurosel />
           </div>
         </div>
