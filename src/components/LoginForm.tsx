@@ -95,9 +95,9 @@ const LoginForm = () => {
 
   /*HTML return for login form component*/
   return (
-    <section className="flex w-full h-screen lg:pl-[192px] justify-center items-center">
+    <section className="flex w-full h-screen sm:pt-[64px] xsm:pt-0 lg:pl-[192px] justify-center items-center">
       <form
-        className="p-8 flex justify-center items-center bg-shadow-green-offset sm:rounded-lg xsm:rounded-none md:w-2/6 xsm:w-full xsm:h-full sm:h-auto text-xl"
+        className="p-8 flex justify-center items-center bg-shadow-green-offset sm:rounded-lg xsm:rounded-none md:w-2/6 sm:w-3/5 xsm:w-full xsm:h-full sm:h-auto text-xl"
         onSubmit={handleSubmit}
       >
         <div className="flex flex-col gap-4">
