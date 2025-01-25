@@ -97,9 +97,10 @@ const LoginForm = () => {
   return (
     <section className="flex w-full h-screen pt-[64px] lg:pl-[192px] justify-center items-center">
       <form
-        className="p-8 flex flex-col gap-3 bg-shadow-green-offset rounded-lg md:w-2/6 xsm:w-4/5 text-xl"
+        className="p-8 flex justify-center items-center bg-shadow-green-offset sm:rounded-lg xsm:rounded-none md:w-2/6 xsm:w-full xsm:h-full sm:h-auto text-xl"
         onSubmit={handleSubmit}
       >
+        <div className="flex flex-col gap-4">
         <h2 className="m-auto text-3xl font-bold bg-shadow-green-offset">
           Login
         </h2>
@@ -155,7 +156,7 @@ const LoginForm = () => {
 
         {/*Check box for allowing the site to remember specific users*/}
         <div className="flex gap-2 bg-shadow-green-offset items-center">
-          <label htmlFor="rememberMe" className="bg-shadow-green-offset">
+          <label htmlFor="rememberMe" className="bg-shadow-green-offset xsm:text-lg">
             Remember Me
           </label>
 
@@ -196,7 +197,7 @@ const LoginForm = () => {
         )}
 
         {/*Redirect for users do not have an account.*/}
-        <div className="text-lg flex items-center bg-shadow-green-offset">
+        <div className="text-lg xsm:text-md flex items-center bg-shadow-green-offset">
           <p className="bg-shadow-green-offset mr-2">Don't have an account?</p>
           <h3
             className="text-blue hover:text-light-blue hover:cursor-pointer bg-shadow-green-offset"
@@ -209,6 +210,7 @@ const LoginForm = () => {
         {/*TODO- create div for forgotten passwords*/}
 
         {/*TODO- Create div for oath loggins*/}
+        </div>
       </form>
     </section>
   );
