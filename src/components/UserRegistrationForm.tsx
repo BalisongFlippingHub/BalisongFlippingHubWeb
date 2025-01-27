@@ -181,9 +181,9 @@ const UserRegistrationForm = () => {
   };
 
   return (
-    <section className="w-3/4 flex xsm:flex-col md:flex-row">
+    <section className="sm:w-3/4 xsm:w-full xsm:h-full sm:h-auto flex xsm:flex-col md:flex-row">
       {/*Create Account Caption*/}
-      <div className="md:w-1/2 xsm:w-full bg-shadow xsm:h-20 md:h-auto flex items-center justify-center">
+      <div className="md:w-1/2 xsm:w-full bg-shadow xsm:h-[8%] md:h-auto flex items-center justify-center">
         <h3 className="text-xl font-bold">
           Start your flipping journey today.
         </h3>
@@ -191,7 +191,7 @@ const UserRegistrationForm = () => {
 
       {/*Registration Form*/}
       <form
-        className="flex flex-col gap-3 text-lg xsm:w-full md:w-1/2 bg-shadow-green-offset p-12"
+        className="flex flex-col gap-3 text-lg xsm:w-full md:w-1/2 xsm:h-[92%] sm:h-auto bg-shadow-green-offset p-12"
         onSubmit={handleSubmit}
       >
         {/*Form Title*/}
