@@ -13,10 +13,10 @@ const HomePage = () => {
 
   return (
     <>
-      <section className="md:h-screen xsm:h-auto text-lg font-semibold pt-[64px] lg:pl-[192px] flex flex-col relative">
+      <section className="md:h-screen xsm:h-auto text-lg font-semibold pt-[64px] lg:pl-[192px] flex flex-col relative bg-shadow-green-offset">
         <div className="w-full md:h-1/2 xsm:h-auto flex md:flex-row xsm:flex-col-reverse">
           <div className="md:w-1/2 xsm:w-full flex justify-center items-center xsm:p-3 sm:p-5">
-            <div className="flex flex-col items-center gap-4 xsm:h-screen justify-center sm:h-auto pb-[64px]">
+            <div className="flex flex-col items-center gap-4 xsm:h-screen justify-center sm:h-auto pb-[128px]">
               <h4 className="text-3xl font-bold">Welcome!</h4>
 
               <p className="text-2xl xsm:text-xl text-center">
@@ -63,10 +63,10 @@ const HomePage = () => {
           </div>
         </div>
 
-        <div className="w-full flex xsm:flex-col md:flex-row md:h-1/2 xsm:h-auto gap-[1px]">
+        <div className="w-full flex xsm:flex-col md:flex-row md:h-1/2 xsm:h-auto gap-[5px]">
           {/*Community Page Info Display*/}
           <div className="md:w-1/3 xsm:w-full p-4 flex flex-col gap-6 items-center justify-center bg-black">
-            <h3 className="mt-6 font-bold text-3xl underline">
+            <h3 className="mt-6 font-bold text-3xl underline text-center">
               Check out the Community
             </h3>
 
@@ -86,7 +86,7 @@ const HomePage = () => {
 
           {/*Tutorial Center Info Display*/}
           <div className="md:w-1/3 xsm:w-full p-4 flex flex-col gap-6 items-center justify-center bg-black">
-            <h3 className="mt-6 font-bold text-3xl underline">
+            <h3 className="mt-6 font-bold text-3xl underline text-center">
               Check out the Tutorial Center
             </h3>
 
@@ -106,7 +106,7 @@ const HomePage = () => {
 
           {/*Product World Info Display*/}
           <div className="md:w-1/3 xsm:w-full p-4 flex flex-col gap-6 items-center justify-center bg-black">
-            <h3 className="mt-6 font-bold text-3xl underline">
+            <h3 className="mt-6 font-bold text-3xl underline text-center">
               Check out the Product World
             </h3>
 
