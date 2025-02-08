@@ -19,7 +19,7 @@ const HomePage = () => {
             <div className="flex flex-col items-center justify-center gap-4 xsm:h-screen sm:h-auto pb-[128px] md:pt-20 xsm:pt-0 sm:pt-0">
               <h4 className="text-4xl font-bold">Welcome!</h4>
 
-              <p className="text-2xl xsm:text-xl text-center">
+              <p className="text-2xl xsm:text-xl/8 text-center mt-6">
                 Welcome to the Balisong Flipping Center! The central hub for
                 balisong related content and the home of knife enthusiest,
                 flippers, modders and more. Scroll to learn more, or make an
@@ -29,7 +29,7 @@ const HomePage = () => {
               {user && accessToken && accessToken !== "" ? (
                 <button
                   type="button"
-                  className="p-4 rounded bg-black text-xl hover:bg-shadow-green-offset border"
+                  className="p-4 rounded bg-black text-xl border"
                 >
                   To Profile
                 </button>
@@ -38,7 +38,7 @@ const HomePage = () => {
                   <button
                     type="button"
                     onClick={() => navigate("/register")}
-                    className="p-2 rounded bg-black hover:bg-shadow-green-offset hover:border hover:border-white border border-shadow-green text-xl"
+                    className="p-2 mt-4 rounded bg-black hover:border hover:border-white border border-shadow-green text-xl"
                   >
                     Register Now
                   </button>

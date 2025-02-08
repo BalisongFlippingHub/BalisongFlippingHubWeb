@@ -2,13 +2,23 @@ import axios from "axios";
 import { store } from "../redux/store";
 import { setNewAccessToken } from "../redux/auth/authSlice";
 
+// export const axiosApiInstance = axios.create({
+//   baseURL: "http://localhost:8080",
+//   withCredentials: true,
+// });
+
+// export const axiosApiInstanceAuth = axios.create({
+//   baseURL: "http://localhost:8080",
+//   withCredentials: true,
+// });
+
 export const axiosApiInstance = axios.create({
-  baseURL: "http://localhost:8080",
+  baseURL: "http://ec2-54-159-131-99.compute-1.amazonaws.com:8080",
   withCredentials: true,
 });
 
 export const axiosApiInstanceAuth = axios.create({
-  baseURL: "http://localhost:8080",
+  baseURL: "http://ec2-54-159-131-99.compute-1.amazonaws.com:8080",
   withCredentials: true,
 });
 
