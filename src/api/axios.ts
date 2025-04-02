@@ -25,7 +25,7 @@ export const axiosApiInstanceAuth = axios.create({
 /*Axios auth request interceptor to set auth token before every request*/ 
 axiosApiInstanceAuth.interceptors.request.use((config) => {
   const accessToken = store.getState().auth.accessToken;
-  config.headers.Authorization = `Bearer ${accessToken}`;
+  config.headers.Authorization = `Bearer ${accessToken}`; 
 
   return config;
 });
