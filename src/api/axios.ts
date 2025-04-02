@@ -13,24 +13,16 @@ import { setNewAccessToken } from "../redux/auth/authSlice";
 // });
 
 export const axiosApiInstance = axios.create({
-<<<<<<< HEAD
   baseURL: "http://ec2-3-217-173-234.compute-1.amazonaws.com:8080",
-=======
-  baseURL: "http://ec2-23-22-127-77.compute-1.amazonaws.com:8080",
->>>>>>> 339dfb724807180e34336a9b671568cf596713a7
   withCredentials: true,
 });
 
 export const axiosApiInstanceAuth = axios.create({
-<<<<<<< HEAD
   baseURL: "http://ec2-3-217-173-234.compute-1.amazonaws.com:8080",
-=======
-  baseURL: "http://ec2-23-22-127-77.compute-1.amazonaws.com:8080",
->>>>>>> 339dfb724807180e34336a9b671568cf596713a7
   withCredentials: true,
 });
 
-/*Axios auth request interceptor to set auth token before every request*/
+/*Axios auth request interceptor to set auth token before every request*/ 
 axiosApiInstanceAuth.interceptors.request.use((config) => {
   const accessToken = store.getState().auth.accessToken;
   config.headers.Authorization = `Bearer ${accessToken}`;
