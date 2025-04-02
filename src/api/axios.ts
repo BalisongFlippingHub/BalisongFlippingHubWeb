@@ -21,7 +21,7 @@ export const axiosApiInstanceAuth = axios.create({
   baseURL: "http://ec2-3-217-173-234.compute-1.amazonaws.com:8080",
   withCredentials: true,
 });
-
+ 
 /*Axios auth request interceptor to set auth token before every request*/ 
 axiosApiInstanceAuth.interceptors.request.use((config) => {
   const accessToken = store.getState().auth.accessToken;
