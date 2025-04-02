@@ -38,7 +38,7 @@ axiosApiInstanceAuth.interceptors.response.use(
     // get error request
     const originRequest = error.config;
 
-    console.log("error: ", error);
+    console.log("error: ", error); 
     // check for error status if retried
     if (
       (error.response.status === 403 || !error.response) &&
