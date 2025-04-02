@@ -42,7 +42,7 @@ axiosApiInstanceAuth.interceptors.response.use(
     // check for error status if retried
     if (
       (error.response.status === 403 || !error.response) &&
-      !originRequest._retry
+      !originRequest._retry 
     ) {
       // set retry to true to prevent infinite loop 
       originRequest._retry = true;
