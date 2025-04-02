@@ -3,11 +3,13 @@ import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { AppDispatch, RootState } from "../redux/store";
 import { login } from "../redux/auth/authActions";
+
 import {
   setToRememberLoginInfo,
   toggleOffRememberLoginInfo,
 } from "../redux/auth/authSlice";
 import { setCollection } from "../redux/collection/collectionSlice";
+import GoogleLoginComponent from "./login/GoogleLoginComponent";
 
 const LoginForm = () => {
   // form refs
@@ -95,7 +97,7 @@ const LoginForm = () => {
 
   /*HTML return for login form component*/
   return (
-    <section className="flex w-full h-screen sm:pt-[64px] xsm:pt-0 lg:pl-[192px] justify-center items-center">
+    <section className="flex w-full h-screen sm:pt-[64px] xsm:pt-0 lg:pl-[192px] justify-center items-center text-white">
       <form
         className="p-8 flex justify-center items-center bg-shadow-green-offset sm:rounded-lg xsm:rounded-none md:w-2/6 sm:w-3/5 xsm:w-full xsm:h-full sm:h-auto text-xl"
         onSubmit={handleSubmit}
@@ -210,6 +212,8 @@ const LoginForm = () => {
         {/*TODO- create div for forgotten passwords*/}
 
         {/*TODO- Create div for oath loggins*/}
+        <GoogleLoginComponent />
+
         </div>
       </form>
     </section>

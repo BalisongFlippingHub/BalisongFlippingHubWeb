@@ -7,6 +7,7 @@ import { clearError, setError } from "../redux/auth/authSlice";
 import { useAppSelector } from "../redux/hooks";
 import { setCollection } from "../redux/collection/collectionSlice";
 
+
 const badDisplayNames = [
   "fuck",
   "bitch",
@@ -339,8 +340,6 @@ const UserRegistrationForm = () => {
             Login here
           </button>
         </div>
-
-        {/*TODO- Create div to handle oath account creation.*/}
       </form>
     </section>
   );

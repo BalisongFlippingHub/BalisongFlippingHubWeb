@@ -13,12 +13,12 @@ import { setNewAccessToken } from "../redux/auth/authSlice";
 // });
 
 export const axiosApiInstance = axios.create({
-  baseURL: "http://ec2-54-159-131-99.compute-1.amazonaws.com:8080",
+  baseURL: "http://ec2-3-217-173-234.compute-1.amazonaws.com:8080",
   withCredentials: true,
 });
 
 export const axiosApiInstanceAuth = axios.create({
-  baseURL: "http://ec2-54-159-131-99.compute-1.amazonaws.com:8080",
+  baseURL: "http://ec2-3-217-173-234.compute-1.amazonaws.com:8080",
   withCredentials: true,
 });
 
