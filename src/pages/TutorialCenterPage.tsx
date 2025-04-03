@@ -4,7 +4,7 @@ const TutorialCenterPage = () => {
 
     return (
         <>
-            <h2>Work In Progress...</h2>
+            <section className="w-full h-screen"></section>
         </>
     )
 }

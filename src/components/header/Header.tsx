@@ -51,7 +51,7 @@ const Navbar = () => {
 
   return (
     <>
-      <header className="flex fixed justify-between items-center h-16 w-full p-3 border border-shadow-green-offset bg-black z-10">
+      <header className="flex fixed justify-between items-center h-12 w-full p-3 bg-black z-10">
         {/*Search Bar for small screens*/}
         {searchBarToggle ? (
           <div className="w-full xsm:fixed z-10 justify-center flex bg-black xsm:visible md:collapse md:absolute">
@@ -64,7 +64,7 @@ const Navbar = () => {
         {/*Hamburger Menu and Logo*/}
         <div className="flex md:gap-2 xsm:gap-1 md:text-2xl xsm:text-lg items-center">
           <div
-            className="hover:cursor-pointer lg:collapse lg:absolute xsm:visible xsm:static"
+            className="hover:cursor-pointer"
             onClick={() => toggleNav((prev) => !prev)}
           >
             {!navToggle ? (
@@ -72,10 +72,6 @@ const Navbar = () => {
             ) : (
               <h2>X</h2>
             )}
-          </div>
-
-          <div className="xsm:collapse xsm:absolute lg:static lg:visible">
-            <FontAwesomeIcon icon={faBarsStaggered} />
           </div>
 
           <h1 onClick={() => navigate("/")} className="hover:cursor-pointer">
@@ -113,12 +109,8 @@ const Navbar = () => {
         </div>
       </header>
 
-      <aside className="lg:collapse lg:absolute md:visible md:static z-10">
-        {navToggle ? <HeaderNavbar /> : <></>}
-      </aside>
-
-      <aside className="xsm:collapse lg:visible z-10">
-        <HeaderNavbar />
+      <aside>
+        {navToggle ? <HeaderNavbar closeNavigation={closeNavigation} /> : <></>}
       </aside>
 
       {user && accessToken ? (

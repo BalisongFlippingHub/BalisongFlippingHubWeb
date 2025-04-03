@@ -7,7 +7,11 @@ const CommunityPage = () => {
     };
   }, []);
 
-  return <section className="flex flex-col items-center"></section>;
+  return (
+    <>
+      <section className="w-full h-screen"></section>
+    </>
+  )
 };
 
 export default CommunityPage;
