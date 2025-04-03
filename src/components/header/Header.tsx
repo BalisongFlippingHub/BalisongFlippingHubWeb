@@ -79,13 +79,12 @@ const Navbar = () => {
           </h1>
         </div>
 
-        {/*Search Bar*/}
-        <div className="md:visible md:static xsm:collapse xsm:absolute">
-          <SearchBar toggleSearchBar={toggleSearchBar} />
-        </div>
-
         {/*Profile Display or Login/Registration Btn and Search Bar Toggle*/}
         <div className="flex items-center sm:gap-4 xsm:gap-2">
+        <div className="md:visible md:static xsm:collapse xsm:absolute justify-self-center">
+          <SearchBar toggleSearchBar={toggleSearchBar} />
+        </div>
+        
           <div
             className="xsm:visible xsm:static md:collapse md:absolute hover:cursor-pointer"
             onClick={() => toggleSearchBar()}

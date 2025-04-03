@@ -38,8 +38,8 @@ const HeaderNavbar = ({ closeNavigation }: params) => {
 
   return (
     <>
-      <div className="w-full h-screen absolute flex">
-        <nav className="w-60 bg-black h-[calc(100vh_-_48px)] mt-[48px] z-10">
+      <div className="w-full h-screen absolute flex transition-transform ease-in">
+        <nav className="md:w-60 xsm:w-full bg-black h-[calc(100vh_-_48px)] mt-[48px] z-10">
            <div className="flex flex-col">
          <NavLink
           to="/community"

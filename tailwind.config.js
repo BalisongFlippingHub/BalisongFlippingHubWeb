@@ -25,7 +25,8 @@ export default {
       'md': '950px',
       'lg': '1310px'
     },
-    extend: {},
+    extend: {
+    },
   },
   plugins: [],
 }

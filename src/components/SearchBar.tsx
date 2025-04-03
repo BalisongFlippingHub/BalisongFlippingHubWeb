@@ -14,19 +14,19 @@ const SearchBar = ({ toggleSearchBar }: params) => {
   };
 
   return (
-    <div className="relative">
-      <div className="flex items-center w-full">
+    <div className="">
+      <div className="flex items-center w-96 border rounded-full overflow-hidden">
         <input
           placeholder="Search..."
-          className="p-2 w-full bg-shadow-green-offset"
+          className="w-full bg-black"
           onChange={handleOnChange}
         />
         <FontAwesomeIcon
           icon={faMagnifyingGlass}
-          className="p-2 h-7 hover:cursor-pointer"
+          className="hover:cursor-pointer"
         />
         <button
-          className="md:collapse ml-2 text-lg hover:cursor-pointer"
+          className="md:collapse ml-2 hover:cursor-pointer"
           type="button"
           onClick={() => toggleSearchBar()}
         >
@@ -37,7 +37,7 @@ const SearchBar = ({ toggleSearchBar }: params) => {
       {!showResults ? (
         <></>
       ) : (
-        <div className="absolute bg-white h-10 w-full"></div>
+        <div className="absolute bg-white w-full"></div>
       )}
     </div>
   );
