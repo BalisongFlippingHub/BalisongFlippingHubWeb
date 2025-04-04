@@ -30,7 +30,7 @@ const HomePage = () => {
         
         {/*Introductory Section*/}
         <section className="h-screen text-white bg-[linear-gradient(0deg,_#108198_0%,_#001a1a_3%,_#023d42_22%,_#001314_35%,_#002e33_88%,_#108198_96%)]">
-          <div className="flex justify-center items-center gap-4 h-full w-full pl-5 pr-5">
+          <div className="flex xsm:flex-col-reverse lg:flex-row justify-center md:items-center xsm:items-start xsm:justify-end md:justify-center gap-4 h-full w-full pl-5 pr-5">
             <div className="flex flex-col items-center gap-8 p-10">
               <h4 className="text-5xl font-bold">Welcome!</h4>
 
@@ -75,7 +75,7 @@ const HomePage = () => {
             </div>
 
             {/*TODO- Will display video of professional flipping on loop*/}
-            <div className="w-full h-[30rem]">
+            <div className="w-full lg:h-[30rem] md:h-[15rem] xsm:h-36">
               <HomePageCaurosel />
             </div>
           </div>
