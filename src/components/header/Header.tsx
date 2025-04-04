@@ -51,7 +51,7 @@ const Navbar = () => {
 
   return (
     <>
-      <header className="flex fixed justify-between items-center h-12 w-full p-3 bg-black z-10">
+      <header className="flex fixed justify-between items-center h-14 w-full p-3 bg-black z-10 text-white">
         {/*Search Bar for small screens*/}
         {searchBarToggle ? (
           <div className="w-full xsm:fixed z-10 justify-center flex bg-black xsm:visible md:collapse md:absolute">
@@ -108,8 +108,22 @@ const Navbar = () => {
         </div>
       </header>
 
-      <aside>
+      {/* <aside>
         {navToggle ? <HeaderNavbar closeNavigation={closeNavigation} /> : <></>}
+      </aside> */}
+
+      <aside>
+        {
+          navToggle
+          ?
+          <div className="absolute w-full transition duration-500 ease-in-out">
+            <HeaderNavbar closeNavigation={closeNavigation} />
+          </div>
+          :
+          <div className="absolute w-full -translate-x-full transition duration-500 ease-in-out">
+            <HeaderNavbar closeNavigation={closeNavigation} />
+          </div>
+        }
       </aside>
 
       {user && accessToken ? (

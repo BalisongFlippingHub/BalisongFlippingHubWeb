@@ -14,25 +14,26 @@ const SearchBar = ({ toggleSearchBar }: params) => {
   };
 
   return (
-    <div className="">
+    <div className="flex">
       <div className="flex items-center w-96 border rounded-full overflow-hidden">
         <input
           placeholder="Search..."
-          className="w-full bg-black"
+          className="w-full bg-black pl-6 pt-2 pb-2 pr-4 outline-none"
           onChange={handleOnChange}
         />
         <FontAwesomeIcon
           icon={faMagnifyingGlass}
-          className="hover:cursor-pointer"
+          className="hover:cursor-pointer mr-4"
         />
-        <button
+      </div>
+
+      <button
           className="md:collapse ml-2 hover:cursor-pointer"
           type="button"
           onClick={() => toggleSearchBar()}
         >
           X
         </button>
-      </div>
 
       {!showResults ? (
         <></>

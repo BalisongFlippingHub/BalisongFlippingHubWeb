@@ -36,14 +36,15 @@ const GoogleLoginComponent = () => {
     }, [user])
 
     return (
-        <div className="flex items-center bg-blue justify-between p-1 hover:cursor-pointer" onClick={() => loginWithGoogle()}>
-            <div className="p-2 bg-white">
+        <button className="flex items-center bg-blue justify-between gap-2 p-1 hover:cursor-pointer hover:translate-x-4 hover:-translate-y-2 transition duration-150 ease-in-out rounded text-xl" type="button" onClick={() => loginWithGoogle()}>
+            <div className="p-1 pr-2 pl-2 bg-white">
                 <FontAwesomeIcon icon={faGoogle} style={{ color: "black",}} />
             </div>
-            <div className="text-white pr-5">
-                <h4>Sign In Google</h4>
+
+            <div className="text-white">
+                <h4>Sign in with Google</h4>
             </div>
-        </div>
+        </button>
     )
 }
 

@@ -14,6 +14,7 @@ export default {
       'blue': '#0066ff',
       'red': '#b91c1c',
       'green': '#22c55e',
+      'instagram-pink': '#e1306c',
       'gold': '#e6b800',
       'shadow-red': '#1a0000',
       'shadow-red-offset': '#330000',

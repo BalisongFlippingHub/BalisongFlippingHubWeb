@@ -1,67 +1,107 @@
+/** 
+ * Home Page Component, Parent Component
+ * URL: /
+ * 
+*/
+
 import { useNavigate } from "react-router-dom";
 import HomePageCaurosel from "../components/HomePageCaurosel";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faGlobe, faEarthAmericas } from "@fortawesome/free-solid-svg-icons";
+import { faGlobe, faEarthAmericas, faArrowDown } from "@fortawesome/free-solid-svg-icons";
 import { faHubspot } from "@fortawesome/free-brands-svg-icons";
 import { useAppSelector } from "../redux/hooks";
+import GoogleLoginComponent from "../components/login/GoogleLoginComponent";
+import InstagramLoginComponent from "../components/login/InstagramLoginComponent";
 
 const HomePage = () => {
+
+  // get user and access token from redux in case user already logged in
   const user = useAppSelector((state) => state.auth.user);
   const accessToken = useAppSelector((state) => state.auth.accessToken);
 
+  // necessary to navigate from this page through buttons
   const navigate = useNavigate();
 
   return (
-    <>
-      <section className="h-screen pt-[42px] text-white">
-        <div className="flex justify-center items-center gap-4 h-full w-full pl-5 pr-5">
-          <div className="flex flex-col items-center gap-8">
-            <h4 className="text-4xl font-bold">Welcome!</h4>
+    <div className="flex flex-col items-center">
 
-            <p className="text-2xl xsm:text-xl/8 text-center">
-              Welcome to the Balisong Flipping Center! The central hub for
-              balisong related content and the home of knife enthusiest,
-              flippers, modders and more. Scroll to learn more, or make an
-              account today to jump right into the balisong community.
-            </p>
+      {/*Set max width so content doesn't stretch too much on wide screens*/}
+      <div className="max-w-[1775px]">
+        
+        {/*Introductory Section*/}
+        <section className="h-screen text-white bg-[linear-gradient(0deg,_#108198_0%,_#001a1a_3%,_#023d42_22%,_#001314_35%,_#002e33_88%,_#108198_96%)]">
+          <div className="flex justify-center items-center gap-4 h-full w-full pl-5 pr-5">
+            <div className="flex flex-col items-center gap-8 p-10">
+              <h4 className="text-5xl font-bold">Welcome!</h4>
 
-            {user && accessToken && accessToken !== "" ? (
-              <button
-                type="button"
-                className="p-4 rounded bg-black text-xl border"
-              >
-                To Profile
-              </button>
-            ) : (
-              <>
-                <button
-                  type="button"
-                  onClick={() => navigate("/register")}
-                  className="p-2 rounded bg-black hover:border hover:border-white border border-shadow-green text-xl"
-                >
-                  Register Now
-                </button>
+              <p className="text-3xl xsm:text-xl/8 text-center">
+                Welcome to the Balisong Flipping Center! The central hub for
+                balisong related content and the home of knife enthusiest,
+                flippers, modders and more. Scroll to learn more, or make an
+                account today to jump right into the community.
+              </p>
 
-                <div className="flex gap-2 items-center">
-                  <p>Already have an account?</p>
-                  <button
-                    type="button"
-                    onClick={() => navigate("/login")}
-                    className="underline hover:text-blue"
-                  >
-                    Login Here
-                  </button>
+              {
+                user && accessToken && accessToken !== ""
+                ?
+                <div className="">
+                  <p className="text-white text-xl">You are logged in!</p>
                 </div>
-              </>
-            )}
+                :
+                <div className="flex flex-col items-center gap-5">
+
+                  {/*Button navigates user to registration page*/}
+                  <button className="p-2 bg-black font-bold text-xl rounded hover:scale-125 transition duration-200 ease-in" type="button" onClick={() => navigate("/register")}><h4>Register Here</h4></button>
+                  
+                  <p>Or</p>
+
+                  {/*Components allow user to either login or register easily with oath2*/}
+                  <div className="flex gap-4">
+                    <GoogleLoginComponent />
+                    <InstagramLoginComponent />
+                  </div>
+                </div>
+              }
+              
+              <span className="w-full h-[.5px] bg-white"></span>
+
+              <div className="text-xl text-center">
+                <p className="mb-4">Scroll to learn more and get a tour of the application.</p>
+
+                {/*TODO- Enable users to click on the arrow to automatically scroll to the next section in full screen*/}
+                <FontAwesomeIcon icon={faArrowDown} size="xl"/>
+              </div>
+
+            </div>
+
+            {/*TODO- Will display video of professional flipping on loop*/}
+            <div className="w-full h-[30rem]">
+              <HomePageCaurosel />
+            </div>
           </div>
+        </section>
+        
+        {/*Community Info Section*/}
+        <section className="w-full h-screen bg-black text-white flex items-center justify-center">
+            <h1>TODO - Community</h1>
+        </section>
 
-          <HomePageCaurosel />
-        </div>
-      </section>
+        {/*Product World Info Section*/}
+        <section className="w-full h-screen bg-shadow-green text-white flex items-center justify-center">
+          <h1>TODO - Product World</h1>
+        </section>
 
-      
-    </>
+        {/*Tutorial Center Info Section*/}
+        <section className="w-full h-screen bg-blue text-white flex items-center justify-center">
+          <h1>TODO - Tutorial Center</h1>
+        </section>
+
+        {/*Footer Section for disclosures and such*/}
+        <footer className="w-full h-20 bg-gold text-xl font-bold flex items-center justify-center">
+            <h1>TODO - Footer Section</h1>
+        </footer>
+      </div>
+    </div>
     // <>
     //   <section className="md:h-screen xsm:h-auto text-lg font-semibold pt-[48px] lg:pl-[192px] flex flex-col relative bg-shadow-green-offset">
     //     <div className="w-full md:h-1/2 xsm:h-auto flex md:flex-row xsm:flex-col-reverse">
