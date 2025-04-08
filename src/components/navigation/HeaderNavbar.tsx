@@ -15,7 +15,7 @@ import { faHubspot } from "@fortawesome/free-brands-svg-icons";
 import { useAppSelector } from "../../redux/hooks";
 
 interface params {
-  closeNavigation: Function
+  closeNavigation: () => void
 }
 
 const HeaderNavbar = ({ closeNavigation }: params) => {
@@ -39,12 +39,12 @@ const HeaderNavbar = ({ closeNavigation }: params) => {
   return (
     <>
       <div className="w-full h-screen flex fixed">
-        <nav className="md:w-60 xsm:w-full bg-black h-[calc(100vh_-_50px)] mt-[50px] z-10 text-white">
+        <nav className="md:w-60 xsm:w-full bg-black h-[calc(100vh_-_48px)] mt-[48px] z-10 text-white">
            <div className="flex flex-col">
          <NavLink
           to="/community"
           style={navlinkStyles}
-          className="p-3 pl-4 w-full  flex items-center justify-between transition duration-500 ease-in"
+          className="p-3 pl-4 w-full  flex items-center justify-between"
         >
           <FontAwesomeIcon icon={faGlobe} />
           <h1>Community</h1>

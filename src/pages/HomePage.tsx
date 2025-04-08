@@ -29,13 +29,13 @@ const HomePage = () => {
       <div className="max-w-[1775px]">
         
         {/*Introductory Section*/}
-        <section className="h-screen text-white bg-[linear-gradient(0deg,_#108198_0%,_#001a1a_3%,_#023d42_22%,_#001314_35%,_#002e33_88%,_#108198_96%)]">
+        <section className="lg:h-screen xsm:h-auto text-white bg-[linear-gradient(0deg,_#108198_0%,_#001a1a_3%,_#023d42_22%,_#001314_35%,_#002e33_88%,_#108198_96%)] pt-[39px]">
           
-          <div className="flex xsm:flex-col-reverse lg:flex-row justify-center md:items-center xsm:items-start xsm:justify-end md:justify-center gap-4 h-full w-full pl-5 pr-5">
-            <div className="flex flex-col items-center gap-8 p-10">
-              <h4 className="text-5xl font-bold">Welcome!</h4>
+          <div className="h-full flex lg:flex-row xsm:flex-col-reverse lg:items-center lg:pr-5 lg:pl-5 lg:gap-10 xsm:gap-5">
+            <div className="flex flex-col items-center gap-8 xsm:pl-5 xsm:pr-5">
+              <h4 className="md:text-5xl xsm:text-3xl font-bold">Welcome!</h4>
 
-              <p className="text-3xl xsm:text-xl/8 text-center">
+              <p className="md:text-2xl xsm:text-xl/8 text-center">
                 Welcome to the Balisong Flipping Center! The central hub for
                 balisong related content and the home of knife enthusiest,
                 flippers, modders and more. Scroll to learn more, or make an
@@ -57,7 +57,7 @@ const HomePage = () => {
                   <p>Or</p>
 
                   {/*Components allow user to either login or register easily with oath2*/}
-                  <div className="flex gap-4">
+                  <div className="flex xsm:flex-col md:flex-row gap-4">
                     <GoogleLoginComponent />
                     <InstagramLoginComponent />
                   </div>
@@ -76,7 +76,7 @@ const HomePage = () => {
             </div>
 
             {/*TODO- Will display video of professional flipping on loop*/}
-            <div className="w-full lg:h-[30rem] md:h-[15rem] xsm:h-36">
+            <div className="w-full lg:h-[30rem] md:h-[10rem] xsm:h-28">
               <HomePageCaurosel />
             </div>
           </div>

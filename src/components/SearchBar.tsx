@@ -3,7 +3,7 @@ import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
 import { useState } from "react";
 
 interface params {
-  toggleSearchBar: Function;
+  toggleSearchBar: () => void;
 }
 
 const SearchBar = ({ toggleSearchBar }: params) => {
@@ -14,8 +14,8 @@ const SearchBar = ({ toggleSearchBar }: params) => {
   };
 
   return (
-    <div className="flex">
-      <div className="flex items-center w-96 border rounded-full overflow-hidden">
+    <div className="flex h-9">
+      <div className="flex items-center md:w-96 xsm:w-70 border rounded-full overflow-hidden">
         <input
           placeholder="Search..."
           className="w-full bg-black pl-6 pt-2 pb-2 pr-4 outline-none"

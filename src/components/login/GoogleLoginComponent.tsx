@@ -36,7 +36,7 @@ const GoogleLoginComponent = () => {
     }, [user])
 
     return (
-        <button className="flex items-center bg-blue justify-between gap-2 p-1 hover:cursor-pointer hover:translate-x-4 hover:-translate-y-2 transition duration-150 ease-in-out rounded text-xl" type="button" onClick={() => loginWithGoogle()}>
+        <button className="flex items-center bg-blue justify-between gap-2 p-1 hover:cursor-pointer hover:scale-105 transition duration-200 ease-in rounded text-xl" type="button" onClick={() => loginWithGoogle()}>
             <div className="p-1 pr-2 pl-2 bg-white">
                 <FontAwesomeIcon icon={faGoogle} style={{ color: "black",}} />
             </div>

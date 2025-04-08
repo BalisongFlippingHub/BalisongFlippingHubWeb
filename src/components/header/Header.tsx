@@ -51,7 +51,7 @@ const Navbar = () => {
 
   return (
     <>
-      <header className="flex fixed justify-between items-center h-14 w-full p-3 bg-black z-10 text-white">
+      <header className="flex fixed justify-between items-center h-12 w-full p-3 bg-black z-10 text-white">
         {/*Search Bar for small screens*/}
         {searchBarToggle ? (
           <div className="w-full xsm:fixed z-10 justify-center flex bg-black xsm:visible md:collapse md:absolute">
@@ -80,7 +80,7 @@ const Navbar = () => {
         </div>
 
         {/*Profile Display or Login/Registration Btn and Search Bar Toggle*/}
-        <div className="flex items-center sm:gap-4 xsm:gap-2">
+        <div className="flex items-center md:gap-1 xsm:gap-2">
         <div className="md:visible md:static xsm:collapse xsm:absolute justify-self-center">
           <SearchBar toggleSearchBar={toggleSearchBar} />
         </div>
