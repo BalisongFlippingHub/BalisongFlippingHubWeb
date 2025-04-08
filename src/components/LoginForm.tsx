@@ -27,9 +27,9 @@ const LoginForm = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch<AppDispatch>();
 
-  const error = useSelector((state: RootState) => state.auth.error);
-  const errMsg = useSelector((state: RootState) => state.auth.errorMsg);
-  const isLoading = useSelector((state: RootState) => state.auth.loading);
+  // const error = useSelector((state: RootState) => state.auth.error);
+  // const errMsg = useSelector((state: RootState) => state.auth.errorMsg);
+  // const isLoading = useSelector((state: RootState) => state.auth.loading);
   const rememberInfo = useSelector(
     (state: RootState) => state.auth.rememberLoginCredentials
   );
