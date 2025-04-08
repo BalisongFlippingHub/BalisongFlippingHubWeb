@@ -97,126 +97,220 @@ const LoginForm = () => {
 
   /*HTML return for login form component*/
   return (
-    <section className="flex w-full h-screen sm:pt-[64px] xsm:pt-0 lg:pl-[192px] justify-center items-center text-white">
-      <form
-        className="p-8 flex justify-center items-center bg-shadow-green-offset sm:rounded-lg xsm:rounded-none md:w-2/6 sm:w-3/5 xsm:w-full xsm:h-full sm:h-auto text-xl"
-        onSubmit={handleSubmit}
-      >
-        <div className="flex flex-col gap-4">
-        <h2 className="m-auto text-3xl font-bold bg-shadow-green-offset">
-          Login
-        </h2>
+    <section className="w-full h-screen flex justify-center items-center">
+        <form onSubmit={handleSubmit} className="text-black w-full md:max-w-[500px] xsm:h-full md:h-auto border flex flex-col items-center xsm:justify-center md:justify-normal gap-4 p-10 bg-white md:rounded-lg">
+          <h1 className="text-4xl font-bold mb-10">Login</h1>
 
-        {/*Display of errors or alerts during use of login form*/}
-        {error ? (
-          <p className="text-red bg-shadow-green-offset m-auto">{errMsg}</p>
-        ) : (
-          <p className="text-shadow-green-offset bg-shadow-green-offset">
-            Fill
-          </p>
-        )}
-
-        {/*Email input field*/}
-        <div className="flex flex-col gap-1 bg-shadow-green-offset">
-          <label
-            htmlFor="emailInput"
-            className=" bg-shadow-green-offset font-semibold"
-          >
-            Email
-          </label>
-          <input
-            type="email"
-            id="emailInput"
-            ref={emailRef}
-            autoComplete="off"
-            onChange={(e) => handleOnChangeEmail(e)}
-            placeholder="example@email.com"
-            value={email}
-            required
-            className="text-white p-2 rounded-lg border border-black bg-shadow-green-offset"
-          />
-        </div>
-
-        {/*Password input field*/}
-        <div className="flex flex-col gap-1 bg-shadow-green-offset">
-          <label
-            htmlFor="passwordInput"
-            className=" bg-shadow-green-offset font-semibold"
-          >
-            Password
-          </label>
-          <input
-            type="password"
-            id="passwordInput"
-            ref={passwordRef}
-            onChange={(e) => handleOnChangePassword(e)}
-            value={password}
-            required
-            className="p-2 rounded-lg border border-black bg-shadow-green-offset"
-          />
-        </div>
-
-        {/*Check box for allowing the site to remember specific users*/}
-        <div className="flex gap-2 bg-shadow-green-offset items-center">
-          <label htmlFor="rememberMe" className="bg-shadow-green-offset xsm:text-lg">
-            Remember Me
-          </label>
-
-          {rememberInfo ? (
+          {/*Email input field*/}
+          <div className="flex flex-col w-full text-xl">
+            <label
+              htmlFor="emailInput"
+              className=""
+            >
+              Email
+            </label>
             <input
+              type="email"
+              id="emailInput"
+              ref={emailRef}
+              autoComplete="off"
+              onChange={(e) => handleOnChangeEmail(e)}
+              placeholder="Type your email"
+              value={email}
+              required
+              className="outline-none border-b pb-2 pt-2"
+            />
+          </div>
+
+         {/*Password input field*/}
+         <div className="flex flex-col w-full text-xl">
+            <label
+              htmlFor="passwordInput"
+              className=""
+            >
+              Password
+            </label>
+            <input
+              type="password"
+              id="passwordInput"
+              ref={passwordRef}
+              onChange={(e) => handleOnChangePassword(e)}
+              value={password}
+              placeholder="Type your password"
+              required
+              className="outline-none border-b pb-2 pt-2"
+            />
+          </div>
+
+          
+          <div className="w-full flex justify-between">
+            {/*Check box for allowing the site to remember specific users*/}
+            <div className="flex gap-1 items-center">
+              <label htmlFor="rememberMe" className="">
+              Remember Me
+              </label>
+
+              {rememberInfo ? (
+              <input
               defaultChecked
               type="checkbox"
               onClick={() => dispatch(toggleOffRememberLoginInfo())}
-            />
-          ) : (
-            <input
+              />
+              ) : (
+              <input
               type="checkbox"
               onClick={() => dispatch(setToRememberLoginInfo())}
-            />
-          )}
-        </div>
+              />
+              )}
+            </div>
 
-        {/*Submit button to login*/}
-        {isLoading ? (
-          <button disabled className="p-2 bg-shadow-green-offset rounded">
-            Loading...
-          </button>
-        ) : buttonDisabled ? (
-          <button
-            type="submit"
-            disabled
-            className="p-2 rounded bg-shadow-green"
-          >
-            Login
-          </button>
-        ) : (
-          <button
-            type="submit"
-            className="hover:cursor-pointer hover:bg-shadow p-2 rounded bg-shadow-green"
-          >
-            Login
-          </button>
-        )}
+            <button type="button">Forgot Password?</button>
+          </div>
 
-        {/*Redirect for users do not have an account.*/}
-        <div className="text-lg xsm:text-md flex items-center bg-shadow-green-offset">
-          <p className="bg-shadow-green-offset mr-2">Don't have an account?</p>
-          <h3
-            className="text-blue hover:text-light-blue hover:cursor-pointer bg-shadow-green-offset"
+          {/*SUBMIT Button*/}
+          <div className="w-full">
+              <button type="submit" className="text-3xl font-bold bg-blue p-2 w-full text-white rounded-full"><h3>Login</h3></button>
+          </div>
+            
+              {/*Redirect for users do not have an account.*/}
+         <div className="w-full flex justify-center gap-1">
+           <p className="">Don't have an account?</p>
+           <h3
+            className="text-blue hover:cursor-pointer hover:font-bold"
             onClick={() => navigate("/register")}
           >
             Register Here
           </h3>
         </div>
 
-        {/*TODO- create div for forgotten passwords*/}
+          <span><p>Or</p></span>
+          
+          <div>
+            <GoogleLoginComponent />
+          </div>
 
-        {/*TODO- Create div for oath loggins*/}
-        <GoogleLoginComponent />
-
-        </div>
-      </form>
+        </form>
     </section>
+    // <section className="flex w-full h-screen sm:pt-[64px] xsm:pt-0 lg:pl-[192px] justify-center items-center text-white">
+    //   <form
+    //     className="p-8 flex justify-center items-center bg-shadow-green-offset sm:rounded-lg xsm:rounded-none md:w-2/6 sm:w-3/5 xsm:w-full xsm:h-full sm:h-auto text-xl"
+    //     onSubmit={handleSubmit}
+    //   >
+    //     <div className="flex flex-col gap-4">
+    //     <h2 className="m-auto text-3xl font-bold bg-shadow-green-offset">
+    //       Login
+    //     </h2>
+
+    //     {/*Display of errors or alerts during use of login form*/}
+    //     {error ? (
+    //       <p className="text-red bg-shadow-green-offset m-auto">{errMsg}</p>
+    //     ) : (
+    //       <p className="text-shadow-green-offset bg-shadow-green-offset">
+    //         Fill
+    //       </p>
+    //     )}
+
+    //     {/*Email input field*/}
+    //     <div className="flex flex-col gap-1 bg-shadow-green-offset">
+    //       <label
+    //         htmlFor="emailInput"
+    //         className=" bg-shadow-green-offset font-semibold"
+    //       >
+    //         Email
+    //       </label>
+    //       <input
+    //         type="email"
+    //         id="emailInput"
+    //         ref={emailRef}
+    //         autoComplete="off"
+    //         onChange={(e) => handleOnChangeEmail(e)}
+    //         placeholder="example@email.com"
+    //         value={email}
+    //         required
+    //         className="text-white p-2 rounded-lg border border-black bg-shadow-green-offset"
+    //       />
+    //     </div>
+
+    //     {/*Password input field*/}
+    //     <div className="flex flex-col gap-1 bg-shadow-green-offset">
+    //       <label
+    //         htmlFor="passwordInput"
+    //         className=" bg-shadow-green-offset font-semibold"
+    //       >
+    //         Password
+    //       </label>
+    //       <input
+    //         type="password"
+    //         id="passwordInput"
+    //         ref={passwordRef}
+    //         onChange={(e) => handleOnChangePassword(e)}
+    //         value={password}
+    //         required
+    //         className="p-2 rounded-lg border border-black bg-shadow-green-offset"
+    //       />
+    //     </div>
+
+    //     {/*Check box for allowing the site to remember specific users*/}
+    //     <div className="flex gap-2 bg-shadow-green-offset items-center">
+    //       <label htmlFor="rememberMe" className="bg-shadow-green-offset xsm:text-lg">
+    //         Remember Me
+    //       </label>
+
+    //       {rememberInfo ? (
+    //         <input
+    //           defaultChecked
+    //           type="checkbox"
+    //           onClick={() => dispatch(toggleOffRememberLoginInfo())}
+    //         />
+    //       ) : (
+    //         <input
+    //           type="checkbox"
+    //           onClick={() => dispatch(setToRememberLoginInfo())}
+    //         />
+    //       )}
+    //     </div>
+
+    //     {/*Submit button to login*/}
+    //     {isLoading ? (
+    //       <button disabled className="p-2 bg-shadow-green-offset rounded">
+    //         Loading...
+    //       </button>
+    //     ) : buttonDisabled ? (
+    //       <button
+    //         type="submit"
+    //         disabled
+    //         className="p-2 rounded bg-shadow-green"
+    //       >
+    //         Login
+    //       </button>
+    //     ) : (
+    //       <button
+    //         type="submit"
+    //         className="hover:cursor-pointer hover:bg-shadow p-2 rounded bg-shadow-green"
+    //       >
+    //         Login
+    //       </button>
+    //     )}
+
+    //     {/*Redirect for users do not have an account.*/}
+    //     <div className="text-lg xsm:text-md flex items-center bg-shadow-green-offset">
+    //       <p className="bg-shadow-green-offset mr-2">Don't have an account?</p>
+    //       <h3
+    //         className="text-blue hover:text-light-blue hover:cursor-pointer bg-shadow-green-offset"
+    //         onClick={() => navigate("/register")}
+    //       >
+    //         Register Here
+    //       </h3>
+    //     </div>
+
+    //     {/*TODO- create div for forgotten passwords*/}
+
+    //     {/*TODO- Create div for oath loggins*/}
+    //     <GoogleLoginComponent />
+
+    //     </div>
+    //   </form>
+    // </section>
   );
 };
 
