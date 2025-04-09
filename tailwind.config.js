@@ -27,6 +27,14 @@ export default {
       'lg': '1310px'
     },
     extend: {
+      keyframes: {
+        fade_in_out: {
+          to: { opacity: '1' }
+        }
+      },
+      animation: {
+        'text-fade': 'fade_in_out 5s linear'
+      }, 
     },
   },
   plugins: [],

@@ -4,23 +4,13 @@
  * 
 */
 
-import { useNavigate } from "react-router-dom";
-import HomePageCaurosel from "../components/HomePageCaurosel";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faGlobe, faEarthAmericas, faArrowDown } from "@fortawesome/free-solid-svg-icons";
+import { faGlobe, faEarthAmericas } from "@fortawesome/free-solid-svg-icons";
 import { faHubspot } from "@fortawesome/free-brands-svg-icons";
-import { useAppSelector } from "../redux/hooks";
-import GoogleLoginComponent from "../components/login/GoogleLoginComponent";
-import InstagramLoginComponent from "../components/login/InstagramLoginComponent";
+
+import HomePageIntroductorySectionComponent from "../components/homePageComponents/HomePageIntroductorySectionComponent";
 
 const HomePage = () => {
-
-  // get user and access token from redux in case user already logged in
-  const user = useAppSelector((state) => state.auth.user);
-  const accessToken = useAppSelector((state) => state.auth.accessToken);
-
-  // necessary to navigate from this page through buttons
-  const navigate = useNavigate();
 
   return (
     <div className="flex flex-col items-center">
@@ -29,58 +19,7 @@ const HomePage = () => {
       <div className="max-w-[1775px]">
         
         {/*Introductory Section*/}
-        <section className="lg:h-screen xsm:h-auto text-white bg-[linear-gradient(0deg,_#108198_0%,_#001a1a_3%,_#023d42_22%,_#001314_35%,_#002e33_88%,_#108198_96%)] pt-[39px]">
-          
-          <div className="h-full flex lg:flex-row xsm:flex-col-reverse lg:items-center lg:pr-5 lg:pl-5 lg:gap-10 xsm:gap-5">
-            <div className="flex flex-col items-center gap-8 xsm:pl-5 xsm:pr-5">
-              <h4 className="md:text-5xl xsm:text-3xl font-bold">Welcome!</h4>
-
-              <p className="md:text-2xl xsm:text-xl/8 text-center">
-                Welcome to the Balisong Flipping Center! The central hub for
-                balisong related content and the home of knife enthusiest,
-                flippers, modders and more. Scroll to learn more, or make an
-                account today to jump right into the community.
-              </p>
-
-              {
-                user && accessToken && accessToken !== ""
-                ?
-                <div className="">
-                  <p className="text-white text-xl">You are logged in!</p>
-                </div>
-                :
-                <div className="flex flex-col items-center gap-5">
-
-                  {/*Button navigates user to registration page*/}
-                  <button className="p-2 bg-black font-bold text-xl rounded hover:scale-125 transition duration-200 ease-in" type="button" onClick={() => navigate("/register")}><h4>Register Here</h4></button>
-                  
-                  <p>Or</p>
-
-                  {/*Components allow user to either login or register easily with oath2*/}
-                  <div className="flex xsm:flex-col md:flex-row gap-4">
-                    <GoogleLoginComponent />
-                    <InstagramLoginComponent />
-                  </div>
-                </div>
-              }
-              
-              <span className="w-full h-[.5px] bg-white"></span>
-
-              <div className="text-xl text-center">
-                <p className="mb-4">Scroll to learn more and get a tour of the application.</p>
-
-                {/*TODO- Enable users to click on the arrow to automatically scroll to the next section in full screen*/}
-                <FontAwesomeIcon icon={faArrowDown} size="xl"/>
-              </div>
-
-            </div>
-
-            {/*TODO- Will display video of professional flipping on loop*/}
-            <div className="w-full lg:h-[30rem] md:h-[10rem] xsm:h-28">
-              <HomePageCaurosel />
-            </div>
-          </div>
-        </section>
+        <HomePageIntroductorySectionComponent />
         
         {/*Community Info Section*/}
         <section className="w-full h-screen bg-black text-white flex items-center justify-center">
