@@ -38,8 +38,8 @@ const HeaderNavbar = ({ closeNavigation }: params) => {
 
   return (
     <>
-      <div className="w-full h-screen flex fixed">
-        <nav className="md:w-60 xsm:w-full bg-black h-[calc(100vh_-_48px)] mt-[48px] z-10 text-white">
+      <div className="w-full flex z-10">
+        <nav className="md:w-60 xsm:w-full bg-black z-10 text-white">
            <div className="flex flex-col">
          <NavLink
           to="/community"
@@ -143,7 +143,7 @@ const HeaderNavbar = ({ closeNavigation }: params) => {
         </nav>
 
         
-        <div onClick={() => closeNavigation()} className="w-full h-screen bg-black/[.5] sm:relative xsm:absolute"></div>
+        <div onClick={() => closeNavigation()} className="w-full h-screen bg-black/[.5] sm:relative xsm:absolute z-10"></div>
       </div>
     </>
   );

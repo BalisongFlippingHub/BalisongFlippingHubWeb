@@ -51,7 +51,7 @@ const Navbar = () => {
 
   return (
     <>
-      <header className="flex fixed justify-between items-center h-12 w-full p-3 bg-black z-10 text-white">
+      <header className="flex sticky top-0 justify-between items-center h-12 w-full p-3 bg-black z-10 text-white">
         {/*Search Bar for small screens*/}
         {searchBarToggle ? (
           <div className="w-full xsm:fixed z-10 justify-center flex bg-black xsm:visible md:collapse md:absolute">
@@ -112,7 +112,7 @@ const Navbar = () => {
         {navToggle ? <HeaderNavbar closeNavigation={closeNavigation} /> : <></>}
       </aside> */}
 
-      <aside>
+      <aside className="sticky left-0 top-[48px] z-10">
         {
           navToggle
           ?
