@@ -14,16 +14,17 @@ const SearchBar = ({ toggleSearchBar }: params) => {
   };
 
   return (
-    <div className="flex h-9">
-      <div className="flex items-center md:w-96 xsm:w-70 border rounded-full overflow-hidden">
+    <div className="flex">
+      <div className="flex items-center justify-end pt-1 pb-1 pl-6 pr-3 gap-2 border rounded-full">
         <input
           placeholder="Search..."
-          className="w-full bg-black pl-6 pt-2 pb-2 pr-4 outline-none"
+          className="md:w-96 xsm:w-70 outline-none text-white bg-blue bg-opacity-0 pb-px pt-px"
           onChange={handleOnChange}
         />
         <FontAwesomeIcon
           icon={faMagnifyingGlass}
-          className="hover:cursor-pointer mr-4"
+          size="xl"
+          className="hover:cursor-pointer"
         />
       </div>
 

@@ -7,6 +7,7 @@ import SearchBar from "../SearchBar";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faBarsStaggered,
+  faCircleUser,
   faMagnifyingGlass,
 } from "@fortawesome/free-solid-svg-icons";
 import HeaderNavbarBottom from "../navigation/HeaderNavbarBottom";
@@ -51,10 +52,10 @@ const Navbar = () => {
 
   return (
     <>
-      <header className="flex sticky top-0 justify-between items-center h-12 w-full p-3 bg-black z-10 text-white">
+      <header className="flex sticky top-0 justify-between items-center h-18 w-full pt-3 pb-3 md:pl-5 xsm:pl-2 xsm:pr-2 md:pr-5 z-10 text-white backdrop-filter backdrop-blur-xl bg-opacity-0 bg-blue border-b overflow-hidden">
         {/*Search Bar for small screens*/}
         {searchBarToggle ? (
-          <div className="w-full xsm:fixed z-10 justify-center flex bg-black xsm:visible md:collapse md:absolute">
+          <div className="absolute top-0 left-0 right-0 bottom-0 flex items-center justify-center bg-black">
             <SearchBar toggleSearchBar={toggleSearchBar} />
           </div>
         ) : (
@@ -74,16 +75,16 @@ const Navbar = () => {
             )}
           </div>
 
-          <h1 onClick={() => navigate("/")} className="hover:cursor-pointer">
+          <h1 onClick={() => navigate("/")} className="hover:cursor-pointer font-bold lg:text-3xl xsm:text-xl">
             Balisong Flipping Center
           </h1>
         </div>
 
         {/*Profile Display or Login/Registration Btn and Search Bar Toggle*/}
-        <div className="flex items-center md:gap-1 xsm:gap-2">
-        <div className="md:visible md:static xsm:collapse xsm:absolute justify-self-center">
-          <SearchBar toggleSearchBar={toggleSearchBar} />
-        </div>
+        <div className="flex items-center md:gap-0 xsm:gap-2">
+          <div className="md:visible md:static xsm:collapse xsm:absolute justify-self-center">
+            <SearchBar toggleSearchBar={toggleSearchBar} />
+          </div>
         
           <div
             className="xsm:visible xsm:static md:collapse md:absolute hover:cursor-pointer"
@@ -98,10 +99,10 @@ const Navbar = () => {
             <div className="flex gap-1 items-center text-lg">
               <button
                 type="button"
-                className="bg-shadow-green-offset pl-4 pr-4 pt-1 pb-1 rounded-lg hover:bg-shadow-green-offset border border-black hover:border-white"
+                className="focus:none underline underline-offset-4"
                 onClick={() => navigate("/login")}
               >
-                Login
+                <FontAwesomeIcon icon={faCircleUser} size="xl"/>
               </button>
             </div>
           )}
@@ -112,7 +113,7 @@ const Navbar = () => {
         {navToggle ? <HeaderNavbar closeNavigation={closeNavigation} /> : <></>}
       </aside> */}
 
-      <aside className="sticky left-0 top-[48px] z-10">
+      <aside className="sticky left-0 top-[61px] z-10">
         {
           navToggle
           ?
