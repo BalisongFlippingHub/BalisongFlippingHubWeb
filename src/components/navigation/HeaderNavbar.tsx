@@ -9,11 +9,10 @@ import {
 import { faHubspot } from "@fortawesome/free-brands-svg-icons";
 
 const HeaderNavbar = () => {
-
   const navlinkStyles = ({ isActive }: NavLinkRenderProps) => {
     return {
       fontWeight: isActive ? "bold" : "normal",
-      borderBottom: isActive ? "2px solid white" : "none"
+      borderBottom: isActive ? "2px solid white" : "none",
     };
   };
 

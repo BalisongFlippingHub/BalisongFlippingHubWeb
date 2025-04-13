@@ -40,21 +40,20 @@ const Navbar = () => {
   useEffect(() => {
     if (navToggle) {
       if (windowSize.at(1)! < 950) {
-        toggleNav(false)
+        toggleNav(false);
       }
-    }
-    else {
+    } else {
       if (windowSize.at(1)! > 950) {
-        toggleNav(true)
+        toggleNav(true);
       }
     }
 
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [windowSize.at(1)])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [windowSize.at(1)]);
 
   useEffect(() => {
     setCurrURL(location.pathname);
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
@@ -66,7 +65,7 @@ const Navbar = () => {
         setAccountToggle(false);
       }
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [location]);
 
   return (
@@ -88,7 +87,7 @@ const Navbar = () => {
               className="hover:cursor-pointer"
               onClick={() => toggleNav((prev) => !prev)}
             >
-              <FontAwesomeIcon icon={faBarsStaggered}/>
+              <FontAwesomeIcon icon={faBarsStaggered} />
             </div>
 
             <h1
@@ -99,7 +98,6 @@ const Navbar = () => {
             </h1>
           </div>
 
-          
           <div className="flex items-center md:gap-0 xsm:gap-2">
             {windowSize.at(1)! > 950 ? (
               <SearchBar toggleSearchBar={toggleSearchBar} />

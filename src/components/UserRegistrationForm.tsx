@@ -7,7 +7,6 @@ import { clearError, setError } from "../redux/auth/authSlice";
 import { useAppSelector } from "../redux/hooks";
 import { setCollection } from "../redux/collection/collectionSlice";
 
-
 const badDisplayNames = [
   "fuck",
   "bitch",
@@ -182,165 +181,146 @@ const UserRegistrationForm = () => {
   };
 
   return (
-    <section className="sm:w-3/4 xsm:w-full xsm:h-full sm:h-auto flex xsm:flex-col md:flex-row">
-      {/*Create Account Caption*/}
-      <div className="md:w-1/2 xsm:w-full bg-shadow xsm:h-[8%] md:h-auto flex items-center justify-center">
-        <h3 className="text-xl font-bold">
-          Start your flipping journey today.
-        </h3>
-      </div>
+    <section className="md:h-screen xsm:h-auto flex justify-center items-center md:-translate-y-[40px]">
+      <div className="flex md:flex-row xsm:flex-col bg-white md:w-4/6 xsm:w-full">
+        {/*Create Account Caption*/}
+        <div className="flex flex-col justify-center items-center bg-shadow md:w-1/2 xsm:w-full">
+          <h3 className="text-xl font-bold">
+            Start your flipping journey today.
+          </h3>
 
-      {/*Registration Form*/}
-      <form
-        className="flex flex-col gap-3 text-lg xsm:w-full md:w-1/2 xsm:h-[92%] sm:h-auto bg-shadow-green-offset p-12"
-        onSubmit={handleSubmit}
-      >
-        {/*Form Title*/}
-        <div className="flex justify-center items-center flex flex-col">
-          <h1 className="text-4xl">Register Here</h1>
-          {isError ? (
-            errMsg === "Error registering new account." ? (
-              <p className="text-red">{errMsg}</p>
-            ) : (
-              <p className="invisible">Fill</p>
-            )
+          {/*Link to login*/}
+          <div className="flex sm:text-lg xsm:text-sm">
+            <h4>Already have an account?</h4>
+            <button
+              className="ml-2 text-blue hover:text-light-blue"
+              onClick={() => navigate("/login")}
+            >
+              Login here
+            </button>
+          </div>
+        </div>
+
+        {/*Registration Form*/}
+        <form
+          className="flex flex-col gap-5 items-center md:w-1/2 xsm:w-full p-10"
+          onSubmit={handleSubmit}
+        >
+          {/*Email Input Field*/}
+          <div className="flex flex-col gap-1 w-full">
+            <div className="flex gap-2">
+              <label className="font-semibold">*Email</label>
+              {isError ? (
+                errMsg === "Email already exists." ? (
+                  <p className="text-red">{errMsg}</p>
+                ) : (
+                  <></>
+                )
+              ) : (
+                <></>
+              )}
+            </div>
+
+            <input
+              type="email"
+              required
+              ref={emailRef}
+              onChange={(e) => setEmail(e.target.value)}
+              value={email}
+              className="focus:outline-none border-b"
+            />
+          </div>
+
+          {/*Display Name Input Field*/}
+          <div className="flex flex-col gap-1 w-full">
+            <div className="flex gap-2">
+              <label className="font-semibold">Display Name</label>
+              {isError ? (
+                errMsg === "*Inappropriate display name.*" ? (
+                  <p className="text-red">{errMsg}</p>
+                ) : (
+                  <></>
+                )
+              ) : (
+                <></>
+              )}
+            </div>
+
+            <input
+              type="text"
+              ref={displayNameRef}
+              onChange={(e) => handleDisplayNameChange(e)}
+              value={displayName}
+              className="focus:outline-none border-b"
+            />
+          </div>
+
+          {/*Password Input Field*/}
+          <div className="flex flex-col gap-1 w-full">
+            <div className="flex gap-2">
+              <label className="font-semibold">*Password</label>
+              {isError ? (
+                errMsg === "*Passwords do not match.*" ? (
+                  <p className="text-red">{errMsg}</p>
+                ) : (
+                  <></>
+                )
+              ) : (
+                <></>
+              )}
+            </div>
+
+            <input
+              type="password"
+              required
+              ref={passwordRef}
+              onChange={(e) => handlePasswordChange(e)}
+              value={password}
+              className="focus:outline-none border-b"
+            />
+          </div>
+
+          {/*Confirm Password Input Field*/}
+          <div className="flex flex-col gap-1 w-full">
+            <div className="flex gap-2">
+              <label className="font-semibold">*Confirm Password</label>
+              {isError ? (
+                errMsg === "*Passwords do not match.*" ? (
+                  <p className="text-red">{errMsg}</p>
+                ) : (
+                  <></>
+                )
+              ) : (
+                <></>
+              )}
+            </div>
+
+            <input
+              type="password"
+              required
+              ref={confirmPasswordRef}
+              onChange={(e) => handleConfirmedPasswordChange(e)}
+              value={confirmedPassword}
+              className="focus:outline-none border-b"
+            />
+          </div>
+
+          {/*Create Account Button*/}
+          {isLoading ? (
+            <button disabled className="">
+              Loading...
+            </button>
+          ) : buttonDisabled ? (
+            <button type="submit" disabled className="">
+              Create Account
+            </button>
           ) : (
-            <p className="invisible">Fill</p>
+            <button type="submit" className=" hover:bg-shadow">
+              Create Account
+            </button>
           )}
-        </div>
-
-        {/*Email Input Field*/}
-        <div className="flex flex-col gap-1">
-          <div className="flex gap-2">
-            <label className="font-semibold">*Email</label>
-            {isError ? (
-              errMsg === "Email already exists." ? (
-                <p className="text-red">{errMsg}</p>
-              ) : (
-                <></>
-              )
-            ) : (
-              <></>
-            )}
-          </div>
-
-          <input
-            type="email"
-            required
-            ref={emailRef}
-            onChange={(e) => setEmail(e.target.value)}
-            value={email}
-            className="bg-inherit border border-black rounded-lg p-2"
-          />
-        </div>
-
-        {/*Display Name Input Field*/}
-        <div className="flex flex-col gap-1">
-          <div className="flex gap-2">
-            <label className="font-semibold">Display Name</label>
-            {isError ? (
-              errMsg === "*Inappropriate display name.*" ? (
-                <p className="text-red">{errMsg}</p>
-              ) : (
-                <></>
-              )
-            ) : (
-              <></>
-            )}
-          </div>
-
-          <input
-            type="text"
-            ref={displayNameRef}
-            onChange={(e) => handleDisplayNameChange(e)}
-            value={displayName}
-            className="border border-black rounded-lg bg-inherit p-2"
-          />
-        </div>
-
-        {/*Password Input Field*/}
-        <div className="flex flex-col gap-1">
-          <div className="flex gap-2">
-            <label className="font-semibold">*Password</label>
-            {isError ? (
-              errMsg === "*Passwords do not match.*" ? (
-                <p className="text-red">{errMsg}</p>
-              ) : (
-                <></>
-              )
-            ) : (
-              <></>
-            )}
-          </div>
-
-          <input
-            type="password"
-            required
-            ref={passwordRef}
-            onChange={(e) => handlePasswordChange(e)}
-            value={password}
-            className="border rounded-lg border-black bg-inherit p-2"
-          />
-        </div>
-
-        {/*Confirm Password Input Field*/}
-        <div className="flex flex-col gap-1">
-          <div className="flex gap-2">
-            <label className="font-semibold">*Confirm Password</label>
-            {isError ? (
-              errMsg === "*Passwords do not match.*" ? (
-                <p className="text-red">{errMsg}</p>
-              ) : (
-                <></>
-              )
-            ) : (
-              <></>
-            )}
-          </div>
-
-          <input
-            type="password"
-            required
-            ref={confirmPasswordRef}
-            onChange={(e) => handleConfirmedPasswordChange(e)}
-            value={confirmedPassword}
-            className="border rounded-lg border-black bg-inherit p-2"
-          />
-        </div>
-
-        {/*Create Account Button*/}
-        {isLoading ? (
-          <button disabled className="p-3 bg-shadow-green rounded text-xl">
-            Loading...
-          </button>
-        ) : buttonDisabled ? (
-          <button
-            type="submit"
-            disabled
-            className="p-3 bg-shadow-green rounded text-xl"
-          >
-            Create Account
-          </button>
-        ) : (
-          <button
-            type="submit"
-            className="p-3 bg-shadow-green rounded text-xl hover:bg-shadow"
-          >
-            Create Account
-          </button>
-        )}
-
-        {/*Link to login*/}
-        <div className="flex sm:text-lg xsm:text-sm">
-          <h4>Already have an account?</h4>
-          <button
-            className="ml-2 text-blue hover:text-light-blue"
-            onClick={() => navigate("/login")}
-          >
-            Login here
-          </button>
-        </div>
-      </form>
+        </form>
+      </div>
     </section>
   );
 };
