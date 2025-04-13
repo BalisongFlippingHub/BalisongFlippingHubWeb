@@ -27,7 +27,7 @@ const HomePageIntroductorySectionComponent = () => {
       <section className="lg:h-screen xsm:h-auto text-white bg-[linear-gradient(0deg,_#108198_0%,_#001a1a_3%,_#023d42_22%,_#001314_35%,_#002e33_88%,_#108198_96%)] pt-[32px]">
           
           <div className={`h-full flex lg:flex-row xsm:flex-col-reverse lg:items-center lg:pr-5 lg:pl-5 lg:gap-10 xsm:gap-5 transition-all duration-[3s] ease-in-out ${isVisible ? 'opacity-100' : 'opacity-0'} ${isVisible ? "-translate-y-8" : "-translate-y-20"}`}>
-            <div className="flex flex-col items-center gap-8 xsm:pl-5 xsm:pr-5 lg:w-[98%] md:w-full xsm:pt-28 lg:pt-0">
+            <div className="flex flex-col items-center gap-8 xsm:pl-5 xsm:pr-5 lg:w-[98%] md:w-full xsm:pt-10 lg:pt-0">
               <h4 className="md:text-5xl xsm:text-3xl font-bold">Welcome!</h4>
 
               <p className="md:text-2xl xsm:text-xl/8 text-center">
