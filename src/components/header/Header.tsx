@@ -70,7 +70,7 @@ const Navbar = () => {
 
   return (
     <>
-      <header className="flex flex-col gap-5 items-center sticky top-0 h-18 w-full pt-3 pb-3 md:pl-5 xsm:pl-2 xsm:pr-2 md:pr-5 z-10 text-white backdrop-filter backdrop-blur-xl bg-opacity-0 bg-blue border-b">
+      <header className="flex flex-col gap-5 items-center sticky top-0 h-18 w-full pt-3 pb-3 md:pl-5 xsm:pl-2 xsm:pr-2 md:pr-5 z-10 text-white backdrop-filter backdrop-blur-xl bg-opacity-0 bg-blue">
         <section className="flex w-full justify-between">
           {/*Search Bar for small screens*/}
           {windowSize.at(1)! < 950 && searchBarToggle ? (

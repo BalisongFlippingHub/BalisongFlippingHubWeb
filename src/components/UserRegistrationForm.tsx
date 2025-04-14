@@ -206,6 +206,10 @@ const UserRegistrationForm = () => {
           className="flex flex-col gap-5 items-center md:w-1/2 xsm:w-full p-10"
           onSubmit={handleSubmit}
         >
+          <div className="font-bold text-2xl">
+            <h2>Register</h2>
+          </div>
+
           {/*Email Input Field*/}
           <div className="flex flex-col gap-1 w-full">
             <div className="flex gap-2">
@@ -315,7 +319,10 @@ const UserRegistrationForm = () => {
               Create Account
             </button>
           ) : (
-            <button type="submit" className=" hover:bg-shadow">
+            <button
+              type="submit"
+              className="hover:bg-shadow bg-blue w-full text-xl font-semibold p-3 rounded-full"
+            >
               Create Account
             </button>
           )}
