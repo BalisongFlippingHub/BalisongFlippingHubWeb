@@ -10,6 +10,8 @@ import {
 } from "../redux/auth/authSlice";
 import { setCollection } from "../redux/collection/collectionSlice";
 import GoogleLoginComponent from "./login/GoogleLoginComponent";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faEnvelope, faLock } from "@fortawesome/free-solid-svg-icons";
 
 const LoginForm = () => {
   // form refs
@@ -35,16 +37,16 @@ const LoginForm = () => {
   );
 
   // function to handle setting user input for email field
-  const handleOnChangeEmail = (e: any) => {
-    setEmail(e.target?.value);
+  const handleOnChangeEmail = (e: string) => {
+    setEmail(e);
     if (buttonDisabled) {
       setButtonDisabled(false);
     }
   };
 
   // function to handle setting user input for password field
-  const handleOnChangePassword = (e: any) => {
-    setPassword(e.target?.value);
+  const handleOnChangePassword = (e: string) => {
+    setPassword(e);
     if (buttonDisabled) {
       setButtonDisabled(false);
     }
@@ -97,53 +99,51 @@ const LoginForm = () => {
 
   /*HTML return for login form component*/
   return (
-    <section className="w-full h-screen flex justify-center items-center">
-        <form onSubmit={handleSubmit} className="text-black w-full md:max-w-[500px] xsm:h-full md:h-auto border flex flex-col items-center xsm:justify-center md:justify-normal gap-4 p-10 bg-white md:rounded-lg">
+    <section className="w-full md:h-[calc(100vh_-_60px)] xsm:h-[calc(100vh_-_52px)] flex justify-center items-center">
+        <form onSubmit={handleSubmit} className="text-white w-full md:max-w-[500px] xsm:h-full md:h-auto flex flex-col items-center xsm:justify-center md:justify-normal gap-4 p-10 md:bg-dark-primary md:rounded-lg md:border-4 md:border-black">
           <h1 className="text-4xl font-bold mb-10">Login</h1>
 
           {/*Email input field*/}
-          <div className="flex flex-col w-full text-xl">
-            <label
-              htmlFor="emailInput"
-              className=""
-            >
-              Email
+          <div className="flex flex-col w-full text-xl relative md:border-2 md:rounded-full">
+            <label htmlFor="emailInput" className="absolute top-4 right-5">
+                <FontAwesomeIcon icon={faEnvelope} size="xl" />
             </label>
+
             <input
               type="email"
               id="emailInput"
               ref={emailRef}
               autoComplete="off"
-              onChange={(e) => handleOnChangeEmail(e)}
-              placeholder="Type your email"
+              onChange={(e) => handleOnChangeEmail(e.target.value)}
+              placeholder="Email"
               value={email}
               required
-              className="outline-none border-b pb-2 pt-2"
+              className="outline-none bg-dark-primary pt-4 pb-4 pl-6 pr-16 rounded-full"
             />
           </div>
 
          {/*Password input field*/}
-         <div className="flex flex-col w-full text-xl">
+         <div className="flex flex-col w-full text-xl relative md:border-2 md:rounded-full">
             <label
               htmlFor="passwordInput"
-              className=""
+              className="absolute top-4 right-5"
             >
-              Password
+              <FontAwesomeIcon icon={faLock} />
             </label>
             <input
               type="password"
               id="passwordInput"
               ref={passwordRef}
-              onChange={(e) => handleOnChangePassword(e)}
+              onChange={(e) => handleOnChangePassword(e.target.value)}
               value={password}
               placeholder="Type your password"
               required
-              className="outline-none border-b pb-2 pt-2"
+              className="outline-none bg-dark-primary pt-4 pb-4 pl-6 pr-16 rounded-full"
             />
           </div>
 
           
-          <div className="w-full flex justify-between">
+          <div className="w-full flex justify-between pl-4 pr-4">
             {/*Check box for allowing the site to remember specific users*/}
             <div className="flex gap-1 items-center">
               <label htmlFor="rememberMe" className="">
@@ -169,10 +169,10 @@ const LoginForm = () => {
 
           {/*SUBMIT Button*/}
           <div className="w-full">
-              <button type="submit" className="text-3xl font-bold bg-blue p-2 w-full text-white rounded-full"><h3>Login</h3></button>
+              <button type="submit" className="text-3xl font-bold bg-blue hover:bg-light-blue transition-colors duration-200 ease-linear p-2 w-full text-white rounded-full"><h3>Login</h3></button>
           </div>
             
-              {/*Redirect for users do not have an account.*/}
+          {/*Redirect for users do not have an account.*/}
          <div className="w-full flex justify-center gap-1">
            <p className="">Don't have an account?</p>
            <h3

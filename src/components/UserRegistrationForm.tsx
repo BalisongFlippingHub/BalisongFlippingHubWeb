@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { FormEvent, useRef, useState } from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { AppDispatch } from "../redux/store";
@@ -59,8 +59,8 @@ const UserRegistrationForm = () => {
   const dispatch = useDispatch<AppDispatch>();
   const navigate = useNavigate();
 
-  const handleDisplayNameChange = (e: any) => {
-    setDisplayName(e.target.value);
+  const handleDisplayNameChange = (e: string) => {
+    setDisplayName(e);
 
     if (buttonDisabled) {
       setButtonDisabled(false);
@@ -69,8 +69,8 @@ const UserRegistrationForm = () => {
     dispatch(clearError());
   };
 
-  const handlePasswordChange = (e: any) => {
-    setPassword(e.target.value);
+  const handlePasswordChange = (e: string) => {
+    setPassword(e);
 
     if (buttonDisabled) {
       setButtonDisabled(false);
@@ -79,8 +79,8 @@ const UserRegistrationForm = () => {
     dispatch(clearError());
   };
 
-  const handleConfirmedPasswordChange = (e: any) => {
-    setConfirmedPassword(e.target.value);
+  const handleConfirmedPasswordChange = (e: string) => {
+    setConfirmedPassword(e);
 
     if (buttonDisabled) {
       setButtonDisabled(false);
@@ -112,7 +112,7 @@ const UserRegistrationForm = () => {
     displayName.trim();
     const holderVal: string = displayName.toLocaleLowerCase();
 
-    for (var i = 0; i < badDisplayNames.length; i++) {
+    for (let i = 0; i < badDisplayNames.length; i++) {
       if (holderVal.includes(badDisplayNames[i])) {
         dispatch(setError("*Inappropriate display name.*"));
         displayNameRef.current?.focus();
@@ -124,7 +124,7 @@ const UserRegistrationForm = () => {
     return true;
   };
 
-  const handleSubmit = (e: any) => {
+  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     {
@@ -181,8 +181,8 @@ const UserRegistrationForm = () => {
   };
 
   return (
-    <section className="md:h-screen xsm:h-auto flex justify-center items-center md:-translate-y-[40px]">
-      <div className="flex md:flex-row xsm:flex-col bg-white md:w-4/6 xsm:w-full">
+    <section className="h-[calc(100vh_-_60px)] flex justify-center items-center">
+      <div className="flex md:flex-row xsm:flex-col bg-white md:w-4/6 xsm:w-full mb-20">
         {/*Create Account Caption*/}
         <div className="flex flex-col justify-center items-center bg-shadow md:w-1/2 xsm:w-full">
           <h3 className="text-xl font-bold">
@@ -203,7 +203,7 @@ const UserRegistrationForm = () => {
 
         {/*Registration Form*/}
         <form
-          className="flex flex-col gap-5 items-center md:w-1/2 xsm:w-full p-10"
+          className="flex flex-col gap-5 items-center md:w-1/2 xsm:w-full p-10 bg-dark-primary text-white"
           onSubmit={handleSubmit}
         >
           <div className="font-bold text-2xl">
@@ -213,7 +213,7 @@ const UserRegistrationForm = () => {
           {/*Email Input Field*/}
           <div className="flex flex-col gap-1 w-full">
             <div className="flex gap-2">
-              <label className="font-semibold">*Email</label>
+              <label className="font-semibold text-shadow"></label>
               {isError ? (
                 errMsg === "Email already exists." ? (
                   <p className="text-red">{errMsg}</p>
@@ -229,16 +229,17 @@ const UserRegistrationForm = () => {
               type="email"
               required
               ref={emailRef}
+              placeholder="Email"
               onChange={(e) => setEmail(e.target.value)}
               value={email}
-              className="focus:outline-none border-b"
+              className="outline-none bg-dark-primary border rounded-full text-lg pt-3 pb-3 pl-7"
             />
           </div>
 
           {/*Display Name Input Field*/}
           <div className="flex flex-col gap-1 w-full">
             <div className="flex gap-2">
-              <label className="font-semibold">Display Name</label>
+              <label className="font-semibold"></label>
               {isError ? (
                 errMsg === "*Inappropriate display name.*" ? (
                   <p className="text-red">{errMsg}</p>
@@ -253,16 +254,17 @@ const UserRegistrationForm = () => {
             <input
               type="text"
               ref={displayNameRef}
-              onChange={(e) => handleDisplayNameChange(e)}
+              onChange={(e) => handleDisplayNameChange(e.target.value)}
               value={displayName}
-              className="focus:outline-none border-b"
+              placeholder="Display Name"
+              className="outline-none bg-dark-primary border rounded-full text-lg pt-3 pb-3 pl-7"
             />
           </div>
 
           {/*Password Input Field*/}
           <div className="flex flex-col gap-1 w-full">
             <div className="flex gap-2">
-              <label className="font-semibold">*Password</label>
+              <label className="font-semibold"></label>
               {isError ? (
                 errMsg === "*Passwords do not match.*" ? (
                   <p className="text-red">{errMsg}</p>
@@ -278,16 +280,17 @@ const UserRegistrationForm = () => {
               type="password"
               required
               ref={passwordRef}
-              onChange={(e) => handlePasswordChange(e)}
+              onChange={(e) => handlePasswordChange(e.target.value)}
               value={password}
-              className="focus:outline-none border-b"
+              placeholder="Password"
+              className="outline-none bg-dark-primary border rounded-full text-lg pt-3 pb-3 pl-7"
             />
           </div>
 
           {/*Confirm Password Input Field*/}
           <div className="flex flex-col gap-1 w-full">
             <div className="flex gap-2">
-              <label className="font-semibold">*Confirm Password</label>
+              <label className="font-semibold"></label>
               {isError ? (
                 errMsg === "*Passwords do not match.*" ? (
                   <p className="text-red">{errMsg}</p>
@@ -303,11 +306,14 @@ const UserRegistrationForm = () => {
               type="password"
               required
               ref={confirmPasswordRef}
-              onChange={(e) => handleConfirmedPasswordChange(e)}
+              onChange={(e) => handleConfirmedPasswordChange(e.target.value)}
               value={confirmedPassword}
-              className="focus:outline-none border-b"
+              placeholder="Confirm Password"
+              className="outline-none bg-dark-primary border rounded-full text-lg pt-3 pb-3 pl-7"
             />
           </div>
+
+          
 
           {/*Create Account Button*/}
           {isLoading ? (

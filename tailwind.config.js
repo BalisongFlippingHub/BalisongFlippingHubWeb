@@ -6,6 +6,7 @@ export default {
   ],
   theme: {
     colors: {
+      'dark-primary': '#001314',
       'shadow-green': '#001a1a',
       'shadow-green-offset': '#003333',
       'white': '#ffffff',
