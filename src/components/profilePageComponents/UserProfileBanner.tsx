@@ -61,7 +61,7 @@ const UserProfileBanner = () => {
 
           <button
             type="button"
-            className="absolute bottom-10 right-10 text-2xl bg-shadow rounded p-4 hover:bg-shadow-green border-4 border-black rounded"
+            className="absolute bottom-10 right-10 text-2xl bg-shadow p-4 hover:bg-shadow-green border-4 border-black rounded"
             onClick={() => navigate("/configure/profile-banner")}
           >
             Edit Banner
@@ -71,27 +71,21 @@ const UserProfileBanner = () => {
     );
   } else {
     return (
-      <div className="w-full h-full bg-shadow-green-offset overflow-hidden">
+      <div className="w-full h-40 border">
         {user?.bannerImg && user?.bannerImg !== "" ? (
           <div
-            className="w-full h-full hover:cursor-pointer"
+            className="w-full h-full hover:cursor-pointer overflow-hidden"
             onClick={() => setIsFullScreen(true)}
           >
             <Image imageId={user?.bannerImg!} />
           </div>
         ) : (
-          <div className="w-full h-full flex justify-center items-center text-2xl font-bold">
+          <div className="w-full h-full">
             {isLoading ? (
-              <h5>Loading...</h5>
+              <h5 className="w-full text-center">Loading...</h5>
             ) : (
-              <>
-                <h5
-                  className="border-4 rounded border-dashed p-14 hover:bg-shadow-green hover:cursor-pointer"
-                  onClick={() => fileInputRef.current?.click()}
-                >
-                  Click To Set Profile Banner
-                </h5>
-
+              <div className="relative w-full h-full">
+                <button type="button" className="absolute right-6 bottom-6 text-xl text-white font-bold bg-dark-primary p-4 rounded-lg outline-none">Configure Banner</button>
                 <input
                   type="file"
                   hidden
@@ -99,7 +93,7 @@ const UserProfileBanner = () => {
                   accept="jpeg, png"
                   onChange={(e) => handleFileOnChange(e.target.files!)}
                 />
-              </>
+              </div>
             )}
           </div>
         )}
