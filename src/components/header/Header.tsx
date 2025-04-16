@@ -132,13 +132,15 @@ const Navbar = () => {
         )}
       </header>
 
-      {windowSize.at(1)! < 950 && user && accessToken ? (
-        <aside className="fixed bg-black bottom-0 w-full z-10 flex justify-center border-t-2 border-shadow-green">
+      {
+        user && accessToken
+        ?
+        <aside className="fixed bg-black bottom-0 w-full z-10 flex justify-center">
           <HeaderNavbarBottom />
         </aside>
-      ) : (
+        :
         <></>
-      )}
+      }
     </>
   );
 };

@@ -4,17 +4,17 @@ import {
   faPlus,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { NavLink } from "react-router-dom";
+import { NavLink, NavLinkRenderProps } from "react-router-dom";
 
 const HeaderNavbarBottom = () => {
-  const navlinkStyles = ({ isActive }: any) => {
+  const navlinkStyles = ({ isActive }: NavLinkRenderProps) => {
     return {
       fontWeight: isActive ? "bold" : "normal",
       backgroundColor: isActive ? "#003333" : "inherit",
     };
   };
 
-  const profileNavLinkStyles = ({ isActive }: any) => {
+  const profileNavLinkStyles = ({ isActive }: NavLinkRenderProps) => {
     return {
       fontWeight: isActive ? "bold" : "normal",
       backgroundColor: isActive ? "teal" : "inherit",
@@ -22,7 +22,7 @@ const HeaderNavbarBottom = () => {
   };
 
   return (
-    <div className="flex">
+    <div className="flex text-white">
       <NavLink
         to="/me"
         style={navlinkStyles}

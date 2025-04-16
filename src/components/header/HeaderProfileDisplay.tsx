@@ -1,11 +1,12 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faBell, faUser } from "@fortawesome/free-solid-svg-icons";
+import { faBell, faCircleUser } from "@fortawesome/free-solid-svg-icons";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import ProfileImageDisplay from "../ProfileImageDisplay";
 import { logout } from "../../redux/auth/authActions";
 import { clearCollection } from "../../redux/collection/collectionSlice";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
+import useWindowSize from "../../hooks/useWindowSize";
 
 const HeaderProfileDisplay = () => {
   const [userNav, displayUserNav] = useState(false);
@@ -16,6 +17,8 @@ const HeaderProfileDisplay = () => {
 
   const navigate = useNavigate();
   const location = useLocation();
+
+  const windowSize = useWindowSize()
 
   const handleLogout = () => {
     dispatch(logout())
@@ -41,36 +44,44 @@ const HeaderProfileDisplay = () => {
     <div className="flex gap-2">
       {/*Notifications Bell Icon*/}
       <button type="button">
-        <FontAwesomeIcon icon={faBell} />
+        <FontAwesomeIcon icon={faBell} size="xl" />
       </button>
 
-      {/*User Icon*/}
+      {/*User Display Portal*/}
       <div
         className="flex gap-2 hover:cursor-pointer"
         onClick={() => displayUserNav((prev) => !prev)}
       >
-        {/*Display for large screens*/}
-        <div className="lg:visible lg:static xsm:absolute xsm:collapse w-8 h-8 flex justify-center items-center">
-          <FontAwesomeIcon icon={faUser} />
-        </div>
-
-        {/*Display for medium to small screens*/}
-        <div className="w-8 h-8 flex items-center justify-center rounded-full bg-black rounded-full overflow-hidden lg:collapse lg:absolute xsm:static xsm:visible">
-          {user?.profileImg === null || user?.profileImg === "" ? (
-            <FontAwesomeIcon icon={faUser} />
-          ) : (
+        {
+          user?.profileImg && user.profileImg != ""
+          ?
+          <div>
             <ProfileImageDisplay />
-          )}
-        </div>
+          </div>
+          :
+          <div>
+            <FontAwesomeIcon icon={faCircleUser} size="xl" />
+          </div>
+        }
 
-        {/*Display Name or User ID Display*/}
-        <div className="flex items-center text-lg md:visible md:static xsm:collapse xsm:absolute">
-          {user?.displayName && user.displayName !== "" ? (
-            <h4>{user?.displayName}</h4>
-          ) : (
-            <h4>{user?.id}</h4>
-          )}
-        </div>
+        {/*For larger Screens - Display user ID or User display name*/}
+        {
+          windowSize.at(1)! > 950
+          ?
+          <div className="flex items-center">
+            <h4>
+              {
+                user?.displayName && user.displayName != ""
+                ?
+                user?.displayName
+                :
+                user?.id
+              }
+            </h4>
+          </div>
+          :
+          <></>
+        }
       </div>
 
       {/*Account Drop Down Menu*/}

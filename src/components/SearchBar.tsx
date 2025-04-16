@@ -18,7 +18,7 @@ const SearchBar = ({ toggleSearchBar }: params) => {
       <div className="flex items-center justify-end pt-1 pb-1 pl-6 pr-3 gap-2 border rounded-full">
         <input
           placeholder="Search..."
-          className="md:w-96 xsm:w-70 outline-none text-white bg-blue bg-opacity-0 pb-px pt-px"
+          className="lg:w-96 md:w-72 xsm:w-70 outline-none text-white bg-blue bg-opacity-0 pb-px pt-px"
           onChange={handleOnChange}
         />
         <FontAwesomeIcon

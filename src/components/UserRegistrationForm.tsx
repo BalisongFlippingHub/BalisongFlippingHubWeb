@@ -313,8 +313,6 @@ const UserRegistrationForm = () => {
             />
           </div>
 
-          
-
           {/*Create Account Button*/}
           {isLoading ? (
             <button disabled className="">

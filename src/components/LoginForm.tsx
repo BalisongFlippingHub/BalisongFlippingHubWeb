@@ -100,7 +100,7 @@ const LoginForm = () => {
   /*HTML return for login form component*/
   return (
     <section className="w-full md:h-[calc(100vh_-_60px)] xsm:h-[calc(100vh_-_52px)] flex justify-center items-center">
-        <form onSubmit={handleSubmit} className="text-white w-full md:max-w-[500px] xsm:h-full md:h-auto flex flex-col items-center xsm:justify-center md:justify-normal gap-4 p-10 md:bg-dark-primary md:rounded-lg md:border-4 md:border-black">
+        <form onSubmit={handleSubmit} className="text-white w-full md:max-w-[500px] xsm:h-full md:h-auto flex flex-col items-center xsm:justify-center md:justify-normal gap-4 md:p-10 xsm:p-5 md:bg-dark-primary md:rounded-lg md:border-4 md:border-black">
           <h1 className="text-4xl font-bold mb-10">Login</h1>
 
           {/*Email input field*/}
