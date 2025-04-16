@@ -11,7 +11,7 @@ const UserProfilePage = () => {
         <section className="w-full flex flex-col border-b">
           <div className="w-full relative">
             <UserProfileBanner />
-            
+            <UserProfileImage />
           </div>
 
           <div className="w-full md:h-[55%] xsm:h-[62%]">
