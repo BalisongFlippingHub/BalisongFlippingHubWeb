@@ -57,7 +57,7 @@ const UserProfileBanner = () => {
           className="h-full w-5/6 relative"
           onClick={() => setIsFullScreen(false)}
         >
-          <Image imageId={user?.bannerImg!} />
+          <Image imageId={user?.bannerImg} />
 
           <button
             type="button"
@@ -71,13 +71,13 @@ const UserProfileBanner = () => {
     );
   } else {
     return (
-      <div className="w-full h-40 border">
+      <div className="w-full xsm:h-40 lg:h-48 backdrop-filter backdrop-blur-sm bg-opacity-30 bg-dark-primary border-b rounded-b-3xl">
         {user?.bannerImg && user?.bannerImg !== "" ? (
           <div
             className="w-full h-full hover:cursor-pointer overflow-hidden"
             onClick={() => setIsFullScreen(true)}
           >
-            <Image imageId={user?.bannerImg!} />
+            <Image imageId={user?.bannerImg} />
           </div>
         ) : (
           <div className="w-full h-full">
@@ -85,7 +85,13 @@ const UserProfileBanner = () => {
               <h5 className="w-full text-center">Loading...</h5>
             ) : (
               <div className="relative w-full h-full">
-                <button type="button" className="absolute right-6 bottom-6 text-xl text-white font-bold bg-dark-primary p-4 rounded-lg outline-none">Configure Banner</button>
+                <button
+                  type="button"
+                  onClick={() => fileInputRef.current?.click()}
+                  className="absolute md:right-6 xsm:right-3 bottom-4 md:text-xl xsm:text-sm text-white font-bold bg-dark-primary p-4 rounded-lg outline-none hover:shadow-lg hover:shadow-black hover:bg-black hover:scale-110 transition-all ease-in-out duration-300"
+                >
+                  Configure Banner
+                </button>
                 <input
                   type="file"
                   hidden

@@ -57,7 +57,7 @@ const UserProfileImage = () => {
           className="h-full w-5/6 relative"
           onClick={() => setIsFullScreen(false)}
         >
-          <Image imageId={user?.profileImg!} />
+          <Image imageId={user?.profileImg} />
 
           <button
             type="button"
@@ -71,14 +71,14 @@ const UserProfileImage = () => {
     );
   } else {
     return (
-      <div className="w-full flex justify-center relative">
-        <div className="md:h-52 md:w-52 xsm:h-36 xsm:w-36 border-4 border-shadow-green rounded-full absolute md:-translate-y-[6.5rem] xsm:-translate-y-[4.4rem] overflow-hidden">
+      <div className="w-full flex justify-center absolute">
+        <div className="md:h-40 md:w-40 sm:h-36 sm:w-36 xsm:h-32 xsm:w-32 rounded-full overflow-hidden md:-translate-y-20 sm:-translate-y-18 xsm:-translate-y-16 shadow-lg hover:shadow-2xl shadow-black">
           {user?.profileImg ? (
             <div
               className="w-full h-full hover:cursor-pointer"
               onClick={() => setIsFullScreen(true)}
             >
-              <Image imageId={user?.profileImg!} />
+              <Image imageId={user?.profileImg} />
             </div>
           ) : (
             <div
@@ -89,7 +89,7 @@ const UserProfileImage = () => {
                 <h6>Loading...</h6>
               ) : (
                 <>
-                  <h5 className="text-black text-xl font-bold">
+                  <h5 className="text-black md:text-xl xsm:text-md font-bold">
                     + Profile Image
                   </h5>
 

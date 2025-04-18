@@ -18,18 +18,16 @@ const UserProfileData = () => {
 
   const navigate = useNavigate();
 
-  if (user?.role === "ADMIN") {
-    return <div></div>;
-  } else {
+  
     return (
-      <div className="flex justify-between h-full p-4 xsm:pt-16 md:pt-4">
+      <div className="flex justify-between h-full p-4 xsm:pt-16 md:pt-4 text-white">
         {/*Display User Data*/}
         <div className="flex flex-col h-full">
           <div className="flex h-full">
             {/*Display User Identification*/}
             <div className="flex flex-col">
               {/*Display Name*/}
-              <div className="flex items-center gap-2 md:text-3xl xsm:text-2xl">
+              <div className="flex items-center gap-2 md:text-3xl xsm:text-xl">
                 <FontAwesomeIcon icon={faCircleUser} size="xl" />
                 {user?.displayName && user?.displayName !== "" ? (
                   <h5>{user?.displayName}</h5>
@@ -108,7 +106,6 @@ const UserProfileData = () => {
         </div>
       </div>
     );
-  }
 };
 
 export default UserProfileData;

@@ -9,7 +9,7 @@ const UserProfilePage = () => {
       <div className="w-full h-screen">
         {/*Profile Display Info*/}
         <section className="w-full flex flex-col border-b">
-          <div className="w-full relative">
+          <div className="w-full">
             <UserProfileBanner />
             <UserProfileImage />
           </div>

@@ -3,7 +3,7 @@ import { axiosApiInstance } from "../api/axios";
 import { Buffer } from "buffer";
 
 interface params {
-  imageId: string | undefined;
+  imageId: string | undefined | null;
   contain?: boolean;
 }
 
@@ -26,7 +26,8 @@ const Image = ({ imageId, contain }: params) => {
         .then((res) => {
           setImage({
             data: Buffer.from(res.data, "binary").toString("base64"),
-            /*@ts-ignore*/
+            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+            /*@ts-expect-error*/
             type: res.headers.get("Content-Type"),
           } as ImageBufferData);
         })
