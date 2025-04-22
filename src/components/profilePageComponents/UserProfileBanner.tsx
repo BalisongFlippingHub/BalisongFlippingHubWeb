@@ -71,7 +71,7 @@ const UserProfileBanner = () => {
     );
   } else {
     return (
-      <div className="w-full xsm:h-40 lg:h-48 backdrop-filter backdrop-blur-sm bg-opacity-30 bg-dark-primary border-b rounded-b-3xl">
+      <div className="w-full xsm:h-40 lg:h-48 backdrop-filter backdrop-blur-lg bg-opacity-30 bg-blue-primary border-b rounded-b-3xl">
         {user?.bannerImg && user?.bannerImg !== "" ? (
           <div
             className="w-full h-full hover:cursor-pointer overflow-hidden"

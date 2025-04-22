@@ -18,17 +18,17 @@ const UserProfileData = () => {
 
   const navigate = useNavigate();
 
-  
-    return (
-      <div className="flex justify-between h-full p-4 xsm:pt-16 md:pt-4 text-white">
-        {/*Display User Data*/}
-        <div className="flex flex-col h-full">
-          <div className="flex h-full">
-            {/*Display User Identification*/}
-            <div className="flex flex-col">
-              {/*Display Name*/}
-              <div className="flex items-center gap-2 md:text-3xl xsm:text-xl">
-                <FontAwesomeIcon icon={faCircleUser} size="xl" />
+  return (
+    <div className="flex justify-between items-center p-4 text-white">
+      <div className="flex flex-col gap-4">
+        <div className="flex">
+          {/*Display User Identification*/}
+          <div className="flex flex-col justify-center">
+            {/*Display Name && Social Media Links*/}
+            <div className="flex gap-2 items-center">
+              <FontAwesomeIcon icon={faCircleUser} size="2xl" />
+
+              <div className="text-2xl font-bold">
                 {user?.displayName && user?.displayName !== "" ? (
                   <h5>{user?.displayName}</h5>
                 ) : (
@@ -36,76 +36,46 @@ const UserProfileData = () => {
                 )}
               </div>
 
-              {/* Badges Display
-              <div className="w-full flex justify-center">
-                <h6>Badges...</h6>
-              </div> */}
-
-              {/*Profile Caption*/}
-              <div className="w-full flex justify-center">
-                <h6>Caption...</h6>
-              </div>
+              {/*Badges Display*/}
+              <ul className="flex gap-3 ml-2">
+                <li className="">»</li>
+                <li>·</li>
+                <li>Š</li>
+              </ul>
             </div>
 
-            {/*Display Users Links*/}
-            <div className="flex place-self-end gap-2 ml-5">
-              {!user?.instagramLink ? (
-                <></>
-              ) : (
-                <FontAwesomeIcon icon={faInstagram} size="xl" />
-              )}
-              {!user?.facebookLink ? (
-                <></>
-              ) : (
-                <FontAwesomeIcon icon={faFacebookSquare} size="xl" />
-              )}
-              {!user?.twitterLink ? (
-                <></>
-              ) : (
-                <FontAwesomeIcon icon={faTwitterSquare} size="xl" />
-              )}
-              {!user?.youtubeLink ? (
-                <></>
-              ) : (
-                <FontAwesomeIcon icon={faYoutubeSquare} size="xl" />
-              )}
-              {!user?.discordLink ? (
-                <></>
-              ) : (
-                <FontAwesomeIcon icon={faDiscord} size="xl" />
-              )}
-              {!user?.redditLink ? (
-                <></>
-              ) : (
-                <FontAwesomeIcon icon={faRedditSquare} size="xl" />
-              )}
+            {/*Profile Caption*/}
+            <div className="w-80">
+              <h6>
+                "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
+                eiusmod."
+              </h6>
             </div>
           </div>
         </div>
-
-        {/*Collection Img Display and Link to Collection Page*/}
-        <div className="h-full flex items-end">
-          <button
-            type="button"
-            className="bg-black p-1 rounded-lg flex justify-center items-center relative md:w-80 md:h-40 xsm:w-36 xsm:h-24"
-            onClick={() =>
-              navigate(
-                `/${user?.displayName}/${user?.identifierCode}/collection`
-              )
-            }
-          >
-            <h4 className="absolute md:text-4xl font-bold xsm:text-lg">
-              Collection
-            </h4>
-            {collectionData?.bannerImg && collectionData.bannerImg !== "" ? (
-              <Image imageId={collectionData.bannerImg!} />
-            ) : (
-              <></>
-            )}
-          </button>
-        </div>
       </div>
-    );
+
+      {/*Collection Img Display and Link to Collection Page*/}
+      <div className="h-full flex items-end">
+        <button
+          type="button"
+          className="bg-black p-1 rounded-lg flex justify-center items-center relative md:w-72 md:h-32 xsm:w-36 xsm:h-24"
+          onClick={() =>
+            navigate(`/${user?.displayName}/${user?.identifierCode}/collection`)
+          }
+        >
+          <h4 className="absolute md:text-4xl font-bold xsm:text-lg">
+            Collection
+          </h4>
+          {collectionData?.bannerImg && collectionData.bannerImg !== "" ? (
+            <Image imageId={collectionData.bannerImg!} />
+          ) : (
+            <></>
+          )}
+        </button>
+      </div>
+    </div>
+  );
 };
 
 export default UserProfileData;

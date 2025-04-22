@@ -72,7 +72,7 @@ const UserProfileImage = () => {
   } else {
     return (
       <div className="w-full flex justify-center absolute">
-        <div className="md:h-40 md:w-40 sm:h-36 sm:w-36 xsm:h-32 xsm:w-32 rounded-full overflow-hidden md:-translate-y-20 sm:-translate-y-18 xsm:-translate-y-16 shadow-lg hover:shadow-2xl shadow-black">
+        <div className="md:h-48 md:w-48 sm:h-36 sm:w-36 xsm:h-32 xsm:w-32 rounded-full overflow-hidden md:-translate-y-24 sm:-translate-y-18 xsm:-translate-y-16 border-8 border-dark-primary hover:border-white transition-colors ease-linear duration-200">
           {user?.profileImg ? (
             <div
               className="w-full h-full hover:cursor-pointer"

@@ -8,7 +8,7 @@ const UserProfilePage = () => {
     <>
       <div className="w-full h-screen">
         {/*Profile Display Info*/}
-        <section className="w-full flex flex-col border-b">
+        <section className="w-full flex flex-col">
           <div className="w-full">
             <UserProfileBanner />
             <UserProfileImage />

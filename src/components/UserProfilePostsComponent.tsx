@@ -85,7 +85,7 @@ const UserProfilePostsComponent = () => {
   }, []);
 
   return (
-    <div className="w-full flex flex-col mt-5">
+    <div className="w-full flex flex-col mt-5 text-white">
       {/*Posts Navigation*/}
       <ul className="flex text-lg font-semibold m-auto">
         {activeNavItem === "All" ? (
