@@ -1,13 +1,13 @@
 import { useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faDiscord,
-  faFacebookSquare,
-  faInstagram,
-  faRedditSquare,
-  faTwitterSquare,
-  faYoutubeSquare,
-} from "@fortawesome/free-brands-svg-icons";
+// import {
+//   faDiscord,
+//   faFacebookSquare,
+//   faInstagram,
+//   faRedditSquare,
+//   faTwitterSquare,
+//   faYoutubeSquare,
+// } from "@fortawesome/free-brands-svg-icons";
 import { useAppSelector } from "../../redux/hooks";
 import { faCircleUser } from "@fortawesome/free-solid-svg-icons";
 import Image from "../Image";

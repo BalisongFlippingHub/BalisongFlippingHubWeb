@@ -132,15 +132,13 @@ const Navbar = () => {
         )}
       </header>
 
-      {
-        user && accessToken
-        ?
+      {user && accessToken ? (
         <aside className="fixed bg-black bottom-0 w-full z-10 flex justify-center">
           <HeaderNavbarBottom />
         </aside>
-        :
+      ) : (
         <></>
-      }
+      )}
     </>
   );
 };
