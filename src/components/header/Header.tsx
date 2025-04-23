@@ -13,8 +13,11 @@ import {
 import HeaderNavbarBottom from "../navigation/HeaderNavbarBottom";
 import { RootState } from "../../redux/store";
 import useWindowSize from "../../hooks/useWindowSize";
+import { motion, useScroll, useMotionValueEvent } from "motion/react"
 
 const Navbar = () => {
+  const [hidden, setHidden] = useState(false)
+
   const [navToggle, toggleNav] = useState(true);
   const [searchBarToggle, setSearchBarToggle] = useState(false);
   const [accountToggle, setAccountToggle] = useState(false);
@@ -28,6 +31,7 @@ const Navbar = () => {
   const location = useLocation();
 
   const windowSize = useWindowSize();
+  const { scrollY } = useScroll()
 
   const closeNavigation = () => {
     toggleNav(false);
@@ -36,6 +40,16 @@ const Navbar = () => {
   const toggleSearchBar = () => {
     setSearchBarToggle((prev) => !prev);
   };
+
+  useMotionValueEvent(scrollY, "change", (latest) => {
+    const prev = scrollY.getPrevious()
+    if (latest > prev! && latest > 150) {
+      setHidden(true)
+    }
+    else {
+      setHidden(false)
+    }
+  })
 
   useEffect(() => {
     if (navToggle) {
@@ -70,7 +84,14 @@ const Navbar = () => {
 
   return (
     <>
-      <header className="flex flex-col gap-5 items-center sticky top-0 h-18 w-full pt-3 pb-3 md:pl-5 xsm:pl-2 xsm:pr-2 md:pr-5 z-10 text-white backdrop-filter backdrop-blur-xl bg-opacity-0 bg-dark-primary">
+      <motion.header
+        variants={{
+          visible: {y: 0},
+          hidden: {y: "-100%"}
+        }}
+        animate={hidden ? "hidden" : "visible"}
+        transition={{ duration: 0.353, ease: "easeInOut" }}
+       className="flex flex-col gap-5 items-center sticky top-0 h-18 w-full pt-3 pb-3 md:pl-5 xsm:pl-2 xsm:pr-2 md:pr-5 z-10 text-white backdrop-filter backdrop-blur-xl bg-opacity-0 bg-dark-primary">
         <section className="flex w-full justify-between">
           {/*Search Bar for small screens*/}
           {windowSize.at(1)! < 950 && searchBarToggle ? (
@@ -130,7 +151,7 @@ const Navbar = () => {
         ) : (
           <></>
         )}
-      </header>
+      </motion.header>
 
       {user && accessToken ? (
         <aside className="fixed bg-black bottom-0 w-full z-10 flex justify-center">
