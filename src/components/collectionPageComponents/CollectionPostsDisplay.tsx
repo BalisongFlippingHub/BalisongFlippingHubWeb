@@ -36,7 +36,7 @@ const CollectionPostsDisplay = () => {
   }, [collectionData]);
 
   return (
-    <div className="w-1/3 h-full border-l-4 border-black flex flex-col gap-2 p-2 overflow-y-scroll">
+    <div className="w-1/3 h-full flex flex-col gap-2 p-2 overflow-y-scroll">
       {posts?.map((post, _i) => {
         return <CollectionPost post={post} key={post.id} />;
       })}

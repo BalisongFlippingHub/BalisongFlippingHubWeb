@@ -12,7 +12,7 @@ const CollectionOwnedKnivesDisplay = () => {
 
   return (
     <div className="md:w-2/3 sm:w-full sm:h-full md:h-auto flex flex-col items-center p-5">
-      <div className="w-full flex justify-center text-3xl border-b-4 border-black pb-5">
+      <div className="w-full flex justify-center text-3xl pb-5 text-white">
         <h3>Knives</h3>
       </div>
       {!ownedKnives || ownedKnives.length < 1 ? (

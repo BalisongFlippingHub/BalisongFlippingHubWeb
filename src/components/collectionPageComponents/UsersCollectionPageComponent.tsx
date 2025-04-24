@@ -3,36 +3,27 @@ import { useAppSelector } from "../../redux/hooks";
 import Image from "../Image";
 import CollectionOwnedKnivesDisplay from "./CollectionOwnedKnivesDisplay";
 import CollectionPostsDisplay from "./CollectionPostsDisplay";
+import CollectionBannerComponent from "./collectionBannerComponent";
+import useWindowSize from "../../hooks/useWindowSize";
 
 const UsersCollectionPageComponent = () => {
   const collectionData = useAppSelector((state) => state.collection.collection);
   const user = useAppSelector((state) => state.auth.user);
 
   const navigate = useNavigate();
+  const windowSize = useWindowSize();
 
   return (
-    <section className="w-full h-screen flex flex-col lg:pl-[192px] pt-[64px]">
+    <section className="w-full flex flex-col">
       {/*Collection Banner Image*/}
-      <section className="w-full h-[20%]">
-        {collectionData?.bannerImg ? (
-          <Image imageId={collectionData?.bannerImg!} />
-        ) : (
-          <div
-            className="w-full h-full bg-shadow-green-offset flex justify-center items-center text-3xl font-bold hover:cursor-pointer"
-            onClick={() => navigate("/configure/collection-banner-image")}
-          >
-            <h5 className="border-2 rounded border-dashed p-10 hover:bg-shadow-green">
-              Click To Set Banner
-            </h5>
-          </div>
-        )}
-      </section>
+      <CollectionBannerComponent />
+
       {/*Users Collection Info*/}
-      <section className="w-full border-b-4 border-black p-4 flex justify-between">
+      <section className="w-full p-4 flex justify-between text-white">
         {/*User Info*/}
-        <div className="flex gap-3">
+        <div className="flex gap-3 items-center">
           <div
-            className="rounded-full w-36 h-36 border overflow-hidden hover:cursor-pointer"
+            className="rounded-full md:w-36 md:h-36 xsm:w-24 xsm:h-24 border overflow-hidden hover:cursor-pointer"
             onClick={
               user?.profileImg
                 ? () =>
@@ -56,16 +47,19 @@ const UsersCollectionPageComponent = () => {
           </div>
         </div>
 
-        {/*Favorite Knife Display*/}
-        <div className="flex gap-3">
-          <div className="flex flex-col items-center">
-            <h3 className="text-2xl border-b-2 pb-1">Favorite Knife</h3>
-            <p className="text-shadow">None</p>
-          </div>
+        {/*Favorite Knife Display On Big Screens*/}
+        {windowSize.at(1)! > 950 ? (
+          <div className="flex gap-3 items-center">
+            <div className="flex flex-col items-center">
+              <h3 className="text-2xl border-b-2 pb-1">Favorite Knife</h3>
+              <p className="text-shadow">None</p>
+            </div>
 
-          <span className="h-full w-1 bg-black"></span>
-          <div className="bg-black w-72 h-36"></div>
-        </div>
+            <div className="bg-black rounded-lg md:w-72 xsm:w-52 h-36"></div>
+          </div>
+        ) : (
+          <></>
+        )}
       </section>
 
       {/*Display Owned Knives and Recent Posts*/}

@@ -9,7 +9,7 @@ import useWindowSize from "../../hooks/useWindowSize";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCamera } from "@fortawesome/free-solid-svg-icons";
 
-const UserProfileBanner = () => {
+const CollectionBannerComponent = () => {
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const [isFullScreen, setIsFullScreen] = useState(false);
@@ -121,4 +121,4 @@ const UserProfileBanner = () => {
   }
 };
 
-export default UserProfileBanner;
+export default CollectionBannerComponent;
