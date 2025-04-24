@@ -13,7 +13,7 @@ jobs:
     
     steps:
       - name: Checkout Repository
-        uses: actions/checkou@v2
+        uses: actions/checkout@v2
       
       - name: Configure Node
         uses: actions/setup-node@v1
