@@ -19,11 +19,11 @@ const UserProfileData = () => {
   const navigate = useNavigate();
 
   return (
-    <div className="flex justify-between items-center p-4 text-white">
+    <div className="flex justify-between items-center p-4 text-white xsm:pt-14 md:pt-4">
       <div className="flex flex-col gap-4">
         <div className="flex">
           {/*Display User Identification*/}
-          <div className="flex flex-col justify-center">
+          <div className="flex flex-col gap-1 justify-center">
             {/*Display Name && Social Media Links*/}
             <div className="flex gap-2 items-center">
               <FontAwesomeIcon icon={faCircleUser} size="2xl" />
@@ -45,7 +45,7 @@ const UserProfileData = () => {
             </div>
 
             {/*Profile Caption*/}
-            <div className="w-80">
+            <div className="md:w-80 xsm:w-52 xsm:text-sm md:text-lg">
               <h6>
                 "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
                 eiusmod."
@@ -59,7 +59,7 @@ const UserProfileData = () => {
       <div className="h-full flex items-end">
         <button
           type="button"
-          className="bg-black p-1 rounded-lg flex justify-center items-center relative md:w-72 md:h-32 xsm:w-36 xsm:h-24"
+          className="bg-black p-1 rounded-lg flex justify-center items-center relative md:w-72 md:h-32 xsm:w-36 xsm:h-20"
           onClick={() =>
             navigate(`/${user?.displayName}/${user?.identifierCode}/collection`)
           }

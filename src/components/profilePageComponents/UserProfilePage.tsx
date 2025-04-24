@@ -20,7 +20,7 @@ const UserProfilePage = () => {
         </section>
 
         {/*Display Profile Posts*/}
-        <section>
+        <section className="overflow-hidden">
           <UserProfilePostsComponent />
         </section>
       </div>

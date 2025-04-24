@@ -5,6 +5,9 @@ import { useRef, useState } from "react";
 import { axiosApiInstanceAuth } from "../../api/axios";
 import { Profile } from "../../modals/User";
 import { setNewUser } from "../../redux/auth/authSlice";
+import useWindowSize from "../../hooks/useWindowSize";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faCamera } from "@fortawesome/free-solid-svg-icons";
 
 const UserProfileImage = () => {
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -16,6 +19,8 @@ const UserProfileImage = () => {
   const user = useAppSelector((state) => state.auth.user);
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
+
+  const windowSize = useWindowSize()
 
   const handleFileOnChange = async (files: FileList) => {
     if (files[0] === null) return;
@@ -90,7 +95,18 @@ const UserProfileImage = () => {
               ) : (
                 <>
                   <h5 className="text-black md:text-xl xsm:text-md font-bold">
-                    + Profile Image
+                    {
+                      windowSize.at(1)! < 750
+                      ?
+                      <div>
+                        <FontAwesomeIcon icon={faCamera} size="xl" />
+                      </div>
+                      :
+                      <div>
+                        <h6>+ Profile Image</h6>
+                      </div>
+                    }
+                    
                   </h5>
 
                   <input

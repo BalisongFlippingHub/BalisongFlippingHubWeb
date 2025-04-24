@@ -71,7 +71,7 @@ const UserProfileBanner = () => {
     );
   } else {
     return (
-      <div className="w-full xsm:h-40 lg:h-48 backdrop-filter backdrop-blur-lg bg-opacity-30 bg-blue-primary border-b rounded-b-3xl">
+      <div className="w-full xsm:h-32 md:h-40 lg:h-48 backdrop-filter backdrop-blur-lg bg-opacity-30 bg-blue-primary border-b rounded-b-3xl">
         {user?.bannerImg && user?.bannerImg !== "" ? (
           <div
             className="w-full h-full hover:cursor-pointer overflow-hidden"
@@ -88,7 +88,7 @@ const UserProfileBanner = () => {
                 <button
                   type="button"
                   onClick={() => fileInputRef.current?.click()}
-                  className="absolute md:right-6 xsm:right-3 bottom-4 md:text-xl xsm:text-sm text-white font-bold bg-dark-primary p-4 rounded-lg outline-none hover:shadow-lg hover:shadow-black hover:bg-black hover:scale-110 transition-all ease-in-out duration-300"
+                  className="absolute md:right-6 xsm:right-2 bottom-3 md:text-xl xsm:text-sm text-white font-bold bg-dark-primary p-4 rounded-lg outline-none hover:shadow-lg hover:shadow-black hover:bg-black hover:scale-110 transition-all ease-in-out duration-300"
                 >
                   Configure Banner
                 </button>
