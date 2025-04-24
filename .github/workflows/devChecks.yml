@@ -1,0 +1,31 @@
+name: Dev Checks
+
+on: 
+  push:
+    branches: [ main, dev ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-verion: [22.x]
+    
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkou@v2
+      
+      - name: Configure Node
+        uses: actions/setup-node@v1
+        with:
+          node-verions: ${{ matrix.node-verion }}
+
+      - name: Install Dependencies
+        run: npm install
+
+      - name: Run Tests
+        run: npm test
+
+      - name: Build Prject
+        run: npm run build
+ 
