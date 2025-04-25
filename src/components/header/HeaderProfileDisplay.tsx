@@ -18,7 +18,7 @@ const HeaderProfileDisplay = () => {
   const navigate = useNavigate();
   const location = useLocation();
 
-  const windowSize = useWindowSize()
+  const windowSize = useWindowSize();
 
   const handleLogout = () => {
     dispatch(logout())
@@ -52,41 +52,33 @@ const HeaderProfileDisplay = () => {
         className="flex gap-2 hover:cursor-pointer"
         onClick={() => displayUserNav((prev) => !prev)}
       >
-        {
-          user?.profileImg && user.profileImg != ""
-          ?
+        {user?.profileImg && user.profileImg != "" ? (
           <div>
             <ProfileImageDisplay />
           </div>
-          :
+        ) : (
           <div>
             <FontAwesomeIcon icon={faCircleUser} size="xl" />
           </div>
-        }
+        )}
 
         {/*For larger Screens - Display user ID or User display name*/}
-        {
-          windowSize.at(1)! > 950
-          ?
+        {windowSize.at(1)! > 950 ? (
           <div className="flex items-center">
             <h4>
-              {
-                user?.displayName && user.displayName != ""
-                ?
-                user?.displayName
-                :
-                user?.id
-              }
+              {user?.displayName && user.displayName != ""
+                ? user?.displayName
+                : user?.id}
             </h4>
           </div>
-          :
+        ) : (
           <></>
-        }
+        )}
       </div>
 
       {/*Account Drop Down Menu*/}
       {userNav ? (
-        <div className="absolute bg-shadow mt-[49px] w-36 right-0">
+        <div className="absolute bg-blue-primary mt-[42px] w-36 right-0">
           <ul>
             <li
               className="flex p-2 hover:cursor-pointer hover:bg-shadow-green border-b"

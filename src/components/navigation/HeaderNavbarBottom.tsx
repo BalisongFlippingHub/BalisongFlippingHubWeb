@@ -5,8 +5,11 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { NavLink, NavLinkRenderProps } from "react-router-dom";
+import { useAppSelector } from "../../redux/hooks";
 
 const HeaderNavbarBottom = () => {
+  const user = useAppSelector((state) => state.auth.user);
+
   const navlinkStyles = ({ isActive }: NavLinkRenderProps) => {
     return {
       fontWeight: isActive ? "bold" : "normal",
@@ -24,7 +27,7 @@ const HeaderNavbarBottom = () => {
   return (
     <div className="flex text-white">
       <NavLink
-        to="/me"
+        to={`/${user?.displayName}/${user?.identifierCode}`}
         style={navlinkStyles}
         className="flex justify-center items-center p-2"
       >
@@ -32,7 +35,7 @@ const HeaderNavbarBottom = () => {
       </NavLink>
 
       <NavLink
-        to="/me/collection"
+        to={`/${user?.displayName}/${user?.identifierCode}/collection`}
         style={profileNavLinkStyles}
         className="flex justify-center items-center p-2"
       >
