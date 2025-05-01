@@ -90,7 +90,7 @@ const DisplayNameConfiguration = () => {
 
   return (
     <form
-      className="w-full max-w-[1000px] flex flex-col items-center gap-2 p-4"
+      className="w-full max-w-[1000px] flex flex-col items-center gap-2 p-4 text-white"
       onSubmit={(e) => handleSubmit(e)}
     >
       <p className="text-lg">
@@ -105,7 +105,7 @@ const DisplayNameConfiguration = () => {
             ref={displayNameInputRef}
             value={newDisplayName}
             onChange={(e) => handleOnChange(e.target.value)}
-            className="w-full bg-black focus:bg-shadow p-2 text-lg outline-none border"
+            className="w-full bg-dark-primary focus:bg-blue-primary p-2 text-lg outline-none border font-bold"
           />
 
           {newDisplayName === user?.displayName ? (
@@ -118,7 +118,7 @@ const DisplayNameConfiguration = () => {
             </button>
           ) : (
             <button
-              className="p-2 bg-black border hover:bg-shadow-green-offset border-bg-shadow"
+              className="p-2 bg-black border hover:scale-110 transition-transform ease-linear duration-300 border-bg-shadow"
               type="submit"
             >
               Submit

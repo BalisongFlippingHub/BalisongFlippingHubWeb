@@ -34,339 +34,305 @@ const ProfileConfigurePage = () => {
   };
 
   return (
-    <section className="w-full flex justify-center lg:pl-[192px] pt-[64px] relative xsm:pb-10 lg:pb-0">
-      {/*Display and Editing of Account settings and Info*/}
-      <div className="bg-black w-full max-w-[925px] rounded-lg flex flex-col items-center bg-black">
-        {/*Banner Image Change*/}
-        <div className="w-full relative">
-          <div
-            className="w-full h-52 rounded-b-2xl bg-shadow-green-offset relative flex justify-center items-center text-2xl font-bold hover:cursor-pointer"
-            onClick={() => navigate("/configure/profile-banner")}
-          >
-            {user?.bannerImg ? (
-              <Image imageId={user?.bannerImg!} />
-            ) : (
-              <h5>No Banner Image</h5>
-            )}
-
-            <button
-              type="button"
-              className="text-lg font-semibold absolute bottom-4 right-4 bg-shadow p-2 rounded z-10 hover:bg-shadow-green border-2 border-black"
-              onClick={() => navigate("/configure/profile-banner")}
-            >
-              Edit Banner
-            </button>
-          </div>
-
-          {/*Profile Image Change*/}
-          <div className="rounded-full overflow-hidden absolute w-full flex flex-col gap-2 justify-center items-center -translate-y-[5rem]">
-            <div
-              className="h-40 w-40 rounded-full overflow-hidden hover:cursor-pointer border-4 border-black hover:border-shadow-green"
-              onClick={() => navigate("/configure/profile-image")}
-            >
-              <Image imageId={user?.profileImg!} />
-            </div>
-
-            <button
-              className="bg-shadow text-lg font-bold p-2 rounded hover:bg-shadow-green"
-              onClick={() => navigate("/configure/profile-image")}
-            >
-              Edit Profile Image
-            </button>
-          </div>
+    <section className="w-full flex justify-center relative pb-10">
+      <div className="w-full max-w-[925px] rounded-lg flex flex-col items-center">
+        {/*Title*/}
+        <div className="text-3xl text-white font-bold w-full flex justify-center border-b pb-4 pt-4">
+          <h2>Settings</h2>
         </div>
 
-        <span className="w-full h-40 p-4"></span>
-        <div className="w-full h-full p-4 flex flex-col gap-6 mt-10">
-          {/*Display Name and Caption*/}
-          <div className="w-full flex gap-2">
-            <div className="w-1/2 h-20">
-              {/*Display Name Link*/}
-              <div
-                className="w-full h-full bg-shadow p-2 rounded hover:cursor-pointer hover:bg-shadow-green"
-                onClick={() => navigate("/configure/display_name")}
-              >
-                <div className="flex justify-between md:text-2xl xsm:text-xl font-bold">
-                  <h5>Display Name</h5>
-                  <FontAwesomeIcon icon={faEdit} />
-                </div>
+        {/*Search Bar*/}
+        <div className="w-full flex justify-center pt-5 pb-5">
+          <input
+            type="search"
+            placeholder="Search..."
+            className="bg-black p-2 rounded-lg w-2/3 text-white"
+          />
+        </div>
 
-                <h6 className="">
-                  {user?.displayName && user?.displayName !== ""
-                    ? user?.displayName
-                    : user?.id}
-                </h6>
-              </div>
-            </div>
-
-            <div className="w-1/2 h-20 overflow-hidden">
-              <div
-                className="w-full h-full bg-shadow p-2 rounded hover:cursor-pointer hover:bg-shadow-green"
-                onClick={() => navigate("/configure/about_me")}
-              >
-                <div className="flex justify-between md:text-2xl xsm:text-xl">
-                  <h5>Profile Caption</h5>
-                  <FontAwesomeIcon icon={faEdit} />
-                </div>
-
-                <h6>...</h6>
-              </div>
-            </div>
-          </div>
-
-          {/*Privacy and Badges*/}
-          <div>
-            <div className="w-1/2 h-20">
-              <div
-                className="w-full h-full bg-shadow p-2 rounded hover:cursor-pointer hover:bg-shadow-green"
-                onClick={() => navigate("/configure/about_me")}
-              >
-                <div className="flex justify-between md:text-2xl xsm:text-xl">
-                  <h5>Badges Display</h5>
-                  <FontAwesomeIcon icon={faEdit} />
-                </div>
-
-                <h6>...</h6>
-              </div>
-            </div>
-          </div>
-
-          {/*Links*/}
-          <div className="w-full border-t-2 flex flex-col gap-2 items-center">
-            <h5 className="-translate-y-5 text-2xl bg-black w-14">Links</h5>
-
-            <div className="flex w-full gap-2">
-              {/*Facebook Edit*/}
-              <div className="w-1/2 h-20 overflow-hidden">
+        <div className="w-full h-full p-4 flex flex-col gap-6">
+          {/*Account Settings*/}
+          <div className="flex flex-col gap-4">
+            {/*Display Name and Caption*/}
+            <div className="w-full flex gap-2">
+              <div className="w-1/2 h-20">
+                {/*Display Name Link*/}
                 <div
-                  className="w-full h-full bg-shadow p-2 rounded hover:cursor-pointer hover:bg-shadow-green"
-                  onClick={() => navigate("/configure/facebook_link")}
+                  className="w-full h-full bg-shadow p-2 rounded hover:cursor-pointer hover:bg-blue-primary"
+                  onClick={() => navigate("/configure/display_name")}
                 >
-                  <div className="flex justify-between md:text-2xl xsm:text-xl">
-                    <h5>Facebook</h5>
+                  <div className="flex justify-between md:text-2xl xsm:text-xl font-bold">
+                    <h5>Display Name</h5>
                     <FontAwesomeIcon icon={faEdit} />
                   </div>
 
-                  <h6>
-                    {user?.facebookLink && user?.facebookLink !== ""
-                      ? user?.facebookLink
-                      : "..."}
+                  <h6 className="">
+                    {user?.displayName && user?.displayName !== ""
+                      ? user?.displayName
+                      : user?.id}
                   </h6>
                 </div>
               </div>
 
-              {/*Instagram Edit*/}
               <div className="w-1/2 h-20 overflow-hidden">
                 <div
                   className="w-full h-full bg-shadow p-2 rounded hover:cursor-pointer hover:bg-shadow-green"
-                  onClick={() => navigate("/configure/instagram_link")}
+                  onClick={() => navigate("/configure/about_me")}
                 >
                   <div className="flex justify-between md:text-2xl xsm:text-xl">
-                    <h5>Instagram</h5>
+                    <h5>Profile Caption</h5>
                     <FontAwesomeIcon icon={faEdit} />
                   </div>
 
-                  <h6>
-                    {user?.instagramLink && user.instagramLink !== ""
-                      ? user.instagramLink
-                      : "..."}
-                  </h6>
+                  <h6>...</h6>
                 </div>
               </div>
             </div>
 
-            <div className="flex w-full gap-2">
-              {/*Twitter Edit*/}
-              <div className="w-1/2 h-20 overflow-hidden">
-                <div
-                  className="w-full h-full bg-shadow p-2 rounded hover:cursor-pointer hover:bg-shadow-green"
-                  onClick={() => navigate("/configure/twitter_link")}
-                >
-                  <div className="flex justify-between md:text-2xl xsm:text-xl">
-                    <h5>Twitter</h5>
-                    <FontAwesomeIcon icon={faEdit} />
-                  </div>
-
-                  <h6>
-                    {user?.twitterLink && user?.twitterLink !== ""
-                      ? user?.twitterLink
-                      : "..."}
-                  </h6>
-                </div>
-              </div>
-
-              {/*Youtube Edit*/}
-              <div className="w-1/2 h-20 overflow-hidden">
-                <div
-                  className="w-full h-full bg-shadow p-2 rounded hover:cursor-pointer hover:bg-shadow-green"
-                  onClick={() => navigate("/configure/youtube_link")}
-                >
-                  <div className="flex justify-between md:text-2xl xsm:text-xl">
-                    <h5>Youtube</h5>
-                    <FontAwesomeIcon icon={faEdit} />
-                  </div>
-
-                  <h6>
-                    {user?.youtubeLink && user?.youtubeLink !== ""
-                      ? user?.youtubeLink
-                      : "..."}
-                  </h6>
-                </div>
-              </div>
-            </div>
-
-            <div className="flex w-full gap-2">
-              {/*Reddit Edit*/}
-              <div className="w-1/2 h-20 overflow-hidden">
-                <div
-                  className="w-full h-full bg-shadow p-2 rounded hover:cursor-pointer hover:bg-shadow-green"
-                  onClick={() => navigate("/configure/reddit_link")}
-                >
-                  <div className="flex justify-between md:text-2xl xsm:text-xl">
-                    <h5>Reddit</h5>
-                    <FontAwesomeIcon icon={faEdit} />
-                  </div>
-
-                  <h6>
-                    {user?.redditLink && user?.redditLink !== ""
-                      ? user?.redditLink
-                      : "..."}
-                  </h6>
-                </div>
-              </div>
-
-              {/*Discord Edit*/}
-              <div className="w-1/2 h-20 overflow-hidden">
-                <div
-                  className="w-full h-full bg-shadow p-2 rounded hover:cursor-pointer hover:bg-shadow-green"
-                  onClick={() => navigate("/configure/discord_link")}
-                >
-                  <div className="flex justify-between md:text-2xl xsm:text-xl">
-                    <h5>Discord</h5>
-                    <FontAwesomeIcon icon={faEdit} />
-                  </div>
-
-                  <h6>
-                    {user?.discordLink && user?.discordLink !== ""
-                      ? user?.discordLink
-                      : "..."}
-                  </h6>
-                </div>
-              </div>
-            </div>
-
-            <div className="flex w-full gap-2">
-              {/*Personal Email Edit*/}
-              <div className="w-1/2 h-20 overflow-hidden">
-                <div
-                  className="w-full h-full bg-shadow p-2 rounded hover:cursor-pointer hover:bg-shadow-green"
-                  onClick={() => navigate("/configure/personal_email_link")}
-                >
-                  <div className="flex justify-between md:text-2xl xsm:text-xl">
-                    <h5>Email</h5>
-                    <FontAwesomeIcon icon={faEdit} />
-                  </div>
-
-                  <h6>
-                    {user?.personalEmailLink && user?.personalEmailLink !== ""
-                      ? user?.personalEmailLink
-                      : "..."}
-                  </h6>
-                </div>
-              </div>
-
-              {/*Personal Website Edit*/}
-              <div className="w-1/2 h-20 overflow-hidden">
-                <div
-                  className="w-full h-full bg-shadow p-2 rounded hover:cursor-pointer hover:bg-shadow-green"
-                  onClick={() => navigate("/configure/personal_website_link")}
-                >
-                  <div className="flex justify-between md:text-2xl xsm:text-xl">
-                    <h5>Website</h5>
-                    <FontAwesomeIcon icon={faEdit} />
-                  </div>
-
-                  <h6>
-                    {user?.personalWebsiteLink &&
-                    user?.personalWebsiteLink !== ""
-                      ? user?.personalWebsiteLink
-                      : "..."}
-                  </h6>
-                </div>
-              </div>
-            </div>
-
-            {/*Preferences*/}
-            <div className="w-full border-t-2 flex flex-col items-center mt-5">
-              <h5 className="-translate-y-5 text-2xl font-bold bg-black">
-                Preferences
-              </h5>
-
-              {/*Measurement Units Change*/}
-              <div className="w-full flex gap-2">
-                <div className="w-1/2 h-20">
-                  <div
-                    className="w-full h-full bg-shadow p-2 rounded hover:cursor-pointer hover:bg-shadow-green"
-                    onClick={() => navigate("/configure/measurement_units")}
-                  >
-                    <div className="flex justify-between md:text-2xl xsm:text-xl">
-                      <h5>Measure Units</h5>
-                      <FontAwesomeIcon icon={faEdit} />
-                    </div>
-
-                    <h6>US</h6>
-                  </div>
-                </div>
-
-                {/*Currency Change*/}
-                <div className="w-1/2 h-20">
-                  <div
-                    className="w-full h-full bg-shadow p-2 rounded hover:cursor-pointer hover:bg-shadow-green"
-                    onClick={() => navigate("/configure/currency")}
-                  >
-                    <div className="flex justify-between md:text-2xl xsm:text-xl">
-                      <h5>Currency</h5>
-                      <FontAwesomeIcon icon={faEdit} />
-                    </div>
-
-                    <h6>US</h6>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            {/*Collection*/}
-            <div className="w-full border-t-2 flex flex-col items-center mt-5">
-              <h5 className="-translate-y-5 text-2xl font-bold bg-black">
-                Collection
-              </h5>
-
-              {/*Collection Banner Image Change*/}
+            {/*Privacy and Badges*/}
+            <div>
               <div className="w-1/2 h-20">
                 <div
                   className="w-full h-full bg-shadow p-2 rounded hover:cursor-pointer hover:bg-shadow-green"
-                  onClick={() => navigate("/configure/collection-banner-image")}
+                  onClick={() => navigate("/configure/about_me")}
                 >
                   <div className="flex justify-between md:text-2xl xsm:text-xl">
-                    <h5>Banner Image</h5>
+                    <h5>Badges Display</h5>
                     <FontAwesomeIcon icon={faEdit} />
                   </div>
 
-                  <h6>
-                    {collectionData?.bannerImg
-                      ? collectionData.bannerImg
-                      : "..."}
-                  </h6>
+                  <h6>...</h6>
+                </div>
+              </div>
+            </div>
+
+            {/*Links*/}
+            <div className="w-full flex flex-col gap-2 items-center">
+              <div className="flex w-full gap-2">
+                {/*Facebook Edit*/}
+                <div className="w-1/2 h-20 overflow-hidden">
+                  <div
+                    className="w-full h-full bg-shadow p-2 rounded hover:cursor-pointer hover:bg-shadow-green"
+                    onClick={() => navigate("/configure/facebook_link")}
+                  >
+                    <div className="flex justify-between md:text-2xl xsm:text-xl">
+                      <h5>Facebook</h5>
+                      <FontAwesomeIcon icon={faEdit} />
+                    </div>
+
+                    <h6>
+                      {user?.facebookLink && user?.facebookLink !== ""
+                        ? user?.facebookLink
+                        : "..."}
+                    </h6>
+                  </div>
+                </div>
+
+                {/*Instagram Edit*/}
+                <div className="w-1/2 h-20 overflow-hidden">
+                  <div
+                    className="w-full h-full bg-shadow p-2 rounded hover:cursor-pointer hover:bg-shadow-green"
+                    onClick={() => navigate("/configure/instagram_link")}
+                  >
+                    <div className="flex justify-between md:text-2xl xsm:text-xl">
+                      <h5>Instagram</h5>
+                      <FontAwesomeIcon icon={faEdit} />
+                    </div>
+
+                    <h6>
+                      {user?.instagramLink && user.instagramLink !== ""
+                        ? user.instagramLink
+                        : "..."}
+                    </h6>
+                  </div>
+                </div>
+              </div>
+
+              <div className="flex w-full gap-2">
+                {/*Twitter Edit*/}
+                <div className="w-1/2 h-20 overflow-hidden">
+                  <div
+                    className="w-full h-full bg-shadow p-2 rounded hover:cursor-pointer hover:bg-shadow-green"
+                    onClick={() => navigate("/configure/twitter_link")}
+                  >
+                    <div className="flex justify-between md:text-2xl xsm:text-xl">
+                      <h5>Twitter</h5>
+                      <FontAwesomeIcon icon={faEdit} />
+                    </div>
+
+                    <h6>
+                      {user?.twitterLink && user?.twitterLink !== ""
+                        ? user?.twitterLink
+                        : "..."}
+                    </h6>
+                  </div>
+                </div>
+
+                {/*Youtube Edit*/}
+                <div className="w-1/2 h-20 overflow-hidden">
+                  <div
+                    className="w-full h-full bg-shadow p-2 rounded hover:cursor-pointer hover:bg-shadow-green"
+                    onClick={() => navigate("/configure/youtube_link")}
+                  >
+                    <div className="flex justify-between md:text-2xl xsm:text-xl">
+                      <h5>Youtube</h5>
+                      <FontAwesomeIcon icon={faEdit} />
+                    </div>
+
+                    <h6>
+                      {user?.youtubeLink && user?.youtubeLink !== ""
+                        ? user?.youtubeLink
+                        : "..."}
+                    </h6>
+                  </div>
+                </div>
+              </div>
+
+              <div className="flex w-full gap-2">
+                {/*Reddit Edit*/}
+                <div className="w-1/2 h-20 overflow-hidden">
+                  <div
+                    className="w-full h-full bg-shadow p-2 rounded hover:cursor-pointer hover:bg-shadow-green"
+                    onClick={() => navigate("/configure/reddit_link")}
+                  >
+                    <div className="flex justify-between md:text-2xl xsm:text-xl">
+                      <h5>Reddit</h5>
+                      <FontAwesomeIcon icon={faEdit} />
+                    </div>
+
+                    <h6>
+                      {user?.redditLink && user?.redditLink !== ""
+                        ? user?.redditLink
+                        : "..."}
+                    </h6>
+                  </div>
+                </div>
+
+                {/*Discord Edit*/}
+                <div className="w-1/2 h-20 overflow-hidden">
+                  <div
+                    className="w-full h-full bg-shadow p-2 rounded hover:cursor-pointer hover:bg-shadow-green"
+                    onClick={() => navigate("/configure/discord_link")}
+                  >
+                    <div className="flex justify-between md:text-2xl xsm:text-xl">
+                      <h5>Discord</h5>
+                      <FontAwesomeIcon icon={faEdit} />
+                    </div>
+
+                    <h6>
+                      {user?.discordLink && user?.discordLink !== ""
+                        ? user?.discordLink
+                        : "..."}
+                    </h6>
+                  </div>
+                </div>
+              </div>
+
+              <div className="flex w-full gap-2">
+                {/*Personal Email Edit*/}
+                <div className="w-1/2 h-20 overflow-hidden">
+                  <div
+                    className="w-full h-full bg-shadow p-2 rounded hover:cursor-pointer hover:bg-shadow-green"
+                    onClick={() => navigate("/configure/personal_email_link")}
+                  >
+                    <div className="flex justify-between md:text-2xl xsm:text-xl">
+                      <h5>Email</h5>
+                      <FontAwesomeIcon icon={faEdit} />
+                    </div>
+
+                    <h6>
+                      {user?.personalEmailLink && user?.personalEmailLink !== ""
+                        ? user?.personalEmailLink
+                        : "..."}
+                    </h6>
+                  </div>
+                </div>
+
+                {/*Personal Website Edit*/}
+                <div className="w-1/2 h-20 overflow-hidden">
+                  <div
+                    className="w-full h-full bg-shadow p-2 rounded hover:cursor-pointer hover:bg-shadow-green"
+                    onClick={() => navigate("/configure/personal_website_link")}
+                  >
+                    <div className="flex justify-between md:text-2xl xsm:text-xl">
+                      <h5>Website</h5>
+                      <FontAwesomeIcon icon={faEdit} />
+                    </div>
+
+                    <h6>
+                      {user?.personalWebsiteLink &&
+                      user?.personalWebsiteLink !== ""
+                        ? user?.personalWebsiteLink
+                        : "..."}
+                    </h6>
+                  </div>
+                </div>
+              </div>
+
+              {/*Collection*/}
+              <div className="w-full flex flex-col items-center mt-5">
+                {/*Collection Banner Image Change*/}
+                <div className="w-1/2 h-20">
+                  <div
+                    className="w-full h-full bg-shadow p-2 rounded hover:cursor-pointer hover:bg-shadow-green"
+                    onClick={() =>
+                      navigate("/configure/collection-banner-image")
+                    }
+                  >
+                    <div className="flex justify-between md:text-2xl xsm:text-xl">
+                      <h5>Banner Image</h5>
+                      <FontAwesomeIcon icon={faEdit} />
+                    </div>
+
+                    <h6>
+                      {collectionData?.bannerImg
+                        ? collectionData.bannerImg
+                        : "..."}
+                    </h6>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/*App Settings*/}
+            <div>
+              <div className="w-full flex flex-col items-center mt-5">
+                {/*Measurement Units Change*/}
+                <div className="w-full flex gap-2">
+                  <div className="w-1/2 h-20">
+                    <div
+                      className="w-full h-full bg-shadow p-2 rounded hover:cursor-pointer hover:bg-shadow-green"
+                      onClick={() => navigate("/configure/measurement_units")}
+                    >
+                      <div className="flex justify-between md:text-2xl xsm:text-xl">
+                        <h5>Measure Units</h5>
+                        <FontAwesomeIcon icon={faEdit} />
+                      </div>
+
+                      <h6>US</h6>
+                    </div>
+                  </div>
+
+                  {/*Currency Change*/}
+                  <div className="w-1/2 h-20">
+                    <div
+                      className="w-full h-full bg-shadow p-2 rounded hover:cursor-pointer hover:bg-shadow-green"
+                      onClick={() => navigate("/configure/currency")}
+                    >
+                      <div className="flex justify-between md:text-2xl xsm:text-xl">
+                        <h5>Currency</h5>
+                        <FontAwesomeIcon icon={faEdit} />
+                      </div>
+
+                      <h6>US</h6>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
 
             {/*Auth*/}
-            <div className="w-full border-t-2 flex flex-col items-center mt-5">
-              <h5 className="-translate-y-5 text-2xl font-bold bg-black">
-                Account
-              </h5>
-
+            <div className="w-full flex flex-col items-center mt-5">
               <div className="w-full flex gap-2">
                 {/*Email Change*/}
                 <div className="w-1/2 h-20">
