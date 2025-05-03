@@ -36,6 +36,7 @@ import { setCollection } from "./redux/collection/collectionSlice";
 import ProfileConfigurationCollectionBannerImagePage from "./pages/configuration/ProfileConfigurationCollectionBannerImagePage";
 import CollectionKnifePage from "./pages/CollectionKnifePage";
 import TestPage from "./pages/TestPage";
+import RegisterVerifyPage from "./pages/auth/RegisterVerifyPage";
 
 const App = () => {
   const [isLoading, setIsLoading] = useState(false);
@@ -99,6 +100,7 @@ const App = () => {
       <Routes>
         <Route path="/" element={<MainLayout />}>
           {/*Public Routes*/}
+          <Route path="/register/verify/:verifiedEmail" element={<RegisterVerifyPage />} />
           <Route path="/" element={<HomePage />} />
           <Route path="/community" element={<CommunityPage />} />
 
@@ -125,6 +127,7 @@ const App = () => {
           <Route element={<ProtectedRoutes />}>
             <Route path="/login" element={<LoginPage />} />
             <Route path="/register" element={<RegisterPage />} />
+            {/* <Route path="/register/verify" element={<RegisterVerifyPage />} /> */}
           </Route>
 
           {/*Auth Protected Routes for only users*/}

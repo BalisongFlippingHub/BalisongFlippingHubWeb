@@ -2,10 +2,9 @@ import { FormEvent, useRef, useState } from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { AppDispatch } from "../redux/store";
-import { login, registerNewUser } from "../redux/auth/authActions";
+import { registerNewUser } from "../redux/auth/authActions";
 import { clearError, setError } from "../redux/auth/authSlice";
 import { useAppSelector } from "../redux/hooks";
-import { setCollection } from "../redux/collection/collectionSlice";
 
 const badDisplayNames = [
   "fuck",
@@ -51,10 +50,6 @@ const UserRegistrationForm = () => {
   const isLoading = useAppSelector((state) => state.auth.loading);
   const isError = useAppSelector((state) => state.auth.error);
   const errMsg = useAppSelector((state) => state.auth.errorMsg);
-
-  const rememberInfo = useAppSelector(
-    (state) => state.auth.rememberLoginCredentials
-  );
 
   const dispatch = useDispatch<AppDispatch>();
   const navigate = useNavigate();
@@ -153,29 +148,10 @@ const UserRegistrationForm = () => {
       })
     )
       .unwrap()
-      .then(() => {
+      .then((res) => {
         // on successful registration attempt login
-        console.log("successful registration. attempting to login user...");
-        dispatch(
-          login({
-            email,
-            password,
-          })
-        )
-          .unwrap()
-          .then((res) => {
-            // set email info if prompted to save
-            if (rememberInfo) {
-              localStorage.setItem("saved-user-email", email);
-            }
-
-            // set collection data
-            dispatch(setCollection(res.collection));
-
-            // navigate to community page
-            navigate("/community");
-          })
-          .catch(() => navigate("/login"));
+        console.log(res)
+        navigate("/register/verify/tzenisekj@gmail.com")
       })
       .catch(() => {});
   };
