@@ -1,7 +1,7 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useAppSelector } from "../../redux/hooks";
-import GoogleLoginComponent from "../login/GoogleLoginComponent";
-import InstagramLoginComponent from "../login/InstagramLoginComponent";
+import GoogleLoginComponent from "../authComponents/login/GoogleLoginComponent";
+import InstagramLoginComponent from "../authComponents/login/InstagramLoginComponent";
 import { faArrowDown } from "@fortawesome/free-solid-svg-icons";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";

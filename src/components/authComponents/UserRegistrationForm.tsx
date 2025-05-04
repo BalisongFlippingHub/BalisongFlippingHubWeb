@@ -1,10 +1,10 @@
 import { FormEvent, useRef, useState } from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { AppDispatch } from "../redux/store";
-import { registerNewUser } from "../redux/auth/authActions";
-import { clearError, setError } from "../redux/auth/authSlice";
-import { useAppSelector } from "../redux/hooks";
+import { AppDispatch } from "../../redux/store";
+import { registerNewUser } from "../../redux/auth/authActions";
+import { clearError, setError } from "../../redux/auth/authSlice";
+import { useAppSelector } from "../../redux/hooks";
 
 const badDisplayNames = [
   "fuck",

@@ -60,6 +60,7 @@ const App = () => {
       dispatch(loginWithRefreshToken())
         .unwrap()
         .then((res) => {
+          console.log("Response from refresh token login ->: " + res)
           dispatch(
             setCredentials({
               newUser: res.account,
@@ -68,7 +69,7 @@ const App = () => {
           );
           dispatch(setCollection(res.collection));
         })
-        .catch((error) => console.log(error));
+        .catch((error) => console.log("Error caught attempting to login with existing refresh token: " + error));
     }
 
     // dispatch(
