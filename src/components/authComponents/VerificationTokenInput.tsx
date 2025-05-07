@@ -2,8 +2,8 @@ import { faArrowLeft, faSpinner } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useEffect, useRef, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { axiosApiInstance } from "../api/axios";
-import SuccessfulEmailVerificationComponent from "./authComponents/SuccessfulEmailVerificationComponent";
+import { axiosApiInstance } from "../../api/axios";
+import SuccessfulEmailVerificationComponent from "./SuccessfulEmailVerificationComponent";
 
 const VerificationTokenInput = () => {
   const firstInputRef = useRef<HTMLInputElement>(null);
@@ -15,8 +15,13 @@ const VerificationTokenInput = () => {
 
   const [verifiedToken, setVerifiedToken] = useState<Array<string>>([]);
   const [isLoading, setIsLoading] = useState(false);
+  const [isResendLoading, setIsResendLoading] = useState(false)
   const [isSuccess, setIsSuccess] = useState(false);
   const [isReadyForSubmit, setIsReadyForSubmit] = useState(false);
+  const [errorObj, setErrorObj] = useState({
+    isError: false, 
+    errorMsg: ""
+  })
 
   const emailParam = useParams();
   const navigate = useNavigate();
@@ -83,10 +88,52 @@ const VerificationTokenInput = () => {
         setIsSuccess(true);
       })
       .catch((error) => {
-        console.error("Error caught from attempting to verify email token: " + error);
+        console.error(
+          "Error caught from attempting to verify email token: " + error
+        );
+        setErrorObj({
+          isError: true,
+          errorMsg: error
+        })
       })
       .finally(() => {
         setIsLoading(false);
+      });
+  };
+
+  const sendNewCode = async () => {
+    setIsResendLoading(true);
+    await axiosApiInstance
+      .request({
+        url: `/auth/resend-email-token/${emailParam.verifiedEmail}`,
+        method: "post",
+      })
+      .then(() => {
+        setVerifiedToken([]);
+
+        // reset input fields
+        if (firstInputRef.current) firstInputRef.current.value = "";
+        if (secondInputRef.current) secondInputRef.current.value = "";
+        if (thirdInputRef.current) thirdInputRef.current.value = "";
+        if (fourthInputRef.current) fourthInputRef.current.value = "";
+        if (fifthInputRef.current) fifthInputRef.current.value = "";
+        if (sixthInputRef.current) sixthInputRef.current.value = "";
+
+        firstInputRef.current?.focus();
+
+        setErrorObj({
+          isError: false,
+          errorMsg: ""
+        })
+      })
+      .catch((error) => {
+        console.error(
+          "Error caught from attempting to resend email token: " + error
+        );
+        
+      })
+      .finally(() => {
+        setIsResendLoading(false);
       });
   };
 
@@ -105,20 +152,28 @@ const VerificationTokenInput = () => {
   }, []);
 
   if (isSuccess) {
-    return (
-      <SuccessfulEmailVerificationComponent />
-    )
+    return <SuccessfulEmailVerificationComponent />;
   } else {
     return (
       <div className="text-white text-xl xsm:text-lg">
         <form
-          className="flex flex-col gap-7 items-center xsm:justify-center md:justify-normal bg-dark-primary p-10 md:rounded-lg border-4 border-black max-w-[750px] xsm:h-screen md:h-auto"
+          className="relative flex flex-col gap-7 items-center xsm:justify-center md:justify-normal bg-dark-primary p-10 md:rounded-lg border-4 border-black max-w-[750px] xsm:h-screen md:h-auto"
           onSubmit={(e) => handleSubmit(e)}
         >
           <h2 className="text-4xl xsm:text-3xl font-bold">
             Two Factor Authentication
           </h2>
           <h4>{`Check your email "${emailParam.verifiedEmail}" for 6 digit verification code.`}</h4>
+
+          {
+            errorObj.isError
+            ?
+            <div className="bg-red p-3 rounded bg-opacity-55">
+              <h6>Error: Invalid token entered.</h6>
+            </div>
+            :
+            <></>
+          }
 
           <div className="flex gap-10 xsm:gap-3 text-3xl">
             <input
@@ -191,10 +246,11 @@ const VerificationTokenInput = () => {
           )}
 
           <div className="flex gap-2 text-lg">
-            <p>Can't find your code?</p>
+            <p>Need a new code?</p>
             <button
               type="button"
               className="text-blue hover:text-light-blue hover:scale-105 transition-all ease-linear duration-200"
+              onClick={() => sendNewCode()}
             >
               <h6>Send new code.</h6>
             </button>
@@ -210,6 +266,17 @@ const VerificationTokenInput = () => {
               <h6>Back to Login</h6>
             </button>
           </div>
+
+          {
+            isResendLoading
+            ?
+            <div className="absolute left-0 bottom-0 right-0 top-0 flex flex-col gap-2 justify-center items-center bg-black bg-opacity-90 text-2xl">
+              <p>Sending new email verification code...</p>
+              <FontAwesomeIcon icon={faSpinner} size="2xl" className="animate-spin" />
+            </div>
+            :
+            <></>
+          }
         </form>
       </div>
     );

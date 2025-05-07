@@ -101,7 +101,6 @@ const App = () => {
       <Routes>
         <Route path="/" element={<MainLayout />}>
           {/*Public Routes*/}
-          <Route path="/register/verify/:verifiedEmail" element={<RegisterVerifyPage />} />
           <Route path="/" element={<HomePage />} />
           <Route path="/community" element={<CommunityPage />} />
 
@@ -128,7 +127,7 @@ const App = () => {
           <Route element={<ProtectedRoutes />}>
             <Route path="/login" element={<LoginPage />} />
             <Route path="/register" element={<RegisterPage />} />
-            {/* <Route path="/register/verify" element={<RegisterVerifyPage />} /> */}
+            <Route path="/register/verify/:verifiedEmail" element={<RegisterVerifyPage />} />
           </Route>
 
           {/*Auth Protected Routes for only users*/}

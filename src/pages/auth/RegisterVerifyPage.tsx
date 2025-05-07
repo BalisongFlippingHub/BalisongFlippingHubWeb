@@ -1,4 +1,4 @@
-import VerificationTokenInput from "../../components/VerificationTokenInput"
+import VerificationTokenInput from "../../components/authComponents/VerificationTokenInput"
 
 const RegisterVerifyPage = () => {
     return (
