@@ -5,6 +5,8 @@ import { clearCollection } from "../../redux/collection/collectionSlice";
 import { logout } from "../../redux/auth/authActions";
 import { setNewUser } from "../../redux/auth/authSlice";
 import { Profile } from "../../modals/User";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faCheck, faSpinner, faX } from "@fortawesome/free-solid-svg-icons";
 
 const DisplayNameConfiguration = () => {
   const displayNameInputRef = useRef<HTMLInputElement>(null);
@@ -19,7 +21,11 @@ const DisplayNameConfiguration = () => {
 
   const dispatch = useAppDispatch();
 
-  const validateNewDisplayName = (_newName: string) => {
+  const validateNewDisplayName = (newName: string) => {
+    if (newName) {
+      return true
+    }
+    
     return true;
   };
 
@@ -32,7 +38,7 @@ const DisplayNameConfiguration = () => {
     }
   };
 
-  const handleSubmit = async (e: any) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setNewDisplayName((prev) => prev.trim());
 
@@ -67,6 +73,12 @@ const DisplayNameConfiguration = () => {
           );
 
           setIsSuccess(true);
+
+        const id =  setTimeout(() => {
+            setIsSuccess(false)
+          }, 5000)
+
+          clearTimeout(id)
         })
         .catch((err) => {
           // error in updating in back end
@@ -85,7 +97,9 @@ const DisplayNameConfiguration = () => {
   };
 
   useEffect(() => {
-    setNewDisplayName(user?.displayName!);
+    if (user?.displayName)
+      setNewDisplayName(user?.displayName);
+
   }, []);
 
   return (
@@ -98,7 +112,7 @@ const DisplayNameConfiguration = () => {
         ! . _
       </p>
 
-      <div className="flex w-full gap-2 items-center">
+      <div className="flex w-full items-center">
         <div className="flex w-full">
           <input
             type="text"
@@ -127,13 +141,21 @@ const DisplayNameConfiguration = () => {
         </div>
 
         {isLoading ? (
-          <>Loading...</>
+          <div className="h-full w-12 flex justify-center items-center bg-blue border">
+            <FontAwesomeIcon icon={faSpinner} className="animate-spin" />
+          </div>
         ) : isSuccess ? (
-          <>Success...</>
+          <div className="h-full w-12 flex justify-center items-center bg-green border">
+            <FontAwesomeIcon icon={faCheck} />
+          </div>
         ) : isError ? (
-          <>Error...</>
+          <div className="h-full w-12 flex justify-center items-center bg-red border">
+            <FontAwesomeIcon icon={faX}  />
+          </div>
         ) : (
-          <>Fill...</>
+          <div className="h-full w-12 flex justify-center items-center">
+            
+          </div>
         )}
       </div>
 
