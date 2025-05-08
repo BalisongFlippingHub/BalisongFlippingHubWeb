@@ -9,24 +9,25 @@ interface params {
 }
 
 const GoogleLoginComponent = ({ iconOnly }: params) => {
-  const [user, setUser] = useState<Omit<
+  const [userToken, setUserToken] = useState<Omit<
     TokenResponse,
     "error" | "error_description" | "error_uri"
   > | null>(null);
 
   const loginWithGoogle = useGoogleLogin({
-    onSuccess: (codeResponse) => setUser(codeResponse),
+    onSuccess: (codeResponse) => setUserToken(codeResponse),
     onError: (error) => console.log("Login Failed:", error),
   });
 
   useEffect(() => {
     const getUserInfo = async () => {
+      // call backend and send access token to register/login user
       await axios
         .get(
-          `https://www.googleapis.com/oauth2/v1/userinfo?access_token=${user?.access_token}`,
+          `https://www.googleapis.com/oauth2/v1/userinfo?access_token=${userToken?.access_token}`,
           {
             headers: {
-              Authorization: `Bearer ${user?.access_token}`,
+              Authorization: `Bearer ${userToken?.access_token}`,
               Accept: "application/json",
             },
           }
@@ -37,12 +38,12 @@ const GoogleLoginComponent = ({ iconOnly }: params) => {
         .catch((err) => console.log(err));
     };
 
-    if (user) {
-      console.log(user);
+    if (userToken) {
+      console.log(userToken);
 
       getUserInfo();
     }
-  }, [user]);
+  }, [userToken]);
 
   if (iconOnly) {
     return (
