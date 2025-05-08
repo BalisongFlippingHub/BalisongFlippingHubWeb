@@ -78,7 +78,7 @@ const HeaderProfileDisplay = () => {
 
       {/*Account Drop Down Menu*/}
       {userNav ? (
-        <div className="absolute bg-blue-primary mt-[42px] w-36 right-0">
+        <div className="absolute bg-dark-primary mt-[42px] w-36 right-0">
           <ul>
             <li
               className="flex p-2 hover:cursor-pointer hover:bg-shadow-green border-b"

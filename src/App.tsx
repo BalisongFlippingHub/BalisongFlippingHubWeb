@@ -36,6 +36,7 @@ import { setCollection } from "./redux/collection/collectionSlice";
 import ProfileConfigurationCollectionBannerImagePage from "./pages/configuration/ProfileConfigurationCollectionBannerImagePage";
 import CollectionKnifePage from "./pages/CollectionKnifePage";
 import TestPage from "./pages/TestPage";
+import RegisterVerifyPage from "./pages/auth/RegisterVerifyPage";
 
 const App = () => {
   const [isLoading, setIsLoading] = useState(false);
@@ -59,6 +60,7 @@ const App = () => {
       dispatch(loginWithRefreshToken())
         .unwrap()
         .then((res) => {
+          console.log("Response from refresh token login ->: " + res)
           dispatch(
             setCredentials({
               newUser: res.account,
@@ -67,7 +69,7 @@ const App = () => {
           );
           dispatch(setCollection(res.collection));
         })
-        .catch((error) => console.log(error));
+        .catch((error) => console.log("Error caught attempting to login with existing refresh token: " + error));
     }
 
     // dispatch(
@@ -125,6 +127,7 @@ const App = () => {
           <Route element={<ProtectedRoutes />}>
             <Route path="/login" element={<LoginPage />} />
             <Route path="/register" element={<RegisterPage />} />
+            <Route path="/register/verify/:verifiedEmail" element={<RegisterVerifyPage />} />
           </Route>
 
           {/*Auth Protected Routes for only users*/}

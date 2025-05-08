@@ -1,17 +1,17 @@
 import { useState, useRef, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { AppDispatch, RootState } from "../redux/store";
-import { login } from "../redux/auth/authActions";
+import { AppDispatch, RootState } from "../../../redux/store";
+import { login } from "../../../redux/auth/authActions";
 
 import {
   setToRememberLoginInfo,
   toggleOffRememberLoginInfo,
-} from "../redux/auth/authSlice";
-import { setCollection } from "../redux/collection/collectionSlice";
-import GoogleLoginComponent from "./login/GoogleLoginComponent";
+} from "../../../redux/auth/authSlice";
+import { setCollection } from "../../../redux/collection/collectionSlice";
+import GoogleLoginComponent from "./GoogleLoginComponent";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faEnvelope, faLock } from "@fortawesome/free-solid-svg-icons";
+import { faArrowRight, faEnvelope, faLock, faSpinner } from "@fortawesome/free-solid-svg-icons";
 
 const LoginForm = () => {
   // form refs
@@ -22,6 +22,10 @@ const LoginForm = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
+  const [isLoading, setIsLoading] = useState(false)
+  const [isError, setIsError] = useState(false)
+  const [errorMsg, setErrorMsg] = useState("")
+
   // button enabling and disabling
   const [buttonDisabled, setButtonDisabled] = useState(false);
 
@@ -29,9 +33,6 @@ const LoginForm = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch<AppDispatch>();
 
-  // const error = useSelector((state: RootState) => state.auth.error);
-  // const errMsg = useSelector((state: RootState) => state.auth.errorMsg);
-  // const isLoading = useSelector((state: RootState) => state.auth.loading);
   const rememberInfo = useSelector(
     (state: RootState) => state.auth.rememberLoginCredentials
   );
@@ -59,6 +60,7 @@ const LoginForm = () => {
     // checks for valid info to pass
     if (email.trim() === "" || password.trim() === "") return;
 
+    setIsLoading(true)
     {
       /*Authenticate user in back end*/
     }
@@ -71,7 +73,6 @@ const LoginForm = () => {
       .unwrap()
       .then((res) => {
         // on success save email
-        console.log("res", res);
         if (rememberInfo) {
           localStorage.setItem("saved-user-email", email);
         }
@@ -80,7 +81,15 @@ const LoginForm = () => {
         dispatch(setCollection(res.collection));
 
         navigate("/community");
-      });
+      })
+      .catch((err) => {
+        console.log("Error caught attmepting to login: " + err)
+        setIsError(true)
+        setErrorMsg(err)
+      })
+      .finally(() => {
+        setIsLoading(false)
+      })
   };
 
   /*
@@ -103,6 +112,27 @@ const LoginForm = () => {
         <form onSubmit={handleSubmit} className="text-white w-full md:max-w-[500px] xsm:h-full md:h-auto flex flex-col items-center xsm:justify-center md:justify-normal gap-4 md:p-10 xsm:p-5 md:bg-dark-primary md:rounded-lg md:border-4 md:border-black">
           <h1 className="text-4xl font-bold mb-10">Login</h1>
 
+          {
+            isError
+            ?
+            <div className="w-full flex flex-col gap-2 justify-center items-center bg-red p-4 rounded-lg bg-opacity-50 font-bold">
+              <p>{errorMsg}</p>
+
+              {
+                errorMsg === "Email not verified."
+                ?
+                <button className="bg-dark-primary p-2 font-bold rounded-lg flex items-center gap-2 hover:bg-blue-primary" type="button" onClick={(() => navigate(`/register/verify/${email}`))}>
+                  
+                  <h4>Click To Verify</h4>
+                  <FontAwesomeIcon icon={faArrowRight} className="animate-pulse" />
+                  </button>
+                :
+                <></>
+              }
+            </div>
+            :
+            <></>
+          }
           {/*Email input field*/}
           <div className="flex flex-col w-full text-xl relative md:border-2 md:rounded-full">
             <label htmlFor="emailInput" className="absolute top-4 right-5">
@@ -169,7 +199,15 @@ const LoginForm = () => {
 
           {/*SUBMIT Button*/}
           <div className="w-full">
-              <button type="submit" className="text-3xl font-bold bg-blue hover:bg-light-blue transition-colors duration-200 ease-linear p-2 w-full text-white rounded-full"><h3>Login</h3></button>
+              <button type="submit" className="text-3xl font-bold bg-blue hover:bg-light-blue transition-colors duration-200 ease-linear p-2 w-full text-white rounded-full">
+                {
+                  isLoading
+                  ?
+                  <FontAwesomeIcon icon={faSpinner} className="animate-spin" />
+                  :
+                  <h3>Login</h3>
+                }
+                </button>
           </div>
             
           {/*Redirect for users do not have an account.*/}
