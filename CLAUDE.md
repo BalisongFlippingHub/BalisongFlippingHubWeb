@@ -1,0 +1,114 @@
+# CLAUDE.md
+
+This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
+
+## Commands
+
+```bash
+npm run dev        # Start dev server at http://localhost:5157
+npm run build      # Type-check with tsc, then Vite production build
+npm run lint       # ESLint with zero warnings allowed
+npm run preview    # Preview the production build locally
+```
+
+There are no tests in this project.
+
+### Docker / Production
+
+```bash
+docker build -t balisong-hub .     # Multi-stage build: Node 20 Alpine → Nginx
+docker run -p 80:80 balisong-hub   # Serves built assets via Nginx on port 80
+```
+
+## Architecture
+
+### Tech Stack
+
+React 18 + TypeScript + Vite, Tailwind CSS (custom config — see below), Redux Toolkit, React Router v6, Axios, Motion (`motion/react`), FontAwesome, `@react-oauth/google`, `react-headroom`, AWS Amplify Gen 2.
+
+### Backend
+
+The app communicates with a **custom REST API** running on AWS EC2 at `http://ec2-3-217-173-234.compute-1.amazonaws.com:8080`. The Amplify backend (`/amplify`) is a mostly-boilerplate setup (Cognito auth + a placeholder DynamoDB `Todo` model) and is **not** used for the main app functionality.
+
+### Authentication Flow
+
+Two Axios instances are defined in `src/api/axios.ts`:
+- `axiosApiInstance` — unauthenticated requests (login, register, public data)
+- `axiosApiInstanceAuth` — authenticated requests; a request interceptor attaches the `Bearer` access token from Redux state, and a response interceptor automatically retries on `403` by calling `/auth/refresh-access-token` to get a new access token
+
+> **Known bug:** the response interceptor in `axiosApiInstanceAuth` currently hardcodes `http://localhost:8080` for the token refresh call instead of the EC2 base URL.
+
+On app mount (`App.tsx`), the app attempts to restore a session by calling `/auth/refresh-token-login`. The refresh token is stored in an HTTP-only cookie; the access token lives only in Redux state (never persisted to localStorage).
+
+Google OAuth is wired up at the root via `<GoogleOAuthProvider>` in `src/main.tsx` (client ID is public/non-secret). The login page uses `@react-oauth/google` components to handle the OAuth flow.
+
+"Remember me" stores only a flag and email in `localStorage` — not the token itself.
+
+### Redux State
+
+Two slices in `src/redux/`:
+- **`auth`** — `user: Profile | null`, `accessToken: string | null`, `rememberLoginCredentials`, loading/error state. Actions: `setCredentials`, `setNewAccessToken`, `setNewUser`, error/remember helpers.
+- **`collection`** — `collection: Collection | null`, `collectionKnives: CollectionKnife[]`. Set on login alongside credentials.
+
+Use `useAppSelector` / `useAppDispatch` from `src/redux/hooks.ts` (typed wrappers). The files in `src/hooks/` (`useAuth.tsx`, `useCollection.tsx`) are fully commented out — they were a prior context-based approach now replaced by Redux.
+
+### Routing
+
+All routes render inside `MainLayout` (auto-hiding header via `react-headroom` + `<Outlet>`). Three protection layers:
+- **Public** — no guard
+- **`ProtectedRoutes`** — redirects *authenticated* users away (login, register)
+- **`AuthProtectedRoutes`** — role-based; accepts `allowedRoles: string[]` (currently `"USER"` or `"ADMIN"`); redirects unauthenticated users to `/login`, unauthorized roles to `/unauthorized`
+
+User profile pages use dynamic routes: `/:account/:identifier` for profile, `/:account/:identifier/collection` for collection, `/:account/:identifier/collection/:knife` for a specific knife.
+
+### Data Models (`src/modals/`)
+
+Note the directory is named `modals` (not `models`) — this is intentional in this codebase.
+
+- **`Profile`** — authenticated user; includes role, social links, display name, `identifierCode` (used in profile URLs alongside `displayName`)
+- **`Collection`** — belongs to a user, holds an array of `CollectionKnife`
+- **`CollectionKnife`** / **`CollectionKnifeDTO`** — detailed knife entry with specs (blade, handle, pivot, scores). `DTO` variant uses `File` for `coverPhoto`; the entity variant uses `string` (URL).
+- **`Post`** / **`CollectionTimelinePostModal`** / **`PostCover`** / **`PostPreview`** / **`CreationPostDTO`** — post-related models for community feed and collection timeline events.
+
+### Component Conventions
+
+**`EditAndDisplay` pattern** — components in `src/components/collectionKnifePageComponents/` (e.g. `BladeFinishEditAndDisplay.tsx`) each manage a single knife field. They render as read-only display by default and switch to an edit input on toggle. The owner's view gets `UsersCollectionKnifeDisplay`; others get `CollectionKnifeDisplay`.
+
+**Multi-step knife form** — `AddNewKnifeToCollectionPage` orchestrates a 3-step flow: (1) `NewCollectionKnifeForm` (required fields + optional specs/rankings), (2) `GalleryInput` for photo uploads, (3) `NewCollectionKnifeSubmit` for API submission. State is lifted to the page component and passed down via props; `CollectionKnifeDTO` is the transfer object between steps.
+
+**Input components** — `src/components/input/` contains individual controlled input components for each knife field. Each takes a `parent<FieldName>` prop (current value) and a `set<FieldName>OnChange` callback, following a consistent controlled-component pattern.
+
+**`comboBoxData/`** — `src/comboBoxData/` contains static string arrays (e.g. `BladeFinish.ts`, `PivotSystem.ts`) that drive the dropdown options in input and `EditAndDisplay` components.
+
+### Tailwind Custom Configuration
+
+The project overrides Tailwind's default color palette entirely — standard colors like `text-gray-500` will not work. Use only the defined custom colors:
+
+| Token | Value |
+|---|---|
+| `dark-primary` | `#001314` |
+| `blue-primary` | `#108198` |
+| `shadow-green` | `#001a1a` |
+| `shadow-green-offset` | `#003333` |
+| `white` / `black` | standard |
+| `light-blue` | `#99c2ff` |
+| `blue` | `#0066ff` |
+| `red` | `#b91c1c` |
+| `green` | `#22c55e` |
+| `gold` | `#e6b800` |
+| `shadow` | `#808080` |
+| `instagram-pink` | `#e1306c` |
+| `shadow-red` | `#1a0000` |
+| `shadow-red-offset` | `#330000` |
+
+Breakpoints are also custom: `xsm` (100px), `sm` (550px), `md` (950px), `lg` (1310px). The `md` breakpoint (950px) is the main mobile/desktop threshold used throughout the header and components.
+
+### Project Description
+This is the front end repo for the project. The project directly communicates with the backend to complete the overall application. This is meant to be a website for balisong flipping enthusiest. The project is meant to consits with 3 main parts: 
+1- A social media platform where users create accounts, have their own unique display names, accounts, knife collections and more where they can create posts and interact with others posts. Down the road users will be able to follow specific users to primarily see their posts. Most all other social media features will apply on posts such as likes, flags, saves, bookmarking, and commenting. This application is not inteded to feature a direct messaging platform to other users outside of posting comments on posts. 
+2- An informational area to display info on specific knives and companies/makers. This is important for new enthusiest to be able to see active balisong makers, their knives and all the info associated.
+3- There will be a third section of the application known as the Tutorial Center where users will be able to view peoples posts on cool combos or tricks, or directly search tutorials on specific tricks.
+
+This project is one little bit at a time. Claude needs to remember to plan with me first before doing any coding. Any questions must be asked and already existing code needs to stay relatively the same.
+
+Also claude needs to remember that alot of the functionality will need to be implemented on the backend. The frontend will only be used as a GUI for everything.

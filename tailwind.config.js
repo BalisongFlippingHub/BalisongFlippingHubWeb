@@ -10,6 +10,8 @@ export default {
       'blue-primary': '#108198',
       'shadow-green': '#001a1a',
       'shadow-green-offset': '#003333',
+      'dark-neutral': '#0a0c10',
+      'dark-neutral-offset': '#111318',
       'white': '#ffffff',
       'black': '#000000',
       'light-blue': '#99c2ff',
@@ -26,17 +28,23 @@ export default {
       'xsm': '100px',
       'sm': '550px',
       'md': '950px',
+      'nav': '1150px',
       'lg': '1310px'
     },
     extend: {
       keyframes: {
         fade_in_out: {
           to: { opacity: '1' }
+        },
+        gentle_bounce: {
+          '0%, 100%': { transform: 'translateY(0)' },
+          '50%':       { transform: 'translateY(-7px)' },
         }
       },
       animation: {
-        'text-fade': 'fade_in_out 5s linear'
-      }, 
+        'text-fade':     'fade_in_out 5s linear',
+        'gentle-bounce': 'gentle_bounce 2s ease-in-out infinite',
+      },
     },
   },
   plugins: [],

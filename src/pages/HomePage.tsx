@@ -15,32 +15,34 @@ const HomePage = () => {
   return (
     <div className="flex flex-col items-center">
 
-      {/*Set max width so content doesn't stretch too much on wide screens*/}
-      <div className="max-w-[1775px]">
-        
-        {/*Introductory Section*/}
+      {/*Hero — full bleed, outside max-width constraint*/}
+      <div className="w-full">
         <HomePageIntroductorySectionComponent />
+      </div>
+
+      {/*Set max width so content doesn't stretch too much on wide screens*/}
+      <div className="max-w-[1775px] w-full">
         
         {/*Community Info Section*/}
-        <section className="w-full h-screen bg-black text-white flex items-center justify-center">
+        <section className="w-full h-screen bg-dark-neutral text-white flex items-center justify-center">
             <h1>TODO - Community</h1>
             <FontAwesomeIcon icon={faGlobe} />
         </section>
 
         {/*Product World Info Section*/}
-        <section className="w-full h-screen bg-shadow-green text-white flex items-center justify-center">
+        <section className="w-full h-screen bg-dark-neutral-offset text-white flex items-center justify-center">
           <h1>TODO - Product World</h1>
           <FontAwesomeIcon icon={faEarthAmericas} />
         </section>
 
         {/*Tutorial Center Info Section*/}
-        <section className="w-full h-screen bg-blue text-white flex items-center justify-center">
+        <section className="w-full h-screen bg-dark-neutral text-white flex items-center justify-center">
           <h1>TODO - Tutorial Center</h1>
           <FontAwesomeIcon icon={faHubspot} />
         </section>
 
         {/*Footer Section for disclosures and such*/}
-        <footer className="w-full h-20 bg-gold text-xl font-bold flex items-center justify-center">
+        <footer className="w-full h-20 bg-dark-neutral-offset text-white text-xl font-bold flex items-center justify-center">
             <h1>TODO - Footer Section</h1>
         </footer>
       </div>

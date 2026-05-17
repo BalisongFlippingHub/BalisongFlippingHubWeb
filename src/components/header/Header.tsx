@@ -17,11 +17,9 @@ import { motion, useScroll, useMotionValueEvent } from "motion/react";
 
 const Navbar = () => {
   const [hidden, setHidden] = useState(false);
-
-  const [navToggle, toggleNav] = useState(true);
+  const [navToggle, toggleNav] = useState(false);
   const [searchBarToggle, setSearchBarToggle] = useState(false);
   const [accountToggle, setAccountToggle] = useState(false);
-
   const [currURL, setCurrURL] = useState("");
 
   const accessToken = useSelector((state: RootState) => state.auth.accessToken);
@@ -29,21 +27,14 @@ const Navbar = () => {
 
   const navigate = useNavigate();
   const location = useLocation();
-
   const windowSize = useWindowSize();
   const { scrollY } = useScroll();
 
-  const closeNavigation = () => {
-    toggleNav(false);
-  };
-
-  const toggleSearchBar = () => {
-    setSearchBarToggle((prev) => !prev);
-  };
+  const toggleSearchBar = () => setSearchBarToggle((prev) => !prev);
 
   useMotionValueEvent(scrollY, "change", (latest) => {
     const prev = scrollY.getPrevious();
-    if (latest > prev! && latest > (navToggle ? 100 : 40)) {
+    if (latest > prev! && latest > 40) {
       setHidden(true);
     } else {
       setHidden(false);
@@ -51,114 +42,110 @@ const Navbar = () => {
   });
 
   useEffect(() => {
-    if (navToggle) {
-      if (windowSize.at(1)! < 950) {
-        toggleNav(false);
-      }
-    } else {
-      if (windowSize.at(1)! > 950) {
-        toggleNav(true);
-      }
+    if (location.pathname !== currURL) {
+      setCurrURL(location.pathname);
+      toggleNav(false);
+      if (accountToggle) setAccountToggle(false);
     }
-
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [windowSize.at(1)]);
+  }, [location]);
 
   useEffect(() => {
     setCurrURL(location.pathname);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  useEffect(() => {
-    if (location.pathname !== currURL) {
-      setCurrURL(location.pathname);
-      closeNavigation();
-
-      if (accountToggle) {
-        setAccountToggle(false);
-      }
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [location]);
+  const isMobile = windowSize.at(1)! < 1150;
+  const isSmall = windowSize.at(1)! < 950;
 
   return (
     <>
       <motion.header
-        variants={{
-          visible: { y: 0 },
-          hidden: { y: "-100%" },
-        }}
+        variants={{ visible: { y: 0 }, hidden: { y: "-100%" } }}
         animate={hidden ? "hidden" : "visible"}
         transition={{ duration: 0.353, ease: "easeInOut" }}
-        className="flex flex-col gap-5 items-center sticky top-0 h-18 w-full pt-3 pb-3 md:pl-5 xsm:pl-2 xsm:pr-2 md:pr-5 z-10 text-white backdrop-filter backdrop-blur-xl bg-opacity-40 bg-blue-primary"
+        className={`relative flex items-center sticky top-0 w-full px-4 md:px-8 py-3 z-30 text-white backdrop-blur-xl border-b border-white/10 shadow-lg transition-colors duration-500 ${
+          location.pathname === "/" ? "bg-transparent" : "bg-blue-primary/40"
+        }`}
       >
-        <section className="flex w-full justify-between">
-          {/*Search Bar for small screens*/}
-          {windowSize.at(1)! < 950 && searchBarToggle ? (
-            <div className="absolute top-0 left-0 right-0 bottom-0 flex items-center justify-center bg-black">
-              <SearchBar toggleSearchBar={toggleSearchBar} />
-            </div>
-          ) : (
-            <></>
-          )}
+        {/* Mobile search overlay */}
+        {isSmall && searchBarToggle && (
+          <div className="absolute inset-0 flex items-center justify-center bg-black z-40 px-4">
+            <SearchBar toggleSearchBar={toggleSearchBar} />
+          </div>
+        )}
 
-          {/*Hamburger Menu and Logo*/}
-          <div className="flex md:gap-2 xsm:gap-1 md:text-2xl xsm:text-lg items-center">
-            <div
-              className="hover:cursor-pointer"
-              onClick={() => toggleNav((prev) => !prev)}
-            >
-              <FontAwesomeIcon icon={faBarsStaggered} />
-            </div>
+        {/* Three-column grid: logo | nav | search+icon */}
+        <div className="grid grid-cols-[1fr_auto_1fr] items-center w-full">
 
+          {/* Left — hamburger (mobile only) + logo */}
+          <div className="flex items-center gap-2">
+            {isMobile && (
+              <div className="hover:cursor-pointer text-xl mr-1" onClick={() => toggleNav((prev) => !prev)}>
+                <FontAwesomeIcon icon={faBarsStaggered} />
+              </div>
+            )}
             <h1
               onClick={() => navigate("/")}
-              className="hover:cursor-pointer font-bold lg:text-3xl xsm:text-xl"
+              className="hover:cursor-pointer font-bold lg:text-2xl xsm:text-lg whitespace-nowrap"
             >
-              Balisong Flipping Center
+              <span className="text-blue-primary">Balisong</span> Flipping Center
             </h1>
           </div>
 
-          <div className="flex items-center md:gap-0 xsm:gap-2">
-            {windowSize.at(1)! > 950 ? (
+          {/* Center — nav links (desktop only) */}
+          {!isMobile ? (
+            <div className="flex items-center justify-center">
+              <HeaderNavbar />
+            </div>
+          ) : (
+            <div />
+          )}
+
+          {/* Right — search + user icon */}
+          <div className="flex items-center gap-3 justify-end pl-[35px]">
+            {!isSmall ? (
               <SearchBar toggleSearchBar={toggleSearchBar} />
             ) : (
               <FontAwesomeIcon
                 icon={faMagnifyingGlass}
-                size="xl"
+                size="lg"
                 onClick={toggleSearchBar}
                 className="cursor-pointer"
               />
             )}
 
+            <span className="xsm:hidden md:block w-px h-4 bg-white/20 flex-shrink-0" />
+
             {user && accessToken ? (
               <HeaderProfileDisplay />
             ) : (
-              <FontAwesomeIcon
-                icon={faCircleUser}
-                size="xl"
-                className="cursor-pointer"
+              <button
                 onClick={() => navigate("/login")}
-              />
+                className="flex items-center gap-2 py-1.5 px-[7px] rounded-full text-blue-primary hover:bg-white/10 transition-colors duration-200 cursor-pointer"
+              >
+                <FontAwesomeIcon icon={faCircleUser} size="xl" />
+                <span className="text-sm font-medium whitespace-nowrap xsm:hidden md:inline">Sign In</span>
+              </button>
             )}
           </div>
-        </section>
 
-        {navToggle ? (
-          <aside className="w-full">
+        </div>
+
+        {/* Mobile dropdown nav */}
+        {isMobile && navToggle && (
+          <aside className={`absolute top-full left-0 right-0 w-full backdrop-blur-xl shadow-lg ${
+            location.pathname === "/" ? "bg-[#0a0c10]" : "bg-blue-primary/40"
+          }`}>
             <HeaderNavbar />
           </aside>
-        ) : (
-          <></>
         )}
       </motion.header>
 
-      {user && accessToken ? (
+      {user && accessToken && (
         <aside className="fixed bg-black bottom-0 w-full z-10 flex justify-center">
           <HeaderNavbarBottom />
         </aside>
-      ) : (
-        <></>
       )}
     </>
   );
