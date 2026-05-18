@@ -86,7 +86,7 @@ const HomePageTutorialCenterSectionComponent = () => {
         }}
       />
 
-      <div className="relative z-10 w-full max-w-5xl mx-auto px-6 py-24">
+      <div className="relative z-10 w-full max-w-5xl mx-auto px-6 pt-56 pb-40">
 
         {/* Eyebrow */}
         <div className="flex items-center justify-center gap-2 mb-4">
