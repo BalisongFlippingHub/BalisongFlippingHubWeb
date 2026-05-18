@@ -1,82 +1,200 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useAppSelector } from "../../redux/hooks";
-import GoogleLoginComponent from "../authComponents/login/GoogleLoginComponent";
-import InstagramLoginComponent from "../authComponents/login/InstagramLoginComponent";
-import { faArrowDown } from "@fortawesome/free-solid-svg-icons";
+import { faArrowDown, faBolt } from "@fortawesome/free-solid-svg-icons";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import HomePageCaurosel from "../HomePageCaurosel";
+import myVideo from "../../assets/HomePageVideo.mp4";
 
+const STAT_TARGETS = { members: 500, knives: 1200, posts: 3000 };
+const COUNT_DURATION = 1800;
 
-  
 const HomePageIntroductorySectionComponent = () => {
-  const [isVisible, setIsVisible] = useState(false)
-  
-  // get user and access token from redux in case user already logged in
+  const [videoVisible, setVideoVisible] = useState(false);
+  const [overlayVisible, setOverlayVisible] = useState(false);
+  const [cardVisible, setCardVisible] = useState(false);
+  const [statsVisible, setStatsVisible] = useState(false);
+  const [counts, setCounts] = useState({ members: 0, knives: 0, posts: 0 });
+
   const user = useAppSelector((state) => state.auth.user);
   const accessToken = useAppSelector((state) => state.auth.accessToken);
 
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   useEffect(() => {
-    // TODO - Change state based on intersection observer
-    setIsVisible(true)
-  }, [])
+    window.scrollTo(0, 0);
 
-    return (
-      <section className="lg:h-screen xsm:h-auto text-white bg-[linear-gradient(0deg,_#108198_0%,_#001a1a_3%,_#023d42_22%,_#001314_35%,_#002e33_88%,_#108198_96%)] pt-[32px]">
-          
-          <div className={`h-full flex lg:flex-row xsm:flex-col-reverse lg:items-center lg:pr-5 lg:pl-5 lg:gap-10 xsm:gap-5 transition-all duration-[3s] ease-in-out ${isVisible ? 'opacity-100' : 'opacity-0'} ${isVisible ? "-translate-y-8" : "-translate-y-20"}`}>
-            <div className="flex flex-col items-center gap-8 xsm:pl-5 xsm:pr-5 lg:w-[98%] md:w-full xsm:pt-10 lg:pt-0">
-              <h4 className="md:text-5xl xsm:text-3xl font-bold">Welcome!</h4>
+    const videoTimer   = setTimeout(() => setVideoVisible(true),  400);
+    const overlayTimer = setTimeout(() => setOverlayVisible(true), 1100);
+    const cardTimer    = setTimeout(() => setCardVisible(true),    2300);
+    const statsTimer   = setTimeout(() => setStatsVisible(true),   3000);
 
-              <p className="md:text-2xl xsm:text-xl/8 text-center">
-                Welcome to the Balisong Flipping Center! The central hub for
-                balisong related content and the home of knife enthusiest,
-                flippers, modders and more. Scroll to learn more, or make an
-                account today to jump right into the community.
-              </p>
+    return () => {
+      clearTimeout(videoTimer);
+      clearTimeout(overlayTimer);
+      clearTimeout(cardTimer);
+      clearTimeout(statsTimer);
+    };
+  }, []);
 
-              {
-                user && accessToken && accessToken !== ""
-                ?
-                <div className="">
-                  <p className="text-white text-xl">You are logged in!</p>
-                </div>
-                :
-                <div className="flex flex-col items-center gap-5">
+  useEffect(() => {
+    if (!statsVisible) return;
 
-                  {/*Button navigates user to registration page*/}
-                  <button className="p-2 bg-black font-bold text-xl rounded hover:scale-125 transition duration-200 ease-in" type="button" onClick={() => navigate("/register")}><h4>Register Here</h4></button>
-                  
-                  <p>Or</p>
+    const start = performance.now();
 
-                  {/*Components allow user to either login or register easily with oath2*/}
-                  <div className="flex xsm:flex-col md:flex-row gap-4">
-                    <GoogleLoginComponent />
-                    <InstagramLoginComponent />
-                  </div>
-                </div>
-              }
-              
-              <span className="w-full h-[.5px] bg-white"></span>
+    const tick = (now: number) => {
+      const progress = Math.min((now - start) / COUNT_DURATION, 1);
+      const eased = 1 - Math.pow(1 - progress, 3);
 
-              <div className="text-xl text-center">
-                <p className="mb-4">Scroll to learn more and get a tour of the application.</p>
+      setCounts({
+        members: Math.floor(eased * STAT_TARGETS.members),
+        knives:  Math.floor(eased * STAT_TARGETS.knives),
+        posts:   Math.floor(eased * STAT_TARGETS.posts),
+      });
 
-                {/*TODO- Enable users to click on the arrow to automatically scroll to the next section in full screen*/}
-                <FontAwesomeIcon icon={faArrowDown} size="xl" className="animate-bounce" />
-              </div>
+      if (progress < 1) requestAnimationFrame(tick);
+    };
 
+    requestAnimationFrame(tick);
+  }, [statsVisible]);
+
+  return (
+    <section className="relative w-full h-svh text-white overflow-hidden flex flex-col bg-dark-neutral">
+
+      {/* Full-bleed video background */}
+      <video
+        src={myVideo}
+        muted
+        autoPlay
+        loop
+        playsInline
+        className={`absolute inset-0 w-full h-full object-cover z-0 transition-all duration-[1200ms] ease-in-out ${
+          videoVisible ? "opacity-100 scale-100" : "opacity-0 scale-50"
+        }`}
+      />
+
+      {/* Top/bottom gradient overlay */}
+      <div
+        className={`absolute inset-0 z-10 bg-[linear-gradient(180deg,_rgba(10,12,16,0.88)_0%,_rgba(10,12,16,0.35)_45%,_rgba(10,12,16,0.35)_55%,_rgba(10,12,16,0.88)_100%)] transition-opacity duration-[900ms] ease-in-out ${
+          overlayVisible ? "opacity-100" : "opacity-0"
+        }`}
+      />
+
+      {/* Left/right vignette */}
+      <div
+        className={`absolute inset-0 z-10 bg-[linear-gradient(90deg,_rgba(10,12,16,0.60)_0%,_transparent_25%,_transparent_75%,_rgba(10,12,16,0.60)_100%)] transition-opacity duration-[900ms] ease-in-out ${
+          overlayVisible ? "opacity-100" : "opacity-0"
+        }`}
+      />
+
+      {/* Hero content */}
+      <div
+        className={`relative z-20 flex-1 flex flex-col items-center justify-center xsm:px-3 sm:px-6 text-center xsm:pb-10 sm:pb-20 transition-all duration-[2000ms] ease-[cubic-bezier(0.25,0.1,0.25,1)] ${
+          cardVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
+        }`}
+      >
+        {/* Glass card */}
+        <div
+          className="flex flex-col items-center bg-black/50 backdrop-blur-md border border-white/10 rounded-2xl xsm:px-4 sm:px-8 md:px-12 lg:px-16 xsm:py-6 sm:py-8 md:py-10 lg:py-12 xsm:w-full lg:w-auto"
+          style={{ borderTopWidth: '2px', borderTopColor: '#108198' }}
+        >
+
+          {/* Badge */}
+          <div className="flex items-center gap-2 border border-blue-primary text-blue-primary xsm:text-xs sm:text-sm md:text-base font-semibold xsm:tracking-normal sm:tracking-widest uppercase xsm:px-3 sm:px-5 py-2 rounded-full mb-5 sm:mb-7">
+            <FontAwesomeIcon icon={faBolt} size="xs" />
+            <span>Now Live — Join the Community</span>
+          </div>
+
+          {/* Heading — wraps on mobile, nowrap on desktop */}
+          <h1 className="xsm:text-3xl sm:text-4xl md:text-5xl lg:text-7xl font-bold tracking-tight mb-4 sm:mb-5 md:whitespace-nowrap">
+            Balisong Flipping Center
+          </h1>
+
+          <p className="xsm:text-sm sm:text-lg md:text-2xl lg:text-3xl font-light tracking-[0.15em] sm:tracking-[0.25em] text-blue-primary xsm:mb-4 sm:mb-7 uppercase">
+            Flip. Collect. Connect.
+          </p>
+
+          {/* Descriptor — short version on xsm, full version on sm+ */}
+          <p className="xsm:block sm:hidden text-sm text-white/75 font-bold mb-6 leading-relaxed text-center">
+            Your home for balisong flipping. Learn tricks, catalog your collection, and connect with the community.
+          </p>
+
+          <p className="xsm:hidden sm:block sm:text-base md:text-lg lg:text-2xl text-white/75 font-bold max-w-2xl mb-8 sm:mb-10 leading-relaxed">
+            Whether you're a seasoned flipper or just discovering the hobby, the Balisong Flipping Center has everything you need.
+            Catalog and show off your knife collection, stay up to date on the latest from top makers, learn new tricks,
+            and connect with a community that shares your passion for the art of the flip.
+          </p>
+
+          {user && accessToken && accessToken !== "" ? (
+            <button
+              type="button"
+              onClick={() => navigate("/community")}
+              className="px-8 py-3 bg-blue-primary text-white font-semibold text-lg rounded hover:brightness-110 transition duration-300"
+            >
+              Go to Community
+            </button>
+          ) : (
+            <div className="flex xsm:flex-col sm:flex-row items-center xsm:gap-3 sm:gap-6 xsm:w-full sm:w-auto">
+              <button
+                type="button"
+                onClick={() => navigate("/register")}
+                className="xsm:w-full sm:w-auto px-8 py-3 bg-blue-primary text-white font-semibold text-lg rounded hover:brightness-110 transition-[filter] duration-300 animate-gentle-bounce"
+              >
+                Get Started
+              </button>
+
+              <button
+                type="button"
+                onClick={() => navigate("/login")}
+                className="xsm:w-full sm:w-auto px-8 py-3 border border-white/60 text-white font-semibold text-lg rounded hover:border-blue-primary hover:text-blue-primary hover:font-bold hover:bg-blue-primary/10 hover:-translate-y-1 transition-all duration-300"
+              >
+                Sign In
+              </button>
             </div>
+          )}
 
-            {/*TODO- Will display video of professional flipping on loop*/}
-            <div className="w-full lg:h-[30rem] xsm:h-56 lg:rounded-lg overflow-hidden xsm:absolute lg:static xsm:invisible lg:visible">
-              <HomePageCaurosel />
+          {/* Stats strip */}
+          <div
+            className={`flex items-center xsm:gap-4 sm:gap-8 lg:gap-12 xsm:mt-6 sm:mt-10 xsm:pt-5 sm:pt-8 border-t border-white/10 w-full justify-center transition-opacity duration-[800ms] ease-in-out ${
+              statsVisible ? "opacity-100" : "opacity-0"
+            }`}
+          >
+            <div className="flex flex-col items-center gap-1">
+              <span className="text-white font-bold xsm:text-2xl sm:text-3xl md:text-4xl lg:text-4xl">
+                {counts.members.toLocaleString()}<span className="pl-[2px]">+</span>
+              </span>
+              <span className="uppercase xsm:tracking-normal sm:tracking-widest xsm:text-xs sm:text-sm md:text-base text-white/60">Members</span>
+            </div>
+            <div className="w-px xsm:h-8 md:h-10 bg-white/20" />
+            <div className="flex flex-col items-center gap-1">
+              <span className="text-white font-bold xsm:text-2xl sm:text-3xl md:text-4xl lg:text-4xl">
+                {counts.knives.toLocaleString()}<span className="pl-[2px]">+</span>
+              </span>
+              <span className="uppercase xsm:tracking-normal sm:tracking-widest xsm:text-xs sm:text-sm md:text-base text-white/60">Knives</span>
+            </div>
+            <div className="w-px xsm:h-8 md:h-10 bg-white/20" />
+            <div className="flex flex-col items-center gap-1">
+              <span className="text-white font-bold xsm:text-2xl sm:text-3xl md:text-4xl lg:text-4xl">
+                {counts.posts.toLocaleString()}<span className="pl-[2px]">+</span>
+              </span>
+              <span className="uppercase xsm:tracking-normal sm:tracking-widest xsm:text-xs sm:text-sm md:text-base text-white/60">Posts</span>
             </div>
           </div>
-        </section>
-    )
-}
 
-export default HomePageIntroductorySectionComponent
+        </div>
+      </div>
+
+      {/* Scroll indicator */}
+      <div
+        className={`relative z-20 flex flex-col items-center gap-2 xsm:pb-8 sm:pb-20 transition-all duration-[1200ms] ease-in-out ${
+          cardVisible ? "opacity-100" : "opacity-0"
+        }`}
+      >
+        <p className="xsm:text-xs sm:text-base tracking-widest uppercase text-white">Scroll to explore</p>
+        <FontAwesomeIcon icon={faArrowDown} size="lg" className="animate-bounce text-white" />
+      </div>
+
+    </section>
+  );
+};
+
+export default HomePageIntroductorySectionComponent;

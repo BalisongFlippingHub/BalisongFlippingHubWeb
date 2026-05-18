@@ -150,17 +150,17 @@ const UserRegistrationForm = () => {
       .unwrap()
       .then((res) => {
         // on successful registration attempt login
-        console.log(res)
-        navigate("/register/verify/tzenisekj@gmail.com")
+        console.log(res);
+        navigate("/register/verify/tzenisekj@gmail.com");
       })
       .catch(() => {});
   };
 
   return (
     <section className="h-[calc(100vh_-_60px)] flex justify-center items-center">
-      <div className="flex md:flex-row xsm:flex-col bg-white md:w-4/6 xsm:w-full mb-20">
+      <div className="flex md:flex-row xsm:flex-col bg-white md:w-4/6 xsm:w-full mb-20 rounded-lg">
         {/*Create Account Caption*/}
-        <div className="flex flex-col justify-center items-center bg-shadow md:w-1/2 xsm:w-full">
+        <div className="flex flex-col justify-center items-center bg-shadow md:w-1/2 xsm:w-full rounded-l-lg">
           <h3 className="text-xl font-bold">
             Start your flipping journey today.
           </h3>
@@ -179,10 +179,10 @@ const UserRegistrationForm = () => {
 
         {/*Registration Form*/}
         <form
-          className="flex flex-col gap-5 items-center md:w-1/2 xsm:w-full p-10 bg-dark-primary text-white"
+          className="flex flex-col gap-5 items-center md:w-1/2 xsm:w-full p-10 bg-dark-primary text-white rounded-r-lg"
           onSubmit={handleSubmit}
         >
-          <div className="font-bold text-2xl">
+          <div className="font-bold text-3xl">
             <h2>Register</h2>
           </div>
 

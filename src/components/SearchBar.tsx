@@ -15,25 +15,25 @@ const SearchBar = ({ toggleSearchBar }: params) => {
 
   return (
     <div className="flex">
-      <div className="flex items-center justify-end pt-1 pb-1 pl-6 pr-3 gap-2 border rounded-full">
-        <input
-          placeholder="Search..."
-          className="lg:w-96 md:w-72 xsm:w-70 outline-none text-white bg-blue bg-opacity-0 pb-px pt-px"
-          onChange={handleOnChange}
-        />
+      <div className="flex items-center py-2 pl-4 pr-3 gap-5 bg-white/5 border border-white/15 focus-within:border-blue-primary rounded-full transition-colors duration-200">
         <FontAwesomeIcon
           icon={faMagnifyingGlass}
-          size="xl"
-          className="hover:cursor-pointer"
+          size="lg"
+          className="text-white/60 hover:cursor-pointer flex-shrink-0"
+        />
+        <input
+          placeholder="Search..."
+          className="lg:w-48 md:w-36 xsm:w-32 outline-none text-white bg-transparent placeholder-white/40 text-sm"
+          onChange={handleOnChange}
         />
       </div>
 
       <button
-          className="md:collapse ml-2 hover:cursor-pointer"
+          className="md:hidden ml-3 text-white/60 hover:text-white transition-colors duration-200 cursor-pointer text-sm font-medium"
           type="button"
           onClick={() => toggleSearchBar()}
         >
-          X
+          Cancel
         </button>
 
       {!showResults ? (
