@@ -21,8 +21,12 @@ export default {
       'instagram-pink': '#e1306c',
       'gold': '#e6b800',
       'shadow-red': '#1a0000',
+      'shadow-red-mid': '#2a0000',
       'shadow-red-offset': '#330000',
-      'shadow': '#808080'
+      'shadow': '#808080',
+      'teal': '#0d9488',
+      'shadow-teal': '#021a19',
+      'shadow-teal-mid': '#042f2e',
     },
     screens: {
       'xsm': '100px',

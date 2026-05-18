@@ -33,10 +33,10 @@ const Navbar = () => {
   const toggleSearchBar = () => setSearchBarToggle((prev) => !prev);
 
   useMotionValueEvent(scrollY, "change", (latest) => {
-    const prev = scrollY.getPrevious();
-    if (latest > prev! && latest > 40) {
+    const prev = scrollY.getPrevious() ?? latest;
+    if (latest > prev && latest > 40) {
       setHidden(true);
-    } else {
+    } else if (prev - latest > 5) {
       setHidden(false);
     }
   });

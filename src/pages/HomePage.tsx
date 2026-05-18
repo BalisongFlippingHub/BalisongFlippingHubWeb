@@ -4,11 +4,10 @@
  * 
 */
 
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faGlobe, faEarthAmericas } from "@fortawesome/free-solid-svg-icons";
-import { faHubspot } from "@fortawesome/free-brands-svg-icons";
-
 import HomePageIntroductorySectionComponent from "../components/homePageComponents/HomePageIntroductorySectionComponent";
+import HomePageCommunitySectionComponent from "../components/homePageComponents/HomePageCommunitySectionComponent";
+import HomePageProductWorldSectionComponent from "../components/homePageComponents/HomePageProductWorldSectionComponent";
+import HomePageTutorialCenterSectionComponent from "../components/homePageComponents/HomePageTutorialCenterSectionComponent";
 
 const HomePage = () => {
 
@@ -24,26 +23,19 @@ const HomePage = () => {
       <div className="max-w-[1775px] w-full">
         
         {/*Community Info Section*/}
-        <section className="w-full h-screen bg-dark-neutral text-white flex items-center justify-center">
-            <h1>TODO - Community</h1>
-            <FontAwesomeIcon icon={faGlobe} />
-        </section>
+        <HomePageCommunitySectionComponent />
 
         {/*Product World Info Section*/}
-        <section className="w-full h-screen bg-dark-neutral-offset text-white flex items-center justify-center">
-          <h1>TODO - Product World</h1>
-          <FontAwesomeIcon icon={faEarthAmericas} />
-        </section>
+        <HomePageProductWorldSectionComponent />
 
         {/*Tutorial Center Info Section*/}
-        <section className="w-full h-screen bg-dark-neutral text-white flex items-center justify-center">
-          <h1>TODO - Tutorial Center</h1>
-          <FontAwesomeIcon icon={faHubspot} />
-        </section>
+        <div style={{ marginTop: '-80px', zIndex: 2, position: 'relative' }}>
+          <HomePageTutorialCenterSectionComponent />
+        </div>
 
-        {/*Footer Section for disclosures and such*/}
-        <footer className="w-full h-20 bg-dark-neutral-offset text-white text-xl font-bold flex items-center justify-center">
-            <h1>TODO - Footer Section</h1>
+        {/*Footer Section*/}
+        <footer className="w-full h-16 text-white/40 text-base flex items-center justify-center" style={{ backgroundColor: '#0a0c10', zIndex: 1, position: 'relative' }}>
+          © {new Date().getFullYear()} Balisong Flipping Center. All rights reserved.
         </footer>
       </div>
     </div>
