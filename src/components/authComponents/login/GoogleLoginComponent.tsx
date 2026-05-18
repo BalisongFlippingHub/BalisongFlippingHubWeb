@@ -5,10 +5,10 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 
 interface params {
-  iconOnly: boolean;
+  iconOnly?: boolean;
 }
 
-const GoogleLoginComponent = ({ iconOnly }: params) => {
+const GoogleLoginComponent = ({ iconOnly = false }: params) => {
   const [userToken, setUserToken] = useState<Omit<
     TokenResponse,
     "error" | "error_description" | "error_uri"
