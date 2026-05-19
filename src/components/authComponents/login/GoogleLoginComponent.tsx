@@ -1,8 +1,5 @@
 import { faGoogle } from "@fortawesome/free-brands-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { TokenResponse, useGoogleLogin } from "@react-oauth/google";
-import axios from "axios";
-import { useEffect, useState } from "react";
 
 interface params {
   iconOnly?: boolean;
@@ -10,41 +7,8 @@ interface params {
 }
 
 const GoogleLoginComponent = ({ iconOnly = false, label = "Sign in with Google" }: params) => {
-  const [userToken, setUserToken] = useState<Omit<
-    TokenResponse,
-    "error" | "error_description" | "error_uri"
-  > | null>(null);
-
-  const loginWithGoogle = useGoogleLogin({
-    onSuccess: (codeResponse) => setUserToken(codeResponse),
-    onError: (error) => console.log("Login Failed:", error),
-  });
-
-  useEffect(() => {
-    const getUserInfo = async () => {
-      // call backend and send access token to register/login user
-      await axios
-        .get(
-          `https://www.googleapis.com/oauth2/v1/userinfo?access_token=${userToken?.access_token}`,
-          {
-            headers: {
-              Authorization: `Bearer ${userToken?.access_token}`,
-              Accept: "application/json",
-            },
-          }
-        )
-        .then((res) => {
-          console.log(res);
-        })
-        .catch((err) => console.log(err));
-    };
-
-    if (userToken) {
-      console.log(userToken);
-
-      getUserInfo();
-    }
-  }, [userToken]);
+  // TODO: Google auth — wire up useGoogleLogin + backend integration
+  // See CLAUDE.md > Future Implementation
 
   if (iconOnly) {
     return (
