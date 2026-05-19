@@ -112,3 +112,8 @@ This is the front end repo for the project. The project directly communicates wi
 This project is one little bit at a time. Claude needs to remember to plan with me first before doing any coding. Any questions must be asked and already existing code needs to stay relatively the same.
 
 Also claude needs to remember that alot of the functionality will need to be implemented on the backend. The frontend will only be used as a GUI for everything.
+
+## Future Implementation
+
+- **Registration verify redirect** — `UserRegistrationForm.tsx` line 94 hardcodes `navigate("/register/verify/tzenisekj@gmail.com")` after successful registration. This needs to be updated to use the `email` state variable: `navigate(\`/register/verify/${email.trim()}\`)` once the email verification flow is built out.
+- **Google sign-up flow** — `GoogleLoginComponent.tsx` currently only logs the OAuth token response. Needs to be wired up to the backend to register/login the user and then prompt for a display name on first Google sign-in.

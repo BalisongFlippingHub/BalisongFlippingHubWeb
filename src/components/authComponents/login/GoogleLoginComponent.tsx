@@ -6,9 +6,10 @@ import { useEffect, useState } from "react";
 
 interface params {
   iconOnly?: boolean;
+  label?: string;
 }
 
-const GoogleLoginComponent = ({ iconOnly = false }: params) => {
+const GoogleLoginComponent = ({ iconOnly = false, label = "Sign in with Google" }: params) => {
   const [userToken, setUserToken] = useState<Omit<
     TokenResponse,
     "error" | "error_description" | "error_uri"
@@ -47,22 +48,19 @@ const GoogleLoginComponent = ({ iconOnly = false }: params) => {
 
   if (iconOnly) {
     return (
-      <button className="" type="button" onClick={() => loginWithGoogle()}>
+      <button className="" type="button" onClick={() => {}}>
         <FontAwesomeIcon icon={faGoogle} style={{ color: "black" }} />
       </button>
     );
   } else {
     return (
       <button
-        className="flex items-center bg-white rounded-full overflow-hidden justify-center gap-4 pt-3 pb-3 pl-4 pr-4 hover:cursor-pointer hover:scale-105 transition duration-200 ease-in text-xl font-bold"
+        className="flex items-center w-full justify-center gap-3 px-4 py-2.5 rounded-lg border border-white/20 bg-white/5 hover:bg-white/10 hover:border-white/30 transition-all duration-200 text-white text-sm font-medium cursor-pointer"
         type="button"
-        onClick={() => loginWithGoogle()}
+        onClick={() => {}}
       >
-        <FontAwesomeIcon icon={faGoogle} style={{ color: "black" }} />
-
-        <div className="text-black">
-          <h4>Sign in with Google</h4>
-        </div>
+        <FontAwesomeIcon icon={faGoogle} className="text-blue-primary text-base" style={{ display: 'block', transform: 'translateY(-1px)' }} />
+        <span style={{ lineHeight: 1 }}>{label}</span>
       </button>
     );
   }

@@ -65,7 +65,11 @@ const Navbar = () => {
         animate={hidden ? "hidden" : "visible"}
         transition={{ duration: 0.353, ease: "easeInOut" }}
         className={`relative flex items-center sticky top-0 w-full px-4 md:px-8 py-3 z-30 text-white backdrop-blur-xl border-b border-white/10 shadow-lg transition-colors duration-500 ${
-          location.pathname === "/" ? "bg-transparent" : "bg-blue-primary/40"
+          location.pathname === "/"
+            ? "bg-transparent"
+            : location.pathname.startsWith("/register") || location.pathname.startsWith("/login")
+            ? "bg-dark-neutral/80"
+            : "bg-blue-primary/40"
         }`}
       >
         {/* Mobile search overlay */}
@@ -135,7 +139,10 @@ const Navbar = () => {
         {/* Mobile dropdown nav */}
         {isMobile && navToggle && (
           <aside className={`absolute top-full left-0 right-0 w-full backdrop-blur-xl shadow-lg ${
-            location.pathname === "/" ? "bg-[#0a0c10]" : "bg-blue-primary/40"
+            location.pathname === "/" ? "bg-[#0a0c10]"
+            : location.pathname.startsWith("/register") || location.pathname.startsWith("/login")
+            ? "bg-dark-neutral"
+            : "bg-blue-primary/40"
           }`}>
             <HeaderNavbar />
           </aside>
