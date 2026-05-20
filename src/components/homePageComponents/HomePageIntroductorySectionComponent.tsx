@@ -24,7 +24,7 @@ const HomePageIntroductorySectionComponent = () => {
     window.scrollTo(0, 0);
 
     const videoTimer   = setTimeout(() => setVideoVisible(true),  400);
-    const overlayTimer = setTimeout(() => setOverlayVisible(true), 1100);
+    const overlayTimer = setTimeout(() => setOverlayVisible(true), 600);
     const cardTimer    = setTimeout(() => setCardVisible(true),    2300);
     const statsTimer   = setTimeout(() => setStatsVisible(true),   3000);
 
@@ -74,14 +74,14 @@ const HomePageIntroductorySectionComponent = () => {
 
       {/* Top/bottom gradient overlay */}
       <div
-        className={`absolute inset-0 z-10 bg-[linear-gradient(180deg,_rgba(10,12,16,0.88)_0%,_rgba(10,12,16,0.35)_45%,_rgba(10,12,16,0.35)_55%,_rgba(10,12,16,0.88)_100%)] transition-opacity duration-[900ms] ease-in-out ${
+        className={`absolute inset-0 z-10 bg-[linear-gradient(180deg,_rgba(10,12,16,0.88)_0%,_rgba(10,12,16,0.35)_45%,_rgba(10,12,16,0.35)_55%,_rgba(10,12,16,0.88)_100%)] transition-opacity duration-[500ms] ease-in-out ${
           overlayVisible ? "opacity-100" : "opacity-0"
         }`}
       />
 
       {/* Left/right vignette */}
       <div
-        className={`absolute inset-0 z-10 bg-[linear-gradient(90deg,_rgba(10,12,16,0.60)_0%,_transparent_25%,_transparent_75%,_rgba(10,12,16,0.60)_100%)] transition-opacity duration-[900ms] ease-in-out ${
+        className={`absolute inset-0 z-10 bg-[linear-gradient(90deg,_rgba(10,12,16,0.60)_0%,_transparent_25%,_transparent_75%,_rgba(10,12,16,0.60)_100%)] transition-opacity duration-[500ms] ease-in-out ${
           overlayVisible ? "opacity-100" : "opacity-0"
         }`}
       />

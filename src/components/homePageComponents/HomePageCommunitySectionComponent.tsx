@@ -100,7 +100,7 @@ const HomePageCommunitySectionComponent = () => {
         }}
       />
 
-      <div className="relative z-10 w-full max-w-5xl mx-auto px-6 py-24">
+      <div className="relative z-10 w-full max-w-5xl mx-auto px-6 pt-24 xsm:pb-72 md:pb-48">
 
         {/* Eyebrow */}
         <div className="flex items-center justify-center gap-2 mb-4">
@@ -116,7 +116,7 @@ const HomePageCommunitySectionComponent = () => {
         </h2>
 
         {/* Subheading */}
-        <p className="text-center text-white/60 xsm:text-sm sm:text-base md:text-lg max-w-2xl mx-auto mt-5 leading-relaxed">
+        <p className="text-center text-white/60 xsm:text-base md:text-lg max-w-2xl mx-auto mt-5 leading-relaxed">
           The Community is the heart of the Balisong Flipping Center. Create an account,
           build your profile, and connect with a passionate network of flippers, collectors,
           and makers from around the world.
