@@ -67,9 +67,7 @@ const Navbar = () => {
         className={`relative flex items-center sticky top-0 w-full px-4 md:px-8 py-3 z-30 text-white backdrop-blur-xl border-b border-white/10 shadow-lg transition-colors duration-500 ${
           location.pathname === "/"
             ? "bg-transparent"
-            : location.pathname.startsWith("/register") || location.pathname.startsWith("/login")
-            ? "bg-dark-neutral/80"
-            : "bg-blue-primary/40"
+            : "bg-dark-neutral/80"
         }`}
       >
         {/* Mobile search overlay */}
@@ -139,10 +137,7 @@ const Navbar = () => {
         {/* Mobile dropdown nav */}
         {isMobile && navToggle && (
           <aside className={`absolute top-full left-0 right-0 w-full backdrop-blur-xl shadow-lg ${
-            location.pathname === "/" ? "bg-[#0a0c10]"
-            : location.pathname.startsWith("/register") || location.pathname.startsWith("/login")
-            ? "bg-dark-neutral"
-            : "bg-blue-primary/40"
+            location.pathname === "/" ? "bg-[#0a0c10]" : "bg-dark-neutral"
           }`}>
             <HeaderNavbar />
           </aside>
@@ -150,7 +145,7 @@ const Navbar = () => {
       </motion.header>
 
       {user && accessToken && (
-        <aside className="fixed bg-black bottom-0 w-full z-10 flex justify-center">
+        <aside className="fixed bottom-4 left-1/2 -translate-x-1/2 z-30 overflow-visible">
           <HeaderNavbarBottom />
         </aside>
       )}

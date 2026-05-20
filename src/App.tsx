@@ -31,6 +31,7 @@ import ProfileConfigurationProfileBannerPage from "./pages/configuration/Profile
 import { useEffect, useState } from "react";
 import { useAppDispatch, useAppSelector } from "./redux/hooks";
 import { setCredentials, setToRememberLoginInfo } from "./redux/auth/authSlice";
+import { Profile } from "./modals/User";
 import { loginWithRefreshToken } from "./redux/auth/authActions";
 import { setCollection } from "./redux/collection/collectionSlice";
 import ProfileConfigurationCollectionBannerImagePage from "./pages/configuration/ProfileConfigurationCollectionBannerImagePage";
@@ -72,19 +73,19 @@ const App = () => {
         .catch((error) => console.log("Error caught attempting to login with existing refresh token: " + error));
     }
 
-    // dispatch(
-    //   setCredentials({
-    //     newUser: {
-    //       id: "1",
-    //       displayName: "Test",
-    //       identifierCode: "4444",
-    //       role: "USER",
-    //       email: "test@gmail.com",
-    //       collectionId: "1123",
-    //     } as Profile,
-    //     newAccessToken: "1234",
-    //   })
-    // );
+    dispatch(
+      setCredentials({
+        newUser: {
+          id: "1",
+          displayName: "Test",
+          identifierCode: "4444",
+          role: "USER",
+          email: "test@gmail.com",
+          collectionId: "1123",
+        } as Profile,
+        newAccessToken: "1234",
+      })
+    );
 
     setIsLoading(false);
   }, []);
