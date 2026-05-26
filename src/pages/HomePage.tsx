@@ -34,7 +34,7 @@ const HomePage = () => {
         </div>
 
         {/*Footer Section*/}
-        <footer className="w-full h-16 text-white/40 text-base flex items-center justify-center" style={{ backgroundColor: '#0a0c10', zIndex: 1, position: 'relative' }}>
+        <footer className="w-full py-20 text-white/40 text-base flex items-center justify-center" style={{ backgroundColor: '#0a0c10', zIndex: 1, position: 'relative' }}>
           © {new Date().getFullYear()} Balisong Flipping Center. All rights reserved.
         </footer>
       </div>

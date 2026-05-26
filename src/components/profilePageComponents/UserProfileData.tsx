@@ -1,79 +1,201 @@
 import { useNavigate } from "react-router-dom";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-// import {
-//   faDiscord,
-//   faFacebookSquare,
-//   faInstagram,
-//   faRedditSquare,
-//   faTwitterSquare,
-//   faYoutubeSquare,
-// } from "@fortawesome/free-brands-svg-icons";
 import { useAppSelector } from "../../redux/hooks";
-import { faCircleUser } from "@fortawesome/free-solid-svg-icons";
-import Image from "../Image";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faCircleUser, faEnvelope, faGlobe, faLink, faArrowUpRightFromSquare } from "@fortawesome/free-solid-svg-icons";
+import {
+  faFacebookSquare,
+  faInstagram,
+  faTwitterSquare,
+  faYoutubeSquare,
+  faRedditSquare,
+  faDiscord,
+} from "@fortawesome/free-brands-svg-icons";
+import { useState } from "react";
+import { motion, AnimatePresence } from "motion/react";
+
+const STAT_DUMMY = { posts: 0, followers: 0, following: 0 };
+
+const StatBlock = ({ value, label }: { value: number; label: string }) => (
+  <div className="flex flex-col gap-1">
+    <span className="text-white font-bold text-2xl leading-none">
+      {value.toLocaleString()}
+    </span>
+    <span className="text-white/35 text-[11px] uppercase tracking-widest">{label}</span>
+  </div>
+);
 
 const UserProfileData = () => {
   const user = useAppSelector((state) => state.auth.user);
   const collectionData = useAppSelector((state) => state.collection.collection);
-
+  const collectionKnives = useAppSelector((state) => state.collection.collectionKnives);
   const navigate = useNavigate();
+  const [linksOpen, setLinksOpen] = useState(false);
+
+  const socialLinks = [
+    { href: user?.facebookLink  ?? '#', icon: faFacebookSquare, color: '#1877F2' },
+    { href: user?.instagramLink ?? '#', icon: faInstagram,      color: '#E1306C' },
+    { href: user?.twitterLink   ?? '#', icon: faTwitterSquare,  color: '#1DA1F2' },
+    { href: user?.youtubeLink   ?? '#', icon: faYoutubeSquare,  color: '#FF0000' },
+    { href: user?.redditLink    ?? '#', icon: faRedditSquare,   color: '#FF4500' },
+    { href: user?.discordLink   ?? '#', icon: faDiscord,        color: '#5865F2' },
+  ];
+
+  const personalLinks = [
+    { href: user?.personalEmailLink   ? `mailto:${user.personalEmailLink}` : '#', icon: faEnvelope, color: '#108198' },
+    { href: user?.personalWebsiteLink ?? '#', icon: faGlobe, color: '#108198' },
+  ];
 
   return (
-    <div className="flex justify-between items-center p-4 text-white xsm:pt-14 md:pt-4">
-      <div className="flex flex-col gap-4">
-        <div className="flex">
-          {/*Display User Identification*/}
-          <div className="flex flex-col gap-1 justify-center">
-            {/*Display Name && Social Media Links*/}
-            <div className="flex gap-2 items-center">
-              <FontAwesomeIcon icon={faCircleUser} size="2xl" />
+    <div className="flex flex-col md:flex-row justify-between items-stretch px-6 xsm:pt-20 sm:pt-24 md:pt-6 lg:pt-8 pb-4 text-white gap-6">
 
-              <div className="text-2xl font-bold">
-                {user?.displayName && user?.displayName !== "" ? (
-                  <h5>{user?.displayName}</h5>
-                ) : (
-                  <h5>{user?.id}</h5>
-                )}
-              </div>
+      {/* Left — info section */}
+      <div className="flex flex-col gap-3 md:gap-4 md:max-w-xs">
 
-              {/*Badges Display*/}
-              <ul className="flex gap-3 ml-2">
-                <li className="">»</li>
-                <li>·</li>
-                <li>Š</li>
-              </ul>
-            </div>
-
-            {/*Profile Caption*/}
-            <div className="md:w-80 xsm:w-52 xsm:text-sm md:text-lg">
-              <h6>
-                "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-                eiusmod."
-              </h6>
-            </div>
-          </div>
+        {/* Display name + identifier tag */}
+        <div className="flex items-center gap-2">
+          <FontAwesomeIcon icon={faCircleUser} className="text-white/50 text-2xl flex-shrink-0" />
+          <h2 className="text-xl font-bold text-white leading-none">
+            {user?.displayName || user?.id}
+          </h2>
+          <span className="text-[11px] text-white/35 font-medium bg-white/5 border border-white/10 px-1.5 py-0.5 rounded-full leading-none">
+            #{user?.identifierCode}
+          </span>
         </div>
+
+        {/* Bio / profile caption */}
+        <p className="text-sm text-white/55 leading-relaxed">
+          {user?.profileCaption && user.profileCaption !== ""
+            ? user.profileCaption
+            : <span className="text-white/20 italic">No bio yet.</span>
+          }
+        </p>
+
+        {/* Links row — expands on click */}
+        <div className="flex items-center gap-3">
+
+          {/* Trigger */}
+          <button
+            type="button"
+            onClick={() => setLinksOpen((p) => !p)}
+            className={`w-8 h-8 rounded-full flex items-center justify-center border transition-all duration-200 flex-shrink-0 ${
+              linksOpen
+                ? 'bg-blue-primary border-blue-primary text-white'
+                : 'bg-white/5 border-white/10 text-white/40 hover:text-white/70 hover:border-white/20'
+            }`}
+          >
+            <FontAwesomeIcon icon={faLink} className="text-sm" />
+          </button>
+
+          {/* Sliding icons */}
+          <AnimatePresence>
+            {linksOpen && (
+              <motion.div className="flex items-center gap-3 leading-none">
+
+                {socialLinks.map((link, i) => {
+                  const total = socialLinks.length + 1 + personalLinks.length;
+                  return (
+                    <motion.a
+                      key={i}
+                      href={link.href}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-white/35 transition-colors duration-200 flex items-center"
+                      onMouseEnter={e => (e.currentTarget.style.color = link.color)}
+                      onMouseLeave={e => (e.currentTarget.style.color = '')}
+                      initial={{ opacity: 0, x: -12 }}
+                      animate={{ opacity: 1, x: 0, transition: { duration: 0.15, delay: i * 0.04 } }}
+                      exit={{ opacity: 0, x: -16, transition: { duration: 0.25, delay: (total - 1 - i) * 0.05 } }}
+                    >
+                      <FontAwesomeIcon icon={link.icon} className="text-2xl block" />
+                    </motion.a>
+                  );
+                })}
+
+                <motion.div
+                  className="w-px h-5 bg-white/20 self-center"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1, transition: { duration: 0.15, delay: socialLinks.length * 0.04 } }}
+                  exit={{ opacity: 0, transition: { duration: 0.2, delay: (personalLinks.length) * 0.05 } }}
+                />
+
+                {personalLinks.map((link, i) => {
+                  const total = socialLinks.length + 1 + personalLinks.length;
+                  const pos = socialLinks.length + 1 + i;
+                  return (
+                    <motion.a
+                      key={i}
+                      href={link.href}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-white/35 transition-colors duration-200 flex items-center"
+                      onMouseEnter={e => (e.currentTarget.style.color = link.color)}
+                      onMouseLeave={e => (e.currentTarget.style.color = '')}
+                      initial={{ opacity: 0, x: -12 }}
+                      animate={{ opacity: 1, x: 0, transition: { duration: 0.15, delay: pos * 0.04 } }}
+                      exit={{ opacity: 0, x: -16, transition: { duration: 0.25, delay: (total - 1 - pos) * 0.05 } }}
+                    >
+                      <FontAwesomeIcon icon={link.icon} className="text-2xl block" />
+                    </motion.a>
+                  );
+                })}
+
+              </motion.div>
+            )}
+          </AnimatePresence>
+
+        </div>
+
+        {/* Stats row */}
+        <div className="flex items-center gap-5 md:pt-1">
+          <StatBlock value={STAT_DUMMY.posts}     label="Posts"     />
+          <div className="w-px h-8 bg-white/10 self-center" />
+          <StatBlock value={STAT_DUMMY.followers} label="Followers" />
+          <div className="w-px h-8 bg-white/10 self-center" />
+          <StatBlock value={STAT_DUMMY.following} label="Following" />
+        </div>
+
       </div>
 
-      {/*Collection Img Display and Link to Collection Page*/}
-      <div className="h-full flex items-end">
-        <button
-          type="button"
-          className="bg-black p-1 rounded-lg flex justify-center items-center relative md:w-72 md:h-32 xsm:w-36 xsm:h-20"
-          onClick={() =>
-            navigate(`/${user?.displayName}/${user?.identifierCode}/collection`)
-          }
-        >
-          <h4 className="absolute md:text-4xl font-bold xsm:text-lg">
-            Collection
-          </h4>
-          {collectionData?.bannerImg && collectionData.bannerImg !== "" ? (
-            <Image imageId={collectionData.bannerImg!} />
-          ) : (
-            <></>
-          )}
-        </button>
-      </div>
+      {/* Right — Collection card */}
+      <button
+        type="button"
+        onClick={() => navigate(`/${user?.displayName}/${user?.identifierCode}/collection`)}
+        className="relative overflow-hidden rounded-2xl border border-white/10 hover:border-white/25 w-full md:w-64 xsm:h-28 sm:h-32 md:h-auto flex-shrink-0 group transition-all duration-300"
+      >
+        {/* Background */}
+        {collectionData?.bannerImg && collectionData.bannerImg !== "" ? (
+          <img src={collectionData.bannerImg} className="absolute inset-0 w-full h-full object-cover" />
+        ) : (
+          <div className="absolute inset-0 bg-gradient-to-br from-[#1c1f27] to-[#0d0f14]" />
+        )}
+
+        {/* Overlay */}
+        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent" />
+
+        {/* Hover shimmer */}
+        <div className="absolute inset-0 bg-white/0 group-hover:bg-white/5 transition-colors duration-300" />
+
+        {/* Content */}
+        <div className="relative z-10 h-full flex flex-col justify-between p-4">
+
+          {/* Top — label + arrow */}
+          <div className="flex items-center justify-between">
+            <span className="text-xs text-white/50 font-medium uppercase tracking-widest">Collection</span>
+            <FontAwesomeIcon
+              icon={faArrowUpRightFromSquare}
+              className="text-white/25 text-xs group-hover:text-white/60 transition-colors duration-300"
+            />
+          </div>
+
+          {/* Bottom — knife count */}
+          <div className="text-left">
+            <p className="text-4xl font-bold text-white leading-none">{collectionKnives.length}</p>
+            <p className="text-xs text-white/40 mt-1 uppercase tracking-widest">Knives</p>
+          </div>
+
+        </div>
+      </button>
+
     </div>
   );
 };

@@ -58,7 +58,7 @@ const HomePageProductWorldSectionComponent = () => {
         }}
       />
 
-      <div className="relative z-10 w-full max-w-5xl mx-auto px-6 py-24">
+      <div className="relative z-10 w-full max-w-5xl mx-auto px-6 xsm:pt-44 md:pt-24 pb-24">
 
         {/* Eyebrow */}
         <div className="flex items-center justify-center gap-2 mb-4">
@@ -74,7 +74,7 @@ const HomePageProductWorldSectionComponent = () => {
         </h2>
 
         {/* Subheading */}
-        <p className="text-center text-white/60 xsm:text-sm sm:text-base md:text-lg max-w-2xl mx-auto mt-5 leading-relaxed">
+        <p className="text-center text-white/60 xsm:text-base md:text-lg max-w-2xl mx-auto mt-5 leading-relaxed">
           The Product World is your reference hub for everything balisongs. Search dedicated pages
           for specific knives and makers, explore specs, and build your knowledge of the craft.
         </p>

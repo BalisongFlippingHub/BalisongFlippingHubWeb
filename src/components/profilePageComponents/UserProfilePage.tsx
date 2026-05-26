@@ -14,13 +14,13 @@ const UserProfilePage = () => {
             <UserProfileImage />
           </div>
 
-          <div className="w-full md:h-[55%] xsm:h-[62%]">
+          <div className="w-full">
             <UserProfileData />
           </div>
         </section>
 
         {/*Display Profile Posts*/}
-        <section className="overflow-hidden">
+        <section>
           <UserProfilePostsComponent />
         </section>
       </div>

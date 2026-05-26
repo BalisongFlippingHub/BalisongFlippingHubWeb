@@ -67,7 +67,7 @@ const HomePageTutorialCenterSectionComponent = () => {
     <section
       className="min-h-screen w-full text-white flex items-center relative overflow-hidden"
       style={{
-        background: 'radial-gradient(ellipse at 50% 40%, #0a3d3a 0%, #052220 50%, #020f0e 100%)',
+        background: 'radial-gradient(ellipse at 50% 40%, #0d6b65 0%, #074440 50%, #021a18 100%)',
         borderRadius: '0 0 50% 50% / 0 0 80px 80px',
         boxShadow: '0 40px 80px rgba(0,0,0,0.8)',
         zIndex: 2,
@@ -86,7 +86,7 @@ const HomePageTutorialCenterSectionComponent = () => {
         }}
       />
 
-      <div className="relative z-10 w-full max-w-5xl mx-auto px-6 pt-56 pb-40">
+      <div className="relative z-10 w-full max-w-5xl mx-auto px-6 pt-56 pb-60">
 
         {/* Eyebrow */}
         <div className="flex items-center justify-center gap-2 mb-4">
@@ -102,7 +102,7 @@ const HomePageTutorialCenterSectionComponent = () => {
         </h2>
 
         {/* Subheading */}
-        <p className="text-center text-white/60 xsm:text-sm sm:text-base md:text-lg max-w-2xl mx-auto mt-5 leading-relaxed">
+        <p className="text-center text-white/60 xsm:text-base md:text-lg max-w-2xl mx-auto mt-5 leading-relaxed">
           The Tutorial Center is your destination for everything trick-related. Look up specific
           combos, follow a learning path, or dive into a feed of community clips and creative flipping content.
         </p>
