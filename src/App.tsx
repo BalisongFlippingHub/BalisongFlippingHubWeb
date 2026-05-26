@@ -73,19 +73,19 @@ const App = () => {
         .catch((error) => console.log("Error caught attempting to login with existing refresh token: " + error));
     }
 
-    dispatch(
-      setCredentials({
-        newUser: {
-          id: "1",
-          displayName: "Test",
-          identifierCode: "4444",
-          role: "USER",
-          email: "test@gmail.com",
-          collectionId: "1123",
-        } as Profile,
-        newAccessToken: "1234",
-      })
-    );
+    // dispatch(
+    //   setCredentials({
+    //     newUser: {
+    //       id: "1",
+    //       displayName: "Test",
+    //       identifierCode: "4444",
+    //       role: "USER",
+    //       email: "test@gmail.com",
+    //       collectionId: "1123",
+    //     } as Profile,
+    //     newAccessToken: "1234",
+    //   })
+    // );
 
     setIsLoading(false);
   }, []);
