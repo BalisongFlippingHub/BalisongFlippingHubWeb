@@ -1,7 +1,4 @@
-import {
-  faCircleArrowLeft,
-  faPenToSquare,
-} from "@fortawesome/free-solid-svg-icons";
+import { faPenToSquare } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { CollectionKnifeDTO } from "../../modals/CollectionKnife";
 import GalleryInputSelectedFilesFileCoverDisplay from "./GalleryInputSelectedFilesFileCoverDisplay";
