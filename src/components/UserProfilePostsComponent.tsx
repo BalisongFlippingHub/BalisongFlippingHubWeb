@@ -68,10 +68,10 @@ const UserProfilePostsComponent = () => {
     <div className="w-full flex flex-col text-white">
 
       {/* ── Filter + Sort bar ── */}
-      <div className="flex items-center justify-between px-6 py-4 border-t border-white/10 gap-3">
+      <div className="grid grid-cols-[1fr_auto_1fr] items-center px-6 py-4 border-t border-white/10 gap-3">
 
         {/* Filter dropdown */}
-        <div ref={filterRef} className="relative">
+        <div ref={filterRef} className="relative justify-self-start">
 
           <button
             type="button"
@@ -114,28 +114,28 @@ const UserProfilePostsComponent = () => {
           </AnimatePresence>
         </div>
 
-        {/* Left line + divider */}
-        <div className="hidden md:flex items-center gap-3 flex-1">
-          <div className="flex-1 h-px bg-white/10" />
-          <div className="w-px h-5 bg-white/10 flex-shrink-0" />
-        </div>
+        {/* Center cell — lines + count */}
+        <div className="flex items-center gap-3">
+          <div className="hidden md:flex items-center gap-3">
+            <div className="w-20 h-px bg-white/10" />
+            <div className="w-px h-5 bg-white/10 flex-shrink-0" />
+          </div>
 
-        {/* Post count */}
-        <div className="flex flex-col items-center gap-0.5 flex-shrink-0 px-2">
-          <span className="text-white font-bold text-lg leading-none">{sorted.length}</span>
-          <span className="text-white/30 text-[10px] uppercase tracking-widest leading-none">
-            {activeFilter === "All" ? "Posts" : activeFilter}
-          </span>
-        </div>
+          <div className="flex flex-col items-center gap-0.5 flex-shrink-0 px-2">
+            <span className="text-white font-bold text-lg leading-none">{sorted.length}</span>
+            <span className="text-white/30 text-[10px] uppercase tracking-widest leading-none">
+              {activeFilter === "All" ? "Posts" : activeFilter}
+            </span>
+          </div>
 
-        {/* Divider + right line */}
-        <div className="hidden md:flex items-center gap-3 flex-1">
-          <div className="w-px h-5 bg-white/10 flex-shrink-0" />
-          <div className="flex-1 h-px bg-white/10" />
+          <div className="hidden md:flex items-center gap-3">
+            <div className="w-px h-5 bg-white/10 flex-shrink-0" />
+            <div className="w-20 h-px bg-white/10" />
+          </div>
         </div>
 
         {/* Sort dropdown */}
-        <div ref={sortRef} className="relative">
+        <div ref={sortRef} className="relative justify-self-end">
           <button
             type="button"
             onClick={() => { setSortOpen((p) => !p); setFilterOpen(false); }}
@@ -186,7 +186,7 @@ const UserProfilePostsComponent = () => {
           ))}
         </div>
       ) : (
-        <div className="flex flex-col items-center justify-center py-24 gap-4">
+        <div className="w-full flex flex-col items-center justify-center py-24 gap-4">
           <div className="w-14 h-14 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center">
             <FontAwesomeIcon icon={faTableCells} className="text-white/20 text-2xl" />
           </div>

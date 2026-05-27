@@ -145,7 +145,7 @@ const Navbar = () => {
       </motion.header>
 
       {user && accessToken && (
-        <aside className="fixed bottom-0 left-1/2 -translate-x-1/2 z-30 overflow-visible">
+        <aside className="fixed bottom-0 z-30 overflow-visible xsm:left-0 xsm:right-0 xsm:w-full md:left-1/2 md:right-auto md:w-auto md:-translate-x-1/2">
           <HeaderNavbarBottom />
         </aside>
       )}
