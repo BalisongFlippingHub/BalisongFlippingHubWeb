@@ -39,341 +39,163 @@ const NewCollectionKnifeSummary = ({
     }
   };
 
-  return (
-    <section className="w-full flex flex-col items-center pt-[64px] lg:pl-[192px]">
-      {/*Top Navigation*/}
-      <div className="w-full max-w-[1225px] p-4 flex justify-center relative">
-        <button
-          type="button"
-          className="absolute left-4 border p-2 text-2xl flex items-center hover:bg-shadow-green-offset gap-2"
-          onClick={() => setStepManually("2")}
-        >
-          <FontAwesomeIcon icon={faCircleArrowLeft} />
-          <h5>Gallery</h5>
-        </button>
+  const SummaryField = ({ label, value }: { label: string; value: string }) => (
+    <div className="flex flex-col gap-0.5">
+      <span className="text-[10px] text-white/30 uppercase tracking-wider font-medium">{label}</span>
+      <span className="text-sm text-white font-medium">{value || "—"}</span>
+    </div>
+  );
 
-        <h3 className="text-4xl font-bold">Summary</h3>
+  return (
+    <section className="w-full flex flex-col items-center pt-6">
+      {/* Header */}
+      <div className="w-full max-w-[900px] lg:max-w-[1100px] px-4 flex items-center justify-between py-2">
+        <h3 className="text-white font-bold text-xl">Summary</h3>
+        <p className="text-white/40 text-xs">Review before submitting</p>
       </div>
 
-      <section className="w-full max-w-[1225px] flex flex-col gap-4 mt-3 rounded">
-        {/*Form Data Display*/}
-        <div
-          className="w-full bg-black p-4 rounded flex flex-col items-center gap-4 relative"
-          onClick={() => setStepManually("1")}
-        >
-          {/*Display Name*/}
-          <div className="text-2xl font-bold border-b-2 p-1">
-            <h4>{newKnifeObj?.displayName}</h4>
+      <div className="w-full max-w-[900px] lg:max-w-[1100px] flex flex-col gap-4 px-4 pb-28">
+        {/* Knife info card */}
+        <div className="bg-[#13161d] border border-white/10 rounded-2xl overflow-hidden">
+          {/* Card header */}
+          <div className="flex items-center justify-between px-5 py-4 border-b border-white/10">
+            <div>
+              <h4 className="text-white font-bold text-base">{newKnifeObj?.displayName}</h4>
+              <p className="text-white/40 text-xs mt-0.5">{newKnifeObj?.knifeMaker} · {newKnifeObj?.baseKnifeModel}</p>
+            </div>
+            <button
+              type="button"
+              onClick={() => setStepManually("1")}
+              className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-white/10 text-white/40 text-xs hover:text-white hover:border-white/20 transition-colors duration-200"
+            >
+              <FontAwesomeIcon icon={faPenToSquare} className="text-[10px]" />
+              <span>Edit</span>
+            </button>
           </div>
 
-          {/*Edit form btn*/}
-          <button
-            className="absolute top-4 right-4"
-            onClick={() => setStepManually("1")}
-            type="button"
-          >
-            <FontAwesomeIcon icon={faPenToSquare} size="xl" />
-          </button>
-
-          <div className="flex md:flex-row xsm:flex-col-reverse items-center w-full gap-4">
-            <div className="flex flex-col md:w-2/3 xsm:w-full gap-4">
-              {/*Base Knife Model and Knife Maker*/}
-              <div className="flex justify-evenly sm:flex-row xsm:flex-col items-center">
-                <div className="flex gap-2 md:text-xl xsm:text-lg">
-                  <h5>Base Knife Model:</h5>
-                  <h5 className="text-shadow">{newKnifeObj?.baseKnifeModel}</h5>
-                </div>
-
-                <div className="flex gap-2 md:text-xl xsm:text-lg">
-                  <h5>Knife Maker:</h5>
-                  <h5 className="text-shadow">{newKnifeObj?.knifeMaker}</h5>
-                </div>
-              </div>
-
-              {/*Knife Type*/}
-              <div className="flex justify-center">
-                <div className="flex gap-2 md:text-xl xsm:text-lg">
-                  <h5>{`Knife Type (Trainer, Live Blade, Both):`}</h5>
-                  <h5 className="text-shadow">{newKnifeObj?.knifeType}</h5>
-                </div>
-              </div>
-
-              {/*Marked as Favorite Knife and Favorite Flipper*/}
-              <div className="flex sm:flex-row xsm:flex-col justify-around items-center">
-                <div className="flex gap-2 md:text-xl xsm:text-lg">
-                  <h5>Marked As Favorite Knife:</h5>
-                  <h5 className="text-shadow">
-                    {newKnifeObj?.isFavoriteKnife ? "True" : "False"}
-                  </h5>
-                </div>
-
-                <div className="flex gap-2 md:text-xl xsm:text-lg">
-                  <h5>Marked As Favorite Flipper:</h5>
-                  <h5 className="text-shadow">
-                    {newKnifeObj?.isFavoriteFlipper ? "True" : "False"}
-                  </h5>
-                </div>
-              </div>
-
-              {/*Knife MSRP, Overall Length, and Weight*/}
-              <div className="flex justify-evenly">
-                <div className="flex gap-2 md:text-xl xsm:text-lg">
-                  <h5>MSRP:</h5>
-                  <h5 className="text-shadow">
-                    {newKnifeObj?.msrp && +newKnifeObj.msrp > 0
-                      ? "$" + newKnifeObj.msrp
-                      : "---"}
-                  </h5>
-                </div>
-
-                <div className="flex gap-2 md:text-xl xsm:text-lg">
-                  <h5>Overall Length:</h5>
-                  <h5 className="text-shadow">
-                    {newKnifeObj?.overallLength &&
-                    +newKnifeObj.overallLength > 0
-                      ? newKnifeObj.overallLength + `"`
-                      : "---"}
-                  </h5>
-                </div>
-
-                <div className="flex gap-2 md:text-xl xsm:text-lg">
-                  <h5>Weight:</h5>
-                  <h5 className="text-shadow">
-                    {newKnifeObj?.weight && +newKnifeObj.weight > 0
-                      ? newKnifeObj.weight + "g"
-                      : "---"}
-                  </h5>
-                </div>
-              </div>
-
-              {/*Pin System, Latch Type, Pivot System*/}
-              <div className="flex xsm:flex-col md:flex-row justify-around items-center">
-                <div className="flex gap-2 md:text-xl xsm:text-lg">
-                  <h5>Pivot System:</h5>
-                  <h5 className="text-shadow">{newKnifeObj?.pivotSystem}</h5>
-                </div>
-
-                <div className="flex gap-2 md:text-xl xsm:text-lg">
-                  <h5>Latch Type:</h5>
-                  <h5 className="text-shadow">{newKnifeObj?.latchType}</h5>
-                </div>
-
-                <div className="flex gap-2 md:text-xl xsm:text-lg">
-                  <h5>Pin System:</h5>
-                  <h5 className="text-shadow">{newKnifeObj?.pinSystem}</h5>
-                </div>
-              </div>
-
-              {/*Knife Balance*/}
-              <div className="w-full flex justify-center">
-                {newKnifeObj?.hasModularBalance ? (
-                  <div className="flex gap-2 md:text-xl xsm:text-lg">
-                    <h5>Has Modular Balance:</h5>
-                    <h5 className="text-shadow">True</h5>
-                  </div>
-                ) : (
-                  <div className="flex xsm:flex-col md:flex-row items-center justify-center md:gap-20 xsm:gap-0 w-full">
-                    <div className="flex gap-2 md:text-xl xsm:text-lg">
-                      <h5>Has Modular Balance:</h5>
-                      <h5 className="text-shadow">False</h5>
-                    </div>
-
-                    <div className="flex gap-2 md:text-xl xsm:text-lg">
-                      <h5>Balance:</h5>
-                      <h5 className="text-shadow">{getBalancePoint()}</h5>
-                    </div>
-                  </div>
-                )}
-              </div>
-
-              {/*Blade Details*/}
-              <div className="w-full border-t relative mt-4">
-                <div className="absolute -top-5 flex w-full justify-center text-2xl">
-                  <h4 className="bg-black">Blade Details</h4>
-                </div>
-
-                <div className="flex flex-col items-center w-full mt-4">
-                  <div className="flex xsm:flex-col sm:flex-row items-center w-full justify-evenly">
-                    <div className="flex gap-2 md:text-xl xsm:text-lg">
-                      <h5>Blade Finish:</h5>
-                      <h5 className="text-shadow">
-                        {newKnifeObj?.bladeFinish}
-                      </h5>
-                    </div>
-
-                    <div className="flex gap-2 md:text-xl xsm:text-lg">
-                      <h5>Blade Material:</h5>
-                      <h5 className="text-shadow">
-                        {newKnifeObj?.bladeMaterial}
-                      </h5>
-                    </div>
-                  </div>
-
-                  <div className="flex gap-2 md:text-xl xsm:text-lg">
-                    <h5>Blade Style:</h5>
-                    <h5 className="text-shadow">{newKnifeObj?.bladeStyle}</h5>
-                  </div>
-                </div>
-              </div>
-
-              {/*Handle Details*/}
-              <div className="w-full border-t relative mt-4">
-                <div className="absolute -top-5 flex w-full justify-center text-2xl">
-                  <h4 className="bg-black">Handle Details</h4>
-                </div>
-
-                <div className="flex flex-col items-center w-full mt-4">
-                  <div className="flex xsm:flex-col md:flex-row items-center w-full justify-evenly">
-                    <div className="flex gap-2 text-xl">
-                      <h5>Handle Finish:</h5>
-                      <h5 className="text-shadow">
-                        {newKnifeObj?.handleFinish}
-                      </h5>
-                    </div>
-
-                    <div className="flex gap-2 text-xl">
-                      <h5>Handle Construction:</h5>
-                      <h5 className="text-shadow">
-                        {newKnifeObj?.handleConstruction}
-                      </h5>
-                    </div>
-                  </div>
-
-                  <div className="flex gap-2 text-xl">
-                    <h5>Handle Material:</h5>
-                    <h5 className="text-shadow">
-                      {newKnifeObj?.handleMaterial}
-                    </h5>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            {/*Cover Photo*/}
-            <div className="md:w-1/3 xsm:w-3/5 h-full">
-              <div className="w-full flex justify-center mb-2 md:text-xl xsm:text-lg">
-                <h5>Cover Photo:</h5>
-              </div>
-              {newKnifeObj && newKnifeObj.coverPhoto ? (
+          <div className="p-5 flex flex-row gap-5">
+            {/* Cover photo */}
+            {newKnifeObj?.coverPhoto && (
+              <div className="xsm:w-28 sm:w-36 md:w-40 lg:w-48 flex-shrink-0">
                 <img
                   src={URL.createObjectURL(newKnifeObj.coverPhoto)}
-                  className="object-cover w-full md:h-96 sm:h-80 rounded hover:cursor-pointer"
+                  className="w-full aspect-[3/4] object-cover rounded-xl"
                 />
-              ) : (
-                <div></div>
-              )}
-            </div>
-          </div>
-
-          {/*Knife Rankings*/}
-          <div className="w-full border-t flex flex-col relative items-center">
-            <div className="absolute -top-5 flex w-full justify-center">
-              <h4 className="text-2xl bg-black">Rankings</h4>
-            </div>
-
-            <div className="text-2xl flex gap-2 mt-4">
-              <h5>Overall Score:</h5>
-              <h5 className="text-shadow">
-                {newKnifeObj?.averageScore
-                  ? newKnifeObj.averageScore + "/10"
-                  : "--/10"}
-              </h5>
-            </div>
-
-            {newKnifeObj?.averageScore ? (
-              <div className="flex flex-col gap-4 mt-2 lg:w-2/3 xsm:w-full">
-                <div className="flex justify-around w-full">
-                  <div className="flex flex-col items-center md:text-lg font-semibold">
-                    <h5>Quality Score</h5>
-                    <h5 className="text-shadow">
-                      {newKnifeObj.qualityScore}/10
-                    </h5>
-                  </div>
-
-                  <div className="flex flex-col items-center md:text-lg font-semibold">
-                    <h5>Flipping Score</h5>
-                    <h5 className="text-shadow">
-                      {newKnifeObj.flippingScore}/10
-                    </h5>
-                  </div>
-
-                  <div className="flex flex-col items-center md:text-lg font-semibold">
-                    <h5>Feel Score</h5>
-                    <h5 className="text-shadow">{newKnifeObj.feelScore}/10</h5>
-                  </div>
-                </div>
-
-                <div className="flex w-full justify-around">
-                  <div className="flex flex-col items-center md:text-lg font-semibold">
-                    <h5>Sound Score</h5>
-                    <h5 className="text-shadow">{newKnifeObj.soundScore}/10</h5>
-                  </div>
-
-                  <div className="flex flex-col items-center md:text-lg font-semibold">
-                    <h5>Durability Score</h5>
-                    <h5 className="text-shadow">
-                      {newKnifeObj.durabilityScore}/10
-                    </h5>
-                  </div>
-                </div>
               </div>
-            ) : (
-              <></>
             )}
+
+            {/* Details */}
+            <div className="flex-1 flex flex-col gap-4">
+              {/* Basic */}
+              <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
+                <SummaryField label="Knife Type" value={newKnifeObj?.knifeType || ""} />
+                <SummaryField label="Date Acquired" value={newKnifeObj?.aqquiredDate || ""} />
+                <SummaryField label="MSRP" value={newKnifeObj?.msrp && +newKnifeObj.msrp > 0 ? "$" + newKnifeObj.msrp : "—"} />
+                <SummaryField label="Overall Length" value={newKnifeObj?.overallLength && +newKnifeObj.overallLength > 0 ? newKnifeObj.overallLength + '"' : "—"} />
+                <SummaryField label="Weight" value={newKnifeObj?.weight && +newKnifeObj.weight > 0 ? newKnifeObj.weight + "g" : "—"} />
+                <SummaryField label="Balance" value={newKnifeObj?.hasModularBalance ? "Modular" : getBalancePoint()} />
+              </div>
+
+              <div className="h-px bg-white/5" />
+
+              {/* Hardware */}
+              <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
+                <SummaryField label="Pivot System" value={newKnifeObj?.pivotSystem || ""} />
+                <SummaryField label="Latch Type" value={newKnifeObj?.latchType || ""} />
+                <SummaryField label="Pin System" value={newKnifeObj?.pinSystem || ""} />
+              </div>
+
+              <div className="h-px bg-white/5" />
+
+              {/* Blade */}
+              <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
+                <SummaryField label="Blade Style" value={newKnifeObj?.bladeStyle || ""} />
+                <SummaryField label="Blade Finish" value={newKnifeObj?.bladeFinish || ""} />
+                <SummaryField label="Blade Material" value={newKnifeObj?.bladeMaterial || ""} />
+              </div>
+
+              <div className="h-px bg-white/5" />
+
+              {/* Handles */}
+              <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
+                <SummaryField label="Handle Construction" value={newKnifeObj?.handleConstruction || ""} />
+                <SummaryField label="Handle Material" value={newKnifeObj?.handleMaterial || ""} />
+                <SummaryField label="Handle Finish" value={newKnifeObj?.handleFinish || ""} />
+              </div>
+
+              {/* Favorites */}
+              <div className="flex gap-3">
+                {newKnifeObj?.isFavoriteKnife && (
+                  <span className="text-xs px-2.5 py-1 rounded-full bg-gold/10 border border-gold/30 text-gold font-medium">★ Favorite Knife</span>
+                )}
+                {newKnifeObj?.isFavoriteFlipper && (
+                  <span className="text-xs px-2.5 py-1 rounded-full bg-blue-primary/10 border border-blue-primary/30 text-blue-primary font-medium">♦ Favorite Flipper</span>
+                )}
+              </div>
+            </div>
           </div>
 
-          {/*Aqquired Date*/}
-          <div className="flex gap-2">
-            <h5>Aqquired Date:</h5>
-            <h5>{newKnifeObj?.aqquiredDate}</h5>
-          </div>
+          {/* Rankings */}
+          {newKnifeObj?.averageScore != null && (
+            <div className="px-5 pb-5 border-t border-white/10 pt-4">
+              <div className="flex items-center justify-between mb-4">
+                <span className="text-xs font-semibold text-white/40 uppercase tracking-wider">Rankings</span>
+                <span className="text-lg font-bold text-white">
+                  {Number(newKnifeObj.averageScore).toFixed(1)}
+                  <span className="text-sm text-white/30 font-normal">/10</span>
+                </span>
+              </div>
+              <div className="grid grid-cols-2 sm:grid-cols-5 gap-3">
+                {[
+                  { label: "Quality", value: newKnifeObj.qualityScore },
+                  { label: "Flipping", value: newKnifeObj.flippingScore },
+                  { label: "Feel", value: newKnifeObj.feelScore },
+                  { label: "Sound", value: newKnifeObj.soundScore },
+                  { label: "Durability", value: newKnifeObj.durabilityScore },
+                ].map(({ label, value }) => (
+                  <div key={label} className="flex flex-col items-center gap-1 bg-white/5 rounded-xl py-3">
+                    <span className="text-lg font-bold text-blue-primary">{value}</span>
+                    <span className="text-[10px] text-white/30 uppercase tracking-wider">{label}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
         </div>
 
-        {/*Gallery Files Display*/}
-        {galleryFiles && galleryFiles.length > 0 ? (
-          <section
-            className="bg-black rounded relative pb-10"
-            onClick={() => setStepManually("2")}
-          >
-            <div className="mt-4 mb-4 w-full flex justify-center text-2xl font-bold">
-              <h4 className="border-b-2 pb-1">Gallery Files</h4>
+        {/* Gallery files */}
+        {galleryFiles && galleryFiles.length > 0 && (
+          <div className="bg-[#13161d] border border-white/10 rounded-2xl overflow-hidden">
+            <div className="flex items-center justify-between px-5 py-4 border-b border-white/10">
+              <h4 className="text-sm font-semibold text-white/60 uppercase tracking-wider">Gallery</h4>
+              <button
+                type="button"
+                onClick={() => setStepManually("2")}
+                className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-white/10 text-white/40 text-xs hover:text-white hover:border-white/20 transition-colors duration-200"
+              >
+                <FontAwesomeIcon icon={faPenToSquare} className="text-[10px]" />
+                <span>Edit</span>
+              </button>
             </div>
-
-            {/*Edit Gallery Btn*/}
-            <button
-              className="absolute top-4 right-4"
-              onClick={() => setStepManually("2")}
-              type="button"
-            >
-              <FontAwesomeIcon icon={faPenToSquare} size="xl" />
-            </button>
-
-            {/*Selected Files Display*/}
-            <div className="flex w-full flex-wrap">
-              {galleryFiles.map((file, i) => {
-                return (
-                  <div key={i} className="h-52 w-1/5 hover:cursor-pointer">
-                    <GalleryInputSelectedFilesFileCoverDisplay file={file} />
-                  </div>
-                );
-              })}
+            <div className="grid grid-cols-5 gap-1 p-3">
+              {galleryFiles.map((file, i) => (
+                <div key={i} className="aspect-square">
+                  <GalleryInputSelectedFilesFileCoverDisplay file={file} />
+                </div>
+              ))}
             </div>
-          </section>
-        ) : (
-          <></>
+          </div>
         )}
 
-        {/*Submit Button*/}
-        <div className="w-full flex justify-center items-center lg:mb-24 xsm:mb-32 mt-6">
-          <button
-            type="button"
-            onClick={() => setStepManually("4")}
-            className="p-4 rounded border hover:bg-shadow-green-offset md:text-2xl xsm:text-lg font-bold"
-          >
-            Submit Knife
-          </button>
-        </div>
-      </section>
+        {/* Submit */}
+        <button
+          type="button"
+          onClick={() => setStepManually("4")}
+          className="w-full py-3 rounded-xl bg-blue-primary text-white text-sm font-semibold hover:bg-blue-primary/80 transition-colors duration-200"
+        >
+          Submit Knife →
+        </button>
+      </div>
     </section>
   );
 };

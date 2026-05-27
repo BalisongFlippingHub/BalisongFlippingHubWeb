@@ -21,14 +21,14 @@ const AqquiredDateInput = ({
   }, [parentAqquiredDate]);
 
   return (
-    <div className="flex flex-col gap-2">
-      <label className="font-bold text-lg">Date Aqquired:</label>
+    <div className="flex flex-col gap-1.5">
+      <label className="text-xs text-white/50 font-medium uppercase tracking-wide">Date Acquired</label>
       <input
         type="date"
         value={selectedDate}
         required
         onChange={(e) => handleOnChange(e.target.value)}
-        className="bg-shadow-green p-2 outline-none border border-black rounded"
+        className="w-full bg-[#1c1f27] border border-white/10 rounded-lg px-3 py-2 text-white text-sm outline-none focus:border-blue-primary/50 transition-colors duration-200 cursor-pointer [color-scheme:dark]"
       />
     </div>
   );

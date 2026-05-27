@@ -4,72 +4,99 @@ import Image from "../Image";
 import CollectionOwnedKnivesDisplay from "./CollectionOwnedKnivesDisplay";
 import CollectionPostsDisplay from "./CollectionPostsDisplay";
 import CollectionBannerComponent from "./collectionBannerComponent";
-import useWindowSize from "../../hooks/useWindowSize";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faUser } from "@fortawesome/free-solid-svg-icons";
 
 const UsersCollectionPageComponent = () => {
-  const collectionData = useAppSelector((state) => state.collection.collection);
-  const user = useAppSelector((state) => state.auth.user);
+  const ownedKnives  = useAppSelector((state) => state.collection.collectionKnives);
+  const user         = useAppSelector((state) => state.auth.user);
+  const navigate     = useNavigate();
 
-  const navigate = useNavigate();
-  const windowSize = useWindowSize();
+  const knifeCount = ownedKnives?.length ?? 0;
+
+  // Est. total value — parse numeric part of msrp strings, skip blanks / non-numeric
+  const totalValue = (ownedKnives ?? []).reduce((sum, k) => {
+    const parsed = parseFloat((k.msrp ?? "").replace(/[^0-9.]/g, ""));
+    return isNaN(parsed) ? sum : sum + parsed;
+  }, 0);
+
+  // Avg score — only knives that have been scored
+  const scoredKnives = (ownedKnives ?? []).filter((k) => k.averageScore !== null);
+  const avgScore =
+    scoredKnives.length > 0
+      ? scoredKnives.reduce((sum, k) => sum + (k.averageScore ?? 0), 0) / scoredKnives.length
+      : null;
+
+  const statsItems = [
+    { value: knifeCount.toString(),                                                                        label: "Knives"    },
+    { value: totalValue > 0 ? `$${totalValue.toLocaleString("en-US", { maximumFractionDigits: 0 })}` : "—", label: "Est. Value" },
+    { value: avgScore !== null ? avgScore.toFixed(1) : "—",                                                label: "Avg Score" },
+  ];
 
   return (
     <section className="w-full flex flex-col">
-      {/*Collection Banner Image*/}
+
+      {/* Banner */}
       <CollectionBannerComponent />
 
-      {/*Users Collection Info*/}
-      <section className="w-full p-4 flex justify-between text-white">
-        {/*User Info*/}
-        <div className="flex gap-3 items-center">
+      {/* Combined info + stats bar */}
+      <div className="w-full px-6 py-5 flex items-center gap-5 text-white border-b border-white/10">
+
+        {/* Profile image */}
+        <div
+          className="xsm:w-14 xsm:h-14 md:w-16 md:h-16 rounded-full overflow-hidden border border-white/15 flex-shrink-0 cursor-pointer hover:opacity-80 transition-opacity duration-200"
+          onClick={() => navigate(`/${user?.displayName}/${user?.identifierCode}`)}
+        >
+          {user?.profileImg && user.profileImg !== "" ? (
+            <Image imageId={user.profileImg} />
+          ) : (
+            <div className="w-full h-full bg-white/5 flex items-center justify-center">
+              <FontAwesomeIcon icon={faUser} className="text-white/30 text-lg" />
+            </div>
+          )}
+        </div>
+
+        {/* Name + stats */}
+        <div className="flex flex-col gap-2.5">
           <div
-            className="rounded-full md:w-36 md:h-36 xsm:w-24 xsm:h-24 border overflow-hidden hover:cursor-pointer"
-            onClick={
-              user?.profileImg
-                ? () =>
-                    navigate(`/${user?.displayName}/${user?.identifierCode}`)
-                : () => navigate("/configure/profile-image")
-            }
+            className="flex items-center gap-2 cursor-pointer"
+            onClick={() => navigate(`/${user?.displayName}/${user?.identifierCode}`)}
           >
-            <Image imageId={user?.profileImg!} />
+            <h2 className="text-white font-bold xsm:text-base md:text-lg leading-none hover:text-white/80 transition-colors duration-200">
+              {user?.displayName}
+            </h2>
+            <span className="text-[11px] text-white/35 font-medium bg-white/5 border border-white/10 px-1.5 py-0.5 rounded-full leading-none">
+              #{user?.identifierCode}
+            </span>
           </div>
 
-          <div
-            className="hover:cursor-pointer place-self-center"
-            onClick={() =>
-              navigate(`/${user?.displayName}/${user?.identifierCode}`)
-            }
-          >
-            <h4 className="text-2xl">{user?.displayName}</h4>
-            <h5 className="text-shadow text-lg">
-              {collectionData?.collectedKnives?.length} knives
-            </h5>
+          <div className="flex items-center gap-4 md:gap-6">
+            {statsItems.map((stat, i) => (
+              <div key={stat.label} className="flex items-center gap-4 md:gap-6">
+                <div className="flex flex-col gap-0.5">
+                  <span className="text-white font-bold xsm:text-base md:text-lg leading-none">
+                    {stat.value}
+                  </span>
+                  <span className="text-white/30 text-[9px] uppercase tracking-widest leading-none">
+                    {stat.label}
+                  </span>
+                </div>
+                {i < statsItems.length - 1 && (
+                  <div className="w-px h-5 bg-white/10 flex-shrink-0" />
+                )}
+              </div>
+            ))}
           </div>
         </div>
 
-        {/*Favorite Knife Display On Big Screens*/}
-        {windowSize.at(1)! > 950 ? (
-          <div className="flex gap-3 items-center">
-            <div className="flex flex-col items-center">
-              <h3 className="text-2xl border-b-2 pb-1">Favorite Knife</h3>
-              <p className="text-shadow">None</p>
-            </div>
+      </div>
 
-            <div className="bg-black rounded-lg md:w-72 xsm:w-52 h-36"></div>
-          </div>
-        ) : (
-          <></>
-        )}
-      </section>
-
-      {/*Display Owned Knives and Recent Posts*/}
-      <section className="w-full h-full flex xsm:flex-col md:flex-row">
-        {/*Display for owned knives*/}
+      {/* Knives grid + activity sidebar */}
+      <section className="w-full flex xsm:flex-col md:flex-row">
         <CollectionOwnedKnivesDisplay />
-
-        {/*Component to display all posts specific to user collection*/}
         <CollectionPostsDisplay />
       </section>
+
     </section>
   );
 };

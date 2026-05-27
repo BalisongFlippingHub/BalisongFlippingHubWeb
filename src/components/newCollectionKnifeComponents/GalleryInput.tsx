@@ -1,8 +1,3 @@
-import {
-  faCircleArrowLeft,
-  faCircleArrowRight,
-} from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useEffect, useRef, useState } from "react";
 import GalleryInputSelectedFilesFileCoverDisplay from "./GalleryInputSelectedFilesFileCoverDisplay";
 
@@ -142,37 +137,11 @@ const GalleryInput = ({
   }, [removeFile, setSelectedFiles]);
 
   return (
-    <section className="flex flex-col pt-[58px] h-screen w-full lg:pl-[192px] items-center">
-      {/*Title*/}
-      <div className="text-3xl font-bold w-full max-w-[1225px] flex justify-center p-4 mt-2 relative mb-3">
-        <button
-          className="flex items-center gap-2 border p-2 hover:bg-shadow-green-offset absolute left-4"
-          type="button"
-          onClick={() => setStepManually("1")}
-        >
-          <FontAwesomeIcon icon={faCircleArrowLeft} />
-          <h3 className="xsm:collapse xsm:absolute sm:static sm:visible text-2xl">
-            Form
-          </h3>
-        </button>
+    <section className="w-full flex flex-col pt-6 pb-28 px-4 items-center">
 
-        <h4 className="text-4xl">Gallery</h4>
-
-        <button
-          className="flex items-center gap-2 border p-2 hover:bg-shadow-green-offset absolute right-4"
-          type="button"
-          onClick={() => setStepManually("3")}
-        >
-          <h3 className="xsm:collapse xsm:absolute sm:static sm:visible text-2xl">
-            Summary
-          </h3>
-          <FontAwesomeIcon icon={faCircleArrowRight} />
-        </button>
-      </div>
-
-      {/*Files Display*/}
-      <div className="flex xsm:flex-col md:flex-row w-full h-full pb-[3rem]">
-        {/*Hidden Input for files*/}
+      {/* Files Display */}
+      <div className="w-full max-w-[900px] lg:min-w-[1050px] lg:max-w-[1400px] flex xsm:flex-col md:flex-row overflow-hidden rounded-2xl border border-white/10 xsm:h-[760px] sm:h-[900px] md:h-[clamp(480px,75vh,800px)]">
+        {/* Hidden Input */}
         <input
           type="file"
           ref={filesInputRef}
@@ -183,9 +152,9 @@ const GalleryInput = ({
           accept="jpeg, png, mov"
         />
 
-        {/*Big display for selected file*/}
+        {/* Main preview */}
         {selectedFiles && selectedFiles.length > 0 ? (
-          <div className="md:w-1/2 xsm:w-full md:h-full xsm:h-4/6 bg-black">
+          <div className="md:w-1/2 xsm:w-full md:h-full xsm:h-[45%] bg-black flex items-center justify-center">
             {selectedFiles[currentIndex].type === "video/mp4" ? (
               <video
                 src={URL.createObjectURL(selectedFiles[currentIndex])}
@@ -202,73 +171,67 @@ const GalleryInput = ({
             )}
           </div>
         ) : (
-          <div className="md:w-1/2 xsm:w-full h-full flex items-center justify-center bg-black">
-            <h3 className="text-shadow text-3xl">No Files Selected</h3>
+          <div className="md:w-1/2 xsm:w-full md:h-full xsm:h-[45%] bg-black flex flex-col items-center justify-center gap-3">
+            <svg className="w-12 h-12 text-white/10" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5}
+                d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"
+              />
+            </svg>
+            <p className="text-white/25 text-sm">No files selected</p>
           </div>
         )}
 
-        {/*Selection of files and file uploads*/}
-        <div className="flex flex-col xsm:h-2/6 md:h-full xsm:w-full md:w-1/2 items-center">
-          {/*Gallery Files Navigation*/}
-          <div className="flex flex-col items-center w-full bg-shadow-green-offset">
-            <div className="w-full flex justify-center p-2 border-b-2 border-black">
+        {/* Right panel */}
+        <div className="flex flex-col xsm:h-[55%] md:h-full xsm:w-full md:w-1/2 bg-[#0e1016]">
+          {/* Controls */}
+          <div className="flex items-center justify-between px-4 py-3 border-b border-white/10 flex-shrink-0">
+            <div className="flex items-center gap-3">
               <button
                 type="button"
-                className="bg-black p-2 text-lg rounded hover:bg-shadow-green"
                 onClick={() => filesInputRef.current?.click()}
+                className="flex items-center gap-2 px-3 py-2 bg-blue-primary/10 border border-blue-primary/30 rounded-lg text-blue-primary text-sm font-medium hover:bg-blue-primary/20 transition-colors duration-200"
               >
-                Select Files
+                <span>+ Add Files</span>
               </button>
+              {selectedFiles && (
+                <span className="text-xs text-white/30">
+                  {selectedFiles.length}/10
+                </span>
+              )}
             </div>
-
-            <div className="flex flex-col items-center text-lg p-4">
-              <p>**Optional**</p>
-
-              <p>
-                Chose up to 10 images or videos to fill the gallery, showing off
-                your new knife.
-              </p>
-
-              <div className="w-full flex justify-end">
-                {selectedFiles && selectedFiles.length > 0 ? (
-                  <button
-                    type="button"
-                    className="text-lg font-bold bg-shadow-green p-2 rounded hover:bg-black"
-                    onClick={() => setStepManually("3")}
-                  >
-                    To Next Step
-                  </button>
-                ) : (
-                  <button
-                    type="button"
-                    className="underline text-lg text-black font-bold hover:text-white"
-                    onClick={() => setStepManually("3")}
-                  >
-                    Skip To Next Step
-                  </button>
-                )}
-              </div>
-            </div>
+            <button
+              type="button"
+              onClick={() => setStepManually("3")}
+              className={`text-sm font-medium transition-colors duration-200 ${
+                selectedFiles && selectedFiles.length > 0
+                  ? "text-blue-primary hover:text-blue-primary/70"
+                  : "text-white/30 hover:text-white/50 underline"
+              }`}
+            >
+              {selectedFiles && selectedFiles.length > 0 ? "Next Step →" : "Skip →"}
+            </button>
           </div>
-          {/*Visual display for all currenly selected files*/}
-          {selectedFiles ? (
-            <div className="flex flex-wrap h-full w-full xsm:pb-24 md:pb-0">
-              {selectedFiles?.map((file, i) => {
-                return (
-                  <div className="w-1/5 h-1/2">
-                    <GalleryInputSelectedFilesFileCoverDisplay
-                      file={file}
-                      index={i}
-                      key={i}
-                      removeFile={removeFile}
-                      changeCurrentIndex={changeCurrentIndex}
-                    />
-                  </div>
-                );
-              })}
+
+          {/* Thumbnails grid */}
+          {selectedFiles && selectedFiles.length > 0 ? (
+            <div className="flex flex-wrap overflow-y-auto flex-1 content-start p-2 gap-1">
+              {selectedFiles.map((file, i) => (
+                <div key={i} className="w-[19%] aspect-square">
+                  <GalleryInputSelectedFilesFileCoverDisplay
+                    file={file}
+                    index={i}
+                    removeFile={removeFile}
+                    changeCurrentIndex={changeCurrentIndex}
+                  />
+                </div>
+              ))}
             </div>
           ) : (
-            <></>
+            <div className="flex-1 flex items-center justify-center">
+              <p className="text-xs text-white/20 text-center px-8">
+                Choose up to 10 images or videos to fill the gallery
+              </p>
+            </div>
           )}
         </div>
       </div>

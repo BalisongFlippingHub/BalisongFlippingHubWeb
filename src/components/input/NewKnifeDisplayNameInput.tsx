@@ -6,59 +6,49 @@ interface params {
   parentDisplayName: string;
 }
 
-const NewKnifeDisplayNameInput = ({
-  setDisplayNameOnChange,
-  parentDisplayName,
-}: params) => {
+const NewKnifeDisplayNameInput = ({ setDisplayNameOnChange, parentDisplayName }: params) => {
   const inputRef = useRef<HTMLInputElement>(null);
 
-  const [displayName, setDisplayName] = useState("");
+  const [displayName, setDisplayName]       = useState("");
   const [isDuplicateName, setIsDuplicateName] = useState(false);
 
-  const collectedKnives = useAppSelector(
-    (state) => state.collection.collectionKnives
-  );
+  const collectedKnives = useAppSelector((state) => state.collection.collectionKnives);
 
   const handleOnChange = (value: string) => {
     setDisplayName(value);
     setDisplayNameOnChange(value);
   };
 
-  useEffect(() => {
-    setDisplayName(parentDisplayName);
-  }, [parentDisplayName]);
+  useEffect(() => { setDisplayName(parentDisplayName); }, [parentDisplayName]);
 
   useEffect(() => {
-    if (collectedKnives.find((obj) => obj.displayName === displayName)) {
-      // check for display name being equal to another display name
-      setIsDuplicateName(true);
-    } else {
-      setIsDuplicateName(false);
-    }
+    setIsDuplicateName(!!collectedKnives.find((obj) => obj.displayName === displayName));
   }, [displayName]);
 
-  useEffect(() => {
-    inputRef.current?.focus();
-  }, []);
+  useEffect(() => { inputRef.current?.focus(); }, []);
 
   return (
-    <div className="flex flex-col gap-1">
-      <div className="flex gap-4 items-center">
-        <label className="text-lg font-bold">Display Name:</label>
-        {isDuplicateName ? (
-          <p className="font-semibold text-red">Display Name already used.</p>
-        ) : (
-          <></>
+    <div className="flex flex-col gap-1.5">
+      <div className="flex items-center gap-3">
+        <label className="text-xs text-white/50 font-medium uppercase tracking-wide">
+          Display Name
+        </label>
+        {isDuplicateName && (
+          <span className="text-xs text-red font-medium">Name already in use</span>
         )}
       </div>
-
       <input
         type="text"
         required
         value={displayName}
         ref={inputRef}
         onChange={(e) => handleOnChange(e.target.value)}
-        className="p-1 rounded bg-shadow-green border-2 border-black text-lg outline-none font-semibold"
+        placeholder="e.g. My Benchmade 51"
+        className={`w-full bg-white/5 border rounded-lg px-3 py-2 text-white text-sm outline-none transition-colors duration-200 placeholder:text-white/20 ${
+          isDuplicateName
+            ? "border-red/50 focus:border-red/70"
+            : "border-white/10 focus:border-blue-primary/50"
+        }`}
       />
     </div>
   );

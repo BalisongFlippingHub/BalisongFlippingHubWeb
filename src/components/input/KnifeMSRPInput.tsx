@@ -14,23 +14,21 @@ const KnifeMSRPInput = ({ setKnifeMSRPOnChange, parentMSRP }: params) => {
   };
 
   return (
-    <div className="flex p-2 gap-2 items-center">
-      <label className="text-lg font-bold">MSRP: </label>
-
+    <div className="flex flex-col gap-1.5">
+      <label className="text-xs text-white/50 font-medium uppercase tracking-wide">
+        MSRP <span className="normal-case tracking-normal text-white/25">(USD)</span>
+      </label>
       <div className="relative">
+        <span className="absolute left-3 top-1/2 -translate-y-1/2 text-white/40 text-sm pointer-events-none">$</span>
         <input
           type="number"
-          className="bg-shadow-green border-2 border-black pl-5 pt-1 pb-1 w-32 text-lg rounded [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
-          onChange={(e) => msrpOnChange(e.target.value)}
-          onBlur={() => setMsrp((prev) => (+prev).toFixed(2).toString())}
           value={msrp}
           placeholder="0.00"
+          onChange={(e) => msrpOnChange(e.target.value)}
+          onBlur={() => setMsrp((prev) => (+prev).toFixed(2).toString())}
+          className="w-full bg-white/5 border border-white/10 rounded-lg pl-7 pr-3 py-2 text-white text-sm outline-none focus:border-blue-primary/50 transition-colors duration-200 placeholder:text-white/20 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
         />
-
-        <p className="absolute top-2 left-2">$</p>
       </div>
-
-      <div className="font-semibold">*USD</div>
     </div>
   );
 };
