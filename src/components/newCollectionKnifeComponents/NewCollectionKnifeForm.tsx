@@ -36,6 +36,44 @@ interface params {
   collectionKnifeObj: CollectionKnifeDTO | null;
 }
 
+const ScoreSlider = ({
+  label,
+  value,
+  onChange,
+}: {
+  label: string;
+  value: number;
+  onChange: (e: any) => void;
+}) => {
+  const pct = (value / 10) * 100;
+  return (
+    <div className="flex flex-col gap-1.5">
+      <div className="flex items-center justify-between">
+        <label className="text-xs text-white/50 font-medium uppercase tracking-wide">{label}</label>
+        <span className="text-sm font-bold text-blue-primary">
+          {value}<span className="text-white/30 font-normal">/10</span>
+        </span>
+      </div>
+      <div className="flex items-center gap-2">
+        <span className="text-[10px] text-white/25 w-6 text-right flex-shrink-0">0</span>
+        <input
+          type="range"
+          min={0}
+          max={10}
+          value={value}
+          onChange={onChange}
+          className="w-full cursor-pointer appearance-none h-1.5 rounded-full outline-none [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:w-4 [&::-webkit-slider-thumb]:h-4 [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:bg-blue-primary [&::-webkit-slider-thumb]:cursor-pointer [&::-moz-range-thumb]:w-4 [&::-moz-range-thumb]:h-4 [&::-moz-range-thumb]:rounded-full [&::-moz-range-thumb]:bg-blue-primary [&::-moz-range-thumb]:cursor-pointer"
+          style={{
+            background: `linear-gradient(to right, #108198 0%, #108198 ${pct}%, rgba(255,255,255,0.1) ${pct}%, rgba(255,255,255,0.1) 100%)`,
+            transition: "background 0.15s ease",
+          }}
+        />
+        <span className="text-[10px] text-white/25 w-6 flex-shrink-0">10</span>
+      </div>
+    </div>
+  );
+};
+
 const NewCollectionKnifeForm = ({
   setNewKnifeObjOnSubmit,
   collectionKnifeObj,
@@ -443,190 +481,173 @@ const NewCollectionKnifeForm = ({
     fillForm();
   }, []);
 
+  const isFormValid =
+    displayName !== "" &&
+    !displayNameIsDuplicate() &&
+    knifeMaker !== "" &&
+    baseKnifeModel !== "" &&
+    selectedCoverFile !== null &&
+    selectedDate !== "";
+
   return (
-    <section className="max-w-[1225px] w-full h-full lg:ml-48 flex flex-col pt-[64px] items-center md:pb-10">
-      <div className="flex lg:w-5/6 md:w-[92%] xsm:w-full relative justify-center p-4 mb-3">
-        <h2 className="justify-self-center md:text-4xl xsm:text-3xl font-bold">
-          Add New Knife
-        </h2>
+    <section className="max-w-[900px] w-full h-full flex flex-col pt-6 px-4 items-center">
+      {/* Page header */}
+      <div className="lg:w-5/6 md:w-[92%] xsm:w-full flex items-center justify-between px-4 py-5">
+        <div>
+          <h2 className="text-white font-bold xsm:text-xl md:text-2xl">Add New Knife</h2>
+          <p className="text-white/40 text-sm mt-0.5">Fill in the details for your new knife</p>
+        </div>
 
         {collectionKnifeObj === null ? (
-          <button
-            type="button"
-            disabled
-            className="flex items-center gap-2 md:text-2xl xsm:text-lg border p-2 absolute md:right-4 xsm:right-4"
-          >
-            <h3>Gallery</h3>
-            <FontAwesomeIcon icon={faCircleArrowRight} />
+          <button type="button" disabled className="flex items-center gap-2 px-4 py-2 rounded-lg border border-white/10 text-white/20 text-sm font-medium cursor-not-allowed">
+            <span>Gallery</span>
+            <FontAwesomeIcon icon={faCircleArrowRight} className="text-xs" />
           </button>
         ) : (
           <button
             type="button"
-            className="flex items-center gap-2 md:text-2xl xsm:text-lg border p-2 absolute md:right-4 xsm:right-4 hover:bg-shadow-green-offset"
             onClick={() => setStepManually("2")}
+            className="flex items-center gap-2 px-4 py-2 rounded-lg border border-blue-primary/40 text-blue-primary text-sm font-medium hover:bg-blue-primary/10 transition-colors duration-200"
           >
-            <h3 className="xsm:absolute xsm:collapse md:static md:visible">
-              Gallery
-            </h3>
-            <FontAwesomeIcon icon={faCircleArrowRight} />
+            <span>Gallery</span>
+            <FontAwesomeIcon icon={faCircleArrowRight} className="text-xs" />
           </button>
         )}
       </div>
 
       <form
-        className="lg:w-5/6 md:w-[92%] xsm:w-full bg-shadow-green-offset p-4 xsm:pb-8 md:pb-4 flex flex-col gap-3 mb-20 rounded"
+        className="lg:w-5/6 md:w-[92%] xsm:w-full flex flex-col gap-4 xsm:px-4 md:px-0 pb-28"
         onSubmit={handleFormSubmit}
       >
-        {/*Major Info*/}
-        <div className="flex xsm:flex-col-reverse md:flex-row md:justify-between xsm:justify-center xsm:items-center gap-4">
-          <div className="w-full flex flex-col gap-3">
-            {/*Display Name for new knife*/}
-            <NewKnifeDisplayNameInput
-              setDisplayNameOnChange={setDisplayNameOnChange}
-              parentDisplayName={displayName}
-            />
+        {/* ── Required Info Card ── */}
+        <div className="bg-[#13161d] border border-white/10 rounded-2xl p-5 flex flex-col gap-5">
+          <h3 className="text-sm font-semibold text-white/60 uppercase tracking-wider">Required Info</h3>
 
-            {/*Knife Manufactuer Info*/}
-            <div className="flex flex-col gap-1">
-              <h3 className="text-lg font-bold">Manufactuer Info</h3>
+          {/* Cover photo + name/maker fields side by side */}
+          <div className="flex xsm:flex-col md:flex-row gap-5">
+            {/* Left: text fields */}
+            <div className="flex-1 flex flex-col gap-4">
+              <NewKnifeDisplayNameInput
+                setDisplayNameOnChange={setDisplayNameOnChange}
+                parentDisplayName={displayName}
+              />
+              <KnifeMakerInput
+                setKnifeMakerOnChange={setKnifeMakerOnChange}
+                parentKnifeMaker={knifeMaker}
+              />
+              <BaseKnifeModelInput
+                setBaseKnifeModelOnChange={setBaseKnifeModelOnChange}
+                parentBaseKnifeModel={baseKnifeModel}
+              />
+              <KnifeTypeInput
+                setKnifeTypeOnChange={setKnifeTypeOnchange}
+                parentKnifeType={knifeType}
+              />
+            </div>
 
-              <div className="border-4 border-black border-dashed p-3 flex flex-col gap-2">
-                {/*Knife Manufactuer*/}
-                <KnifeMakerInput
-                  setKnifeMakerOnChange={setKnifeMakerOnChange}
-                  parentKnifeMaker={knifeMaker}
+            {/* Right: cover photo */}
+            <div className="xsm:w-full md:w-56 lg:w-64 flex-shrink-0">
+              <CollectionKnifeCoverPhotoInput
+                setCoverFileOnChange={setCoverFileOnChange}
+                parentCoverFile={selectedCoverFile}
+              />
+            </div>
+          </div>
+
+          {/* Date + favorites row */}
+          <div className="flex xsm:flex-col md:flex-row gap-3 md:items-end">
+            <div className="xsm:w-full md:w-48 flex-shrink-0">
+              <AqquiredDateInput
+                setAqquiredDateOnChange={setAqquiredDateOnChange}
+                parentAqquiredDate={selectedDate}
+              />
+            </div>
+            <div className="flex flex-1 gap-3">
+              <div className="flex-1">
+                <FavoriteKnifeInput
+                  setIsFavoriteKnifeOnChange={setIsFavoriteKnifeOnChange}
+                  parentIsFavoriteKnife={isFavoriteKnife}
                 />
-
-                {/*Base Knife Model*/}
-                <BaseKnifeModelInput
-                  setBaseKnifeModelOnChange={setBaseKnifeModelOnChange}
-                  parentBaseKnifeModel={baseKnifeModel}
-                />
-
-                {/*Radio Button Selection for Live Blade, Trainer, or Both*/}
-                <KnifeTypeInput
-                  setKnifeTypeOnChange={setKnifeTypeOnchange}
-                  parentKnifeType={knifeType}
+              </div>
+              <div className="flex-1">
+                <FavoriteFlipperInput
+                  setIsFavoriteFlipperOnChange={setIsFavoriteFlipperOnChange}
+                  parentIsFavoriteFlipper={isFavoriteFlipper}
                 />
               </div>
             </div>
           </div>
-
-          {/*Cover Image Input and Display for Image*/}
-          <CollectionKnifeCoverPhotoInput
-            setCoverFileOnChange={setCoverFileOnChange}
-            parentCoverFile={selectedCoverFile}
-          />
         </div>
 
-        {/*Extra Required Knife Info*/}
-        <div className="flex xsm:flex-col md:flex-row xsm:items-center xsm:gap-4 justify-between">
-          {/*Aqquired Date*/}
-          <AqquiredDateInput
-            setAqquiredDateOnChange={setAqquiredDateOnChange}
-            parentAqquiredDate={selectedDate}
-          />
-
-          <div className="flex justify-between md:w-2/3 xsm:w-full">
-            {/*Mark As Favorite Knife*/}
-            <FavoriteKnifeInput
-              setIsFavoriteKnifeOnChange={setIsFavoriteKnifeOnChange}
-              parentIsFavoriteKnife={isFavoriteKnife}
-            />
-
-            {/*Mark As Favorite Flipper*/}
-            <FavoriteFlipperInput
-              setIsFavoriteFlipperOnChange={setIsFavoriteFlipperOnChange}
-              parentIsFavoriteFlipper={isFavoriteFlipper}
-            />
-          </div>
-        </div>
-
-        <span className="w-full h-2 bg-shadow-green rounded"></span>
-
-        {/*Additional Knife Info*/}
-        <div>
-          <div
-            className="flex items-center gap-2 hover:cursor-pointer"
+        {/* ── Additional Knife Info (accordion) ── */}
+        <div className="bg-[#13161d] border border-white/10 rounded-2xl overflow-hidden">
+          <button
+            type="button"
             onClick={() => toggleDisplayAdditionalKnifeInfo((prev) => !prev)}
+            className="w-full flex items-center justify-between px-5 py-4 hover:bg-white/[0.02] transition-colors duration-200"
           >
-            <h3 className="text-lg font-bold">Additional Knife Info</h3>
-            {!displayAdditionalKnifeInfo ? (
-              <FontAwesomeIcon icon={faChevronUp} />
-            ) : (
-              <FontAwesomeIcon icon={faChevronDown} />
-            )}
-          </div>
+            <h3 className="text-sm font-semibold text-white/60 uppercase tracking-wider">Additional Knife Info</h3>
+            <FontAwesomeIcon
+              icon={displayAdditionalKnifeInfo ? faChevronUp : faChevronDown}
+              className="text-white/30 text-xs"
+            />
+          </button>
 
-          {displayAdditionalKnifeInfo ? (
-            <div className="flex flex-col">
-              {/*Knife Specs*/}
-              <div className="flex flex-col items-center gap-2">
-                <div className="text-xl font-bold border-b-4 border-dashed border-shadow-green w-full flex justify-center p-1">
-                  <h4>Specs</h4>
-                </div>
-
-                <div className="w-full flex xsm:flex-col md:flex-row justify-between items-center">
+          {displayAdditionalKnifeInfo && (
+            <div className="px-5 pb-5 flex flex-col gap-6 border-t border-white/10 pt-5">
+              {/* Specs */}
+              <div className="flex flex-col gap-4">
+                <h4 className="text-xs font-semibold text-white/35 uppercase tracking-wider">Specs</h4>
+                <div className="grid xsm:grid-cols-1 sm:grid-cols-3 gap-3">
                   <KnifeMSRPInput
                     setKnifeMSRPOnChange={setKnifeMSRPOnChange}
                     parentMSRP={knifeMSRP}
                   />
-
                   <OverallKnifeLengthInput
                     setOverallLengthOnChange={setOverallLengthOnChange}
                     parentKnifeLength={overallLength}
                   />
-
                   <KnifeWeightInput
                     setKnifeWeightOnChange={setKnifeWeightOnChange}
                     parentWeight={knifeWeight}
                   />
                 </div>
-
-                <div className="w-full flex md:flex-row xsm:flex-col justify-between xsm:items-center gap-4">
+                <div className="grid xsm:grid-cols-1 sm:grid-cols-3 gap-3">
                   <PivotSystemInput
                     setPivotSystemOnChange={setPivotSystemOnChange}
                     parentPivotSystem={pivotSystem}
                   />
-
                   <LatchTypeInput
                     setLatchTypeOnChange={setLatchTypeOnChange}
                     parentLatchType={latchType}
                   />
-
                   <PinSystemInput
                     setPinSystemOnChange={setPinSystemOnChange}
                     parentPinSystem={pinSystem}
                   />
                 </div>
-
                 <KnifeBalanceInput
                   setBalanceOnChange={setBalanceOnChange}
-                  setHasModulatedBalanceOnChange={
-                    setHasModulatedBalanceOnChange
-                  }
+                  setHasModulatedBalanceOnChange={setHasModulatedBalanceOnChange}
                   parentBalanceValue={balance}
                   parentHasModulatedBalance={hasModualtedBalance}
                 />
               </div>
 
-              {/*Blade Info*/}
-              <div className="flex flex-col items-center gap-6 mb-6">
-                <div className="text-xl font-bold border-b-4 border-shadow-green border-dashed w-full flex justify-center p-1">
-                  <h4>Blade</h4>
-                </div>
+              <div className="h-px bg-white/5" />
 
-                <div className="flex md:flex-row xsm:flex-col justify-evenly items-center w-full gap-4">
+              {/* Blade */}
+              <div className="flex flex-col gap-4">
+                <h4 className="text-xs font-semibold text-white/35 uppercase tracking-wider">Blade</h4>
+                <div className="grid xsm:grid-cols-1 sm:grid-cols-3 gap-3">
                   <BladeStyleInput
                     setBladeStyleOnChange={setBladeStyleOnChange}
                     parentBladeStyle={bladeStyle}
                   />
-
                   <BladeFinishInput
                     setBladeFinishOnChange={setBladeFinishOnChange}
                     parentBladeFinish={bladeFinish}
                   />
-
                   <BladeMaterialInput
                     setBladeMaterialOnChange={setBladeMaterialOnChange}
                     parentBladeMaterial={bladeMaterial}
@@ -634,25 +655,20 @@ const NewCollectionKnifeForm = ({
                 </div>
               </div>
 
-              {/*Handles Info*/}
-              <div className="flex flex-col items-center gap-2">
-                <div className="text-xl font-bold border-b-4 border-dashed border-shadow-green w-full flex justify-center p-1">
-                  <h4>Handles</h4>
-                </div>
+              <div className="h-px bg-white/5" />
 
-                <div className="flex md:flex-row xsm:flex-col justify-evenly items-center w-full pt-5 pb-5 gap-4">
+              {/* Handles */}
+              <div className="flex flex-col gap-4">
+                <h4 className="text-xs font-semibold text-white/35 uppercase tracking-wider">Handles</h4>
+                <div className="grid xsm:grid-cols-1 sm:grid-cols-3 gap-3">
                   <HandleConstructionInput
-                    setHandleConstructionOnChange={
-                      setHandleConstructionOnChange
-                    }
+                    setHandleConstructionOnChange={setHandleConstructionOnChange}
                     parentHandleConstruction={handleConstruction}
                   />
-
                   <HandleMaterialInput
                     setHandleMaterialOnChange={setHandleMaterialOnChange}
                     parentHandleMaterial={handleMaterial}
                   />
-
                   <HandleFinishInput
                     setHandleFinishOnChange={setHandleFinishOnChange}
                     parentHandleFinish={handleFinish}
@@ -660,187 +676,76 @@ const NewCollectionKnifeForm = ({
                 </div>
               </div>
             </div>
-          ) : (
-            <></>
           )}
         </div>
 
-        <span className="w-full h-2 bg-shadow-green rounded"></span>
-
-        {/*Rankings*/}
-        <div>
-          <div
-            className="flex items-center gap-2 hover:cursor-pointer"
+        {/* ── Rankings (accordion) ── */}
+        <div className="bg-[#13161d] border border-white/10 rounded-2xl overflow-hidden">
+          <button
+            type="button"
             onClick={() => toggleDisplayRankingsInfo((prev) => !prev)}
+            className="w-full flex items-center justify-between px-5 py-4 hover:bg-white/[0.02] transition-colors duration-200"
           >
-            <h3 className="text-lg font-bold">Rankings</h3>
-            {!displayRankingsInfo ? (
-              <FontAwesomeIcon icon={faChevronUp} />
-            ) : (
-              <FontAwesomeIcon icon={faChevronDown} />
-            )}
-          </div>
+            <h3 className="text-sm font-semibold text-white/60 uppercase tracking-wider">Rankings</h3>
+            <FontAwesomeIcon
+              icon={displayRankingsInfo ? faChevronUp : faChevronDown}
+              className="text-white/30 text-xs"
+            />
+          </button>
 
-          {displayRankingsInfo ? (
-            <div className="w-full flex flex-col gap-2">
-              {/*Overall Score*/}
-              <div className="flex flex-col items-center justify-center gap-1 text-lg">
-                <h5>Overall Score</h5>
-                <h6>
-                  {averageScore == null ? "-" : averageScore.toString()}/10
-                </h6>
+          {displayRankingsInfo && (
+            <div className="px-5 pb-5 flex flex-col gap-5 border-t border-white/10 pt-5">
+              {/* Overall score display */}
+              <div className="flex items-center justify-between px-4 py-3 bg-white/5 rounded-xl border border-white/10">
+                <span className="text-sm font-medium text-white/50">Overall Score</span>
+                <span className="text-2xl font-bold text-white">
+                  {averageScore == null ? "—" : Number(averageScore).toFixed(1)}
+                  <span className="text-sm text-white/30 font-normal">/10</span>
+                </span>
               </div>
 
-              {/*Quality Scale*/}
-              <div className="flex flex-col items-center">
-                <label>Quality</label>
-                <h3>{qualityScore}</h3>
-                <div className="w-full flex justify-evenly items-center gap-2">
-                  <h6>Poor</h6>
-                  <input
-                    type="range"
-                    className="w-full"
-                    min={0}
-                    max={10}
-                    value={qualityScore}
-                    onChange={(e) => {
-                      qualityScaleOnChange(e);
-                    }}
-                  />
-                  <h6>Fantastic</h6>
-                </div>
-              </div>
-
-              {/*Flippability Scale*/}
-              <div className="flex flex-col items-center">
-                <label>Flipping</label>
-                <h3>{flippingScore}</h3>
-                <div className="w-full flex justify-evenly items-center gap-2">
-                  <h6>Poor</h6>
-                  <input
-                    type="range"
-                    className="w-full"
-                    min={0}
-                    max={10}
-                    value={flippingScore}
-                    onChange={(e) => {
-                      flippingScaleOnChange(e);
-                    }}
-                  />
-                  <h6>Fantastic</h6>
-                </div>
-              </div>
-
-              {/*Feel Scale*/}
-              <div className="flex flex-col items-center">
-                <label>Feel</label>
-                <h3>{feelScore}</h3>
-                <div className="w-full flex justify-evenly items-center gap-2">
-                  <h6>Poor</h6>
-                  <input
-                    type="range"
-                    className="w-full"
-                    min={0}
-                    max={10}
-                    value={feelScore}
-                    onChange={(e) => {
-                      feelScaleOnChange(e);
-                    }}
-                  />
-                  <h6>Fantastic</h6>
-                </div>
-              </div>
-
-              {/*Sound Scale*/}
-              <div className="flex flex-col items-center">
-                <label>Sound</label>
-                <h3>{soundScore}</h3>
-                <div className="w-full flex justify-evenly items-center gap-2">
-                  <h6>Poor</h6>
-                  <input
-                    type="range"
-                    className="w-full"
-                    min={0}
-                    max={10}
-                    value={soundScore}
-                    onChange={(e) => {
-                      soundScaleOnChange(e);
-                    }}
-                  />
-                  <h6>Fantastic</h6>
-                </div>
-              </div>
-
-              {/*Durability Scale*/}
-              <div className="flex flex-col items-center">
-                <label>Durability</label>
-                <h3>{durabilityScore}</h3>
-                <div className="w-full flex justify-evenly items-center gap-2">
-                  <h6>Poor</h6>
-                  <input
-                    type="range"
-                    className="w-full"
-                    min={0}
-                    max={10}
-                    value={durabilityScore}
-                    onChange={(e) => {
-                      durabilityScaleOnChange(e);
-                    }}
-                  />
-                  <h6>Fantastic</h6>
-                </div>
-              </div>
+              <ScoreSlider label="Quality" value={qualityScore} onChange={qualityScaleOnChange} />
+              <ScoreSlider label="Flipping" value={flippingScore} onChange={flippingScaleOnChange} />
+              <ScoreSlider label="Feel" value={feelScore} onChange={feelScaleOnChange} />
+              <ScoreSlider label="Sound" value={soundScore} onChange={soundScaleOnChange} />
+              <ScoreSlider label="Durability" value={durabilityScore} onChange={durabilityScaleOnChange} />
             </div>
-          ) : (
-            <></>
           )}
         </div>
 
-        <span className="w-full h-2 bg-shadow-green"></span>
-
-        {/*Mod Work*/}
-        <div>
-          <div
-            className="flex items-center gap-2 hover:cursor-pointer"
+        {/* ── Mod Work (accordion) ── */}
+        <div className="bg-[#13161d] border border-white/10 rounded-2xl overflow-hidden">
+          <button
+            type="button"
             onClick={() => toggleDisplayModWork((prev) => !prev)}
+            className="w-full flex items-center justify-between px-5 py-4 hover:bg-white/[0.02] transition-colors duration-200"
           >
-            <h3 className="text-lg font-bold">Mod Work</h3>
-            {!displayModWork ? (
-              <FontAwesomeIcon icon={faChevronUp} />
-            ) : (
-              <FontAwesomeIcon icon={faChevronDown} />
-            )}
-          </div>
+            <h3 className="text-sm font-semibold text-white/60 uppercase tracking-wider">Mod Work</h3>
+            <FontAwesomeIcon
+              icon={displayModWork ? faChevronUp : faChevronDown}
+              className="text-white/30 text-xs"
+            />
+          </button>
 
-          {displayModWork ? <>display</> : <></>}
+          {displayModWork && (
+            <div className="px-5 pb-5 border-t border-white/10 pt-5">
+              <p className="text-sm text-white/30 text-center py-4">Mod work tracking coming soon.</p>
+            </div>
+          )}
         </div>
 
-        <span className="w-full h-2 bg-shadow-green"></span>
-
-        {/*Submit Button*/}
-        {!(
-          displayName === "" ||
-          displayNameIsDuplicate() ||
-          knifeMaker === "" ||
-          baseKnifeModel === "" ||
-          selectedCoverFile === null ||
-          selectedDate === ""
-        ) ? (
-          <button
-            type="submit"
-            className="bg-shadow-green w-1/4 m-auto p-4 rounded border border-black text-lg font-bold"
-          >
-            Submit
-          </button>
-        ) : (
-          <button
-            type="submit"
-            disabled
-            className="p-4 bg-shadow border border-black rounded w-1/4 m-auto text-lg text-black font-bold"
-          >
-            Submit
-          </button>
-        )}
+        {/* ── Submit ── */}
+        <button
+          type="submit"
+          disabled={!isFormValid}
+          className={`w-full py-3 rounded-xl text-sm font-semibold transition-colors duration-200 ${
+            isFormValid
+              ? "bg-blue-primary text-white hover:bg-blue-primary/80"
+              : "bg-white/5 text-white/20 border border-white/10 cursor-not-allowed"
+          }`}
+        >
+          {isFormValid ? "Continue to Gallery →" : "Fill in required fields to continue"}
+        </button>
       </form>
     </section>
   );

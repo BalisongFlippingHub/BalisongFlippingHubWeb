@@ -7,11 +7,8 @@ import { CollectionKnifeDTO } from "../modals/CollectionKnife";
 
 const AddNewKnifeToCollectionPage = () => {
   const [newKnifeStep, setNewKnifeStep] = useState("1");
-  const [newKnifeObj, setNewKnifeObj] = useState<CollectionKnifeDTO | null>(
-    null
-  );
+  const [newKnifeObj, setNewKnifeObj] = useState<CollectionKnifeDTO | null>(null);
   const [formNotReady, setFormNotReady] = useState(true);
-
   const [galleryFiles, setGalleryFiles] = useState<Array<File> | null>(null);
 
   const setNewKnifeObjOnSubmit = (obj: CollectionKnifeDTO) => {
@@ -20,131 +17,98 @@ const AddNewKnifeToCollectionPage = () => {
     setNewKnifeStep((prev) => (+prev + 1).toString());
   };
 
-  const setFormNotReadyOnChange = () => {
-    setFormNotReady(true);
-  };
+  const setFormNotReadyOnChange = () => setFormNotReady(true);
 
   const updateGalleryFiles = (files: Array<File> | null) => {
     setGalleryFiles(files);
-    console.log(galleryFiles);
   };
 
-  const setStepManually = (num: string) => {
-    setNewKnifeStep(num);
-  };
+  const setStepManually = (num: string) => setNewKnifeStep(num);
+
+  const steps = [
+    { num: "1", label: "Form", locked: false },
+    { num: "2", label: "Gallery", locked: formNotReady },
+    { num: "3", label: "Summary", locked: formNotReady },
+    { num: "4", label: "Submit", locked: formNotReady },
+  ];
 
   return (
-    <section className="h-full flex justify-center items-center">
-      {newKnifeStep === "1" ? (
-        <NewCollectionKnifeForm
-          setNewKnifeObjOnSubmit={setNewKnifeObjOnSubmit}
-          setStepManually={setStepManually}
-          collectionKnifeObj={newKnifeObj}
-          setFormNotReadyOnChange={setFormNotReadyOnChange}
-        />
-      ) : newKnifeStep === "2" ? (
-        <GalleryInput
-          updateGalleryFiles={updateGalleryFiles}
-          galleryFiles={galleryFiles}
-          setStepManually={setStepManually}
-        />
-      ) : newKnifeStep === "3" ? (
-        <NewCollectionKnifeSummary
-          galleryFiles={galleryFiles}
-          newKnifeObj={newKnifeObj}
-          setStepManually={setStepManually}
-        />
-      ) : newKnifeStep === "4" ? (
-        <NewCollectionKnifeSubmit
-          galleryFiles={galleryFiles}
-          newKnifeObj={newKnifeObj}
-          setStepManually={setStepManually}
-        />
-      ) : (
-        <></>
-      )}
+    <section className="w-full min-h-full lg:pl-[192px] flex flex-col pt-[56px]">
 
-      <div className="fixed lg:bottom-0 xsm:bottom-[48px] sm:bottom-12 lg:w-[calc(100%-192px)] xsm:w-full lg:ml-[192px] bg-shadow flex border">
-        <button
-          type="button"
-          onClick={() => setNewKnifeStep("1")}
-          className={
-            newKnifeStep === "1"
-              ? "flex gap-1 items-center xsm:justify-center sm:justify-normal border-r p-2 bg-shadow-green-offset w-full"
-              : "flex gap-1 items-center xsm:justify-center sm:justify-normal border-r p-2 w-full"
-          }
-        >
-          <h2 className="rounded-full border w-7 h-7 text-center">1</h2>
-          <p>Form</p>
-        </button>
+      {/* Step indicator — sticky, aligned to form width */}
+      <div className="sticky top-[56px] z-20 w-full lg:-ml-[192px] lg:w-[calc(100%+192px)] bg-[#13161d] border-y border-white/10 flex justify-center">
+        <div className="w-full max-w-[900px] px-4 py-3 xsm:flex sm:grid sm:grid-cols-4 items-center gap-2">
+          {steps.map(({ num, label, locked }, i) => {
+            const isActive = newKnifeStep === num;
+            const isPast = +newKnifeStep > +num;
+            return (
+              <div key={num} className="flex items-center gap-2 min-w-0 xsm:flex-1 xsm:justify-center sm:flex-none sm:justify-center">
+                <button
+                  type="button"
+                  disabled={locked}
+                  onClick={() => !locked && setNewKnifeStep(num)}
+                  className={`flex items-center gap-2 transition-colors duration-150 flex-shrink-0 ${
+                    locked ? "cursor-not-allowed" : "cursor-pointer"
+                  }`}
+                >
+                  <span className={`w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold flex-shrink-0 transition-colors duration-200 ${
+                    isActive
+                      ? "bg-blue-primary text-white"
+                      : isPast
+                      ? "bg-blue-primary/30 text-blue-primary border border-blue-primary/40"
+                      : locked
+                      ? "bg-white/5 text-white/20 border border-white/10"
+                      : "bg-white/10 text-white/40 border border-white/10"
+                  }`}>
+                    {isPast ? "✓" : num}
+                  </span>
+                  <span className={`text-sm font-medium xsm:hidden sm:inline transition-colors duration-200 ${
+                    isActive ? "text-white" : isPast ? "text-blue-primary/60" : locked ? "text-white/20" : "text-white/35"
+                  }`}>
+                    {label}
+                  </span>
+                </button>
 
-        {formNotReady ? (
-          <button
-            type="button"
-            disabled
-            onClick={() => setNewKnifeStep("2")}
-            className="flex gap-1 items-center xsm:justify-center sm:justify-normal border-r p-2 w-full bg-shadow-green"
-          >
-            <h2 className="rounded-full border w-7 h-7 text-center">2</h2>
-            <p>Gallery</p>
-          </button>
-        ) : (
-          <button
-            type="button"
-            onClick={() => setNewKnifeStep("2")}
-            className={
-              newKnifeStep === "2"
-                ? "flex gap-1 items-center xsm:justify-center sm:justify-normal border-r p-2 bg-shadow-green-offset w-full"
-                : "flex gap-1 items-center xsm:justify-center sm:justify-normal border-r p-2 w-full"
-            }
-          >
-            <h2 className="rounded-full border w-7 h-7 text-center">2</h2>
-            <p>Gallery</p>
-          </button>
-        )}
+                {/* Connector line */}
+                {i < steps.length - 1 && (
+                  <div className="w-8 h-px mx-1 rounded-full transition-colors duration-300 xsm:hidden sm:block flex-shrink-0"
+                    style={{ background: isPast ? "#108198" : "rgba(255,255,255,0.08)" }}
+                  />
+                )}
+              </div>
+            );
+          })}
+        </div>
+      </div>
 
-        {formNotReady ? (
-          <button
-            type="button"
-            disabled
-            onClick={() => setNewKnifeStep("3")}
-            className="flex gap-1 items-center xsm:justify-center sm:justify-normal p-2 bg-shadow-green border-r w-full"
-          >
-            <h2 className="rounded-full border w-7 h-7 text-center">3</h2>
-            <p>Summary</p>
-          </button>
-        ) : (
-          <button
-            type="button"
-            onClick={() => setNewKnifeStep("3")}
-            className={
-              newKnifeStep === "3"
-                ? "flex gap-1 items-center xsm:justify-center sm:justify-normal border-r p-2 bg-shadow-green-offset w-full"
-                : "flex gap-1 items-center xsm:justify-center sm:justify-normal border-r p-2 w-full"
-            }
-          >
-            <h2 className="rounded-full border w-7 h-7 text-center">3</h2>
-            <p>Summary</p>
-          </button>
-        )}
-
-        {formNotReady ? (
-          <div className="flex gap-1 items-center xsm:justify-center sm:justify-normal p-2 bg-shadow-green w-full">
-            <h2 className="rounded-full border w-7 h-7 text-center">4</h2>
-            <p>Submit</p>
-          </div>
-        ) : (
-          <div
-            className={
-              newKnifeStep === "4"
-                ? "flex gap-1 items-center xsm:justify-center sm:justify-normal p-2 bg-shadow-green-offset w-full"
-                : "flex gap-1 items-center xsm:justify-center sm:justify-normal p-2 w-full"
-            }
-          >
-            <h2 className="rounded-full border w-7 h-7 text-center">4</h2>
-            <p>Submit</p>
-          </div>
-        )}
+      {/* Step content */}
+      <div className="flex-1 flex justify-center lg:pr-[192px]">
+        {newKnifeStep === "1" ? (
+          <NewCollectionKnifeForm
+            setNewKnifeObjOnSubmit={setNewKnifeObjOnSubmit}
+            setStepManually={setStepManually}
+            collectionKnifeObj={newKnifeObj}
+            setFormNotReadyOnChange={setFormNotReadyOnChange}
+          />
+        ) : newKnifeStep === "2" ? (
+          <GalleryInput
+            updateGalleryFiles={updateGalleryFiles}
+            galleryFiles={galleryFiles}
+            setStepManually={setStepManually}
+          />
+        ) : newKnifeStep === "3" ? (
+          <NewCollectionKnifeSummary
+            galleryFiles={galleryFiles}
+            newKnifeObj={newKnifeObj}
+            setStepManually={setStepManually}
+          />
+        ) : newKnifeStep === "4" ? (
+          <NewCollectionKnifeSubmit
+            galleryFiles={galleryFiles}
+            newKnifeObj={newKnifeObj}
+            setStepManually={setStepManually}
+          />
+        ) : null}
       </div>
     </section>
   );

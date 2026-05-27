@@ -138,20 +138,38 @@ const NewCollectionKnifeSubmit = ({ galleryFiles, newKnifeObj }: params) => {
   }, []);
 
   return (
-    <section className="w-full pt-[60px] lg:pl-[192px] md:pl-0 h-screen flex justify-center items-center">
-      <div className="w-2/5 bg-shadow p-4 rounded">
+    <section className="w-full pt-16 flex justify-center items-start px-6">
+      <div className="w-full max-w-sm bg-[#13161d] border border-white/10 rounded-2xl p-8 flex flex-col items-center gap-5 text-center">
         {isError ? (
-          <div>
-            <h5>Error</h5>
-          </div>
+          <>
+            <div className="w-14 h-14 rounded-full bg-red/10 border border-red/30 flex items-center justify-center">
+              <span className="text-red text-2xl">✕</span>
+            </div>
+            <div>
+              <h5 className="text-white font-bold text-lg">Upload Failed</h5>
+              <p className="text-white/40 text-sm mt-1">Something went wrong. Please try again.</p>
+            </div>
+          </>
         ) : isLoading ? (
-          <div>
-            <h5>Loading...</h5>
-          </div>
+          <>
+            <div className="w-14 h-14 rounded-full bg-blue-primary/10 border border-blue-primary/30 flex items-center justify-center">
+              <div className="w-6 h-6 border-2 border-blue-primary border-t-transparent rounded-full animate-spin" />
+            </div>
+            <div>
+              <h5 className="text-white font-bold text-lg">Uploading</h5>
+              <p className="text-white/40 text-sm mt-1">Adding your knife to the collection…</p>
+            </div>
+          </>
         ) : (
-          <div>
-            <h5>Success</h5>
-          </div>
+          <>
+            <div className="w-14 h-14 rounded-full bg-green/10 border border-green/30 flex items-center justify-center">
+              <span className="text-green text-2xl">✓</span>
+            </div>
+            <div>
+              <h5 className="text-white font-bold text-lg">Knife Added!</h5>
+              <p className="text-white/40 text-sm mt-1">Your knife has been added to your collection.</p>
+            </div>
+          </>
         )}
       </div>
     </section>

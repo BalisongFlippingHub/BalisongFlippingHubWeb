@@ -4,6 +4,7 @@ import { NavLink, useLocation } from "react-router-dom";
 import { useAppSelector } from "../../redux/hooks";
 import { useRef, useEffect, useState, useCallback } from "react";
 import { motion } from "motion/react";
+import useWindowSize from "../../hooks/useWindowSize";
 
 const NOTCH_HW = 30;   // notch half-width
 const NOTCH_D  = 20;   // notch depth
@@ -46,7 +47,6 @@ const getSpringConfig = (distance: number) => {
   return { type: 'spring' as const, stiffness, damping: 18 };
 };
 
-// Bouncy spring for the active-icon pop/pulse
 const pulseSpring = { type: 'spring' as const, stiffness: 500, damping: 15 };
 
 // ─── Shared nav item ────────────────────────────────────────────────────────
@@ -54,28 +54,28 @@ interface NavItemProps {
   isActive: boolean;
   label: string;
   springConfig: ReturnType<typeof getSpringConfig>;
+  floatY: number;
+  activeScale: number;
+  hoverScale: number;
   children: React.ReactNode;
   className?: string;
 }
 
-const NavItem = ({ isActive, label, springConfig, children, className = '' }: NavItemProps) => (
-  <div className={`flex flex-col items-center px-2 pt-3.5 pb-2 gap-1 ${className}`}>
-    {/* Float wrapper */}
+const NavItem = ({ isActive, label, springConfig, floatY, activeScale, hoverScale, children, className = '' }: NavItemProps) => (
+  <div className={`flex flex-col items-center px-2 xsm:pt-2 xsm:pb-1 xsm:gap-0.5 md:pt-3.5 md:pb-2 md:gap-1 ${className}`}>
     <motion.div
-      animate={{ y: isActive ? -16 : 0 }}
+      animate={{ y: isActive ? floatY : 0 }}
       transition={springConfig}
     >
-      {/* Scale + pulse wrapper */}
       <motion.div
-        animate={{ scale: isActive ? 1.6 : 1 }}
-        whileHover={!isActive ? { scale: 1.15 } : undefined}
+        animate={{ scale: isActive ? activeScale : 1 }}
+        whileHover={!isActive ? { scale: hoverScale } : undefined}
         transition={isActive ? pulseSpring : springConfig}
       >
         {children}
       </motion.div>
     </motion.div>
 
-    {/* Label */}
     <motion.span
       className="text-[9px] font-medium tracking-wide"
       animate={{
@@ -93,6 +93,14 @@ const NavItem = ({ isActive, label, springConfig, children, className = '' }: Na
 const HeaderNavbarBottom = () => {
   const user = useAppSelector((state) => state.auth.user);
   const location = useLocation();
+  const windowSize = useWindowSize();
+
+  const isMobile = (windowSize.at(1) ?? 0) < 950;
+
+  // Animation values — smaller on mobile, full-size on desktop
+  const floatY      = isMobile ? -10 : -16;
+  const activeScale = isMobile ? 1.25 : 1.6;
+  const hoverScale  = isMobile ? 1.1  : 1.15;
 
   const containerRef  = useRef<HTMLDivElement>(null);
   const profileRef    = useRef<HTMLDivElement>(null);
@@ -147,10 +155,12 @@ const HeaderNavbarBottom = () => {
   const effectiveCx = notchX > 0 ? notchX : dims.w / 2;
   const svgPath = buildPillPath(dims.w, dims.h, effectiveCx, notchDepth);
 
-  return (
-    <div ref={containerRef} className="relative">
+  const navItemProps = { springConfig, floatY, activeScale, hoverScale };
 
-      {/* SVG pill — gradient fill + animated notch */}
+  return (
+    <div ref={containerRef} className="relative xsm:w-full md:w-auto">
+
+      {/* SVG pill */}
       {svgPath && (
         <svg
           className="absolute inset-0 w-full h-full"
@@ -158,7 +168,6 @@ const HeaderNavbarBottom = () => {
           style={{ overflow: 'visible' }}
         >
           <defs>
-            {/* 3 — subtle top-to-bottom depth gradient */}
             <linearGradient id="pillGrad" x1="0" y1="0" x2="0" y2="1">
               <stop offset="0%"   stopColor="#1c1f27" />
               <stop offset="100%" stopColor="#111318" />
@@ -171,7 +180,6 @@ const HeaderNavbarBottom = () => {
               </feMerge>
             </filter>
           </defs>
-
           <motion.path
             fill="url(#pillGrad)"
             initial={{ d: svgPath }}
@@ -191,19 +199,19 @@ const HeaderNavbarBottom = () => {
       )}
 
       {/* Icons */}
-      <div className="relative z-10 flex items-center gap-12 px-24 text-white">
+      <div className="relative z-10 flex items-center xsm:justify-evenly xsm:w-full xsm:px-4 md:justify-center md:w-auto md:gap-12 md:px-24 text-white">
 
         {/* Profile */}
         <div ref={profileRef}>
           <NavLink to={profilePath}>
             {({ isActive }) => (
-              <NavItem isActive={isActive} label="Profile" springConfig={springConfig}>
-                <div className={`rounded-full flex items-center justify-center w-10 h-10 transition-colors duration-200 ${
+              <NavItem isActive={isActive} label="Profile" {...navItemProps}>
+                <div className={`rounded-full flex items-center justify-center xsm:w-7 xsm:h-7 md:w-10 md:h-10 transition-colors duration-200 ${
                   isActive
                     ? "bg-[#111318] text-blue-primary border border-white/15"
                     : "text-white/65 hover:text-white"
                 }`}>
-                  <FontAwesomeIcon icon={faCircleUser} className="text-xl" />
+                  <FontAwesomeIcon icon={faCircleUser} className="xsm:text-base md:text-xl" />
                 </div>
               </NavItem>
             )}
@@ -214,13 +222,13 @@ const HeaderNavbarBottom = () => {
         <div ref={collectionRef}>
           <NavLink to={collectionPath}>
             {({ isActive }) => (
-              <NavItem isActive={isActive} label="Collection" springConfig={springConfig}>
-                <div className={`rounded-full flex items-center justify-center w-10 h-10 transition-colors duration-200 ${
+              <NavItem isActive={isActive} label="Collection" {...navItemProps}>
+                <div className={`rounded-full flex items-center justify-center xsm:w-7 xsm:h-7 md:w-10 md:h-10 transition-colors duration-200 ${
                   isActive
                     ? "bg-[#111318] text-blue-primary border border-white/15"
                     : "text-white/65 hover:text-white"
                 }`}>
-                  <FontAwesomeIcon icon={faCubes} className="text-xl" />
+                  <FontAwesomeIcon icon={faCubes} className="xsm:text-base md:text-xl" />
                 </div>
               </NavItem>
             )}
@@ -234,9 +242,9 @@ const HeaderNavbarBottom = () => {
         <div ref={createRef}>
           <NavLink to={createPath}>
             {({ isActive }) => (
-              <NavItem isActive={isActive} label="Create" springConfig={springConfig}>
-                <div className="rounded-full flex items-center justify-center w-10 h-10 bg-blue-primary">
-                  <FontAwesomeIcon icon={faPlus} className="text-white text-lg" />
+              <NavItem isActive={isActive} label="Create" {...navItemProps}>
+                <div className="rounded-full flex items-center justify-center xsm:w-7 xsm:h-7 md:w-10 md:h-10 bg-blue-primary">
+                  <FontAwesomeIcon icon={faPlus} className="text-white xsm:text-sm md:text-lg" />
                 </div>
               </NavItem>
             )}

@@ -57,7 +57,7 @@ const UserProfileBanner = () => {
   }
 
   return (
-    <div className="w-full xsm:h-40 md:h-56 lg:h-64 relative overflow-hidden rounded-b-3xl bg-gradient-to-b from-[#1c1f27] to-[#111318] border-b border-white/10">
+    <div className="w-full xsm:h-[136px] md:h-56 lg:h-64 relative overflow-hidden rounded-b-3xl bg-gradient-to-b from-[#1c1f27] to-[#111318] border-b border-white/10">
       {user?.bannerImg && user.bannerImg !== "" ? (
         <div
           className="w-full h-full hover:cursor-pointer"

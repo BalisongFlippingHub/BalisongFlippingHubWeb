@@ -68,15 +68,15 @@ const UserProfilePostsComponent = () => {
     <div className="w-full flex flex-col text-white">
 
       {/* ── Filter + Sort bar ── */}
-      <div className="flex items-center justify-between px-6 py-4 border-t border-white/10 gap-3">
+      <div className="grid grid-cols-[1fr_auto_1fr] items-center px-6 py-4 border-t border-white/10 xsm:gap-1 md:gap-3">
 
         {/* Filter dropdown */}
-        <div ref={filterRef} className="relative">
+        <div ref={filterRef} className="relative justify-self-start">
 
           <button
             type="button"
             onClick={() => { setFilterOpen((p) => !p); setSortOpen(false); }}
-            className="flex items-center gap-2 px-3 py-1.5 rounded-lg text-sm font-medium border bg-blue-primary border-blue-primary text-white transition-all duration-150 whitespace-nowrap"
+            className="flex items-center gap-1.5 xsm:px-2 xsm:py-1 xsm:text-xs md:px-3 md:py-1.5 md:text-sm rounded-lg font-medium border bg-blue-primary border-blue-primary text-white transition-all duration-150 whitespace-nowrap"
           >
             {activeFilter}
             <FontAwesomeIcon
@@ -114,32 +114,32 @@ const UserProfilePostsComponent = () => {
           </AnimatePresence>
         </div>
 
-        {/* Left line + divider */}
-        <div className="hidden md:flex items-center gap-3 flex-1">
-          <div className="flex-1 h-px bg-white/10" />
-          <div className="w-px h-5 bg-white/10 flex-shrink-0" />
-        </div>
+        {/* Center cell — lines + count */}
+        <div className="flex items-center gap-3">
+          <div className="hidden md:flex items-center gap-3">
+            <div className="w-20 h-px bg-white/10" />
+            <div className="w-px h-5 bg-white/10 flex-shrink-0" />
+          </div>
 
-        {/* Post count */}
-        <div className="flex flex-col items-center gap-0.5 flex-shrink-0 px-2">
-          <span className="text-white font-bold text-lg leading-none">{sorted.length}</span>
-          <span className="text-white/30 text-[10px] uppercase tracking-widest leading-none">
-            {activeFilter === "All" ? "Posts" : activeFilter}
-          </span>
-        </div>
+          <div className="flex flex-col items-center gap-0.5 flex-shrink-0 px-2">
+            <span className="text-white font-bold text-lg leading-none">{sorted.length}</span>
+            <span className="text-white/30 text-[10px] uppercase tracking-widest leading-none">
+              {activeFilter === "All" ? "Posts" : activeFilter}
+            </span>
+          </div>
 
-        {/* Divider + right line */}
-        <div className="hidden md:flex items-center gap-3 flex-1">
-          <div className="w-px h-5 bg-white/10 flex-shrink-0" />
-          <div className="flex-1 h-px bg-white/10" />
+          <div className="hidden md:flex items-center gap-3">
+            <div className="w-px h-5 bg-white/10 flex-shrink-0" />
+            <div className="w-20 h-px bg-white/10" />
+          </div>
         </div>
 
         {/* Sort dropdown */}
-        <div ref={sortRef} className="relative">
+        <div ref={sortRef} className="relative justify-self-end">
           <button
             type="button"
             onClick={() => { setSortOpen((p) => !p); setFilterOpen(false); }}
-            className="flex items-center gap-2 px-3 py-1.5 rounded-lg text-sm text-white/50 hover:text-white bg-white/5 border border-white/10 hover:border-white/20 transition-all duration-150 whitespace-nowrap"
+            className="flex items-center gap-1.5 xsm:px-2 xsm:py-1 xsm:text-xs md:px-3 md:py-1.5 md:text-sm text-white/50 hover:text-white bg-white/5 border border-white/10 hover:border-white/20 transition-all duration-150 whitespace-nowrap rounded-lg"
           >
             {SORT_LABELS[sortBy]}
             <FontAwesomeIcon
@@ -186,7 +186,7 @@ const UserProfilePostsComponent = () => {
           ))}
         </div>
       ) : (
-        <div className="flex flex-col items-center justify-center py-24 gap-4">
+        <div className="w-full flex flex-col items-center justify-center py-24 gap-4">
           <div className="w-14 h-14 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center">
             <FontAwesomeIcon icon={faTableCells} className="text-white/20 text-2xl" />
           </div>
