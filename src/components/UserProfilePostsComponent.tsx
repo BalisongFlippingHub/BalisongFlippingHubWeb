@@ -68,7 +68,7 @@ const UserProfilePostsComponent = () => {
     <div className="w-full flex flex-col text-white">
 
       {/* ── Filter + Sort bar ── */}
-      <div className="grid grid-cols-[1fr_auto_1fr] items-center px-6 py-4 border-t border-white/10 gap-3">
+      <div className="grid grid-cols-[1fr_auto_1fr] items-center px-6 py-4 border-t border-white/10 xsm:gap-1 md:gap-3">
 
         {/* Filter dropdown */}
         <div ref={filterRef} className="relative justify-self-start">
@@ -76,7 +76,7 @@ const UserProfilePostsComponent = () => {
           <button
             type="button"
             onClick={() => { setFilterOpen((p) => !p); setSortOpen(false); }}
-            className="flex items-center gap-2 px-3 py-1.5 rounded-lg text-sm font-medium border bg-blue-primary border-blue-primary text-white transition-all duration-150 whitespace-nowrap"
+            className="flex items-center gap-1.5 xsm:px-2 xsm:py-1 xsm:text-xs md:px-3 md:py-1.5 md:text-sm rounded-lg font-medium border bg-blue-primary border-blue-primary text-white transition-all duration-150 whitespace-nowrap"
           >
             {activeFilter}
             <FontAwesomeIcon
@@ -139,7 +139,7 @@ const UserProfilePostsComponent = () => {
           <button
             type="button"
             onClick={() => { setSortOpen((p) => !p); setFilterOpen(false); }}
-            className="flex items-center gap-2 px-3 py-1.5 rounded-lg text-sm text-white/50 hover:text-white bg-white/5 border border-white/10 hover:border-white/20 transition-all duration-150 whitespace-nowrap"
+            className="flex items-center gap-1.5 xsm:px-2 xsm:py-1 xsm:text-xs md:px-3 md:py-1.5 md:text-sm text-white/50 hover:text-white bg-white/5 border border-white/10 hover:border-white/20 transition-all duration-150 whitespace-nowrap rounded-lg"
           >
             {SORT_LABELS[sortBy]}
             <FontAwesomeIcon
