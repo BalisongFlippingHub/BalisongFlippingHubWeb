@@ -36,7 +36,7 @@ const AddNewKnifeToCollectionPage = () => {
     <section className="w-full min-h-full lg:pl-[192px] flex flex-col pt-[56px]">
 
       {/* Step indicator — sticky, aligned to form width */}
-      <div className="sticky top-[56px] z-20 w-full lg:-ml-[192px] lg:w-[calc(100%+192px)] bg-[#13161d] border-y border-white/10 flex justify-center">
+      <div className="w-full lg:-ml-[192px] lg:w-[calc(100%+192px)] bg-[#13161d] border-y border-white/10 flex justify-center">
         <div className="w-full max-w-[900px] px-4 py-3 xsm:flex sm:grid sm:grid-cols-4 items-center gap-2">
           {steps.map(({ num, label, locked }, i) => {
             const isActive = newKnifeStep === num;
@@ -110,6 +110,7 @@ const AddNewKnifeToCollectionPage = () => {
           />
         ) : null}
       </div>
+
     </section>
   );
 };

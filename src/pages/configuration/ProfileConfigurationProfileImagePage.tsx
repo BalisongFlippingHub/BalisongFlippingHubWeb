@@ -1,25 +1,30 @@
-import { faCircleLeft } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import ProfileImageConfiguration from "../../components/accountConfigurationComponents/ProfileImageConfiguration";
 import { useNavigate } from "react-router-dom";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faChevronLeft } from "@fortawesome/free-solid-svg-icons";
+import ProfileImageConfiguration from "../../components/accountConfigurationComponents/ProfileImageConfiguration";
 
 const ProfileConfigurationProfileImagePage = () => {
   const navigate = useNavigate();
 
   return (
-    <section className="pt-[64px] lg:pl-[192px]">
-      <div className="w-full p-4">
-        <button
-          type="button"
-          className="bg-shadow hover:bg-shadow-green-offset p-2 rounded text-xl flex gap-2 items-center"
-          onClick={() => navigate("/configure")}
-        >
-          <FontAwesomeIcon icon={faCircleLeft} />
-          <h6>Go Back</h6>
-        </button>
-      </div>
+    <section className="w-full min-h-screen flex justify-center pb-28 pt-6 px-4 lg:pl-[192px] bg-[#080a0e]">
+      <div className="w-full max-w-[480px] md:max-w-[640px] flex flex-col gap-6">
 
-      <ProfileImageConfiguration />
+        {/* Header */}
+        <div className="flex items-center gap-3">
+          <button
+            type="button"
+            onClick={() => navigate("/configure")}
+            className="w-8 h-8 rounded-full border border-white/10 flex items-center justify-center text-white/40 hover:text-white hover:border-white/20 transition-colors duration-200"
+          >
+            <FontAwesomeIcon icon={faChevronLeft} className="text-xs" />
+          </button>
+          <h1 className="text-white font-bold text-xl">Profile Image</h1>
+        </div>
+
+        <ProfileImageConfiguration />
+
+      </div>
     </section>
   );
 };

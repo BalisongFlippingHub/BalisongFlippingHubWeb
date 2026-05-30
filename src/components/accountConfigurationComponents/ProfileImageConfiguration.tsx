@@ -4,30 +4,29 @@ import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import { axiosApiInstanceAuth } from "../../api/axios";
 import { Profile } from "../../modals/User";
 import { setNewUser } from "../../redux/auth/authSlice";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faCamera } from "@fortawesome/free-solid-svg-icons";
+import { useNavigate } from "react-router-dom";
 
 const ProfileImageConfiguration = () => {
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
-
-  const [_isLoading, setIsLoading] = useState(false);
-  const [_isError, setIsError] = useState(true);
-  const [_errMsg, _setErrMsg] = useState("");
-  const [isSuccess, setIsSuccess] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [isError, setIsError] = useState(false);
 
   const user = useAppSelector((state) => state.auth.user);
-
   const dispatch = useAppDispatch();
+  const navigate = useNavigate();
 
   const handleFileSelection = (files: FileList) => {
-    if (files[0] === null) return;
-
+    if (!files[0]) return;
     setSelectedFile(files[0]);
+    setIsError(false);
   };
 
   const handleSubmit = async (e: any) => {
     e.preventDefault();
-
     if (!selectedFile) return;
 
     const fn = new FormData();
@@ -38,85 +37,86 @@ const ProfileImageConfiguration = () => {
       url: "/accounts/me/update-profile-img",
       method: "post",
       data: fn,
-      headers: {
-        "Content-Type": "multipart/form-data",
-      },
+      headers: { "Content-Type": "multipart/form-data" },
     })
       .then((res) => {
-        const newUser = {
-          ...user,
-          profileImg: res.data,
-        } as Profile;
-
+        const newUser = { ...user, profileImg: res.data } as Profile;
         dispatch(setNewUser(newUser));
-        setIsSuccess(true);
+        navigate(-1);
       })
       .catch((error) => {
         console.log(error);
         setIsError(true);
       })
-      .finally(() => {
-        setIsLoading(false);
-      });
+      .finally(() => setIsLoading(false));
   };
 
+  const previewSrc = selectedFile ? URL.createObjectURL(selectedFile) : null;
+
   return (
-    <div className="w-full flex flex-col items-center">
-      {/*Display Current Profile Image*/}
-      <div className="w-60 h-60 overflow-hidden bg-shadow rounded-full flex justify-center items-center text-xl">
-        {isSuccess ? (
-          <img
-            src={URL.createObjectURL(selectedFile!)}
-            className="w-full h-full object-cover"
-          />
-        ) : user?.profileImg && user?.profileImg !== "" ? (
-          <Image imageId={user?.profileImg!} />
-        ) : (
-          <h6>No Profile Image</h6>
-        )}
+    <form onSubmit={handleSubmit} className="w-full flex flex-col items-center gap-6">
+
+      {/* Current image */}
+      <div className="flex flex-col items-center gap-2">
+        <span className="text-xs text-white/40 uppercase tracking-wider font-medium">Current</span>
+        <div className="xsm:w-32 xsm:h-32 sm:w-40 sm:h-40 md:w-48 md:h-48 lg:w-56 lg:h-56 rounded-full overflow-hidden border-2 border-white/10 bg-[#1c1f27] flex items-center justify-center">
+          {user?.profileImg && user.profileImg !== "" ? (
+            <Image imageId={user.profileImg} />
+          ) : (
+            <FontAwesomeIcon icon={faCamera} className="text-white/20 text-2xl" />
+          )}
+        </div>
       </div>
 
-      {/*New Profile Image Form*/}
-      <form
-        className="mt-10 flex flex-col items-center gap-4"
-        onSubmit={(e) => handleSubmit(e)}
-      >
-        <div className="flex flex-col items-center gap-4 border-4 border-black rounded p-10">
-          <h5>Select New Profile Image</h5>
+      {/* Upload area */}
+      <div className="w-full flex flex-col gap-3">
+        <span className="text-xs text-white/40 uppercase tracking-wider font-medium">New Image</span>
 
-          <div className="w-80 h-96 bg-black flex text-xl font-bold items-center justify-center">
-            {selectedFile ? (
-              <img
-                src={URL.createObjectURL(selectedFile)}
-                className="w-full h-full object-cover"
-              />
-            ) : (
-              <h6>No Image Selected</h6>
-            )}
-          </div>
-
-          <button
-            type="button"
-            className="p-2 rounded text-lg bg-black"
-            onClick={() => fileInputRef.current?.click()}
-          >
-            Select File
-          </button>
-
-          <input
-            type="file"
-            accept="png, jpeg"
-            hidden
-            ref={fileInputRef}
-            onChange={(e) => handleFileSelection(e.target.files!)}
-          />
-        </div>
-
-        <button type="submit" className="rounded p-2 text-xl bg-shadow">
-          Submit
+        <button
+          type="button"
+          onClick={() => fileInputRef.current?.click()}
+          className="w-full rounded-2xl border border-dashed border-white/20 bg-[#13161d] hover:border-blue-primary/50 hover:bg-[#1a1d25] transition-colors duration-200 overflow-hidden relative group xsm:h-[280px] sm:h-[340px] md:h-[400px]"
+        >
+          {previewSrc ? (
+            <>
+              <img src={previewSrc} className="w-full h-full object-cover" />
+              <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity duration-200 flex items-center justify-center">
+                <span className="text-white text-sm font-medium">Change Image</span>
+              </div>
+            </>
+          ) : (
+            <div className="flex flex-col items-center justify-center gap-2 h-full text-white/30 group-hover:text-white/50 transition-colors duration-200">
+              <FontAwesomeIcon icon={faCamera} className="text-3xl" />
+              <span className="text-sm font-medium">Select a photo</span>
+              <span className="text-xs text-white/20">JPEG or PNG</span>
+            </div>
+          )}
         </button>
-      </form>
-    </div>
+
+        <input
+          type="file"
+          accept="image/jpeg, image/png"
+          hidden
+          ref={fileInputRef}
+          onChange={(e) => handleFileSelection(e.target.files!)}
+        />
+      </div>
+
+      {/* Status messages */}
+      {isError && (
+        <p className="text-red text-sm font-medium">Something went wrong. Please try again.</p>
+      )}
+
+      {/* Submit */}
+      <button
+        type="submit"
+        disabled={!selectedFile || isLoading}
+        className="w-full py-3 rounded-xl bg-blue-primary text-white text-sm font-semibold hover:bg-blue-primary/80 transition-colors duration-200 disabled:opacity-40 disabled:cursor-not-allowed"
+      >
+        {isLoading ? "Saving..." : "Save Profile Image"}
+      </button>
+
+    </form>
   );
 };
 

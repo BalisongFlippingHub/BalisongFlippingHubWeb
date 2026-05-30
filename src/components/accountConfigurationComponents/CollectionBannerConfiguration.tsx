@@ -4,146 +4,120 @@ import Image from "../Image";
 import { axiosApiInstanceAuth } from "../../api/axios";
 import { Collection } from "../../modals/Collection";
 import { setCollection } from "../../redux/collection/collectionSlice";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faImage } from "@fortawesome/free-solid-svg-icons";
+import { useNavigate } from "react-router-dom";
 
 const CollectionBannerConfiguration = () => {
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
-
   const [isLoading, setIsLoading] = useState(false);
   const [isError, setIsError] = useState(false);
-  const [_errorMessage, _setErrorMessage] = useState("");
-  const [isSuccess, setIsSuccess] = useState(false);
 
   const collectionData = useAppSelector((state) => state.collection.collection);
-
   const dispatch = useAppDispatch();
+  const navigate = useNavigate();
 
   const handleOnChange = (e: any) => {
-    if (isSuccess) {
-      setIsSuccess(false);
-    }
-
     setSelectedFile(e[0]);
+    setIsError(false);
   };
 
   const handleSubmit = async (e: any) => {
     e.preventDefault();
+    if (!selectedFile) return;
 
-    if (selectedFile) {
-      const fn = new FormData();
-      fn.append("file", selectedFile);
+    const fn = new FormData();
+    fn.append("file", selectedFile);
 
-      setIsLoading(true);
-      await axiosApiInstanceAuth
-        .request({
-          url: "/collection/me/update-banner-img",
-          method: "post",
-          data: fn,
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-        })
-        .then((res) => {
-          console.log("update banner image res: ", res);
-          let newCollection = {
-            ...collectionData,
-            bannerImg: res.data,
-          } as Collection;
-          dispatch(setCollection(newCollection));
-          setIsSuccess(true);
-        })
-        .catch((error) => {
-          console.log(error);
-          setIsError(true);
-        })
-        .finally(() => {
-          setIsLoading(false);
-        });
-    }
+    setIsLoading(true);
+    await axiosApiInstanceAuth
+      .request({
+        url: "/collection/me/update-banner-img",
+        method: "post",
+        data: fn,
+        headers: { "Content-Type": "multipart/form-data" },
+      })
+      .then((res) => {
+        const newCollection = { ...collectionData, bannerImg: res.data } as Collection;
+        dispatch(setCollection(newCollection));
+        navigate(-1);
+      })
+      .catch((error) => {
+        console.log(error);
+        setIsError(true);
+      })
+      .finally(() => setIsLoading(false));
   };
 
+  const previewSrc = selectedFile ? URL.createObjectURL(selectedFile) : null;
+
   return (
-    <div className="w-full flex flex-col items-center">
-      {/*Display Current Banner Image*/}
-      <div className="text-2xl font-bold flex flex-col items-center gap-4 w-full">
-        {isSuccess ? (
-          <div className="w-full h-64 bg-shadow-green-offset flex items-center justify-center">
-            <img
-              src={URL.createObjectURL(selectedFile!)}
-              className="w-full h-full object-cover"
-            />
-          </div>
-        ) : collectionData?.bannerImg && collectionData?.bannerImg !== "" ? (
-          <div className="w-full h-64 bg-shadow-green-offset flex items-center justify-center">
-            <Image imageId={collectionData?.bannerImg!} />
-          </div>
-        ) : (
-          <div className="w-full h-64 bg-shadow-green-offset flex items-center justify-center">
-            <h6>No Banner Set</h6>
-          </div>
-        )}
-      </div>
+    <form onSubmit={handleSubmit} className="w-full flex flex-col gap-6">
 
-      <div>
-        {isLoading ? (
-          <h6>Loading...</h6>
-        ) : isError ? (
-          <div>
-            <h6>Error...</h6>
-          </div>
-        ) : isSuccess ? (
-          <h6>Success</h6>
-        ) : (
-          <h6 className="invisible">Fill...</h6>
-        )}
-      </div>
-
-      {/*Display and form for new banner image selection*/}
-      <form
-        className="w-1/2 flex flex-col items-center mt-10"
-        onSubmit={(e) => handleSubmit(e)}
-      >
-        <div className="w-full flex flex-col items-center text-2xl font-bold border p-4 gap-4">
-          <h5>Select New Banner</h5>
-
-          <div className="w-full h-96 rounded-lg overflow-hidden bg-black flex items-center justify-center">
-            {selectedFile ? (
-              <img
-                className="w-full h-full object-cover"
-                src={URL.createObjectURL(selectedFile)}
-              />
-            ) : (
-              <h6>No Selected File</h6>
-            )}
-          </div>
-
-          <div>
-            <input
-              type="file"
-              hidden
-              ref={fileInputRef}
-              accept="jpeg, png"
-              onChange={(e) => handleOnChange(e.target.files)}
-            />
-            <button
-              type="button"
-              className="p-2 rounded bg-black hover:bg-shadow-green-offset"
-              onClick={() => fileInputRef.current?.click()}
-            >
-              Select Banner
-            </button>
-          </div>
+      {/* Current banner */}
+      <div className="flex flex-col gap-2">
+        <span className="text-xs text-white/40 uppercase tracking-wider font-medium">Current</span>
+        <div className="w-full xsm:h-[120px] sm:h-[160px] md:h-[200px] rounded-2xl overflow-hidden border border-white/10 bg-[#1c1f27] flex items-center justify-center">
+          {collectionData?.bannerImg && collectionData.bannerImg !== "" ? (
+            <Image imageId={collectionData.bannerImg} />
+          ) : (
+            <FontAwesomeIcon icon={faImage} className="text-white/20 text-3xl" />
+          )}
         </div>
+      </div>
+
+      {/* Upload area */}
+      <div className="flex flex-col gap-3">
+        <span className="text-xs text-white/40 uppercase tracking-wider font-medium">New Banner</span>
 
         <button
-          type="submit"
-          className="mt-4 text-2xl font-bold bg-black p-4 rounded"
+          type="button"
+          onClick={() => fileInputRef.current?.click()}
+          className="w-full xsm:h-[120px] sm:h-[160px] md:h-[200px] rounded-2xl border border-dashed border-white/20 bg-[#13161d] hover:border-blue-primary/50 hover:bg-[#1a1d25] transition-colors duration-200 overflow-hidden relative group"
         >
-          Submit
+          {previewSrc ? (
+            <>
+              <img src={previewSrc} className="w-full h-full object-cover" />
+              <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity duration-200 flex items-center justify-center">
+                <span className="text-white text-sm font-medium">Change Image</span>
+              </div>
+            </>
+          ) : (
+            <div className="flex flex-col items-center justify-center gap-2 h-full text-white/30 group-hover:text-white/50 transition-colors duration-200">
+              <FontAwesomeIcon icon={faImage} className="text-3xl" />
+              <span className="text-sm font-medium">Select a banner image</span>
+              <span className="text-xs text-white/20">JPEG or PNG</span>
+            </div>
+          )}
         </button>
-      </form>
-    </div>
+
+        <input
+          type="file"
+          hidden
+          ref={fileInputRef}
+          accept="image/jpeg, image/png"
+          onChange={(e) => handleOnChange(e.target.files)}
+        />
+      </div>
+
+      {/* Error */}
+      {isError && (
+        <p className="text-red text-sm font-medium">Something went wrong. Please try again.</p>
+      )}
+
+      {/* Submit */}
+      <button
+        type="submit"
+        disabled={!selectedFile || isLoading}
+        className="w-full py-3 rounded-xl bg-blue-primary text-white text-sm font-semibold hover:bg-blue-primary/80 transition-colors duration-200 disabled:opacity-40 disabled:cursor-not-allowed"
+      >
+        {isLoading ? "Saving..." : "Save Banner"}
+      </button>
+
+    </form>
   );
 };
+
 export default CollectionBannerConfiguration;

@@ -229,11 +229,14 @@ const UserRegistrationForm = () => {
               className="w-full bg-dark-neutral border border-white/10 focus:border-blue-primary rounded-lg text-white text-sm px-4 py-3 outline-none transition-colors duration-200 placeholder:text-white/25"
             />
 
-            {/* Focus-triggered styled name chip */}
+            {/* Focus-triggered hints */}
             <div
-              className="overflow-hidden transition-all duration-700 ease-in-out"
-              style={{ maxHeight: displayNameFocused ? "3rem" : "0", opacity: displayNameFocused ? 1 : 0 }}
+              className="overflow-hidden transition-all duration-700 ease-in-out flex flex-col gap-1.5"
+              style={{ maxHeight: displayNameFocused ? "5rem" : "0", opacity: displayNameFocused ? 1 : 0 }}
             >
+              <p className="text-xs text-white/25">
+                Letters, numbers and ! . _ allowed · Minimum 4 characters
+              </p>
               <div className="flex items-center gap-2">
                 <span className="text-white/30 text-xs">Preview:</span>
                 <div className="flex items-center gap-0.5 bg-white/5 border border-white/10 rounded-full px-3 py-1">

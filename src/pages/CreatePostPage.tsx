@@ -1,240 +1,1060 @@
-import { useState } from "react";
-import NewPostForm from "../components/NewPostForm";
-import { CreationPostDTO } from "../modals/Post";
-import { axiosApiInstanceAuth } from "../api/axios";
+import { ChangeEvent, useEffect, useRef, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faHubspot } from "@fortawesome/free-brands-svg-icons";
+import {
+  faChevronLeft,
+  faImage,
+  faXmark,
+  faTag,
+  faChevronDown,
+  faVideo,
+  faPen,
+  faArrowRightArrowLeft,
+  faCircleDollarToSlot,
+  faHeart,
+  faComment,
+  faBoxOpen,
+  faEarthAmericas,
+} from "@fortawesome/free-solid-svg-icons";
 import { useAppSelector } from "../redux/hooks";
+import { axiosApiInstanceAuth } from "../api/axios";
+import { CollectionKnife } from "../modals/CollectionKnife";
+import { Profile } from "../modals/User";
 
-const CreatePostPage = () => {
-  const [creatingLinkedPost, setCreatingLinkedPost] = useState(false);
+type PostLayout = "generic" | "buysell" | "trade" | "tutorial" | "combo";
 
-  const [postObjSet, setPostObjSet] = useState(false);
-  const [linkedPostObjSet, setLinkedPostObjSet] = useState(false);
+const LAYOUTS: { key: PostLayout; label: string; description: string }[] = [
+  { key: "generic",  label: "Generic",   description: "Share anything — photos, clips, or a mix. No specific format required." },
+  { key: "buysell",  label: "Buy / Sell", description: "Listing a knife you want to sell, or looking to buy one from the community." },
+  { key: "trade",    label: "Trade",      description: "Offering one of your knives in exchange for something else." },
+  { key: "tutorial", label: "Trick Tutorial", description: "Breaking down a specific trick step by step with a single instructional video." },
+  { key: "combo",    label: "Combo",      description: "Showcasing a combination of tricks. One video, no breakdown required." },
+];
 
-  const [postObj, setPostObj] = useState<CreationPostDTO | null>(null);
-  const [postObjFiles, setPostObjFiles] = useState<Array<File> | null>(null);
+const VIDEO_ONLY_LAYOUTS: PostLayout[] = ["tutorial", "combo"];
+const SINGLE_FILE_LAYOUTS: PostLayout[] = ["tutorial", "combo"];
+const MAX_FILES = 10;
+const MAX_TAGS = 5;
 
-  const [linkedPostObj, setLinkedPostObj] = useState<CreationPostDTO | null>(
-    null
-  );
-  const [linkedPostObjFiles, setLinkedPostObjFiles] =
-    useState<Array<File> | null>(null);
+const GENERIC_TAGS: string[] = [
+  "Buy/Sell", "Trade", "Flipping", "Show-Off", "Mod-Work", "Help", "Discussion", "Hot-Topic",
+];
 
-  // const user = useAppSelector((state) => state.auth.user);
-  const token = useAppSelector((state) => state.auth.accessToken);
+const TRICK_TAGS: { group: string; tags: string[] }[] = [
+  {
+    group: "Difficulty",
+    tags: ["Beginner", "Intermediate", "Advanced", "Expert"],
+  },
+  {
+    group: "Technique",
+    tags: ["Aerial", "Transfer", "Fan", "Rollover", "Twirl", "Chaplin", "Combo", "Ladder", "Tech"],
+  },
+];
 
-  const initiateCreatingLinkedPost = () => {
-    setCreatingLinkedPost((prev) => !prev);
-  };
+// Per-group limits for trick-based post types
+const TUTORIAL_GROUP_LIMITS: Record<string, number> = { Difficulty: 1, Technique: 2 };
+const COMBO_GROUP_LIMITS: Record<string, number> = { Difficulty: 1, Technique: 5 };
 
-  const togglePostObjSet = () => {
-    setPostObjSet((prev) => !prev);
-  };
+const getTrickTagGroup = (tag: string): string =>
+  TRICK_TAGS.find(({ tags }) => tags.includes(tag))?.group ?? "";
 
-  const toggleLinkedPostObjSet = () => {
-    setLinkedPostObjSet((prev) => !prev);
-  };
+// ─── Layout badge config ───────────────────────────────────────────────────
+const LAYOUT_BADGE: Record<PostLayout, { label: string; cls: string }> = {
+  generic:  { label: "Generic",   cls: "text-white/50 border-white/20 bg-white/5" },
+  buysell:  { label: "Buy / Sell", cls: "text-gold border-gold/30 bg-gold/10" },
+  trade:    { label: "Trade",      cls: "text-blue-primary border-blue-primary/30 bg-blue-primary/10" },
+  tutorial: { label: "Tutorial",  cls: "text-green border-green/30 bg-green/10" },
+  combo:    { label: "Combo",      cls: "text-blue-primary border-blue-primary/30 bg-blue-primary/10" },
+};
 
-  const createPostObjDto = (postObj: CreationPostDTO) => {
-    setPostObj(postObj);
-  };
+// ─── Post Preview Overlay ──────────────────────────────────────────────────
+interface PostPreviewOverlayProps {
+  layout: PostLayout;
+  caption: string;
+  description: string;
+  tags: string[];
+  selectedFiles: File[];
+  tradeSoughtFile: File | null;
+  tradeOfferingKnife: CollectionKnife | null;
+  lookingFor: string;
+  price: string;
+  buySellTag: "Buying" | "Selling" | null;
+  currency: string;
+  taggedKnife: CollectionKnife | null;
+  user: Profile | null;
+  isLoading: boolean;
+  error: string;
+  onEdit: () => void;
+  onConfirm: () => void;
+}
 
-  const getPostObjFiles = (files: Array<File>) => {
-    setPostObjFiles(files);
-  };
+const PostPreviewOverlay = ({
+  layout, caption, description, tags, selectedFiles,
+  tradeSoughtFile, tradeOfferingKnife, lookingFor, price, buySellTag,
+  currency, taggedKnife, user, isLoading, error, onEdit, onConfirm,
+}: PostPreviewOverlayProps) => {
+  const badge = LAYOUT_BADGE[layout];
+  const displayName = user?.displayName ?? "You";
+  const identifier  = user?.identifierCode ? `#${user.identifierCode}` : "";
+  const avatar      = user?.profileImg ?? null;
+  const currencySymbol = currency === "EUR" ? "€" : "$";
 
-  const createLinkedPostObjDto = (postObj: CreationPostDTO) => {
-    setLinkedPostObj(postObj);
-  };
+  const [descExpanded, setDescExpanded] = useState(false);
+  const [descOverflows, setDescOverflows] = useState(false);
+  const descRef = useRef<HTMLParagraphElement>(null);
 
-  const getLinkedPostObjFiles = (files: Array<File>) => {
-    setLinkedPostObjFiles(files);
-  };
-
-  const sendLinkedPosts = async () => {
-    if (postObj && linkedPostObj) {
-      // create form data
-      const fd = new FormData();
-
-      // append data of first post with timer
-      fd.append("caption", postObj.caption);
-      fd.append("description", postObj.description);
-      fd.append("identifier", postObj.identifier);
-      fd.append("creatorId", postObj.creatorId);
-      fd.append("isPrivatePost", JSON.stringify(postObj.isPrivatePost));
-      fd.append("isAnnouncement", JSON.stringify(postObj.isAnnouncement));
-      fd.append("hasTimer", JSON.stringify(postObj.hasTimer));
-      fd.append("timerValue", postObj.timerInHours);
-
-      // append data of second post meant to replace first
-      fd.append("caption2", linkedPostObj.caption);
-      fd.append("description2", linkedPostObj.description);
-      fd.append("identifier2", linkedPostObj.identifier);
-      fd.append("creatorId2", linkedPostObj.creatorId);
-      fd.append("isPrivatePost2", JSON.stringify(linkedPostObj.isPrivatePost));
-      fd.append(
-        "isAnnouncement2",
-        JSON.stringify(linkedPostObj.isAnnouncement)
-      );
-      fd.append("hasTimer2", JSON.stringify(false));
-
-      // append connected files for first post
-      postObjFiles?.forEach((file, _i) => {
-        fd.append("files", file);
-      });
-
-      // append connected files for second post
-      linkedPostObjFiles?.forEach((file, _i) => {
-        fd.append("files2", file);
-      });
-
-      // post to api
-      await axiosApiInstanceAuth
-        .request({
-          url: "/posts/create-linked-post",
-          method: "post",
-          data: fd,
-          headers: {
-            Authorization: "Bearer " + token,
-            Accept: "application/json",
-            "Content-Type": "multipart/form-data",
-          },
-        })
-        .then((res) => {
-          // upon success
-          console.log(res);
-        })
-        .catch((err) => {
-          // failed to post new post to db
-          console.log(err);
-        })
-        .finally(() => {});
+  useEffect(() => {
+    if (descRef.current) {
+      setDescOverflows(descRef.current.scrollHeight > descRef.current.clientHeight);
     }
-  };
+  }, [description]);
 
-  const sendPost = async () => {
-    if (postObj) {
-      // create and append form data for new post
-      const fd = new FormData();
-
-      fd.append("caption", postObj.caption);
-      fd.append("description", postObj.description);
-      fd.append("identifier", postObj.identifier);
-      fd.append("creatorId", postObj.creatorId);
-      fd.append("isPrivatePost", JSON.stringify(postObj.isPrivatePost));
-      fd.append("isAnnouncement", JSON.stringify(postObj.isAnnouncement));
-      fd.append("hasTimer", JSON.stringify(false));
-
-      // append files
-      postObjFiles?.forEach((file, _i) => {
-        fd.append("files", file);
-      });
-    }
-  };
+  // media grid for non-trade layouts
+  const mediaFiles = layout === "trade" ? [] : selectedFiles;
 
   return (
-    <section className="flex flex-col">
-      <div className="m-auto text-xl mt-10 mb-10 flex flex-col w-full items-center">
-        <h2>Create New Post</h2>
-        <span className="h-2 bg-black w-5/6 mt-2 rounded-full"></span>
-      </div>
-      <div
-        className={
-          postObjSet
-            ? "border border-green ml-10 mr-10 pt-10 pb-10"
-            : "border border-none ml-10 mr-10 pt-10 pb-10"
-        }
-      >
-        {postObjSet ? (
-          <div className="absolute p-2 rounded border ml-10 bg-green">
-            <h3 className="bg-inherit">Set</h3>
-          </div>
-        ) : (
-          <div className="absolute p-2 rounded border ml-10 bg-red">
-            <h3 className="bg-inherit">Not Set</h3>
-          </div>
-        )}
-        <NewPostForm
-          initiateCreatingLinkedPost={initiateCreatingLinkedPost}
-          allowTimerSet={true}
-          togglePostObjSet={togglePostObjSet}
-          createPostObjDto={createPostObjDto}
-          getPostObjFiles={getPostObjFiles}
-        />
+    <div className="fixed inset-0 z-50 flex flex-col bg-[#080a0e]">
+
+      {/* Top bar */}
+      <div className="flex items-center gap-3 px-4 pt-14 pb-4 border-b border-white/[0.06] flex-shrink-0">
+        <button
+          type="button"
+          onClick={onEdit}
+          className="w-8 h-8 rounded-full border border-white/10 flex items-center justify-center text-white/40 hover:text-white hover:border-white/20 transition-colors duration-200"
+        >
+          <FontAwesomeIcon icon={faChevronLeft} className="text-xs" />
+        </button>
+        <div>
+          <h1 className="text-white font-bold text-xl leading-tight">Post Preview</h1>
+          <p className="text-white/35 text-xs">Review before posting</p>
+        </div>
       </div>
 
-      {creatingLinkedPost ? (
-        <div className="">
-          <div className="flex flex-col">
-            <span className="m-auto w-1 h-32 bg-black mt-5 mb-5"></span>
-            <h3 className="m-auto mb-2 text-xl">Linked Post</h3>
-            <span className="h-1 bg-black w-5/6 mt-2 rounded-full mb-5 m-auto"></span>
-          </div>
+      {/* Scrollable content */}
+      <div className="flex-1 overflow-y-auto px-4 py-6 flex flex-col gap-4">
 
-          {linkedPostObjSet ? (
-            <div className="absolute p-2 rounded border ml-10 bg-green">
-              <h3 className="bg-inherit">Set</h3>
+        {/* Post card */}
+        <div className="w-full max-w-[600px] mx-auto bg-[#13161d] border border-white/10 rounded-2xl overflow-hidden">
+
+          {/* Card header */}
+          <div className="flex items-center justify-between px-4 py-3 border-b border-white/[0.06]">
+            <div className="flex items-center gap-3 min-w-0">
+              {/* Avatar */}
+              <div className="w-9 h-9 rounded-full bg-blue-primary/20 border border-blue-primary/30 flex-shrink-0 overflow-hidden flex items-center justify-center">
+                {avatar
+                  ? <img src={avatar} alt="" className="w-full h-full object-cover" />
+                  : <span className="text-blue-primary text-sm font-bold">{displayName.charAt(0).toUpperCase()}</span>
+                }
+              </div>
+              <div className="flex flex-col min-w-0">
+                <div className="flex items-center gap-1.5 flex-wrap">
+                  <span className="text-white text-sm font-semibold">{displayName}</span>
+                  {identifier && <span className="text-white/30 text-xs">{identifier}</span>}
+                </div>
+                <span className="text-white/30 text-xs">Just now</span>
+              </div>
             </div>
-          ) : (
-            <div className="absolute p-2 rounded border ml-10 bg-red">
-              <h3 className="bg-inherit">Not Set</h3>
+            {/* Right side: layout badge + product world indicator */}
+            <div className="flex items-center gap-2 flex-shrink-0">
+              {(layout === "buysell" || layout === "trade") && (
+                <div className="flex items-center gap-1 text-white/30" title="Product World">
+                  <FontAwesomeIcon icon={faEarthAmericas} className="text-xs" />
+                </div>
+              )}
+              {(layout === "tutorial" || layout === "combo") && (
+                <div className="flex items-center gap-1 text-white/30" title="Tutorial Center">
+                  <FontAwesomeIcon icon={faHubspot} className="text-xs" />
+                </div>
+              )}
+              <span className={`text-[11px] font-semibold px-2.5 py-1 rounded-full border ${badge.cls}`}>
+                {badge.label}
+              </span>
+            </div>
+          </div>
+
+          {/* Caption */}
+          <div className="px-4 pt-3 pb-2">
+            <p className="text-white text-sm leading-relaxed whitespace-pre-wrap">{caption}</p>
+          </div>
+
+          {/* Media */}
+          {layout === "trade" ? (
+            /* Trade — side-by-side comparison */
+            <div className="px-4 pb-3">
+              <div className="grid grid-cols-2 gap-2">
+                {/* Offering */}
+                <div className="flex flex-col gap-1">
+                  <p className="text-[10px] text-white/35 font-semibold uppercase tracking-wider">Offering</p>
+                  <div className="aspect-square rounded-xl overflow-hidden bg-[#0d0f14] border border-white/10">
+                    {tradeOfferingKnife?.coverPhoto
+                      ? <img src={tradeOfferingKnife.coverPhoto} alt="Offering" className="w-full h-full object-cover" />
+                      : <div className="w-full h-full flex items-center justify-center text-white/15"><FontAwesomeIcon icon={faImage} className="text-2xl" /></div>
+                    }
+                  </div>
+                  {tradeOfferingKnife && (
+                    <p className="text-white/60 text-xs truncate">{tradeOfferingKnife.displayName}</p>
+                  )}
+                </div>
+                {/* Looking for */}
+                <div className="flex flex-col gap-1">
+                  <p className="text-[10px] text-white/35 font-semibold uppercase tracking-wider">Looking For</p>
+                  <div className="aspect-square rounded-xl overflow-hidden bg-[#0d0f14] border border-white/10">
+                    {tradeSoughtFile
+                      ? <img src={URL.createObjectURL(tradeSoughtFile)} alt="Looking for" className="w-full h-full object-cover" />
+                      : <div className="w-full h-full flex items-center justify-center text-white/15"><FontAwesomeIcon icon={faImage} className="text-2xl" /></div>
+                    }
+                  </div>
+                  {lookingFor && (
+                    <p className="text-white/60 text-xs truncate">{lookingFor}</p>
+                  )}
+                </div>
+              </div>
+              {/* Trade arrows icon */}
+              <div className="flex items-center justify-center gap-2 mt-2">
+                <FontAwesomeIcon icon={faArrowRightArrowLeft} className="text-blue-primary/60 text-sm" />
+                <span className="text-white/30 text-xs">Trade offer</span>
+              </div>
+            </div>
+          ) : mediaFiles.length > 0 ? (
+            /* Standard media grid */
+            <div className={`px-4 pb-3 grid gap-1.5 ${mediaFiles.length === 1 ? "grid-cols-1" : mediaFiles.length === 2 ? "grid-cols-2" : "grid-cols-3"}`}>
+              {mediaFiles.map((file, i) => {
+                const isVideo = file.type.startsWith("video/");
+                const url = URL.createObjectURL(file);
+                return (
+                  <div key={i} className={`relative overflow-hidden rounded-xl bg-[#0d0f14] border border-white/10 ${mediaFiles.length === 1 ? "aspect-video" : "aspect-square"}`}>
+                    {isVideo
+                      ? <div className="w-full h-full flex flex-col items-center justify-center gap-2 text-white/30">
+                          <FontAwesomeIcon icon={faVideo} className="text-2xl" />
+                          <span className="text-[10px] px-2 text-center truncate w-full px-3">{file.name}</span>
+                        </div>
+                      : <img src={url} alt="" className="w-full h-full object-cover" />
+                    }
+                  </div>
+                );
+              })}
+            </div>
+          ) : null}
+
+          {/* Tags */}
+          {tags.length > 0 && (
+            <div className="px-4 pb-2 flex flex-wrap gap-1.5">
+              {tags.map((tag) => (
+                <span key={tag} className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-blue-primary/10 border border-blue-primary/25 text-blue-primary text-[11px] font-semibold">
+                  <span className="text-blue-primary/50">#</span>{tag}
+                </span>
+              ))}
             </div>
           )}
 
-          <NewPostForm
-            allowTimerSet={false}
-            toggleLinkedPostObjSet={toggleLinkedPostObjSet}
-            createLinkedPostObjDto={createLinkedPostObjDto}
-            getLinkedPostObjFiles={getLinkedPostObjFiles}
-          />
-          <span className="h-1 bg-black w-5/6 mt-2 rounded-full m-auto"></span>
+          {/* Description */}
+          {description.trim() && (
+            <div className="px-4 pb-3 flex flex-col gap-1">
+              <p
+                ref={descRef}
+                className={`text-white/50 text-xs leading-relaxed whitespace-pre-wrap transition-all duration-200 ${descExpanded ? "" : "line-clamp-2"}`}
+              >
+                {description}
+              </p>
+              {descOverflows && (
+                <button
+                  type="button"
+                  onClick={() => setDescExpanded((p) => !p)}
+                  className="text-blue-primary/70 text-xs font-medium hover:text-blue-primary transition-colors duration-150 text-left"
+                >
+                  {descExpanded ? "Show less" : "Read more"}
+                </button>
+              )}
+            </div>
+          )}
+
+          {/* Buy/Sell footer */}
+          {layout === "buysell" && (
+            <div className="px-4 py-3 border-t border-white/[0.06] flex items-center justify-between gap-3">
+              <span className={`text-xs font-semibold px-2.5 py-1 rounded-full border ${buySellTag === "Buying" ? "text-blue-primary border-blue-primary/30 bg-blue-primary/10" : "text-green border-green/30 bg-green/10"}`}>
+                {buySellTag}
+              </span>
+              {buySellTag === "Selling" && price.trim() && (
+                <span className="text-white font-bold text-base">
+                  {currencySymbol}{parseFloat(price).toFixed(2)}
+                </span>
+              )}
+            </div>
+          )}
+
+          {/* Tagged knife */}
+          {taggedKnife && (
+            <div className="px-4 py-3 border-t border-white/[0.06] flex items-center gap-2">
+              <FontAwesomeIcon icon={faTag} className="text-blue-primary text-xs flex-shrink-0" />
+              <span className="text-white/60 text-xs">{taggedKnife.displayName}</span>
+              <span className="text-white/30 text-xs">·</span>
+              <span className="text-white/40 text-xs">{taggedKnife.knifeMaker}</span>
+            </div>
+          )}
+
+          {/* Buy/sell icon accent */}
+          {layout === "buysell" && (
+            <div className="px-4 pb-3 flex items-center gap-1.5 -mt-1">
+              <FontAwesomeIcon icon={faCircleDollarToSlot} className="text-gold/50 text-xs" />
+              <span className="text-white/25 text-xs">Marketplace listing</span>
+            </div>
+          )}
+
+          {/* Interaction bar */}
+          <div className="px-4 py-3 border-t border-white/[0.06] flex items-center justify-between">
+            <div className="flex items-center gap-4">
+              {/* Like */}
+              <button type="button" className="flex items-center gap-2 text-white/30 hover:text-red transition-colors duration-200 group">
+                <FontAwesomeIcon icon={faHeart} className="text-base group-hover:scale-110 transition-transform duration-150" />
+                <span className="text-xs font-medium">Like</span>
+              </button>
+              {/* Comment */}
+              <button type="button" className="flex items-center gap-2 text-white/30 hover:text-blue-primary transition-colors duration-200 group">
+                <FontAwesomeIcon icon={faComment} className="text-base group-hover:scale-110 transition-transform duration-150" />
+                <span className="text-xs font-medium">Comment</span>
+              </button>
+            </div>
+            {/* Counts */}
+            <div className="flex items-center gap-3 text-white/25 text-xs">
+              <span className="flex items-center gap-1">
+                <FontAwesomeIcon icon={faHeart} className="text-[10px]" />
+                0
+              </span>
+              <span className="flex items-center gap-1">
+                <FontAwesomeIcon icon={faComment} className="text-[10px]" />
+                0
+              </span>
+            </div>
+          </div>
+
         </div>
-      ) : (
-        <></>
+
+        {/* Error */}
+        {error && <p className="text-red text-sm font-medium text-center">{error}</p>}
+
+      </div>
+
+      {/* Bottom action bar */}
+      <div className="px-4 pb-8 pt-4 border-t border-white/[0.06] flex gap-3 flex-shrink-0">
+        <button
+          type="button"
+          onClick={onEdit}
+          className="flex-1 py-3 rounded-xl border border-white/10 text-white/60 text-sm font-semibold hover:bg-white/5 transition-colors duration-200 flex items-center justify-center gap-2"
+        >
+          <FontAwesomeIcon icon={faPen} className="text-xs" />
+          Edit
+        </button>
+        <button
+          type="button"
+          onClick={onConfirm}
+          disabled={isLoading}
+          className="flex-[2] py-3 rounded-xl bg-blue-primary text-white text-sm font-semibold hover:bg-blue-primary/80 transition-colors duration-200 disabled:opacity-40 disabled:cursor-not-allowed"
+        >
+          {isLoading ? "Posting..." : "Confirm & Post"}
+        </button>
+      </div>
+
+    </div>
+  );
+};
+
+// ─── Create Post Page ──────────────────────────────────────────────────────
+const CreatePostPage = () => {
+  const navigate = useNavigate();
+  const user = useAppSelector((state) => state.auth.user);
+  const collectionKnives = useAppSelector((state) => state.collection.collectionKnives);
+
+  const [layout, setLayout] = useState<PostLayout>("generic");
+  const [layoutPickerOpen, setLayoutPickerOpen] = useState(false);
+  const [caption, setCaption] = useState("");
+  const [price, setPrice] = useState("");
+  const [description, setDescription] = useState("");
+  const [buySellTag, setBuySellTag] = useState<"Buying" | "Selling" | null>(null);
+  const [tradeOfferingKnifeId, setTradeOfferingKnifeId] = useState<string | null>(null);
+  const [tradeOfferingPickerOpen, setTradeOfferingPickerOpen] = useState(false);
+  const [lookingFor, setLookingFor] = useState("");
+  const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
+  const [tradeSoughtFile, setTradeSoughtFile] = useState<File | null>(null);
+  const [taggedKnifeId, setTaggedKnifeId] = useState<string | null>(null);
+  const [knifePickerOpen, setKnifePickerOpen] = useState(false);
+  const [tags, setTags] = useState<string[]>([]);
+  const [showPreview, setShowPreview] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState("");
+
+  const fileRef = useRef<HTMLInputElement>(null);
+  const tradeSoughtRef = useRef<HTMLInputElement>(null);
+
+  const isVideoOnly = VIDEO_ONLY_LAYOUTS.includes(layout);
+  const isBuyingMode = layout === "buysell" && buySellTag === "Buying";
+  const isSingleFile = SINGLE_FILE_LAYOUTS.includes(layout) || isBuyingMode;
+  const isImageOnly = isBuyingMode;
+  const mediaMax = isBuyingMode ? 1 : MAX_FILES;
+  const currency = user?.currency ?? "USD";
+  const currencySymbol = currency === "EUR" ? "€" : "$"; // used in price input prefix
+  const taggedKnife = collectionKnives.find((k) => k.id === taggedKnifeId) ?? null;
+
+  const tradeBlocked = layout === "trade" && collectionKnives.length === 0;
+
+  const canSubmit =
+    !tradeBlocked &&
+    caption.trim() !== "" &&
+    (layout === "trade"
+      ? tradeSoughtFile !== null
+      : selectedFiles.length > 0) &&
+    (layout !== "buysell" || (buySellTag !== null && (buySellTag !== "Selling" || price.trim() !== "")));
+
+  // --- layout change ---
+  const handleLayoutChange = (key: PostLayout) => {
+    setLayout(key);
+    setSelectedFiles([]);
+    setTradeSoughtFile(null);
+    setBuySellTag(null);
+    setSelectedFiles([]);
+    setTradeOfferingKnifeId(null);
+    setTradeOfferingPickerOpen(false);
+    setLookingFor("");
+    setTags([]);
+    setError("");
+  };
+
+  // --- tags ---
+  const toggleTrickTag = (tag: string) => {
+    if (tags.includes(tag)) {
+      setTags((prev) => prev.filter((t) => t !== tag));
+      return;
+    }
+    const groupLimits = layout === "tutorial" ? TUTORIAL_GROUP_LIMITS : layout === "combo" ? COMBO_GROUP_LIMITS : null;
+    if (groupLimits) {
+      const group = getTrickTagGroup(tag);
+      const limit = groupLimits[group] ?? 1;
+      const groupCount = tags.filter((t) => getTrickTagGroup(t) === group).length;
+      if (groupCount >= limit) return;
+    } else if (tags.length >= MAX_TAGS) {
+      return;
+    }
+    setTags((prev) => [...prev, tag]);
+  };
+
+  // --- file handling ---
+  const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const incoming = Array.from(e.target.files ?? []);
+    if (!incoming.length) return;
+
+    if (isSingleFile) {
+      setSelectedFiles([incoming[0]]);
+      if (fileRef.current) fileRef.current.value = "";
+      return;
+    }
+
+    const merged = [...selectedFiles];
+    for (const file of incoming) {
+      if (merged.length >= mediaMax) break;
+      const isDupe = merged.some(
+        (f) => f.name === file.name && f.size === file.size
+      );
+      if (!isDupe) merged.push(file);
+    }
+    setSelectedFiles(merged);
+    if (fileRef.current) fileRef.current.value = "";
+  };
+
+  const removeFile = (index: number) => {
+    setSelectedFiles((prev) => prev.filter((_, i) => i !== index));
+  };
+
+  // --- submit ---
+  const handleSubmit = async () => {
+    if (!canSubmit) return;
+    setIsLoading(true);
+    setError("");
+
+    const fd = new FormData();
+    fd.append("caption", caption.trim());
+    fd.append("description", description.trim());
+    fd.append("layout", layout);
+    fd.append("creatorId", user?.id ?? "");
+    if (taggedKnifeId) fd.append("taggedKnifeId", taggedKnifeId);
+    if (layout === "buysell") {
+      fd.append("price", price.trim());
+      if (buySellTag) fd.append("buySellTag", buySellTag);
+    }
+    if (layout === "trade") {
+      if (tradeOfferingKnifeId) fd.append("tradeOfferingKnifeId", tradeOfferingKnifeId);
+      fd.append("lookingFor", lookingFor.trim());
+      if (tradeSoughtFile) fd.append("tradeSoughtImage", tradeSoughtFile);
+    } else {
+      selectedFiles.forEach((f) => fd.append("files", f));
+    }
+    if (layout === "generic") tags.forEach((t) => fd.append("tags", t));
+
+    await axiosApiInstanceAuth
+      .request({ url: "/posts/create-post", method: "post", data: fd })
+      .then(() => navigate(-1))
+      .catch((err) => {
+        console.log(err);
+        setError("Something went wrong. Please try again.");
+      })
+      .finally(() => setIsLoading(false));
+  };
+
+  return (
+    <section className="w-full min-h-screen bg-[#080a0e] flex justify-center px-4 pt-14 pb-28">
+      <div className="w-full max-w-[600px] flex flex-col gap-6">
+
+        {/* Header */}
+        <div className="flex items-center gap-3">
+          <button
+            type="button"
+            onClick={() => navigate(-1)}
+            className="w-8 h-8 rounded-full border border-white/10 flex items-center justify-center text-white/40 hover:text-white hover:border-white/20 transition-colors duration-200"
+          >
+            <FontAwesomeIcon icon={faChevronLeft} className="text-xs" />
+          </button>
+          <h1 className="text-white font-bold text-xl">Create Post</h1>
+        </div>
+
+        {/* Layout selector */}
+        <div className="flex flex-col gap-2">
+          <p className="text-xs text-white/40 uppercase tracking-wider font-semibold">Post Type</p>
+          <div className="relative">
+            {/* Trigger */}
+            <button
+              type="button"
+              onClick={() => setLayoutPickerOpen((p) => !p)}
+              className={`w-full flex items-center justify-between gap-3 px-4 py-3 rounded-xl border bg-[#13161d] text-left transition-all duration-200 ${
+                layoutPickerOpen ? "border-blue-primary/40" : "border-white/10 hover:border-white/20"
+              }`}
+            >
+              <div className="flex items-center gap-2.5">
+                <span className="text-sm font-semibold text-white">
+                  {LAYOUTS.find((l) => l.key === layout)?.label}
+                </span>
+                <span className="text-xs text-white/35 truncate hidden sm:block">
+                  {LAYOUTS.find((l) => l.key === layout)?.description}
+                </span>
+              </div>
+              <FontAwesomeIcon
+                icon={faChevronDown}
+                className={`text-white/30 text-xs flex-shrink-0 transition-transform duration-200 ${layoutPickerOpen ? "rotate-180" : ""}`}
+              />
+            </button>
+
+            {/* Dropdown */}
+            {layoutPickerOpen && (
+              <div className="absolute top-full left-0 right-0 mt-1 bg-[#13161d] border border-white/10 rounded-xl overflow-hidden z-20 shadow-2xl">
+                {LAYOUTS.map(({ key, label, description }) => {
+                  const isActive = layout === key;
+                  return (
+                    <button
+                      key={key}
+                      type="button"
+                      onClick={() => { handleLayoutChange(key); setLayoutPickerOpen(false); }}
+                      className={`w-full flex items-start gap-3 px-4 py-3 text-left border-b border-white/[0.05] last:border-0 transition-colors duration-150 ${
+                        isActive ? "bg-blue-primary/10" : "hover:bg-white/[0.04]"
+                      }`}
+                    >
+                      <div className={`mt-0.5 w-3 h-3 rounded-full border-2 flex-shrink-0 flex items-center justify-center transition-colors duration-150 ${
+                        isActive ? "border-blue-primary" : "border-white/20"
+                      }`}>
+                        {isActive && <div className="w-1.5 h-1.5 rounded-full bg-blue-primary" />}
+                      </div>
+                      <div className="flex flex-col gap-0.5">
+                        <span className={`text-sm font-semibold ${isActive ? "text-blue-primary" : "text-white/80"}`}>{label}</span>
+                        <span className="text-xs text-white/35 leading-relaxed">{description}</span>
+                      </div>
+                    </button>
+                  );
+                })}
+              </div>
+            )}
+          </div>
+        </div>
+
+        {/* Caption */}
+        <div className="flex flex-col gap-1.5">
+          <div className="flex items-center justify-between">
+            <p className="text-xs text-white/40 uppercase tracking-wider font-semibold">{layout === "tutorial" ? "Trick Name" : layout === "combo" ? "Combo Name" : "Caption"}</p>
+            <span className={`text-xs font-medium ${caption.length > 235 ? "text-gold" : "text-white/30"}`}>
+              {255 - caption.length} left
+            </span>
+          </div>
+          <textarea
+            value={caption}
+            onChange={(e) => { if (e.target.value.length <= 255) setCaption(e.target.value); }}
+            placeholder={layout === "tutorial" ? "Enter the trick name..." : layout === "combo" ? "Enter the combo name..." : "Write a caption..."}
+            rows={3}
+            className="w-full bg-[#13161d] border border-white/10 rounded-xl px-4 py-3 text-white text-sm outline-none focus:border-blue-primary/50 transition-colors duration-200 resize-none placeholder:text-white/25"
+          />
+        </div>
+
+        {/* Buy/Sell — type toggle (before media so user picks first) */}
+        {layout === "buysell" && (
+          <div className="flex flex-col gap-1.5">
+            <p className="text-xs text-white/40 uppercase tracking-wider font-semibold">
+              I am <span className="text-red text-[10px] normal-case font-semibold ml-0.5">required</span>
+            </p>
+            <div className="grid grid-cols-2 gap-2">
+              {(["Buying", "Selling"] as const).map((option) => (
+                <button
+                  key={option}
+                  type="button"
+                  onClick={() => { setBuySellTag(option); setSelectedFiles([]); }}
+                  className={`py-3 rounded-xl border text-sm font-semibold transition-all duration-200 ${
+                    buySellTag === option
+                      ? "bg-blue-primary/10 border-blue-primary/40 text-blue-primary"
+                      : "bg-[#13161d] border-white/10 text-white/40 hover:text-white/70 hover:border-white/20"
+                  }`}
+                >
+                  {option}
+                </button>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {/* Media upload */}
+        {layout === "trade" ? (
+          tradeBlocked ? (
+            <div className="flex flex-col items-center gap-4 py-8 px-6 bg-[#13161d] border border-white/10 rounded-2xl text-center">
+              <div className="w-12 h-12 rounded-xl bg-gold/10 border border-gold/20 flex items-center justify-center">
+                <FontAwesomeIcon icon={faBoxOpen} className="text-gold text-lg" />
+              </div>
+              <div className="flex flex-col gap-1.5">
+                <p className="text-white font-semibold text-sm">No knives in your collection</p>
+                <p className="text-white/45 text-xs leading-relaxed max-w-xs">
+                  Trade posts require you to offer one of your own knives.{" "}
+                  <button
+                    type="button"
+                    onClick={() => navigate("/add-collection-knife")}
+                    className="text-blue-primary hover:text-blue-primary/70 underline underline-offset-2 transition-colors duration-150"
+                  >
+                    Add a knife to your collection
+                  </button>
+                  {" "}first, then come back to create a trade post.
+                </p>
+              </div>
+            </div>
+          ) : (
+          <div className="flex flex-col gap-2">
+            <p className="text-xs text-white/40 uppercase tracking-wider font-semibold">Photos</p>
+            <div className="grid grid-cols-2 gap-3">
+              {/* Your Knife — displays cover photo of selected collection knife */}
+              <div className="flex flex-col gap-1.5">
+                <p className="text-[11px] text-white/35 font-semibold uppercase tracking-wider">Your Knife</p>
+                <div className="relative aspect-square rounded-xl overflow-hidden bg-[#13161d] border border-white/10">
+                  {(() => {
+                    const offeringKnife = collectionKnives.find((k) => k.id === tradeOfferingKnifeId);
+                    return offeringKnife?.coverPhoto ? (
+                      <img src={offeringKnife.coverPhoto} alt={offeringKnife.displayName} className="w-full h-full object-cover" />
+                    ) : (
+                      <div className="w-full h-full flex flex-col items-center justify-center gap-2 text-white/20 px-3">
+                        <FontAwesomeIcon icon={faImage} className="text-2xl" />
+                        <span className="text-[11px] font-medium text-center leading-relaxed">Select a knife below to display its photo</span>
+                      </div>
+                    );
+                  })()}
+                </div>
+              </div>
+
+              {/* Looking For — manual image upload */}
+              <div className="flex flex-col gap-1.5">
+                <p className="text-[11px] text-white/35 font-semibold uppercase tracking-wider">Looking For</p>
+                <div className="relative aspect-square rounded-xl overflow-hidden bg-[#13161d] border border-dashed border-white/15 hover:border-blue-primary/40 hover:bg-blue-primary/5 transition-all duration-200">
+                  {tradeSoughtFile ? (
+                    <>
+                      <img src={URL.createObjectURL(tradeSoughtFile)} alt="Looking for" className="w-full h-full object-cover" />
+                      <button
+                        type="button"
+                        onClick={() => setTradeSoughtFile(null)}
+                        className="absolute top-1.5 right-1.5 w-6 h-6 rounded-full bg-black/70 flex items-center justify-center text-white/80 hover:text-white transition-colors"
+                      >
+                        <FontAwesomeIcon icon={faXmark} className="text-[11px]" />
+                      </button>
+                    </>
+                  ) : (
+                    <button
+                      type="button"
+                      onClick={() => tradeSoughtRef.current?.click()}
+                      className="w-full h-full flex flex-col items-center justify-center gap-2 text-white/25 hover:text-white/45 transition-colors duration-200"
+                    >
+                      <FontAwesomeIcon icon={faImage} className="text-2xl" />
+                      <span className="text-[11px] font-medium px-2 text-center">The knife you want in return</span>
+                    </button>
+                  )}
+                </div>
+                <input
+                  ref={tradeSoughtRef}
+                  type="file"
+                  accept="image/*"
+                  className="hidden"
+                  onChange={(e) => {
+                    const f = e.target.files?.[0];
+                    if (f) setTradeSoughtFile(f);
+                    e.target.value = "";
+                  }}
+                />
+              </div>
+            </div>
+
+            {/* Trade text / picker fields */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              {/* Offering — knife picker */}
+              <div className="flex flex-col gap-1.5">
+                <p className="text-[11px] text-white/35 font-semibold uppercase tracking-wider">Offering</p>
+                {(() => {
+                  const offeringKnife = collectionKnives.find((k) => k.id === tradeOfferingKnifeId) ?? null;
+                  return offeringKnife ? (
+                    <div className="flex items-center justify-between bg-[#13161d] border border-blue-primary/30 rounded-xl px-3 py-2.5 gap-2">
+                      <div className="flex flex-col min-w-0">
+                        <span className="text-white text-xs font-medium truncate">{offeringKnife.displayName}</span>
+                        <span className="text-white/40 text-[11px] truncate">{offeringKnife.knifeMaker}</span>
+                      </div>
+                      <button type="button" onClick={() => setTradeOfferingKnifeId(null)} className="text-white/30 hover:text-white/70 transition-colors flex-shrink-0">
+                        <FontAwesomeIcon icon={faXmark} className="text-xs" />
+                      </button>
+                    </div>
+                  ) : (
+                    <div className="relative">
+                      <button
+                        type="button"
+                        onClick={() => setTradeOfferingPickerOpen((p) => !p)}
+                        disabled={collectionKnives.length === 0}
+                        className="w-full min-w-0 flex items-center justify-between bg-[#13161d] border border-white/10 rounded-xl px-3 py-2.5 text-xs text-white/40 hover:text-white/70 hover:border-white/20 transition-all duration-200 disabled:opacity-40 disabled:cursor-not-allowed"
+                      >
+                        <span className="truncate min-w-0">{collectionKnives.length === 0 ? "No knives in collection" : "Select a knife"}</span>
+                        <FontAwesomeIcon icon={faChevronDown} className={`text-[10px] flex-shrink-0 transition-transform duration-200 ${tradeOfferingPickerOpen ? "rotate-180" : ""}`} />
+                      </button>
+                      {tradeOfferingPickerOpen && collectionKnives.length > 0 && (
+                        <div className="absolute top-full left-0 right-0 mt-1 bg-[#13161d] border border-white/10 rounded-xl overflow-hidden z-20 shadow-xl max-h-40 overflow-y-auto">
+                          {collectionKnives.map((knife) => (
+                            <button
+                              key={knife.id}
+                              type="button"
+                              onClick={() => { setTradeOfferingKnifeId(knife.id); setTradeOfferingPickerOpen(false); }}
+                              className="w-full flex flex-col px-3 py-2.5 hover:bg-white/5 transition-colors duration-150 text-left border-b border-white/[0.04] last:border-0"
+                            >
+                              <span className="text-white text-xs font-medium truncate">{knife.displayName}</span>
+                              <span className="text-white/40 text-[11px] truncate">{knife.knifeMaker}</span>
+                            </button>
+                          ))}
+                        </div>
+                      )}
+                    </div>
+                  );
+                })()}
+              </div>
+
+              {/* Looking For — free text */}
+              <div className="flex flex-col gap-1.5">
+                <p className="text-[11px] text-white/35 font-semibold uppercase tracking-wider">Looking For</p>
+                <input
+                  type="text"
+                  value={lookingFor}
+                  onChange={(e) => setLookingFor(e.target.value)}
+                  placeholder="e.g. BRS Alpha Beast"
+                  className="w-full bg-[#13161d] border border-white/10 rounded-xl px-3 py-2.5 text-white text-sm outline-none focus:border-blue-primary/50 transition-colors duration-200 placeholder:text-white/20"
+                />
+              </div>
+            </div>
+          </div>
+          )
+        ) : (
+          <div className="flex flex-col gap-2">
+            <div className="flex items-center justify-between">
+              <p className="text-xs text-white/40 uppercase tracking-wider font-semibold">
+                {isVideoOnly ? "Video" : "Media"}
+              </p>
+              {!isSingleFile && buySellTag && (
+                <span className="text-xs text-white/30">
+                  {selectedFiles.length} / {mediaMax}
+                </span>
+              )}
+            </div>
+
+            {/* Buy/Sell locked state — no tag selected yet */}
+            {layout === "buysell" && !buySellTag ? (
+              <div className="w-full h-24 rounded-xl border border-dashed border-white/10 bg-[#13161d] flex items-center justify-center">
+                <p className="text-white/25 text-xs font-medium">Select Buying or Selling above to upload media</p>
+              </div>
+            ) : null}
+
+            {/* Thumbnails + upload — hidden until buysell tag is chosen */}
+            {!(layout === "buysell" && !buySellTag) && selectedFiles.length > 0 && (
+              <div className="grid grid-cols-4 gap-2">
+                {selectedFiles.map((file, i) => {
+                  const url = URL.createObjectURL(file);
+                  const isVideo = file.type.startsWith("video/");
+                  return (
+                    <div key={i} className="relative aspect-square rounded-xl overflow-hidden bg-[#13161d] border border-white/10">
+                      {isVideo ? (
+                        <div className="w-full h-full flex items-center justify-center">
+                          <FontAwesomeIcon icon={faVideo} className="text-white/40 text-2xl" />
+                          <span className="absolute bottom-1 left-1 right-1 text-[10px] text-white/50 truncate px-1">{file.name}</span>
+                        </div>
+                      ) : (
+                        <img src={url} alt="" className="w-full h-full object-cover" />
+                      )}
+                      <button
+                        type="button"
+                        onClick={() => removeFile(i)}
+                        className="absolute top-1 right-1 w-5 h-5 rounded-full bg-black/70 flex items-center justify-center text-white/80 hover:text-white transition-colors"
+                      >
+                        <FontAwesomeIcon icon={faXmark} className="text-[10px]" />
+                      </button>
+                    </div>
+                  );
+                })}
+              </div>
+            )}
+
+            {/* Upload zone */}
+            {!(layout === "buysell" && !buySellTag) && selectedFiles.length < mediaMax && (
+              <button
+                type="button"
+                onClick={() => fileRef.current?.click()}
+                className="w-full h-28 rounded-xl border border-dashed border-white/15 bg-[#13161d] hover:border-blue-primary/40 hover:bg-blue-primary/5 transition-all duration-200 flex flex-col items-center justify-center gap-2 text-white/30 hover:text-white/50"
+              >
+                <FontAwesomeIcon icon={isVideoOnly ? faVideo : faImage} className="text-xl" />
+                <span className="text-xs font-medium">
+                  {isVideoOnly
+                    ? "Click to upload a video"
+                    : isSingleFile
+                    ? "Click to upload an image"
+                    : selectedFiles.length > 0
+                    ? "Add more"
+                    : "Click to upload images or videos"}
+                </span>
+                {isVideoOnly && <span className="text-[11px] text-white/20">Video files only</span>}
+                {isImageOnly && <span className="text-[11px] text-white/20">Image files only</span>}
+              </button>
+            )}
+
+            <input
+              ref={fileRef}
+              type="file"
+              multiple={!isSingleFile}
+              accept={isVideoOnly ? "video/*" : isImageOnly ? "image/*" : "image/*,video/*"}
+              className="hidden"
+              onChange={handleFileChange}
+            />
+          </div>
+        )}
+
+        {/* Tags — generic predefined */}
+        {layout === "generic" && (
+          <div className="flex flex-col gap-2">
+            <div className="flex items-center justify-between">
+              <p className="text-xs text-white/40 uppercase tracking-wider font-semibold">
+                Tags <span className="normal-case text-white/25 font-normal">— optional</span>
+              </p>
+              <span className="text-xs text-white/30">{tags.length} / {MAX_TAGS}</span>
+            </div>
+            <div className="flex flex-wrap gap-1.5">
+              {GENERIC_TAGS.map((tag) => {
+                const selected = tags.includes(tag);
+                const disabled = !selected && tags.length >= MAX_TAGS;
+                return (
+                  <button
+                    key={tag}
+                    type="button"
+                    onClick={() => toggleTrickTag(tag)}
+                    disabled={disabled}
+                    className={`px-3 py-1 rounded-full text-xs font-medium border transition-all duration-150 ${
+                      selected
+                        ? "bg-blue-primary/15 border-blue-primary/40 text-blue-primary"
+                        : "bg-transparent border-white/10 text-white/40 hover:text-white/70 hover:border-white/25"
+                    } disabled:opacity-30 disabled:cursor-not-allowed`}
+                  >
+                    {selected && <span className="mr-1 text-blue-primary/60">#</span>}{tag}
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+        )}
+
+        {/* Tags — tutorial / combo predefined */}
+        {(layout === "tutorial" || layout === "combo") && (
+          <div className="flex flex-col gap-3">
+            <div className="flex items-center justify-between">
+              <p className="text-xs text-white/40 uppercase tracking-wider font-semibold">
+                Tags <span className="normal-case text-white/25 font-normal">— optional</span>
+              </p>
+              </div>
+
+            {TRICK_TAGS.map(({ group, tags: options }) => {
+              const activeLimits = layout === "tutorial" ? TUTORIAL_GROUP_LIMITS : COMBO_GROUP_LIMITS;
+              const groupLimit = activeLimits[group] ?? 1;
+              const groupCount = tags.filter((t) => getTrickTagGroup(t) === group).length;
+              return (
+                <div key={group} className="flex flex-col gap-1.5">
+                  <div className="flex items-center justify-between">
+                    <p className="text-[11px] text-white/30 font-semibold uppercase tracking-wider">{group}</p>
+                    <span className="text-[11px] text-white/25">{groupCount} / {groupLimit}</span>
+                  </div>
+                  <div className="flex flex-wrap gap-1.5">
+                    {options.map((tag) => {
+                      const selected = tags.includes(tag);
+                      const disabled = !selected && groupCount >= groupLimit;
+                      return (
+                        <button
+                          key={tag}
+                          type="button"
+                          onClick={() => toggleTrickTag(tag)}
+                          disabled={disabled}
+                          className={`px-3 py-1 rounded-full text-xs font-medium border transition-all duration-150 ${
+                            selected
+                              ? "bg-blue-primary/15 border-blue-primary/40 text-blue-primary"
+                              : "bg-transparent border-white/10 text-white/40 hover:text-white/70 hover:border-white/25"
+                          } disabled:opacity-30 disabled:cursor-not-allowed`}
+                        >
+                          {selected && <span className="mr-1 text-blue-primary/60">#</span>}{tag}
+                        </button>
+                      );
+                    })}
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        )}
+
+        {/* Description */}
+        <div className="flex flex-col gap-1.5">
+          <p className="text-xs text-white/40 uppercase tracking-wider font-semibold">Description <span className="normal-case text-white/25 font-normal">— optional</span></p>
+          <textarea
+            value={description}
+            onChange={(e) => setDescription(e.target.value)}
+            placeholder="Add more detail to your post..."
+            rows={4}
+            className="w-full bg-[#13161d] border border-white/10 rounded-xl px-4 py-3 text-white text-sm outline-none focus:border-blue-primary/50 transition-colors duration-200 resize-none placeholder:text-white/25"
+          />
+        </div>
+
+        {/* Buy/Sell — price (Selling only) */}
+        {layout === "buysell" && buySellTag === "Selling" && (
+          <div className="flex flex-col gap-1.5">
+            <p className="text-xs text-white/40 uppercase tracking-wider font-semibold">Price</p>
+            <div className="flex items-center bg-[#13161d] border border-white/10 rounded-xl overflow-hidden focus-within:border-blue-primary/50 transition-colors duration-200">
+              <span className="px-4 py-3 text-sm text-white/40 border-r border-white/10 font-medium select-none">
+                {currencySymbol}
+              </span>
+              <input
+                type="number"
+                min="0"
+                step="0.01"
+                value={price}
+                onChange={(e) => setPrice(e.target.value)}
+                onBlur={() => {
+                  const num = parseFloat(price);
+                  if (!isNaN(num)) setPrice(num.toFixed(2));
+                }}
+                placeholder="0.00"
+                className="flex-1 bg-transparent px-4 py-3 text-white text-sm outline-none placeholder:text-white/25"
+              />
+            </div>
+          </div>
+        )}
+
+        {/* Knife reference — hidden for trade and buysell */}
+        {layout !== "trade" && layout !== "buysell" && <div className="flex flex-col gap-1.5">
+          <p className="text-xs text-white/40 uppercase tracking-wider font-semibold">
+            Reference Your Knife <span className="normal-case text-white/25 font-normal">— optional</span>
+          </p>
+
+          {taggedKnife ? (
+            <div className="flex items-center justify-between bg-[#13161d] border border-blue-primary/30 rounded-xl px-4 py-3">
+              <div className="flex items-center gap-2">
+                <FontAwesomeIcon icon={faTag} className="text-blue-primary text-xs" />
+                <div>
+                  <p className="text-white text-sm font-medium">{taggedKnife.displayName}</p>
+                  <p className="text-white/40 text-xs">{taggedKnife.knifeMaker}</p>
+                </div>
+              </div>
+              <button
+                type="button"
+                onClick={() => setTaggedKnifeId(null)}
+                className="text-white/30 hover:text-white/70 transition-colors duration-200"
+              >
+                <FontAwesomeIcon icon={faXmark} />
+              </button>
+            </div>
+          ) : (
+            <div className="relative">
+              <button
+                type="button"
+                onClick={() => setKnifePickerOpen((p) => !p)}
+                disabled={collectionKnives.length === 0}
+                className="w-full flex items-center justify-between bg-[#13161d] border border-white/10 rounded-xl px-4 py-3 text-sm text-white/40 hover:text-white/70 hover:border-white/20 transition-all duration-200 disabled:opacity-40 disabled:cursor-not-allowed"
+              >
+                <span>{collectionKnives.length === 0 ? "No knives in collection" : "Select a knife from your collection"}</span>
+                <FontAwesomeIcon icon={faChevronDown} className={`text-xs transition-transform duration-200 ${knifePickerOpen ? "rotate-180" : ""}`} />
+              </button>
+
+              {knifePickerOpen && collectionKnives.length > 0 && (
+                <div className="absolute top-full left-0 right-0 mt-1 bg-[#13161d] border border-white/10 rounded-xl overflow-hidden z-20 shadow-xl max-h-48 overflow-y-auto">
+                  {collectionKnives.map((knife) => (
+                    <button
+                      key={knife.id}
+                      type="button"
+                      onClick={() => {
+                        setTaggedKnifeId(knife.id);
+                        setKnifePickerOpen(false);
+                      }}
+                      className="w-full flex items-center gap-3 px-4 py-3 hover:bg-white/5 transition-colors duration-150 text-left border-b border-white/[0.04] last:border-0"
+                    >
+                      <div className="flex flex-col">
+                        <span className="text-white text-sm font-medium">{knife.displayName}</span>
+                        <span className="text-white/40 text-xs">{knife.knifeMaker}</span>
+                      </div>
+                    </button>
+                  ))}
+                </div>
+              )}
+            </div>
+          )}
+        </div>}
+
+        {/* Error */}
+        {error && <p className="text-red text-sm font-medium">{error}</p>}
+
+        {/* Submit */}
+        <button
+          type="button"
+          onClick={() => setShowPreview(true)}
+          disabled={!canSubmit || isLoading}
+          className="w-full py-3 rounded-xl bg-blue-primary text-white text-sm font-semibold hover:bg-blue-primary/80 transition-colors duration-200 disabled:opacity-40 disabled:cursor-not-allowed"
+        >
+          Preview Post
+        </button>
+
+      </div>
+
+      {/* Post preview overlay */}
+      {showPreview && (
+        <PostPreviewOverlay
+          layout={layout}
+          caption={caption}
+          description={description}
+          tags={tags}
+          selectedFiles={selectedFiles}
+          tradeSoughtFile={tradeSoughtFile}
+          tradeOfferingKnife={collectionKnives.find((k) => k.id === tradeOfferingKnifeId) ?? null}
+          lookingFor={lookingFor}
+          price={price}
+          buySellTag={buySellTag}
+          currency={currency}
+          taggedKnife={taggedKnife}
+          user={user}
+          isLoading={isLoading}
+          error={error}
+          onEdit={() => { setShowPreview(false); setError(""); }}
+          onConfirm={handleSubmit}
+        />
       )}
 
-      {creatingLinkedPost ? (
-        postObjSet && linkedPostObjSet ? (
-          <div className="m-auto mt-5">
-            <button
-              className="p-2 rounded bg-shadow-green-offset text-xl"
-              type="button"
-              onClick={sendLinkedPosts}
-            >
-              Create Post
-            </button>
-          </div>
-        ) : (
-          <div className="m-auto mt-5">
-            <button
-              className="p-2 rounded bg-black text-xl "
-              type="button"
-              disabled
-            >
-              Create Post
-            </button>
-          </div>
-        )
-      ) : postObjSet ? (
-        <div className="m-auto mt-5">
-          <button
-            className="p-2 rounded bg-shadow-green-offset text-xl"
-            type="button"
-            onClick={sendPost}
-          >
-            Create Post
-          </button>
-        </div>
-      ) : (
-        <div className="m-auto mt-5">
-          <button
-            className="p-2 rounded bg-black text-xl "
-            type="button"
-            disabled
-          >
-            Create Post
-          </button>
-        </div>
-      )}
     </section>
   );
 };

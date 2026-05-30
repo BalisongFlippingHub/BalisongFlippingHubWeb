@@ -1,61 +1,58 @@
-import { faCircleLeft } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useNavigate } from "react-router-dom";
-import FacebookLinkConfiguration from "../../components/accountConfigurationComponents/FacebookLinkConfiguration";
-import InstagramLinkConfiguration from "../../components/accountConfigurationComponents/InstagramLinkConfiguration";
-import TwitterLinkConfiguration from "../../components/accountConfigurationComponents/TwitterLinkConfiguration";
-import YoutubeLinkConfiguration from "../../components/accountConfigurationComponents/YoutubeLinkConfiguration";
-import RedditLinkConfiguration from "../../components/accountConfigurationComponents/RedditLinkConfiguration";
-import DiscordLinkConfiguration from "../../components/accountConfigurationComponents/DiscordLinkConfiguration";
-import PersonalEmailLinkConfiguration from "../../components/accountConfigurationComponents/PersonalEmailLinkConfiguration";
-import PersonalWebsiteLinkConfiguration from "../../components/accountConfigurationComponents/PersonalWebsiteLinkConfiguration";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faChevronLeft } from "@fortawesome/free-solid-svg-icons";
+import LinkConfiguration from "../../components/accountConfigurationComponents/LinkConfiguration";
 
-interface params {
+type LinkType = "facebook" | "instagram" | "twitter" | "youtube" | "reddit" | "discord" | "email" | "website";
+
+const LINK_TITLES: Record<LinkType, string> = {
+  facebook: "Facebook",
+  instagram: "Instagram",
+  twitter: "Twitter / X",
+  youtube: "YouTube",
+  reddit: "Reddit",
+  discord: "Discord",
+  email: "Personal Email",
+  website: "Personal Website",
+};
+
+interface Props {
   linkType: string;
 }
 
-const ProfileConfigurationLinksPage = ({ linkType }: params) => {
+const ProfileConfigurationLinksPage = ({ linkType }: Props) => {
   const navigate = useNavigate();
 
-  const getUpdateLinkComponent = () => {
-    switch (linkType) {
-      case "facebook":
-        return <FacebookLinkConfiguration />;
-      case "instagram":
-        return <InstagramLinkConfiguration />;
-      case "twitter":
-        return <TwitterLinkConfiguration />;
-      case "youtube":
-        return <YoutubeLinkConfiguration />;
-      case "reddit":
-        return <RedditLinkConfiguration />;
-      case "discord":
-        return <DiscordLinkConfiguration />;
-      case "email":
-        return <PersonalEmailLinkConfiguration />;
-      case "website":
-        return <PersonalWebsiteLinkConfiguration />;
-      default:
-        return <h1>404 Link Page</h1>;
-    }
-  };
+  const isValidLinkType = (type: string): type is LinkType =>
+    type in LINK_TITLES;
+
+  if (!isValidLinkType(linkType)) {
+    return (
+      <section className="w-full min-h-screen flex justify-center pb-28 pt-6 px-4 lg:pl-[192px] bg-[#080a0e]">
+        <p className="text-white/40 text-sm">Unknown link type.</p>
+      </section>
+    );
+  }
 
   return (
-    <section className="pt-[64px] lg:pl-[192px] w-full flex flex-col items-center w-full">
-      {/*Go Back Btn*/}
-      <div className="w-full p-4">
-        <button
-          type="button"
-          className="flex items-center gap-2 text-xl bg-shadow p-2 rounded hover:bg-shadow-green-offset"
-          onClick={() => navigate("/configure")}
-        >
-          <FontAwesomeIcon icon={faCircleLeft} />
-          <h5>Go Back</h5>
-        </button>
-      </div>
+    <section className="w-full min-h-screen flex justify-center pb-28 pt-6 px-4 lg:pl-[192px] bg-[#080a0e]">
+      <div className="w-full max-w-[480px] md:max-w-[640px] flex flex-col gap-6">
 
-      {/*Display Correct Link To Update*/}
-      {getUpdateLinkComponent()}
+        {/* Header */}
+        <div className="flex items-center gap-3">
+          <button
+            type="button"
+            onClick={() => navigate(-1)}
+            className="w-8 h-8 rounded-full border border-white/10 flex items-center justify-center text-white/40 hover:text-white hover:border-white/20 transition-colors duration-200"
+          >
+            <FontAwesomeIcon icon={faChevronLeft} className="text-xs" />
+          </button>
+          <h1 className="text-white font-bold text-xl">{LINK_TITLES[linkType]}</h1>
+        </div>
+
+        <LinkConfiguration linkType={linkType} />
+
+      </div>
     </section>
   );
 };

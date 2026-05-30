@@ -117,3 +117,11 @@ Also claude needs to remember that alot of the functionality will need to be imp
 
 - **Registration verify redirect** — `UserRegistrationForm.tsx` line 94 hardcodes `navigate("/register/verify/tzenisekj@gmail.com")` after successful registration. This needs to be updated to use the `email` state variable: `navigate(\`/register/verify/${email.trim()}\`)` once the email verification flow is built out.
 - **Google sign-up flow** — `GoogleLoginComponent.tsx` currently only logs the OAuth token response. Needs to be wired up to the backend to register/login the user and then prompt for a display name on first Google sign-in.
+
+### Settings Page TODOs
+
+- **Notifications settings** — Add a Notifications section to `ProfileConfigurePage.tsx` with toggles for email/push preferences (e.g. likes, comments, new followers). Depends on the notifications system being built on the backend first.
+- **Privacy settings** — Add a Privacy section with controls for profile visibility (Public / Followers Only) and who can comment on posts. Ties into the follow system and should be implemented once following is built out.
+- **Connected Accounts** — Add a Connected Accounts section showing whether Google OAuth is linked, with the ability to link/unlink. Relevant since Google login already exists via `GoogleLoginComponent.tsx`.
+- **Terms of Service page** — `/terms` route currently leads to 404. A static `TermsOfServicePage.tsx` needs to be created and added to the router in `App.tsx`.
+- **Privacy Policy page** — `/privacy` route currently leads to 404. A static `PrivacyPolicyPage.tsx` needs to be created and added to the router in `App.tsx`.

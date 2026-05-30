@@ -14,24 +14,17 @@ import CreatePostPage from "./pages/CreatePostPage";
 import UserCollectionPage from "./pages/UserCollectionPage";
 import ProfileConfigurePage from "./pages/configuration/ProfileConfigurePage";
 import AboutPage from "./pages/AboutPage";
-import ContactUsPage from "./pages/ContactUsPage";
 import AddNewKnifeToCollectionPage from "./pages/AddNewKnifeToCollectionPage";
 import ProfileConfigurationLinksPage from "./pages/configuration/ProfileConfigurationLinksPage";
 import ProfileConfigurationDisplayNamePage from "./pages/configuration/ProfileConfigurationDisplayNamePage";
 import ProfileConfigurationProfileCaptionPage from "./pages/configuration/ProfileConfigurationProfileCaptionPage";
-import ProfileConfigurationMeasurementUnitsPage from "./pages/configuration/ProfileConfigurationMeasurementUnitsPage";
 import ProfileConfigurationChangeEmailPage from "./pages/configuration/ProfileConfigurationChangeEmailPage";
 import ProfileConfigurationChangePasswordPage from "./pages/configuration/ProfileConfigurationChangePasswordPage";
-import ProfileConfigurationChangeCurrencyPage from "./pages/configuration/ProfileConfigurationChangeCurrencyPage";
-import ProfileConfigurationResetAccountPage from "./pages/configuration/ProfileConfigurationResetAccountPage";
-import ProfileConfigurationHideAccountPage from "./pages/configuration/ProfileConfigurationHideAccountPage";
-import ProfileConfigurationDeleteAccountPage from "./pages/configuration/ProfileConfigurationDeleteAccountPage";
 import ProfileConfigurationProfileImagePage from "./pages/configuration/ProfileConfigurationProfileImagePage";
 import ProfileConfigurationProfileBannerPage from "./pages/configuration/ProfileConfigurationProfileBannerPage";
 import { useEffect, useState } from "react";
 import { useAppDispatch, useAppSelector } from "./redux/hooks";
 import { setCredentials, setToRememberLoginInfo } from "./redux/auth/authSlice";
-// import { Profile } from "./modals/User";
 import { loginWithRefreshToken } from "./redux/auth/authActions";
 import { setCollection } from "./redux/collection/collectionSlice";
 import ProfileConfigurationCollectionBannerImagePage from "./pages/configuration/ProfileConfigurationCollectionBannerImagePage";
@@ -73,20 +66,6 @@ const App = () => {
         .catch((error) => console.log("Error caught attempting to login with existing refresh token: " + error));
     }
 
-    // dispatch(
-    //   setCredentials({
-    //     newUser: {
-    //       id: "1",
-    //       displayName: "Test",
-    //       identifierCode: "4444",
-    //       role: "USER",
-    //       email: "test@gmail.com",
-    //       collectionId: "1123",
-    //     } as Profile,
-    //     newAccessToken: "1234",
-    //   })
-    // );
-
     setIsLoading(false);
   }, []);
 
@@ -107,8 +86,7 @@ const App = () => {
 
           <Route path="/tutorial-center" element={<TutorialCenterPage />} />
           <Route path="/product-world" element={<ProductWorldPage />} />
-          <Route path="/about-page" element={<AboutPage />} />
-          <Route path="/contact-us" element={<ContactUsPage />} />
+          <Route path="/about" element={<AboutPage />} />
           <Route path="/unauthorized" element={<h2>Unaothorized</h2>} />
           <Route path="/test" element={<TestPage />} />
 
@@ -187,15 +165,6 @@ const App = () => {
               element={<ProfileConfigurationLinksPage linkType="website" />}
             />
 
-            <Route
-              path="/configure/measurement_units"
-              element={<ProfileConfigurationMeasurementUnitsPage />}
-            />
-
-            <Route
-              path="/configure/currency"
-              element={<ProfileConfigurationChangeCurrencyPage />}
-            />
 
             <Route
               path="/configure/collection-banner-image"
@@ -212,20 +181,6 @@ const App = () => {
               element={<ProfileConfigurationChangePasswordPage />}
             />
 
-            <Route
-              path="/configure/reset_account"
-              element={<ProfileConfigurationResetAccountPage />}
-            />
-
-            <Route
-              path="/configure/hide_account"
-              element={<ProfileConfigurationHideAccountPage />}
-            />
-
-            <Route
-              path="/configure/delete_account"
-              element={<ProfileConfigurationDeleteAccountPage />}
-            />
 
             {/*Auth Collection Routes*/}
             <Route

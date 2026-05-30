@@ -23,4 +23,7 @@ export interface Profile {
   profileCaption?: string | null;
 
   collectionId?: string | null;
+
+  measurementUnit?: "imperial" | "metric" | null;
+  currency?: "USD" | "EUR" | null;
 }

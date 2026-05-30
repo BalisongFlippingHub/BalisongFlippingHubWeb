@@ -1,329 +1,466 @@
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faEdit } from "@fortawesome/free-solid-svg-icons";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useAppSelector } from "../../redux/hooks";
+import { useAppSelector, useAppDispatch } from "../../redux/hooks";
+import { setNewUser } from "../../redux/auth/authSlice";
+import { Profile } from "../../modals/User";
+import { axiosApiInstanceAuth } from "../../api/axios";
+import { faChevronRight, faTriangleExclamation, faXmark, faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { logout } from "../../redux/auth/authActions";
+import { clearCollection } from "../../redux/collection/collectionSlice";
 
-const ProfileConfigurePage = () => {
+interface SettingsRowProps {
+  label: string;
+  value?: string;
+  onClick: () => void;
+  danger?: boolean;
+}
 
+const SettingsRow = ({ label, value, onClick, danger = false }: SettingsRowProps) => (
+  <button
+    type="button"
+    onClick={onClick}
+    className="w-full flex items-center justify-between px-4 py-3.5 hover:bg-white/5 transition-colors duration-150 text-left"
+  >
+    <span className={`text-sm font-medium ${danger ? "text-red" : "text-white"}`}>{label}</span>
+    <div className="flex items-center gap-2">
+      {value && <span className="text-xs text-white/30 max-w-[160px] truncate">{value}</span>}
+      {!danger && <FontAwesomeIcon icon={faChevronRight} className="text-white/20 text-xs" />}
+    </div>
+  </button>
+);
 
+const SectionHeader = ({ title }: { title: string }) => (
+  <div className="px-1 pt-5 pb-1.5">
+    <span className="text-[11px] font-semibold text-white/40 uppercase tracking-wider">{title}</span>
+  </div>
+);
+
+const SettingsCard = ({ children }: { children: React.ReactNode }) => (
+  <div className="bg-[#13161d] border border-white/10 rounded-2xl overflow-hidden divide-y divide-white/[0.06]">
+    {children}
+  </div>
+);
+
+const InfoRow = ({ label, value }: { label: string; value: string }) => (
+  <div className="w-full flex items-center justify-between px-4 py-3.5">
+    <span className="text-sm font-medium text-white">{label}</span>
+    <span className="text-xs text-white/30">{value}</span>
+  </div>
+);
+
+interface ToggleRowProps<T extends string> {
+  label: string;
+  options: { value: T; display: string }[];
+  current: T | null | undefined;
+  defaultValue: T;
+  apiUrl: string;
+  userField: keyof Profile;
+}
+
+function ToggleRow<T extends string>({ label, options, current, defaultValue, apiUrl, userField }: ToggleRowProps<T>) {
   const user = useAppSelector((state) => state.auth.user);
-  const collectionData = useAppSelector((state) => state.collection.collection);
+  const dispatch = useAppDispatch();
+  const [saving, setSaving] = useState(false);
 
-  const navigate = useNavigate();
+  const active = current ?? defaultValue;
+
+  const handleSelect = async (val: T) => {
+    if (val === active || saving) return;
+    setSaving(true);
+    await axiosApiInstanceAuth
+      .request({ url: apiUrl, method: "post", data: val })
+      .then(() => {
+        dispatch(setNewUser({ ...user, [userField]: val } as Profile));
+      })
+      .catch((err) => console.log(err))
+      .finally(() => setSaving(false));
+  };
 
   return (
-    <section className="w-full flex justify-center relative pb-10">
-      <div className="w-full max-w-[925px] rounded-lg flex flex-col items-center">
-        {/*Title*/}
-        <div className="text-3xl text-white font-bold md:w-full xsm:w-5/6 flex justify-center border-b pb-4 pt-4">
-          <h2>Settings</h2>
-        </div>
+    <div className="w-full flex items-center justify-between px-4 py-3.5">
+      <span className="text-sm font-medium text-white">{label}</span>
+      <div className="flex items-center gap-1 bg-[#0d0f14] border border-white/10 rounded-lg p-1">
+        {options.map(({ value, display }) => {
+          const isActive = active === value;
+          return (
+            <button
+              key={value}
+              type="button"
+              disabled={saving}
+              onClick={() => handleSelect(value)}
+              className={`px-3 py-1 rounded-md text-xs font-semibold transition-all duration-200 ${
+                isActive
+                  ? "bg-blue-primary text-white"
+                  : "text-white/40 hover:text-white/70"
+              } disabled:opacity-50 disabled:cursor-not-allowed`}
+            >
+              {display}
+            </button>
+          );
+        })}
+      </div>
+    </div>
+  );
+}
 
-        {/*Search Bar*/}
-        <div className="w-full flex justify-center pt-5 pb-5">
-          <input
-            type="search"
-            placeholder="Search..."
-            className="bg-black p-2 rounded-lg w-2/3 text-white"
-          />
-        </div>
+type DangerAction = "hide" | "reset" | "delete";
 
-        <div className="w-full h-full p-4 flex flex-col">
-          <div className="text-2xl text-white font-semibold pl-4">
-            <h2>Account Settings</h2>
-          </div>
-          {/*Account Settings*/}
-          <div className="flex flex-col gap-4 p-4">
-            {/*Display Name and Caption*/}
-            <div className="w-full flex md:flex-row xsm:flex-col gap-2">
-              <div className="md:w-1/2 xsm:w-full h-20">
-                {/*Display Name Link*/}
-                <div
-                  className="w-full h-full bg-shadow p-2 rounded hover:cursor-pointer hover:bg-blue-primary"
-                  onClick={() => navigate("/configure/display_name")}
-                >
-                  <div className="flex justify-between md:text-2xl xsm:text-xl font-bold">
-                    <h5>Display Name</h5>
-                    <FontAwesomeIcon icon={faEdit} />
-                  </div>
+interface DangerConfig {
+  title: string;
+  description: string;
+  consequence: string;
+  confirmLabel: string;
+  apiUrl: string;
+}
 
-                  <h6 className="">
-                    {user?.displayName && user?.displayName !== ""
-                      ? user?.displayName
-                      : user?.id}
-                  </h6>
-                </div>
+const DANGER_CONFIGS: Record<DangerAction, DangerConfig> = {
+  hide: {
+    title: "Hide Account",
+    description: "Your profile will become invisible to other users. Your posts and collection will not be publicly accessible.",
+    consequence: "You can unhide your account at any time from settings.",
+    confirmLabel: "Hide Account",
+    apiUrl: "accounts/me/hide-account",
+  },
+  reset: {
+    title: "Reset Account",
+    description: "This will permanently erase your collection, all your posts, and reset your profile settings to default.",
+    consequence: "This action cannot be undone. Your account will remain but all content will be lost.",
+    confirmLabel: "Reset Account",
+    apiUrl: "accounts/me/reset-account",
+  },
+  delete: {
+    title: "Delete Account",
+    description: "Your account and all associated data — posts, collection, profile — will be permanently and irreversibly removed.",
+    consequence: "This action cannot be undone. You will be logged out immediately.",
+    confirmLabel: "Permanently Delete",
+    apiUrl: "accounts/me/delete-account",
+  },
+};
+
+interface DangerModalProps {
+  action: DangerAction;
+  onClose: () => void;
+}
+
+const DangerModal = ({ action, onClose }: DangerModalProps) => {
+  const config = DANGER_CONFIGS[action];
+  const user = useAppSelector((state) => state.auth.user);
+  const dispatch = useAppDispatch();
+
+  const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [isError, setIsError] = useState(false);
+  const [errMsg, setErrMsg] = useState("");
+
+  const handleConfirm = async () => {
+    if (!password.trim() || isLoading) return;
+    setIsLoading(true);
+    setIsError(false);
+    setErrMsg("");
+
+    await axiosApiInstanceAuth
+      .request({
+        url: config.apiUrl,
+        method: "post",
+        data: { password: password.trim() },
+      })
+      .then(() => {
+        if (action === "delete" || action === "reset") {
+          dispatch(clearCollection());
+          dispatch(logout());
+        } else {
+          dispatch(setNewUser({ ...user } as Profile));
+          onClose();
+        }
+      })
+      .catch((err) => {
+        setIsError(true);
+        if (err.response?.status === 401) {
+          setErrMsg("Incorrect password. Please try again.");
+        } else {
+          setErrMsg("Something went wrong. Please try again.");
+        }
+      })
+      .finally(() => setIsLoading(false));
+  };
+
+  return (
+    <div
+      className="fixed inset-0 z-50 flex items-center justify-center px-4"
+      onClick={(e) => { if (e.target === e.currentTarget) onClose(); }}
+    >
+      {/* Backdrop */}
+      <div className="absolute inset-0 bg-black/70 backdrop-blur-sm" />
+
+      {/* Modal card */}
+      <div className="relative w-full max-w-md bg-[#0d0f14] border border-red/30 rounded-2xl overflow-hidden shadow-2xl">
+
+        {/* Red top accent bar */}
+        <div className="h-1 w-full bg-red" />
+
+        <div className="p-6 flex flex-col gap-5">
+
+          {/* Header */}
+          <div className="flex items-start justify-between gap-3">
+            <div className="flex items-center gap-3">
+              <div className="w-9 h-9 rounded-lg bg-red/10 border border-red/20 flex items-center justify-center flex-shrink-0">
+                <FontAwesomeIcon icon={faTriangleExclamation} className="text-red text-sm" />
               </div>
-
-              <div className="md:w-1/2 xsm:w-full h-20 overflow-hidden">
-                <div
-                  className="w-full h-full bg-shadow p-2 rounded hover:cursor-pointer hover:bg-blue-primary"
-                  onClick={() => navigate("/configure/about_me")}
-                >
-                  <div className="flex justify-between md:text-2xl xsm:text-xl font-bold">
-                    <h5>Profile Caption</h5>
-                    <FontAwesomeIcon icon={faEdit} />
-                  </div>
-
-                  <h6>...</h6>
-                </div>
-              </div>
+              <h2 className="text-white font-bold text-lg leading-tight">{config.title}</h2>
             </div>
-
-            {/*Privacy and Badges*/}
-            <div>
-              <div className="md:w-1/2 xsm:w-full h-20">
-                <div
-                  className="w-full h-full bg-shadow p-2 rounded hover:cursor-pointer hover:bg-blue-primary"
-                  onClick={() => navigate("/configure/about_me")}
-                >
-                  <div className="flex justify-between md:text-2xl xsm:text-xl font-bold">
-                    <h5>Badges Display</h5>
-                    <FontAwesomeIcon icon={faEdit} />
-                  </div>
-
-                  <h6>...</h6>
-                </div>
-              </div>
-            </div>
-
-            {/*Links*/}
-            <div className="w-full flex flex-col gap-2 items-center">
-              <div className="text-white text-xl font-semibold border-b w-full flex justify-center">
-                <h3>Links</h3>
-              </div>
-
-              <div className="flex md:flex-row xsm:flex-col w-full gap-2">
-                {/*Facebook Edit*/}
-                <div className="md:w-1/2 xsm:w-full h-20 overflow-hidden">
-                  <div
-                    className="w-full h-full bg-shadow p-2 rounded hover:cursor-pointer hover:bg-blue-primary"
-                    onClick={() => navigate("/configure/facebook_link")}
-                  >
-                    <div className="flex justify-between md:text-2xl xsm:text-xl font-bold">
-                      <h5>Facebook</h5>
-                      <FontAwesomeIcon icon={faEdit} />
-                    </div>
-
-                    <h6>
-                      {user?.facebookLink && user?.facebookLink !== ""
-                        ? user?.facebookLink
-                        : "..."}
-                    </h6>
-                  </div>
-                </div>
-
-                {/*Instagram Edit*/}
-                <div className="md:w-1/2 xsm:w-full h-20 overflow-hidden">
-                  <div
-                    className="w-full h-full bg-shadow p-2 rounded hover:cursor-pointer hover:bg-blue-primary"
-                    onClick={() => navigate("/configure/instagram_link")}
-                  >
-                    <div className="flex justify-between md:text-2xl xsm:text-xl font-bold">
-                      <h5>Instagram</h5>
-                      <FontAwesomeIcon icon={faEdit} />
-                    </div>
-
-                    <h6>
-                      {user?.instagramLink && user.instagramLink !== ""
-                        ? user.instagramLink
-                        : "..."}
-                    </h6>
-                  </div>
-                </div>
-              </div>
-
-              <div className="flex md:flex-row xsm:flex-col w-full gap-2">
-                {/*Twitter Edit*/}
-                <div className="md:w-1/2 xsm:w-full h-20 overflow-hidden">
-                  <div
-                    className="w-full h-full bg-shadow p-2 rounded hover:cursor-pointer hover:bg-blue-primary"
-                    onClick={() => navigate("/configure/twitter_link")}
-                  >
-                    <div className="flex justify-between md:text-2xl xsm:text-xl font-bold">
-                      <h5>Twitter</h5>
-                      <FontAwesomeIcon icon={faEdit} />
-                    </div>
-
-                    <h6>
-                      {user?.twitterLink && user?.twitterLink !== ""
-                        ? user?.twitterLink
-                        : "..."}
-                    </h6>
-                  </div>
-                </div>
-
-                {/*Youtube Edit*/}
-                <div className="md:w-1/2 xsm:w-full h-20 overflow-hidden">
-                  <div
-                    className="w-full h-full bg-shadow p-2 rounded hover:cursor-pointer hover:bg-blue-primary"
-                    onClick={() => navigate("/configure/youtube_link")}
-                  >
-                    <div className="flex justify-between md:text-2xl xsm:text-xl font-bold">
-                      <h5>Youtube</h5>
-                      <FontAwesomeIcon icon={faEdit} />
-                    </div>
-
-                    <h6>
-                      {user?.youtubeLink && user?.youtubeLink !== ""
-                        ? user?.youtubeLink
-                        : "..."}
-                    </h6>
-                  </div>
-                </div>
-              </div>
-
-              <div className="flex md:flex-row xsm:flex-col w-full gap-2">
-                {/*Reddit Edit*/}
-                <div className="md:w-1/2 xsm:w-full h-20 overflow-hidden">
-                  <div
-                    className="w-full h-full bg-shadow p-2 rounded hover:cursor-pointer hover:bg-blue-primary"
-                    onClick={() => navigate("/configure/reddit_link")}
-                  >
-                    <div className="flex justify-between md:text-2xl xsm:text-xl font-bold">
-                      <h5>Reddit</h5>
-                      <FontAwesomeIcon icon={faEdit} />
-                    </div>
-
-                    <h6>
-                      {user?.redditLink && user?.redditLink !== ""
-                        ? user?.redditLink
-                        : "..."}
-                    </h6>
-                  </div>
-                </div>
-
-                {/*Discord Edit*/}
-                <div className="md:w-1/2 xsm:w-full h-20 overflow-hidden">
-                  <div
-                    className="w-full h-full bg-shadow p-2 rounded hover:cursor-pointer hover:bg-blue-primary"
-                    onClick={() => navigate("/configure/discord_link")}
-                  >
-                    <div className="flex justify-between md:text-2xl xsm:text-xl font-bold">
-                      <h5>Discord</h5>
-                      <FontAwesomeIcon icon={faEdit} />
-                    </div>
-
-                    <h6>
-                      {user?.discordLink && user?.discordLink !== ""
-                        ? user?.discordLink
-                        : "..."}
-                    </h6>
-                  </div>
-                </div>
-              </div>
-
-              <div className="flex md:flex-row xsm:flex-col w-full gap-2">
-                {/*Personal Email Edit*/}
-                <div className="md:w-1/2 xsm:w-full h-20 overflow-hidden">
-                  <div
-                    className="w-full h-full bg-shadow p-2 rounded hover:cursor-pointer hover:bg-blue-primary"
-                    onClick={() => navigate("/configure/personal_email_link")}
-                  >
-                    <div className="flex justify-between md:text-2xl xsm:text-xl font-bold">
-                      <h5>Email</h5>
-                      <FontAwesomeIcon icon={faEdit} />
-                    </div>
-
-                    <h6>
-                      {user?.personalEmailLink && user?.personalEmailLink !== ""
-                        ? user?.personalEmailLink
-                        : "..."}
-                    </h6>
-                  </div>
-                </div>
-
-                {/*Personal Website Edit*/}
-                <div className="md:w-1/2 xsm:w-full h-20 overflow-hidden">
-                  <div
-                    className="w-full h-full bg-shadow p-2 rounded hover:cursor-pointer hover:bg-blue-primary"
-                    onClick={() => navigate("/configure/personal_website_link")}
-                  >
-                    <div className="flex justify-between md:text-2xl xsm:text-xl font-bold">
-                      <h5>Website</h5>
-                      <FontAwesomeIcon icon={faEdit} />
-                    </div>
-
-                    <h6>
-                      {user?.personalWebsiteLink &&
-                      user?.personalWebsiteLink !== ""
-                        ? user?.personalWebsiteLink
-                        : "..."}
-                    </h6>
-                  </div>
-                </div>
-              </div>
-
-              {/*Collection*/}
-              <div className="w-full flex flex-col items-center mt-5 gap-2">
-                <div className="text-white text-xl font-semibold border-b w-full flex justify-center">
-                  <h3>Collection Settings</h3>
-                </div>
-                {/*Collection Banner Image Change*/}
-                <div className="md:w-1/2 xsm:w-full h-20">
-                  <div
-                    className="w-full h-full bg-shadow p-2 rounded hover:cursor-pointer hover:bg-blue-primary"
-                    onClick={() =>
-                      navigate("/configure/collection-banner-image")
-                    }
-                  >
-                    <div className="flex justify-between md:text-2xl xsm:text-xl font-bold">
-                      <h5>Banner Image</h5>
-                      <FontAwesomeIcon icon={faEdit} />
-                    </div>
-
-                    <h6>
-                      {collectionData?.bannerImg
-                        ? collectionData.bannerImg
-                        : "..."}
-                    </h6>
-                  </div>
-                </div>
-              </div>
-            </div>
+            <button
+              type="button"
+              onClick={onClose}
+              className="text-white/30 hover:text-white/70 transition-colors duration-200 mt-0.5"
+            >
+              <FontAwesomeIcon icon={faXmark} />
+            </button>
           </div>
 
-          <div className="flex flex-col p-4">
-            <div className="text-2xl text-white font-bold">
-              <h2>App Settings</h2>
-            </div>
-            <div className="w-full flex flex-col items-center mt-5">
-              {/*Measurement Units Change*/}
-              <div className="w-full flex md:flex-row xsm:flex-col gap-2">
-                <div className="md:w-1/2 xsm:w-full h-20">
-                  <div
-                    className="w-full h-full bg-shadow p-2 rounded hover:cursor-pointer hover:bg-blue-primary"
-                    onClick={() => navigate("/configure/measurement_units")}
-                  >
-                    <div className="flex justify-between md:text-2xl xsm:text-xl font-bold">
-                      <h5>Measure Units</h5>
-                      <FontAwesomeIcon icon={faEdit} />
-                    </div>
-
-                    <h6>US</h6>
-                  </div>
-                </div>
-
-                {/*Currency Change*/}
-                <div className="md:w-1/2 xsm:w-full h-20">
-                  <div
-                    className="w-full h-full bg-shadow p-2 rounded hover:cursor-pointer hover:bg-blue-primary"
-                    onClick={() => navigate("/configure/currency")}
-                  >
-                    <div className="flex justify-between md:text-2xl xsm:text-xl font-bold">
-                      <h5>Currency</h5>
-                      <FontAwesomeIcon icon={faEdit} />
-                    </div>
-
-                    <h6>US</h6>
-                  </div>
-                </div>
-              </div>
-            </div>
+          {/* Description */}
+          <div className="flex flex-col gap-2">
+            <p className="text-white/70 text-sm leading-relaxed">{config.description}</p>
+            <p className={`text-xs leading-relaxed ${action === "hide" ? "text-white/40" : "text-red/70"}`}>
+              {config.consequence}
+            </p>
           </div>
+
+          {/* Password input */}
+          <div className="flex flex-col gap-1.5">
+            <label className="text-xs text-white/40 uppercase tracking-wider font-medium">
+              Confirm with your password
+            </label>
+            <div className="relative">
+              <input
+                type={showPassword ? "text" : "password"}
+                value={password}
+                onChange={(e) => { setPassword(e.target.value); if (isError) { setIsError(false); setErrMsg(""); } }}
+                placeholder="••••••••"
+                className="w-full bg-[#1c1f27] border border-white/10 rounded-xl px-4 py-3 pr-10 text-white text-sm outline-none focus:border-red/40 transition-colors duration-200 placeholder:text-white/25"
+              />
+              <button
+                type="button"
+                onClick={() => setShowPassword((p) => !p)}
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-white/30 hover:text-white/70 transition-colors duration-200"
+              >
+                <FontAwesomeIcon icon={showPassword ? faEyeSlash : faEye} />
+              </button>
+            </div>
+            {isError && <p className="text-red text-xs font-medium">{errMsg}</p>}
+          </div>
+
+          {/* Actions */}
+          <div className="flex gap-3">
+            <button
+              type="button"
+              onClick={onClose}
+              className="flex-1 py-2.5 rounded-xl border border-white/10 text-white/60 text-sm font-medium hover:bg-white/5 transition-colors duration-200"
+            >
+              Cancel
+            </button>
+            <button
+              type="button"
+              onClick={handleConfirm}
+              disabled={!password.trim() || isLoading}
+              className="flex-1 py-2.5 rounded-xl bg-red text-white text-sm font-semibold hover:opacity-90 transition-opacity duration-200 disabled:opacity-40 disabled:cursor-not-allowed"
+            >
+              {isLoading ? "Processing..." : config.confirmLabel}
+            </button>
+          </div>
+
         </div>
       </div>
-      
+    </div>
+  );
+};
+
+const ProfileConfigurePage = () => {
+  const user = useAppSelector((state) => state.auth.user);
+  const navigate = useNavigate();
+  const [dangerModal, setDangerModal] = useState<DangerAction | null>(null);
+  const [socialExpanded, setSocialExpanded] = useState(false);
+
+  const socialLinks = [
+    { label: "Facebook", value: user?.facebookLink, route: "/configure/facebook_link" },
+    { label: "Instagram", value: user?.instagramLink, route: "/configure/instagram_link" },
+    { label: "Twitter / X", value: user?.twitterLink, route: "/configure/twitter_link" },
+    { label: "YouTube", value: user?.youtubeLink, route: "/configure/youtube_link" },
+    { label: "Reddit", value: user?.redditLink, route: "/configure/reddit_link" },
+    { label: "Discord", value: user?.discordLink, route: "/configure/discord_link" },
+    { label: "Personal Email", value: user?.personalEmailLink, route: "/configure/personal_email_link" },
+    { label: "Personal Website", value: user?.personalWebsiteLink, route: "/configure/personal_website_link" },
+  ];
+  const linkedCount = socialLinks.filter((l) => l.value).length;
+
+  return (
+    <section className="w-full flex justify-center pb-28 pt-14 px-4">
+      <div className="w-full max-w-[640px] flex flex-col">
+
+        <h1 className="text-white font-bold text-2xl mb-2">Settings</h1>
+
+        {/* Profile */}
+        <SectionHeader title="Profile" />
+        <SettingsCard>
+          <SettingsRow
+            label="Profile Image"
+            value={user?.profileImg ? "Set" : "Not set"}
+            onClick={() => navigate("/configure/profile-image")}
+          />
+          <SettingsRow
+            label="Profile Banner"
+            value={user?.bannerImg ? "Set" : "Not set"}
+            onClick={() => navigate("/configure/profile-banner")}
+          />
+          <SettingsRow
+            label="Display Name"
+            value={user?.displayName || undefined}
+            onClick={() => navigate("/configure/display_name")}
+          />
+          <SettingsRow
+            label="Profile Caption"
+            onClick={() => navigate("/configure/profile_caption")}
+          />
+        </SettingsCard>
+
+        {/* Social Links — collapsible */}
+        <SectionHeader title="Social Links" />
+        <SettingsCard>
+          {/* Accordion header */}
+          <button
+            type="button"
+            onClick={() => setSocialExpanded((p) => !p)}
+            className="w-full flex items-center justify-between px-4 py-3.5 hover:bg-white/5 transition-colors duration-150 text-left"
+          >
+            <span className="text-sm font-medium text-white">Manage Social Links</span>
+            <div className="flex items-center gap-2">
+              {linkedCount > 0 && (
+                <span className="text-xs text-white/30">{linkedCount} linked</span>
+              )}
+              <FontAwesomeIcon
+                icon={faChevronRight}
+                className={`text-white/20 text-xs transition-transform duration-200 ${socialExpanded ? "rotate-90" : ""}`}
+              />
+            </div>
+          </button>
+
+          {/* Expandable rows */}
+          <div
+            className="overflow-hidden transition-all duration-300 ease-in-out"
+            style={{ maxHeight: socialExpanded ? `${socialLinks.length * 52}px` : "0" }}
+          >
+            <div className="border-t border-white/[0.06]">
+              {socialLinks.map(({ label, value, route }) => (
+                <SettingsRow
+                  key={label}
+                  label={label}
+                  value={value || undefined}
+                  onClick={() => navigate(route)}
+                />
+              ))}
+            </div>
+          </div>
+        </SettingsCard>
+
+        {/* Collection */}
+        <SectionHeader title="Collection" />
+        <SettingsCard>
+          <SettingsRow
+            label="Collection Banner Image"
+            onClick={() => navigate("/configure/collection-banner-image")}
+          />
+        </SettingsCard>
+
+        {/* App Settings */}
+        <SectionHeader title="App Settings" />
+        <SettingsCard>
+          <ToggleRow
+            label="Measurement Units"
+            options={[
+              { value: "imperial", display: "Imperial" },
+              { value: "metric", display: "Metric" },
+            ]}
+            current={user?.measurementUnit}
+            defaultValue="imperial"
+            apiUrl="accounts/me/update-measurement-unit"
+            userField="measurementUnit"
+          />
+          <ToggleRow
+            label="Currency"
+            options={[
+              { value: "USD", display: "USD" },
+              { value: "EUR", display: "EUR" },
+            ]}
+            current={user?.currency}
+            defaultValue="USD"
+            apiUrl="accounts/me/update-currency"
+            userField="currency"
+          />
+        </SettingsCard>
+
+        {/* Account */}
+        <SectionHeader title="Account" />
+        <SettingsCard>
+          <SettingsRow
+            label="Change Email"
+            value={user?.email || undefined}
+            onClick={() => navigate("/configure/email")}
+          />
+          <SettingsRow
+            label="Change Password"
+            onClick={() => navigate("/configure/password")}
+          />
+        </SettingsCard>
+
+        {/* About */}
+        <SectionHeader title="About" />
+        <SettingsCard>
+          <InfoRow label="Version" value="1.0.0" />
+          <SettingsRow
+            label="Contact Us"
+            onClick={() => navigate("/about")}
+          />
+          <SettingsRow
+            label="Terms of Service"
+            onClick={() => navigate("/terms")}
+          />
+          <SettingsRow
+            label="Privacy Policy"
+            onClick={() => navigate("/privacy")}
+          />
+        </SettingsCard>
+
+        {/* Danger Zone */}
+        <SectionHeader title="Danger Zone" />
+        <SettingsCard>
+          <SettingsRow
+            label="Hide Account"
+            onClick={() => setDangerModal("hide")}
+            danger
+          />
+          <SettingsRow
+            label="Reset Account"
+            onClick={() => setDangerModal("reset")}
+            danger
+          />
+          <SettingsRow
+            label="Delete Account"
+            onClick={() => setDangerModal("delete")}
+            danger
+          />
+        </SettingsCard>
+
+      </div>
+
+      {/* Danger confirmation modal */}
+      {dangerModal && (
+        <DangerModal
+          action={dangerModal}
+          onClose={() => setDangerModal(null)}
+        />
+      )}
+
     </section>
   );
 };
