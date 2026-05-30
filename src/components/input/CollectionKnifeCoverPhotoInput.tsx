@@ -33,7 +33,7 @@ const CollectionKnifeCoverPhotoInput = ({
       <button
         type="button"
         onClick={() => coverPhotoInputRef.current?.click()}
-        className="w-full h-[263px] rounded-xl border border-dashed border-white/20 overflow-hidden bg-white/5 hover:border-blue-primary/50 hover:bg-white/[0.07] transition-colors duration-200 relative group"
+        className="w-full xsm:h-[180px] sm:h-[220px] md:h-[263px] rounded-xl border border-dashed border-white/20 overflow-hidden bg-white/5 hover:border-blue-primary/50 hover:bg-white/[0.07] transition-colors duration-200 relative group"
       >
         {!selectedFile ? (
           <div className="flex flex-col items-center justify-center gap-2 h-full text-white/30 group-hover:text-white/50 transition-colors duration-200">

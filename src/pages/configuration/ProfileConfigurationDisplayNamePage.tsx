@@ -1,25 +1,30 @@
 import { useNavigate } from "react-router-dom";
-import DisplayNameConfiguration from "../../components/accountConfigurationComponents/DisplayNameConfiguration";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCircleArrowLeft } from "@fortawesome/free-solid-svg-icons";
+import { faChevronLeft } from "@fortawesome/free-solid-svg-icons";
+import DisplayNameConfiguration from "../../components/accountConfigurationComponents/DisplayNameConfiguration";
 
 const ProfileConfigurationDisplayNamePage = () => {
   const navigate = useNavigate();
 
   return (
-    <section className="w-full flex flex-col items-center gap-2 h-screen">
-      <div className="w-full p-4">
-        <button
-          type="button"
-          className="rounded p-2 flex items-center gap-4 text-white hover:scale-110 transition-transform ease-linear duration-300"
-          onClick={() => navigate("/configure")}
-        >
-          <FontAwesomeIcon icon={faCircleArrowLeft} size="2xl" />
-          <h5>Go Back</h5>
-        </button>
-      </div>
+    <section className="w-full min-h-screen flex justify-center pb-28 pt-6 px-4 lg:pl-[192px] bg-[#080a0e]">
+      <div className="w-full max-w-[480px] md:max-w-[640px] flex flex-col gap-6">
 
-      <DisplayNameConfiguration />
+        {/* Header */}
+        <div className="flex items-center gap-3">
+          <button
+            type="button"
+            onClick={() => navigate(-1)}
+            className="w-8 h-8 rounded-full border border-white/10 flex items-center justify-center text-white/40 hover:text-white hover:border-white/20 transition-colors duration-200"
+          >
+            <FontAwesomeIcon icon={faChevronLeft} className="text-xs" />
+          </button>
+          <h1 className="text-white font-bold text-xl">Display Name</h1>
+        </div>
+
+        <DisplayNameConfiguration />
+
+      </div>
     </section>
   );
 };

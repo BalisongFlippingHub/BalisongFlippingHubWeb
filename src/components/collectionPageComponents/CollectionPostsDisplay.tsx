@@ -42,7 +42,7 @@ const CollectionPostsDisplay = () => {
             <CollectionPost post={post} key={post.id} />
           ))
         ) : (
-          <div className="flex flex-col items-center justify-center xsm:py-6 md:py-12 gap-1">
+          <div className="flex flex-col items-center justify-center xsm:pt-6 xsm:pb-24 md:py-12 gap-1">
             <p className="text-white/30 text-sm font-medium">No activity yet.</p>
             <p className="text-white/20 text-xs">Actions on your collection appear here.</p>
           </div>

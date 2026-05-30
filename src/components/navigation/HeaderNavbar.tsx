@@ -4,7 +4,6 @@ import {
   faGlobe,
   faEarthAmericas,
   faCircleInfo,
-  faPhoneFlip,
 } from "@fortawesome/free-solid-svg-icons";
 import { faHubspot } from "@fortawesome/free-brands-svg-icons";
 
@@ -46,17 +45,7 @@ const HeaderNavbar = () => {
 
       {divider}
 
-      <NavLink to="/contact-us" className={({ isActive }) => `${linkClass} ${isActive ? activeLinkClass : ""}`}>
-        {({ isActive }) => (<>
-          <FontAwesomeIcon icon={faPhoneFlip} className="nav:hidden" />
-          <span>Contact Us</span>
-          <span className={`absolute bottom-0 left-0 h-[2px] bg-blue-primary transition-all duration-200 group-hover:w-full ${isActive ? "w-full" : "w-0"}`} />
-        </>)}
-      </NavLink>
-
-      {divider}
-
-      <NavLink to="/about-page" className={({ isActive }) => `${linkClass} xsm:border-b-0 nav:border-b-0 ${isActive ? activeLinkClass : ""}`}>
+      <NavLink to="/about" className={({ isActive }) => `${linkClass} xsm:border-b-0 nav:border-b-0 ${isActive ? activeLinkClass : ""}`}>
         {({ isActive }) => (<>
           <FontAwesomeIcon icon={faCircleInfo} className="nav:hidden" />
           <span>About</span>
