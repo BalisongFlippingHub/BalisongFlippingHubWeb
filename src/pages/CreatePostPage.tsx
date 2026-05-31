@@ -373,6 +373,8 @@ const CreatePostPage = () => {
   const [buySellTag, setBuySellTag] = useState<"Buying" | "Selling" | null>(null);
   const [tradeOfferingKnifeId, setTradeOfferingKnifeId] = useState<string | null>(null);
   const [tradeOfferingPickerOpen, setTradeOfferingPickerOpen] = useState(false);
+  const [sellingKnifeId, setSellingKnifeId] = useState<string | null>(null);
+  const [sellingPickerOpen, setSellingPickerOpen] = useState(false);
   const [lookingFor, setLookingFor] = useState("");
   const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
   const [tradeSoughtFile, setTradeSoughtFile] = useState<File | null>(null);
@@ -396,14 +398,16 @@ const CreatePostPage = () => {
   const taggedKnife = collectionKnives.find((k) => k.id === taggedKnifeId) ?? null;
 
   const tradeBlocked = layout === "trade" && collectionKnives.length === 0;
+  const sellBlocked = layout === "buysell" && buySellTag === "Selling" && collectionKnives.length === 0;
 
   const canSubmit =
     !tradeBlocked &&
+    !sellBlocked &&
     caption.trim() !== "" &&
     (layout === "trade"
       ? tradeSoughtFile !== null
       : selectedFiles.length > 0) &&
-    (layout !== "buysell" || (buySellTag !== null && (buySellTag !== "Selling" || price.trim() !== "")));
+    (layout !== "buysell" || (buySellTag !== null && (buySellTag !== "Selling" || (price.trim() !== "" && sellingKnifeId !== null))));
 
   // --- layout change ---
   const handleLayoutChange = (key: PostLayout) => {
@@ -413,6 +417,8 @@ const CreatePostPage = () => {
     setBuySellTag(null);
     setSelectedFiles([]);
     setTradeOfferingKnifeId(null);
+    setSellingKnifeId(null);
+    setSellingPickerOpen(false);
     setTradeOfferingPickerOpen(false);
     setLookingFor("");
     setTags([]);
@@ -479,6 +485,7 @@ const CreatePostPage = () => {
     if (layout === "buysell") {
       fd.append("price", price.trim());
       if (buySellTag) fd.append("buySellTag", buySellTag);
+      if (sellingKnifeId) fd.append("sellingKnifeId", sellingKnifeId);
     }
     if (layout === "trade") {
       if (tradeOfferingKnifeId) fd.append("tradeOfferingKnifeId", tradeOfferingKnifeId);
@@ -600,7 +607,7 @@ const CreatePostPage = () => {
                 <button
                   key={option}
                   type="button"
-                  onClick={() => { setBuySellTag(option); setSelectedFiles([]); }}
+                  onClick={() => { setBuySellTag(option); setSelectedFiles([]); setSellingKnifeId(null); setSellingPickerOpen(false); }}
                   className={`py-3 rounded-xl border text-sm font-semibold transition-all duration-200 ${
                     buySellTag === option
                       ? "bg-blue-primary/10 border-blue-primary/40 text-blue-primary"
@@ -611,6 +618,58 @@ const CreatePostPage = () => {
                 </button>
               ))}
             </div>
+          </div>
+        )}
+
+        {/* Buy/Sell — knife being sold */}
+        {layout === "buysell" && buySellTag === "Selling" && !sellBlocked && (
+          <div className="flex flex-col gap-1.5">
+            <p className="text-xs text-white/40 uppercase tracking-wider font-semibold">
+              Knife for Sale <span className="text-red text-[10px] normal-case font-semibold ml-0.5">required</span>
+            </p>
+            {(() => {
+              const sellingKnife = collectionKnives.find((k) => k.id === sellingKnifeId) ?? null;
+              return sellingKnife ? (
+                <div className="flex items-center justify-between bg-[#13161d] border border-blue-primary/30 rounded-xl px-4 py-3">
+                  <div className="flex items-center gap-2 min-w-0">
+                    <FontAwesomeIcon icon={faTag} className="text-blue-primary text-xs flex-shrink-0" />
+                    <div className="flex flex-col min-w-0">
+                      <p className="text-white text-sm font-medium truncate">{sellingKnife.displayName}</p>
+                      <p className="text-white/40 text-xs truncate">{sellingKnife.knifeMaker}</p>
+                    </div>
+                  </div>
+                  <button type="button" onClick={() => setSellingKnifeId(null)} className="text-white/30 hover:text-white/70 transition-colors duration-200 flex-shrink-0 ml-3">
+                    <FontAwesomeIcon icon={faXmark} />
+                  </button>
+                </div>
+              ) : (
+                <div className="relative">
+                  <button
+                    type="button"
+                    onClick={() => setSellingPickerOpen((p) => !p)}
+                    className="w-full flex items-center justify-between bg-[#13161d] border border-white/10 rounded-xl px-4 py-3 text-sm text-white/40 hover:text-white/70 hover:border-white/20 transition-all duration-200"
+                  >
+                    <span>Select the knife you're selling</span>
+                    <FontAwesomeIcon icon={faChevronDown} className={`text-xs transition-transform duration-200 ${sellingPickerOpen ? "rotate-180" : ""}`} />
+                  </button>
+                  {sellingPickerOpen && (
+                    <div className="absolute top-full left-0 right-0 mt-1 bg-[#13161d] border border-white/10 rounded-xl overflow-hidden z-20 shadow-xl max-h-48 overflow-y-auto">
+                      {collectionKnives.map((knife) => (
+                        <button
+                          key={knife.id}
+                          type="button"
+                          onClick={() => { setSellingKnifeId(knife.id); setSellingPickerOpen(false); }}
+                          className="w-full flex flex-col px-4 py-3 hover:bg-white/5 transition-colors duration-150 text-left border-b border-white/[0.04] last:border-0"
+                        >
+                          <span className="text-white text-sm font-medium">{knife.displayName}</span>
+                          <span className="text-white/40 text-xs">{knife.knifeMaker}</span>
+                        </button>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              );
+            })()}
           </div>
         )}
 
@@ -779,6 +838,29 @@ const CreatePostPage = () => {
                 <p className="text-white/25 text-xs font-medium">Select Buying or Selling above to upload media</p>
               </div>
             ) : null}
+
+            {/* Sell blocked — no knives in collection */}
+            {sellBlocked && (
+              <div className="flex flex-col items-center gap-4 py-8 px-6 bg-[#13161d] border border-white/10 rounded-2xl text-center">
+                <div className="w-12 h-12 rounded-xl bg-gold/10 border border-gold/20 flex items-center justify-center">
+                  <FontAwesomeIcon icon={faBoxOpen} className="text-gold text-lg" />
+                </div>
+                <div className="flex flex-col gap-1.5">
+                  <p className="text-white font-semibold text-sm">No knives in your collection</p>
+                  <p className="text-white/45 text-xs leading-relaxed max-w-xs">
+                    To list a knife for sale you need one in your collection first.{" "}
+                    <button
+                      type="button"
+                      onClick={() => navigate("/add-collection-knife")}
+                      className="text-blue-primary hover:text-blue-primary/70 underline underline-offset-2 transition-colors duration-150"
+                    >
+                      Add a knife to your collection
+                    </button>
+                    {" "}before creating a selling post.
+                  </p>
+                </div>
+              </div>
+            )}
 
             {/* Thumbnails + upload — hidden until buysell tag is chosen */}
             {!(layout === "buysell" && !buySellTag) && selectedFiles.length > 0 && (
