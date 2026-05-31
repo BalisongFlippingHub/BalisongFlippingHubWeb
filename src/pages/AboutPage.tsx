@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faGlobe, faEarthAmericas, faTv, faEnvelope, faPaperPlane } from "@fortawesome/free-solid-svg-icons";
+import { faDiscord } from "@fortawesome/free-brands-svg-icons";
 
 const pillars = [
   {
@@ -24,16 +25,19 @@ const pillars = [
 ];
 
 const CONTACT_EMAIL = "contact@balisongflippingcenter.com";
+const DISCORD_URL = "https://discord.gg/k6JPnkbBC";
 const MAX_LENGTH = 1000;
 
 const AboutPage = () => {
+  const [subject, setSubject] = useState("");
   const [message, setMessage] = useState("");
 
   const charsLeft = MAX_LENGTH - message.length;
 
   const handleSend = () => {
-    const body = encodeURIComponent(message.trim());
-    window.location.href = `mailto:${CONTACT_EMAIL}?subject=Message from Balisong Flipping Center&body=${body}`;
+    const encodedSubject = encodeURIComponent(subject.trim() || "Message from Balisong Flipping Center");
+    const encodedBody = encodeURIComponent(message.trim());
+    window.location.href = `mailto:${CONTACT_EMAIL}?subject=${encodedSubject}&body=${encodedBody}`;
   };
 
   return (
@@ -90,39 +94,79 @@ const AboutPage = () => {
             </p>
           </div>
 
-          {/* Email display */}
-          <div className="flex items-center gap-3">
-            <FontAwesomeIcon icon={faEnvelope} className="text-blue-primary text-sm" />
-            <span className="text-white/50 text-sm">{CONTACT_EMAIL}</span>
-          </div>
-
-          {/* Message input */}
-          <div className="flex flex-col gap-1.5">
-            <div className="flex items-center justify-between">
-              <label className="text-xs text-white/40 uppercase tracking-wider font-medium">Message</label>
-              <span className={`text-xs font-medium ${charsLeft < 100 ? "text-gold" : "text-white/30"}`}>
-                {charsLeft} left
-              </span>
-            </div>
-            <textarea
-              value={message}
-              onChange={(e) => { if (e.target.value.length <= MAX_LENGTH) setMessage(e.target.value); }}
-              placeholder="Write your message here..."
-              rows={5}
-              className="w-full bg-[#0d0f14] border border-white/10 rounded-xl px-4 py-3 text-white text-sm outline-none focus:border-blue-primary/50 transition-colors duration-200 resize-none placeholder:text-white/20"
-            />
-          </div>
-
-          {/* Send button */}
-          <button
-            type="button"
-            onClick={handleSend}
-            disabled={!message.trim()}
-            className="flex items-center gap-2 px-6 py-3 bg-blue-primary text-white text-sm font-semibold rounded-xl hover:bg-blue-primary/80 transition-colors duration-200 disabled:opacity-40 disabled:cursor-not-allowed w-fit"
+          {/* Discord — full width */}
+          <a
+            href={DISCORD_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex items-center gap-4 px-5 py-4 rounded-xl bg-[#5865F2]/10 border border-[#5865F2]/30 hover:bg-[#5865F2]/20 hover:border-[#5865F2]/50 transition-all duration-200 group"
           >
-            <FontAwesomeIcon icon={faPaperPlane} className="text-xs" />
-            Send Message
-          </button>
+            <FontAwesomeIcon icon={faDiscord} className="text-[#5865F2] text-2xl flex-shrink-0" />
+            <div className="flex flex-col">
+              <span className="text-white text-sm font-semibold">Join our Discord</span>
+              <span className="text-white/40 text-xs">Connect with the community</span>
+            </div>
+          </a>
+
+          {/* Divider */}
+          <div className="flex items-center gap-3">
+            <div className="flex-1 h-px bg-white/[0.06]" />
+            <span className="text-xs text-white/25 font-medium uppercase tracking-widest">or</span>
+            <div className="flex-1 h-px bg-white/[0.06]" />
+          </div>
+
+          {/* Email composer */}
+          <div className="flex flex-col gap-0 border border-white/10 rounded-xl overflow-hidden">
+            {/* To row */}
+            <div className="flex items-center gap-4 px-4 py-3 bg-[#0d0f14] border-b border-white/10">
+              <span className="text-xs text-white/25 font-semibold uppercase tracking-wider flex-shrink-0 w-14">To</span>
+              <div className="flex items-center gap-2">
+                <FontAwesomeIcon icon={faEnvelope} className="text-blue-primary text-xs" />
+                <span className="text-white/60 text-sm">{CONTACT_EMAIL}</span>
+              </div>
+            </div>
+
+            {/* Subject row */}
+            <div className="flex items-center gap-4 px-4 py-3 bg-[#0d0f14] border-b border-white/10 focus-within:border-blue-primary/40 transition-colors duration-200">
+              <span className="text-xs text-white/25 font-semibold uppercase tracking-wider flex-shrink-0 w-14">Subject</span>
+              <input
+                type="text"
+                value={subject}
+                onChange={(e) => setSubject(e.target.value)}
+                placeholder="What's this about?"
+                className="flex-1 bg-transparent text-white text-sm outline-none placeholder:text-white/20"
+              />
+            </div>
+
+            {/* Message textarea */}
+            <div className="relative bg-[#0d0f14] focus-within:ring-1 focus-within:ring-blue-primary/20 transition-all duration-200">
+              <textarea
+                value={message}
+                onChange={(e) => { if (e.target.value.length <= MAX_LENGTH) setMessage(e.target.value); }}
+                placeholder="Write your message here..."
+                rows={5}
+                className="w-full bg-[#0d0f14] px-4 py-3 text-white text-sm outline-none resize-none placeholder:text-white/20"
+              />
+              {message.length > 0 && (
+                <span className={`absolute bottom-2 right-3 text-xs font-medium ${charsLeft < 100 ? "text-gold" : "text-white/20"}`}>
+                  {charsLeft}
+                </span>
+              )}
+            </div>
+
+            {/* Send button row */}
+            <div className="px-4 py-3 bg-[#0d0f14] border-t border-white/10 flex justify-end">
+              <button
+                type="button"
+                onClick={handleSend}
+                disabled={!message.trim()}
+                className="flex items-center gap-2 px-5 py-2 bg-blue-primary text-white text-sm font-semibold rounded-lg hover:bg-blue-primary/80 transition-colors duration-200 disabled:opacity-40 disabled:cursor-not-allowed"
+              >
+                <FontAwesomeIcon icon={faPaperPlane} className="text-xs" />
+                Send Message
+              </button>
+            </div>
+          </div>
         </div>
 
       </div>
